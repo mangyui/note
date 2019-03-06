@@ -1,0 +1,70 @@
+{
+  "ret": 200,
+  "code": 0,
+  "message": "请求成功啦",
+  "data" : [
+    {
+      "id": "1",
+      "avatar": "./static/img/img.jpg",
+      "name": "海",
+      "introduction": "这个家伙很懒，什么都没留下",
+      "attention": true
+    },
+    {
+      "id": "1",
+      "avatar": "./static/img/img.jpg",
+      "name": "题友名字",
+      "introduction": "这个家伙很懒，什么都没留下",
+      "attention": false
+    },
+    {
+      "id": "1",
+      "avatar": "./static/img/img.jpg",
+      "name": "张三",
+      "introduction": "这个家伙很懒，什么都没留下",
+      "attention": true
+    },
+    {
+      "id": "1",
+      "avatar": "./static/img/img.jpg",
+      "name": "COCO",
+      "introduction": "这个家伙很懒，什么都没留下",
+      "attention": true
+    },
+    {
+      "id": "1",
+      "avatar": "./static/img/img.jpg",
+      "name": "题友名字",
+      "introduction": "这个家伙很懒，什么都没留下",
+      "attention": true
+    },
+    {
+      "id": "1",
+      "avatar": "./static/img/img.jpg",
+      "name": "张三",
+      "introduction": "这个家伙很懒，什么都没留下",
+      "attention": true
+    },
+    {
+      "id": "1",
+      "avatar": "./static/img/img.jpg",
+      "name": "COCO",
+      "introduction": "这个家伙很懒，什么都没留下",
+      "attention": true
+    },
+    {
+      "id": "1",
+      "avatar": "./static/img/img.jpg",
+      "name": "张三",
+      "introduction": "这个家伙很懒，什么都没留下",
+      "attention": true
+    },
+    {
+      "id": "1",
+      "avatar": "./static/img/img.jpg",
+      "name": "COCO",
+      "introduction": "这个家伙很懒，什么都没留下",
+      "attention": true
+    }
+  ]
+}

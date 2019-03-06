@@ -1,0 +1,9 @@
+{
+  "ret": 200,
+  "code": 0,
+  "message": "成功返回",
+  "data" : {
+    "version": "1.0.4",
+    "url": "https://coding.net/api/share/download/87eea5a0-37c8-4e86-8475-f653b8b4d59a"
+  }
+}

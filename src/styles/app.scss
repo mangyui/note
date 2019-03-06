@@ -1,0 +1,9 @@
+@media (max-width: 768px){
+  .app-main{
+    margin-top: 50px!important;
+    height: calc(100% - 50px)!important;
+  }
+  .scroll-container{
+    display: none!important;
+  }
+}

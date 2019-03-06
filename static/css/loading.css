@@ -1,0 +1,71 @@
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+.background {
+width: 100vw;
+height: 100vh;
+background: #52bab5;
+--amount: 20;
+}
+
+.background span {
+width: 8vmin;
+height: 8vmin;
+border-radius: 4vmin;
+backface-visibility: hidden;
+position: absolute;
+animation-name: move;
+animation-timing-function: cubic-bezier(0.4, 0, 1, 0.8);
+animation-iteration-count: infinite;
+animation-duration: 3s;
+top: calc(50% - 4vmin);
+left: 50%;
+transform-origin: -4vmin center;
+}
+.background span:nth-child(1) {
+background: rgb(56, 161, 242);
+animation-delay: -0.5s;
+opacity: 0;
+}
+.background span:nth-child(2) {
+background: #fff;
+animation-delay: -1s;
+opacity: 0;
+}
+.background span:nth-child(3) {
+background: #C5F0A4;
+animation-delay: -1.5s;
+opacity: 0;
+}
+.background span:nth-child(4) {
+background: #226B80;
+animation-delay: -2s;
+opacity: 0;
+}
+.background span:nth-child(5) {
+background: rgb(59, 103, 164);
+animation-delay: -2.5s;
+opacity: 0;
+}
+.background span:nth-child(6) {
+background: rgb(117, 56, 199);
+animation-delay: -3s;
+opacity: 0;
+}
+
+@keyframes move {
+0% {
+transform: scale(1) rotate(0deg) translate3d(0, 0, 1px);
+}
+30% {
+opacity: 1;
+}
+100% {
+z-index: 10;
+transform: scale(0) rotate(360deg) translate3d(0, 0, 1px);
+}
+}
