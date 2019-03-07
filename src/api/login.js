@@ -1,4 +1,16 @@
 import request from '@/utils/request'
+// import md5 from 'js-md5'
+
+// function objKeySort(obj) {
+//   var newkey = Object.keys(obj).sort()
+//   var newObj = {}
+//   for (var i = 0; i < newkey.length; i++) {
+//     newObj[newkey[i]] = obj[newkey[i]]
+//     // newObj[newkey[i].toLowerCase()]
+//   }
+
+//   return newObj
+// }
 
 export function login(username, password) {
   return request({

@@ -12,12 +12,19 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {         //名字自取，可以不同，但要跟后面得接口名一致
-        target: "http://192.168.43.120/soQ/api",
+        target: "http://192.168.1.102/soQ/api",
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''
         }
-      }
+      },
+      '/api2': {         //名字自取，可以不同，但要跟后面得接口名一致
+        target: "http://192.168.1.106:8080",
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api2': ''
+        }
+      },
     },
 
     // Various Dev Server settings

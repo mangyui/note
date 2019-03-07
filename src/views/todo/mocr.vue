@@ -13,7 +13,7 @@
             <div v-if="!cropImg" class="up_inside">
               <nx-svg-icon class-name='icon-camera' icon-class="camera3" />
             </div>
-            <div ref="select_frame" class="tuoUp"></div>
+            <!-- <div class="tuoUp"></div> -->
             <img v-if="showGIF" class="loading-gif" src="@/assets/images/home/loading2.gif" alt="Loading">
           </label>
           <div class="upbtn-group">
@@ -84,9 +84,9 @@
           <el-select v-model="form.CategoryId" placeholder="请选择题目分类">
             <el-option
               v-for="item in typelist"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
+              :key="item.Id"
+              :label="item.Subject"
+              :value="item.Id">
             </el-option>
           </el-select>
         </el-form-item>
@@ -111,6 +111,10 @@ import VueCropper from 'vue-cropperjs'
 import axios from 'axios'
 import qs from 'qs'
 import { slider, slideritem } from 'vue-concise-slider'
+
+import {
+  questionCategory
+} from '@/api/toget'
 
 import {
   // upQuestion,
@@ -159,22 +163,13 @@ export default {
       dialogVisible: false,
       dialogFormVisible: false,
       questions: [],
-      typelist: [{
-        value: 8,
-        label: '数学'
-      }, {
-        value: 9,
-        label: '语文'
-      }, {
-        value: 10,
-        label: '物理'
-      }],
+      typelist: [],
       form: {
         Content: '',
         Text: '',
         Analysis: '',
         Keywords: '',
-        CategoryId: 10
+        CategoryId: ''
       },
       rules: {
         type: [
@@ -343,6 +338,15 @@ export default {
         })
       }).catch(() => {})
     },
+
+    // 获取题目分类
+    GetCategory() {
+      questionCategory().then(res => {
+        this.typelist = res.data.data
+      }).catch(() => {
+        console.log('获取数据失败！')
+      })
+    },
     // 滑动组件监听事件
     slide(data) {
       this.haveF.currentPage = data.currentPage
@@ -356,7 +360,7 @@ export default {
     this.$refs.select_frame.ondragleave = (e) => {
       // 阻止离开时的浏览器默认行为
       e.preventDefault()
-      // this.$refs.select_frame.style.backgroundColor = '#fff'
+      this.$refs.select_frame.style.backgroundColor = '#fff'
       this.$refs.select_frame.style.border = '0.11em dashed #d9d9d9'
     }
     this.$refs.select_frame.ondrop = (e) => {
@@ -366,12 +370,12 @@ export default {
         return
       }
       this.setImage(data)
-      // this.$refs.select_frame.style.backgroundColor = '#fff'
+      this.$refs.select_frame.style.backgroundColor = '#fff'
       this.$refs.select_frame.style.border = '0.11em dashed #d9d9d9'
     }
     this.$refs.select_frame.ondragenter = (e) => {
       e.preventDefault()
-      // this.$refs.select_frame.style.backgroundColor = '#edf8f7'
+      this.$refs.select_frame.style.backgroundColor = '#edf8f7'
       this.$refs.select_frame.style.border = '0.11em dashed #52bab5'
     }
     this.$refs.select_frame.ondragover = (e) => {
@@ -379,7 +383,7 @@ export default {
     }
   },
   created() {
-
+    this.GetCategory()
   }
 }
 </script>

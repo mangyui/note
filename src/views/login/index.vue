@@ -145,10 +145,10 @@ export default {
 
     .el-input__inner{
       border-radius: 0 3px 3px 0;
-      border-left: 0;
       padding-left: 10px;
       font-size: 14px;
     }
+
     .el-form-item__error{
       line-height: 1.6em;
     }

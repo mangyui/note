@@ -2,8 +2,8 @@
   <div class="app-container">
     <div class="crumbs">
       <el-breadcrumb separator="/">
-        <el-breadcrumb-item>
-          <i class="el-icon-date"></i> 详情</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: '/toques/my_ques' }"><i class="el-icon-date"></i> 错题列表</el-breadcrumb-item>
+          <el-breadcrumb-item>错题详情</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="note_details">
@@ -101,7 +101,7 @@ import { quillEditor } from 'vue-quill-editor'
 import nxSvgIcon from '@/components/nx-svg-icon/index'
 
 export default {
-  name: 'note_details',
+  name: 'my_answer',
   components: {
     nxSvgIcon,
     quillEditor

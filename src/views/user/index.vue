@@ -75,7 +75,16 @@
             <table class="datum-table">
               <tr>
                 <th>院校</th>
-                <td><el-input v-model="myschool" placeholder="请设置您的在读院校"></el-input></td>
+                <td>
+                  <el-select v-model="myschool" placeholder="请选择">
+                    <el-option
+                      v-for="item in schoolList"
+                      :key="item.Id"
+                      :label="item.Name"
+                      :value="item.Id">
+                    </el-option>
+                  </el-select>
+                </td>
               </tr>
               <tr>
                 <th>年级</th>
@@ -121,6 +130,9 @@
 import nxCountUp from '@/components/nx-count-up/index.vue'
 import { areajson } from '@/assets/js/city.js'
 import VueCropper from 'vue-cropperjs'
+import {
+  getSchoolList
+} from '@/api/toget'
 
 export default {
   name: 'user',
@@ -141,7 +153,7 @@ export default {
       myaddress: ['110000', '110100', '110101'],
       myprofession: '高三',
       myintroduce: '学习，运动，编程都不擅长，擅长吃饭，睡觉，打游戏',
-      myschool: 'shaoxing',
+      myschool: '',
       myQQ: '1445327460',
       sex: [{
         value: 'male',
@@ -150,7 +162,8 @@ export default {
         value: 'female',
         label: '女'
       }],
-      city: areajson
+      city: areajson,
+      schoolList: []
     }
   },
   methods: {
@@ -187,10 +200,18 @@ export default {
     },
     toRotate() {
       this.$refs.cropper.rotate(10)
+    },
+    getschool() {
+      getSchoolList().then(res => {
+        this.schoolList = res.data.data
+      }).catch(() => {
+        console.log('获取学校数据失败！')
+      })
     }
   },
   created() {
     this.cropImg = this.user.avatar
+    this.getschool()
   }
 }
 </script>

@@ -8,11 +8,15 @@
           <el-option label="其他" value="type3"></el-option>
         </el-select>
         <div class="top-search">
-          <el-input placeholder="搜索题目"></el-input>
-          <el-button type="primary" icon="el-icon-search" v-on:click=""></el-button>
+          <el-input placeholder="搜索题目" v-model="text"></el-input>
+          <el-button type="primary" icon="el-icon-search" v-on:click="SearchQuestion"></el-button>
         </div>
       </div>
       <quex-box :option="questions"></quex-box>
+      <div v-if="showLoading" class="loading-box">
+        <i class="el-icon-loading"></i>
+        加载中...
+      </div>
     </div>
   </div>
 </template>
@@ -20,13 +24,16 @@
 
 <script>
 import nxSvgIcon from '@/components/nx-svg-icon/index'
+
 import {
-  getNoteList
-} from '@/api/notes'
+  SearchQues
+} from '@/api/toPost'
+
 import quexBox from '@/components/my-box/quex-box'
+import qs from 'qs'
 
 export default {
-  name: 'home',
+  name: 'search',
   components: {
     nxSvgIcon,
     quexBox
@@ -35,15 +42,18 @@ export default {
     return {
       screenWidth: document.body.clientWidth,
       questions: [],
-      type: ''
+      type: '',
+      text: '',
+      showLoading: false
     }
   },
   methods: {
-    getNotes() {
-      getNoteList().then(res => {
-        this.questions = res.data
+    SearchQuestion() {
+      this.showLoading = true
+      SearchQues(qs.stringify({ Text: this.text })).then(res => {
+        this.questions = res.data.data
+        this.showLoading = false
       }).catch(() => {})
-      this.loading = false
     }
   },
   mounted() {
@@ -56,7 +66,7 @@ export default {
     }
   },
   created() {
-    this.getNotes()
+
   },
   deactivated() {
     console.log('deactivated')

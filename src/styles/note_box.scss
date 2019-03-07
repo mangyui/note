@@ -1,0 +1,46 @@
+.el-card{
+  margin-bottom: 20px;
+  position: relative;
+}
+.big-box{
+  display: flex;
+}
+.big-title{
+  padding: 5px 10px;
+  font-size: 17px;
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-radius: 3px;
+  background: #fff;
+  margin-bottom: 5px;
+}
+.big-content{
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5em;
+  height: 55px;
+  overflow: hidden;
+  padding: 10px 5px;
+  margin: 10px 0;
+}
+i.header-icon{
+  margin-right: 8px;
+  margin-left: -8px;
+  color: #52bab5;
+}
+.big-body{
+  flex-grow:1;
+  width: 0;
+  overflow: hidden;
+}
+.big-time{
+  font-size: 13px;
+  color: #52bab5;
+  margin-top: 8px;
+  text-align: right;
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+}

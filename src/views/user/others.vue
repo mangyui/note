@@ -57,6 +57,10 @@ import {
   getNoteList
 } from '@/api/notes'
 
+import {
+  P_toAttention
+} from '@/api/toPost'
+
 export default {
   name: 'others',
   components: { nxSvgIcon },
@@ -75,21 +79,21 @@ export default {
       this.loading = false
     },
     toAttention() {
-      if (this.Attention === true) {
-        this.Attention = false
-        this.$notify({
-          title: '提示',
-          message: '已取消关注',
-          type: 'info'
-        })
-      } else {
-        this.Attention = true
-        this.$notify({
-          title: '提示',
-          message: '已关注对方',
-          type: 'success'
-        })
-      }
+      P_toAttention().then(res => {
+        this.Attention = !this.Attention
+      }).catch(() => {
+        this.$message.warning('操作失败...')
+      })
+      // if (this.Attention === true) {
+      //   this.Attention = false
+      //   this.$notify({
+      //     title: '提示',
+      //     message: '已取消关注',
+      //     type: 'info'
+      //   })
+      // } else {
+      //   this.Attention = true
+      // }
     }
   },
   created() {
@@ -133,6 +137,7 @@ export default {
     margin-left: 50%;
     transform: translateX(-50%);
     border: 2px solid #fff;
+    overflow: hidden;
 }
 
 .profile-header .header-info {

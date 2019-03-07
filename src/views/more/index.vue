@@ -64,5 +64,8 @@ export default {
     width: 3em;
     height: 3em;
   }
+  p{
+    margin-top: 1em;
+  }
 }
 </style>

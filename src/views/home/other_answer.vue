@@ -54,7 +54,7 @@
         </div>
         <div class="sys-section">
           <div class="title">
-            <strong>下一个题友解答</strong>
+            <strong>更多题友解答</strong>
           </div>
           <div class="answer_item" v-for="(item,index) in 1" :key="index">
             <div class="answer_item_top">

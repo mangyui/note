@@ -2,26 +2,29 @@
   <div class="app-container">
     <div class="crumbs">
       <el-breadcrumb separator="/">
-          <el-breadcrumb-item><i class="el-icon-date"></i> 我的笔记</el-breadcrumb-item>
-          <el-breadcrumb-item>笔记分类</el-breadcrumb-item>
+          <el-breadcrumb-item><i class="el-icon-date"></i> 我的错题</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="container">
-      <el-tag> 所 有 </el-tag>
+      <!-- <el-tag> 所 有 </el-tag>
       <el-tag type="success"> 数 学 </el-tag>
       <el-tag type="info"> 语 文 </el-tag>
       <el-tag type="warning"> 英 语 </el-tag>
-      <el-tag type="danger"> 其 他 </el-tag>
-          <div class="ques-list">
+      <el-tag type="danger"> 其 他 </el-tag> -->
+      <el-select  v-model="type" placeholder="选择类型">
+        <el-option label="数学" value="type1"></el-option>
+        <el-option label="语文" value="type2"></el-option>
+        <el-option label="其他" value="type3"></el-option>
+      </el-select>
+      <router-link to="/SQu/index">
+        <el-button type="primary" icon="el-icon-add">添加</el-button>
+      </router-link>
+      <el-button type="danger" icon="el-icon-delete" circle @click="showDelete=!showDelete"></el-button>
+      <div class="ques-list">
       <div class="ques-list_item" v-for="(item,index) in questions" :key="index">
         <div class="ques_box">
-          <span @click="toCollect(index)" >
-            <nx-svg-icon
-              class-name='international-icon icon-collect'
-              :style="item.collect==true?'color: #F56C6C':''"
-              icon-class="collect" />
-          </span>
-          <router-link to="/home/question_details/1">
+          <i v-if="showDelete" class="el-icon-close icon-delete" @click="toDetele"></i>
+          <router-link to="/toques/my_answer/1">
             <div class="ques_body">
               <b class="ques_title">{{item.title}}</b>
               <div class="tipbox ques_answer">{{item.answer}}</div>
@@ -48,10 +51,11 @@ import {
 } from '@/api/notes'
 
 export default {
-  name: 'note_type',
+  name: 'quesList',
   components: { nxSvgIcon },
   data() {
     return {
+      showDelete: false,
       questions: [],
       type: ''
     }
@@ -63,22 +67,17 @@ export default {
       }).catch(() => {})
       this.loading = false
     },
-    toCollect(index) {
-      if (this.questions[index].collect === true) {
-        this.questions[index].collect = false
-        this.$notify({
-          title: '提示',
-          message: '已取消收藏',
-          type: 'info'
+    toDetele() {
+      this.$confirm('此操作将永久删除该笔记, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
         })
-      } else {
-        this.questions[index].collect = true
-        this.$notify({
-          title: '提示',
-          message: '收藏成功',
-          type: 'success'
-        })
-      }
+      }).catch(() => {})
     }
   },
   created() {
@@ -88,7 +87,7 @@ export default {
 </script>
 
 
-<style scopd>
+<style lang="scss" scoped>
 .ques-list .ques-list_item .ques_box{
   padding-top: 40px;
 }

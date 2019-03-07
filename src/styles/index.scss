@@ -285,10 +285,28 @@ code {
     width: 50px;
     height: 50px;
     border-radius: 50%;
+    overflow: hidden;
   }
  }
 
+ .icon-delete{
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 50%;
+  font-size: 20px;
+  padding: 2px;
+  color: #666;
+  &:hover{
+    background: #F56C6C;
+    color: #fff;
+  }
+}
+
 .ques-list{
+  margin-bottom: 20px;
   .ques-list_item{
     margin-top: 15px;
     width: 100%;
@@ -307,6 +325,20 @@ code {
       }
       .ques_body{
         margin-bottom: 10px;
+        padding: 5px 10px;
+        line-height: 28px;
+        b{
+          position: absolute;
+          left: 0;
+          top: -1px;
+          display: inline-block;
+          background: #52bab5;
+          width: 27px;
+          height: 27px;
+          text-align: center;
+          line-height: 27px;
+          color: #fff;
+        }
        }
       .ques_footer{
         padding: 12px 0px 5px;
@@ -445,6 +477,12 @@ code {
     }
   }
 }
+
+.loading-box{
+  margin: 30px 0 20px;
+  text-align: center;
+}
+
 @media (min-width: 769px)
 {
   .toShow{

@@ -9,7 +9,7 @@
     <div class="note_details">
       <div class="page-content">
         <div class="detail-top">
-          <el-tag>{{question.Category.Subject}}</el-tag>
+          <el-tag v-if="question.Category">{{question.Category.Subject}}</el-tag>
           <el-button class="de-more" size="medium">更多相似</el-button>
         </div>
         <h2>题目</h2>
@@ -21,11 +21,11 @@
           <div class="sys-article" v-html="question.Analysis"></div>
         </div>
         <div class="toNum">
-            <div>
-              <nx-svg-icon class-name='qu-icon' icon-class="zan" /><span>{{question.LikeNumber}}</span>
+            <div @click="dianZan">
+              <nx-svg-icon class-name='qu-icon' icon-class="zan" :style="isLike==true?'color: #409EFF;border-color: #409EFF':''" /><span>{{question.LikeNumber}}</span>
             </div>
-            <div>
-              <nx-svg-icon class-name='qu-icon' icon-class="collect" /><span>{{question.CollectNumber}}</span>
+            <div @click="toCollect">
+              <nx-svg-icon class-name='qu-icon' icon-class="collect" :style="isCollect==true?'color: #409EFF;border-color: #409EFF':''"/><span>{{question.CollectNumber}}</span>
             </div>
             <div @click="haveBug">
               <el-tooltip class="item" effect="dark" content="解答有错误？" placement="top-end">
@@ -76,6 +76,11 @@ import {
   QuesDetails
 } from '@/api/toget'
 
+import {
+  P_dianZan,
+  P_toCollect
+} from '@/api/toPost'
+
 export default {
   name: 'question_details',
   components: { nxSvgIcon },
@@ -83,12 +88,28 @@ export default {
     return {
       id: '',
       user: this.$store.getters,
-      question: ''
+      question: '',
+      isLike: true,
+      isCollect: false
     }
   },
   methods: {
     handleChange(val) {
       console.log(val)
+    },
+    dianZan() {
+      P_dianZan().then(res => {
+        this.isLike = !this.isLike
+      }).catch(() => {
+        this.$message.warning('操作失败...')
+      })
+    },
+    toCollect() {
+      P_toCollect().then(res => {
+        this.isCollect = !this.isCollect
+      }).catch(() => {
+        this.$message.warning('操作失败...')
+      })
     },
     haveBug() {
       this.$confirm('该解答有问题? 反馈给我们', '提示', {
@@ -113,8 +134,13 @@ export default {
     },
     fetchDate() {
       this.id = this.$route.params.id
-      this.getQues()
+      if (this.id) {
+        this.getQues()
+      }
     }
+  },
+  watch: {
+    $route: 'fetchDate'
   },
   created() {
     this.fetchDate()
@@ -122,6 +148,6 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
     @import '../../styles/details.scss';
 </style>

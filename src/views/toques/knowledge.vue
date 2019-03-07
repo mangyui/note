@@ -40,7 +40,7 @@ import {
 } from '@/api/notes'
 
 export default {
-  name: 'notes',
+  name: 'knowledge',
   data() {
     return {
       activeNames: ['1'],

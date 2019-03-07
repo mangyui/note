@@ -1,6 +1,15 @@
 <template>
   <div class="edit-container">
-    <quill-editor ref="myTextEditor" v-model="content" :options="editorOption" @blur="onEditorBlur($event)" @focus="onEditorFocus($event)"></quill-editor>
+    <div class="noteEdit-title">
+      <h4>笔记标题</h4>
+      <el-input v-model="note.tilte" placeholder="请输入内容"></el-input>
+    </div>
+    <div class="noteEdit-title">
+    <h4>笔记正文</h4>
+      <quill-editor ref="myTextEditor" v-model="note.content" :options="editorOption"></quill-editor>
+      <br/>
+      <el-button class="editor-btn" type="primary" @click="dialogFormVisible = true">提交</el-button>
+    </div>
     <div ref="btngroup" class="btn-wrapper" :style="{right: btnRight}">
       <el-button-group>
       <el-button class="btngroup_first" icon="el-icon-back" type="primary" @click="toright"></el-button>
@@ -8,6 +17,27 @@
       <el-button icon="el-icon-d-arrow-right" @click="scrollRight"></el-button>
     </el-button-group>
     </div>
+    <el-dialog title="笔记备注" :visible.sync="dialogFormVisible">
+      <el-form :model="note" ref="form">
+        <!-- <el-form-item label="关键字">
+          <el-input v-model="form.Keywords"></el-input>
+        </el-form-item> -->
+        <el-form-item label="笔记分类">
+          <el-select v-model="note.CategoryId" placeholder="请选择题目分类">
+            <el-option
+              v-for="item in typelist"
+              :key="item.Id"
+              :label="item.Subject"
+              :value="item.Id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submit">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -21,33 +51,27 @@ export default {
   name: 'edit',
   data: function() {
     return {
-      content: '<p><br></p><h3><span style="color: rgb(240, 102, 102);"> 注：当屏幕宽度 ‘小于’ 上方工具栏时，可通过 ‘右方的辅助按钮’ 进行工具栏的 左右 滑动 </span></h3><p><br></p>',
+      dialogFormVisible: false,
       editorOption: {
-        placeholder: '等待提取中...'
+        placeholder: '等待输入中...'
       },
       btnRight: '-96px',
       marginL: 0,
-      totalwidth: 1430
+      totalwidth: 1430,
+      note: {
+        title: '',
+        content: '',
+        CategoryId: ''
+      }
     }
   },
   components: {
     quillEditor
   },
   methods: {
-    onEditorBlur() {
-      // var top2 = document.querySelector('.scroll-container')
-      // var sec = document.querySelector('.app-main')
-      // top2.style.height = '50px'
-      // sec.style.marginTop = '100px'
-      // sec.style.height = 'calc(100% - 100px)'
-    }, // 失去焦点事件
-    onEditorFocus() {
-      // var top2 = document.querySelector('.scroll-container')
-      // var sec = document.querySelector('.app-main')
-      // top2.style.height = 0
-      // sec.style.marginTop = '50px'
-      // sec.style.height = 'calc(100% - 50px)'
-    }, // 获得焦点事件
+    submit() {
+
+    },
     toright() {
       this.btnRight = this.btnRight === '0' ? '-96px' : '0'
       var btnF = document.querySelector('.btngroup_first .el-icon-back')
@@ -92,6 +116,10 @@ export default {
 
 <style lang="scss">
 .edit-container{
+  .noteEdit-title{
+    margin-bottom: 25px;
+    padding: 5px;
+  }
   .quill-editor{
     .ql-snow.ql-toolbar{
       position: fixed;
@@ -138,7 +166,7 @@ export default {
   .btn-wrapper{
     position: fixed;
     right: -96px;
-    top: 185px;
+    bottom: 200px;
     box-shadow: 0 1px 10px rgba(64, 158, 255,.5);
     transition: all 0.3s;
     .el-button{

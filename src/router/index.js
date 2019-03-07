@@ -145,6 +145,7 @@ export const constantRouterMap = [
       title: 'ToDo',
       icon: 'edit'
     },
+    hidden: true,
     children: [
       {
         path: 'speech',
@@ -181,7 +182,43 @@ export const constantRouterMap = [
 
     ]
   },
-
+  // 错题
+  {
+    path: '/toques',
+    component: Layout,
+    redirect: '/toques/my_ques',
+    meta: {
+      title: 'ToQues',
+      icon: 'form'
+    },
+    children: [
+      {
+        path: 'collect',
+        name: 'collect',
+        component: () => import('@/views/toques/collect'),
+        meta: { title: 'Collect' }
+      },
+      {
+        path: 'knowledge',
+        name: 'knowledge',
+        component: () => import('@/views/toques/knowledge'),
+        meta: { title: 'Knowledge' }
+      },
+      {
+        path: 'my_answer/:id',
+        name: 'my_answer',
+        hidden: true,
+        component: () => import('@/views/toques/my_answer'),
+        meta: { title: 'My_Answer' }
+      },
+      {
+        path: 'quesList',
+        name: 'quesList',
+        component: () => import('@/views/toques/quesList'),
+        meta: { title: 'QuesList' }
+      }
+    ]
+  },
   // 笔记
   {
     path: '/tonote',
@@ -192,42 +229,18 @@ export const constantRouterMap = [
       icon: 'form'
     },
     children: [
-      // {
-      //   path: 'note-type',
-      //   name: 'note_type',
-      //   component: () => import('@/views/tonote/note-type'),
-      //   meta: { title: 'Note_type' }
-      // },
-      {
-        path: 'note-type',
-        name: 'note_type',
-        component: () => import('@/views/tonote/note-type'),
-        meta: { title: 'Note_type' }
-      },
       {
         path: 'notes',
-        name: 'notes',
-        component: () => import('@/views/tonote/notes'),
-        meta: { title: 'Notes' }
+        name: 'noteList',
+        component: () => import('@/views/tonote/noteList'),
+        meta: { title: 'NoteList', icon: 'documentation' }
       },
       {
-        path: 'note-big',
-        name: 'BigNotes',
-        component: () => import('@/views/tonote/note-big'),
-        meta: { title: 'BigNotes' }
-      },
-      {
-        path: 'my_answer/:id',
-        name: 'my_answer',
+        path: 'note_detail/:id',
+        name: 'note_detail',
         hidden: true,
-        component: () => import('@/views/tonote/my_answer'),
-        meta: { title: 'My_Answer' }
-      },
-      {
-        path: 'my_ques',
-        name: 'my_ques',
-        component: () => import('@/views/tonote/my_ques'),
-        meta: { title: 'My_Ques' }
+        component: () => import('@/views/tonote/note_detail'),
+        meta: { title: 'Note_detail' }
       }
     ]
   },
