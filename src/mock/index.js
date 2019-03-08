@@ -1,6 +1,6 @@
 import Mock from 'mockjs'
 import tableAPI from './table'
-import loginAPI from './login'
+// import loginAPI from './login'
 import articleAPI from './article'
 // 设置全局延时 没有延时的话有时候会检测不到数据变化 建议保留
 Mock.setup({
@@ -8,7 +8,7 @@ Mock.setup({
 })
 
 // 登录相关
-Mock.mock(/\/user\/login/, 'post', loginAPI.loginByUsername)
+// Mock.mock(/\/user\/login/, 'post', loginAPI.loginByUsername)
 // Mock.mock(/\/user\/logout/, 'post', loginAPI.logout)
 // Mock.mock(/\/user\/info\.*/, 'get', loginAPI.getUserInfo)
 

@@ -20,25 +20,25 @@
         <div class="home-top">
             <div class="home_item">
               <router-link to="/SQu/index">
-                <nx-svg-icon class-name='more_icon' style="color:#F56C6C" icon-class="theme" />
+                <nx-svg-icon class-name='more_icon' style="color:#F56C6C" icon-class="camera3" />
                 <p>拍照搜题</p>
               </router-link>
             </div>
             <div class="home_item">
-              <router-link to="/todo/edit/1">
-                <nx-svg-icon class-name='more_icon' style="color:#52bab5" icon-class="theme" />
+              <router-link to="/todo/voice">
+                <nx-svg-icon class-name='more_icon' style="color:#52bab5" icon-class="vioce" />
+                <p>语音识别</p>
+              </router-link>
+            </div>
+            <div class="home_item">
+              <router-link to="/todo/edit">
+                <nx-svg-icon class-name='more_icon' style="color:#409EFF" icon-class="form" />
                 <p>添加笔记</p>
               </router-link>
             </div>
             <div class="home_item">
-              <router-link to="/">
-                <nx-svg-icon class-name='more_icon' style="color:#409EFF" icon-class="theme" />
-                <p>我的错题</p>
-              </router-link>
-            </div>
-            <div class="home_item">
               <router-link to="/home/search">
-                <nx-svg-icon class-name='more_icon' style="color:#409EFF" icon-class="theme" />
+                <nx-svg-icon class-name='more_icon' style="color:#E6A23C" icon-class="search" />
                 <p>查找题目</p>
               </router-link>
             </div>
@@ -51,7 +51,9 @@
       <div>
         <h4 v-if="notes[0]">最近笔记</h4>
         <note-box :option="notes"></note-box>
-        <h4 v-if="questions[0]">最近错题</h4>
+        <h4 v-if="myques[0]">最近错题</h4>
+        <myquex-box :option="myques"></myquex-box>
+        <h4 v-if="questions[0]">热门题目</h4>
         <quex-box :option="questions"></quex-box>
         <div v-if="showLoading" class="loading-box">
           <i class="el-icon-loading"></i>
@@ -70,12 +72,13 @@ import {
 } from '@/api/toget'
 import quexBox from '@/components/my-box/quex-box'
 import noteBox from '@/components/my-box/note-box'
-
+import myquexBox from '@/components/my-box/myquex-box'
 export default {
   name: 'home',
   components: {
     nxSvgIcon,
     quexBox,
+    myquexBox,
     noteBox
   },
   data() {
@@ -83,6 +86,7 @@ export default {
       screenWidth: document.body.clientWidth,
       questions: [],
       notes: [],
+      myques: [],
       type: '',
       showLoading: true
     }
@@ -93,13 +97,23 @@ export default {
     //   this.getNotes()
     // },
     getNotes() {
-      getRecommend().then(res => {
-        this.questions = this.questions.concat(res.data.data.Questions)
-        this.notes = res.data.data.Notes
-        this.showLoading = false
-      }).catch(() => {
-        console.log('获取数据失败！')
-      })
+      if (this.$store.getters.user.Id) {
+        getRecommend(this.$store.getters.user.Id).then(res => {
+          this.myques = res.data.data.Questions
+          this.notes = res.data.data.Notes
+          this.showLoading = false
+        }).catch(() => {
+          console.log('获取数据失败！')
+        })
+      } else {
+        getRecommend().then(res => {
+          this.questions = res.data.data.Questions
+          this.notes = res.data.data.Notes
+          this.showLoading = false
+        }).catch(() => {
+          console.log('获取数据失败！')
+        })
+      }
     }
     // handleScroll(e) {
     //   var scrollTop = e.target.scrollTop

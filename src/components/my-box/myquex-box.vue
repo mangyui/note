@@ -2,7 +2,7 @@
   <div class="ques-list">
     <div class="ques-list_item" v-for="(item,index) in option" :key="index">
       <div class="ques_box">
-        <router-link :to="'/home/question_details/'+item.Id">
+        <router-link :to="'/toques/my_answer/'+item.Id">
           <div class="ques_body tipbox">
             <b>{{index+1}}.</b><div v-html="item.Content"></div>
           </div>
@@ -22,7 +22,7 @@
 <script>
 import nxSvgIcon from '@/components/nx-svg-icon/index'
 export default {
-  name: 'quex-box',
+  name: 'myquex-box',
   components: { nxSvgIcon },
   data() {
     return {
@@ -51,17 +51,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.ques-list .ques-list_item .ques_box .ques_body{
-  max-height: 200px;
-  overflow: hidden;
-  transition: .5s;
-}
-.downMore{
-  position: absolute;
-  left: 50%;
-  bottom: 15px;
-  margin-left: -22px;
-  border-radius: 0 0 3px 3px;
-  transition: 0s
-}
+
 </style>

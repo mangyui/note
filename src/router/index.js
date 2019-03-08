@@ -114,27 +114,6 @@ export const constantRouterMap = [
       }
     ]
   },
-  // 题友
-  {
-    path: '/friends',
-    component: Layout,
-    redirect: '/friends/schoolfellow',
-    meta: { title: 'Friends', icon: 'peoples' },
-    children: [
-      {
-        path: 'schoolfellow',
-        name: 'schoolfellow',
-        component: () => import('@/views/friends/schoolfellow'),
-        meta: { title: 'Schoolfellow' }
-      },
-      {
-        path: 'followee',
-        name: 'followee',
-        component: () => import('@/views/friends/followee'),
-        meta: { title: 'Followee' }
-      }
-    ]
-  },
 
   // todo
   {
@@ -154,7 +133,7 @@ export const constantRouterMap = [
         meta: { title: 'Speech' }
       },
       {
-        path: 'edit/:id',
+        path: 'edit',
         name: 'edit',
         hidden: true,
         component: () => import('@/views/todo/edit'),
@@ -180,6 +159,38 @@ export const constantRouterMap = [
       //   meta: { title: 'MOCR' }
       // }
 
+    ]
+  },
+  // 笔记
+  {
+    path: '/tonote',
+    component: Layout,
+    redirect: '/tonote/notes',
+    meta: {
+      title: 'ToNote',
+      icon: 'form'
+    },
+    children: [
+      {
+        path: 'noteList',
+        name: 'noteList',
+        component: () => import('@/views/tonote/noteList'),
+        meta: { title: 'NoteList', icon: 'documentation' }
+      },
+      {
+        path: 'note_detail/:id',
+        name: 'note_detail',
+        hidden: true,
+        component: () => import('@/views/tonote/note_detail'),
+        meta: { title: 'Note_detail' }
+      },
+      {
+        path: 'note_edit/:id',
+        name: 'note_edit',
+        hidden: true,
+        component: () => import('@/views/tonote/note_edit'),
+        meta: { title: 'Note_edit' }
+      }
     ]
   },
   // 错题
@@ -219,28 +230,25 @@ export const constantRouterMap = [
       }
     ]
   },
-  // 笔记
+
+  // 题友
   {
-    path: '/tonote',
+    path: '/friends',
     component: Layout,
-    redirect: '/tonote/notes',
-    meta: {
-      title: 'ToNote',
-      icon: 'form'
-    },
+    redirect: '/friends/schoolfellow',
+    meta: { title: 'Friends', icon: 'peoples' },
     children: [
       {
-        path: 'notes',
-        name: 'noteList',
-        component: () => import('@/views/tonote/noteList'),
-        meta: { title: 'NoteList', icon: 'documentation' }
+        path: 'schoolfellow',
+        name: 'schoolfellow',
+        component: () => import('@/views/friends/schoolfellow'),
+        meta: { title: 'Schoolfellow' }
       },
       {
-        path: 'note_detail/:id',
-        name: 'note_detail',
-        hidden: true,
-        component: () => import('@/views/tonote/note_detail'),
-        meta: { title: 'Note_detail' }
+        path: 'followee',
+        name: 'followee',
+        component: () => import('@/views/friends/followee'),
+        meta: { title: 'Followee' }
       }
     ]
   },

@@ -2,10 +2,10 @@
   <el-scrollbar wrapClass="scrollbar-wrapper">
     <logo :isCollapse="isCollapse"></logo>
     <div class="user_center">
-      <router-link  to="/user/index" class="avatar"><img :src="user.avatar"></router-link>
+      <router-link  to="/user/index" class="avatar"><img :src="avatar"></router-link>
       <div>
-        <p class="user_name">{{user.name}}</p>
-        <p class="user_address">江西 | 学生</p>
+        <p class="user_name">{{user.Name||'未登录'}}</p>
+        <p  v-if="user.Id" class="user_address">{{user.Address}} | 学生</p>
       </div>
     </div>
     <el-menu
@@ -17,7 +17,7 @@
       text-color="white"
       active-text-color="#fff"
     >
-      <sidebar-item :routes="permission_routers"></sidebar-item>
+    <sidebar-item :routes="permission_routers"></sidebar-item>
     </el-menu>
   </el-scrollbar>
 </template>
@@ -31,7 +31,8 @@ export default {
   components: { SidebarItem, logo },
   data() {
     return {
-      user: this.$store.getters
+      user: this.$store.getters.user,
+      avatar: this.$store.getters.user.avatar || './static/img/avatar.jpg'
     }
   },
   computed: {

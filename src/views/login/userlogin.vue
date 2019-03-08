@@ -21,7 +21,7 @@
     </el-form-item>
     <el-checkbox v-model="checked">记住账号</el-checkbox>
     <el-form-item>
-      <el-button type="primary" size="medium" @click.native.prevent="handleLogin" class="login-submit">登录</el-button>
+      <el-button type="primary" size="medium" @click.native.prevent="handleLogin" class="login-submit" v-loading.fullscreen.lock="fullscreenLoading">登录</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -31,22 +31,24 @@ import nxSvgIcon from '@/components/nx-svg-icon/index'
 import {
   getVCode
 } from '@/api/toget'
+
 export default {
   name: 'userlogin',
   components: { nxSvgIcon },
   data() {
-    const validateCode = (rule, value, callback) => {
-      if (value !== this.Vcode.code) {
-        callback(new Error('验证码不正确'))
-      } else {
-        callback()
-      }
-    }
+    // const validateCode = (rule, value, callback) => {
+    //   if (value !== this.Vcode.code) {
+    //     callback(new Error('验证码不正确'))
+    //   } else {
+    //     callback()
+    //   }
+    // }
     return {
+      fullscreenLoading: false,
       loginForm: {
-        username: 'mangyu',
+        username: 'ipso',
         password: '123456',
-        code: '12345'
+        code: ''
       },
       checked: false,
       Vcode: {
@@ -62,8 +64,8 @@ export default {
         ],
         code: [
           { required: true, message: '请输入验证码', trigger: 'blur' },
-          { min: 4, message: '验证码长度最少为4位', trigger: 'blur' },
-          { required: true, trigger: 'blur', validator: validateCode }
+          { min: 4, message: '验证码长度最少为4位', trigger: 'blur' }
+          // { required: true, trigger: 'blur', validator: validateCode }
         ]
       },
       passwordType: 'password'
@@ -82,7 +84,7 @@ export default {
         this.Vcode = res.data.data
         this.Vcode.pic = 'data:image/jpeg;base64,' + res.data.data.pic
       }).catch(() => {
-        console.log('获取数据失败！')
+        console.log('获取验证码失败！')
       })
     },
     showPassword() {
@@ -93,8 +95,16 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
+          this.fullscreenLoading = true
           this.$store.dispatch('Login', this.loginForm).then(res => {
-            this.$router.push({ path: '/' })
+            this.fullscreenLoading = false
+            if (res.data.code === 0) {
+              this.$router.push({ path: '/' })
+            } else {
+              this.$message.warning(res.data.msg)
+            }
+          }).catch(() => {
+            this.fullscreenLoading = false
           })
         }
       })

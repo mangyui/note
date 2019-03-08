@@ -1,39 +1,36 @@
 import request from '@/utils/request'
-// import md5 from 'js-md5'
 
-// function objKeySort(obj) {
-//   var newkey = Object.keys(obj).sort()
-//   var newObj = {}
-//   for (var i = 0; i < newkey.length; i++) {
-//     newObj[newkey[i]] = obj[newkey[i]]
-//     // newObj[newkey[i].toLowerCase()]
-//   }
-
-//   return newObj
-// }
-
-export function login(username, password) {
+export function login(datas) {
   return request({
-    url: '/user/login',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/api/?service=App.User.Login',
     method: 'post',
-    data: {
-      username,
-      password
-    }
+    data: datas
   })
 }
 
+// **********************
 export function getInfo(token) {
   return request({
-    url: '/data/user/login.json',
-    method: 'get',
-    params: { token }
+    url: '/api/?service=App.User.GetUser',
+    method: 'post',
+    data: token
   })
 }
 
-export function logout() {
+// 注册
+export function register(datas) {
   return request({
-    url: '/data/user/logout.json',
-    method: 'get' // post
+    url: '/api/?service=App.User.GetUser',
+    method: 'post',
+    data: datas
   })
 }
+// export function logout() {
+//   return request({
+//     url: '/data/user/logout.json',
+//     method: 'get' // post
+//   })
+// }

@@ -13,9 +13,9 @@
         </ul>
       </div>
       <div class="voice-button_right">
-        <el-tooltip class="item" effect="dark" content="转入编辑器" placement="top-end">
+        <!-- <el-tooltip class="item" effect="dark" content="转入编辑器" placement="top-end">
           <el-button type="success" icon="el-icon-sort" circle @click="toeditor"></el-button>
-        </el-tooltip>
+        </el-tooltip> -->
         <el-tooltip class="item" effect="dark" content="撤销" placement="top-end">
           <el-button type="primary" icon="el-icon-refresh" circle @click="undo"></el-button>
         </el-tooltip>
@@ -44,8 +44,15 @@
           </div>
         </el-tooltip>
       </div>
+      <div class="">
+        <el-button type="primary" icon="el-icon-search" @click="SearchQuestion"></el-button>
+      </div>
       <h3 v-if="questions[0]" class="Hpipei">猜你要找:</h3>
       <quex-box :option="questions"></quex-box>
+      <div v-if="showLoading" class="loading-box">
+        <i class="el-icon-loading"></i>
+        加载中...
+      </div>
       <!-- <quill-editor ref="myTextEditor" v-model="content" :options="editorOption" @change="onEditorChange($event)"></quill-editor>
       <el-button class="editor-btn" type="primary" @click="submit">提交</el-button> -->
     </div>
@@ -59,9 +66,11 @@ import 'quill/dist/quill.bubble.css'
 import VoiceInputButton from 'voice-input-button'
 import { quillEditor } from 'vue-quill-editor'
 import quexBox from '@/components/my-box/quex-box'
+
 import {
-  getNoteList
-} from '@/api/notes'
+  SearchQues
+} from '@/api/toPost'
+import qs from 'qs'
 
 export default {
   name: 'voice',
@@ -72,6 +81,7 @@ export default {
   },
   data() {
     return {
+      showLoading: false,
       result: '',
       oldResult: '',
       content: '',
@@ -114,14 +124,16 @@ export default {
       this.oldResult = this.result
       this.result = str
     },
+    SearchQuestion() {
+      this.showLoading = true
+      SearchQues(qs.stringify({ Text: this.result })).then(res => {
+        this.questions = res.data.data
+        this.showLoading = false
+      }).catch(() => {})
+    },
     toeditor() {
       this.content = this.content + this.result
-      this.getNotes()
-    },
-    getNotes() {
-      getNoteList().then(res => {
-        this.questions = res.data
-      }).catch(() => {})
+      this.SearchQuestion()
     }
   },
   created() {

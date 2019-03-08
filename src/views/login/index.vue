@@ -1,5 +1,8 @@
 <template>
   <div class="login-container pull-height" @keyup.enter.native="handleLogin">
+    <router-link to="/" class="btn-tohome">
+      <el-button round>首页<i class="el-icon-d-arrow-right el-icon--right"></i></el-button>
+    </router-link>
     <div class="login-info text-white animated fadeInLeft">
       <div class="logo">
           <img src="../../assets/images/home/logo.png" width="160px" height="160px" alt="logo" style="vertical-align: middle;" />
@@ -15,7 +18,7 @@
       <div class="login-main">
         <h4 class="login-title">登录{{website.title}}
         </h4>
-        <el-tabs v-model="activeName">
+        <el-tabs v-model="activeName" class='is_stretch'>
           <el-tab-pane label="用户登录" name="user">
             <userLogin></userLogin>
           </el-tab-pane>
@@ -54,6 +57,14 @@ export default {
 </script>
 
 <style lang="scss">
+.btn-tohome{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  .el-button{
+    border: 0;
+  }
+}
 .login-container {
   display: flex;
   align-items: center;

@@ -14,39 +14,108 @@
       <span class="header-name">{{user.name}}</span>
       <span class="header-bio">这个家伙很懒，什么都没留下</span>
       <div class="header-info">
-          <nav class="info-tab">
-            <span class="info-tag" >笔记 66</span>
-            <span class="info-tag">错题 66</span>
-            <span class="info-tag" >收藏 66</span>
-          </nav>
       </div>
     </div>
     <div id="content">
-      <div class="ques-list">
-        <div class="ques-list_item" v-for="(item,index) in questions" :key="index">
-          <div class="ques_box">
-            <div class="ques_header">
-              <img :src="user.avatar">
-              <div class="header_right">
-                <b>{{user.name}}</b>
+      <el-tabs v-model="activeName" @tab-click="handleClick" class='is_stretch' >
+        <el-tab-pane name="info">
+          <div slot="label"><i class="el-icon-date"></i>基本资料</div>
+          <div class="contariner-wraper">
+            <div class="center-section-wrap">
+              <div class="datum-item-box">
+                <div class="datum-title-box">
+                  基本信息
+                </div>
+                <div class="table-wrap">
+                  <table class="datum-table">
+                    <tr>
+                      <th>用户名</th>
+                      <td>mangyu</td>
+                    </tr>
+                    <tr>
+                      <th>性别</th>
+                      <td>男</td>
+                    </tr>
+                    <tr>
+                      <th>家乡</th>
+                      <td>
+                        江西/赣州
+                      </td>
+                    </tr>
+                    <tr>
+                      <th>现居</th>
+                      <td>浙江/绍兴</td>
+                    </tr>
+                    <tr>
+                      <th>职业</th>
+                      <td>学生</td>
+                    </tr>
+                    <tr>
+                      <th>简介</th>
+                      <td class="brief-introduction">
+                        <p>学习，运动，编程都不擅长，擅长吃饭，睡觉，打游戏</p>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
               </div>
-            </div>
-            <span class="header_time"><i class="el-icon-time"> 19/02/16 19:52:24</i></span>
-            <router-link to="/home/other_answer/1">
-              <div class="ques_body">
-                <b class="ques_title">{{item.title}}</b>
-                <div class="tipbox ques_answer">{{item.answer}}</div>
+              <div class="datum-item-box">
+                <div class="datum-title-box">
+                  教育背景
+                </div>
+                <div class="table-wrap">
+                  <table class="datum-table">
+                    <tr>
+                      <th>在读院校</th>
+                      <td>Shaoxing University</td>
+                    </tr>
+                  </table>
+                </div>
               </div>
-            </router-link>
-            <div class="ques_footer">
-              <nx-svg-icon class-name='international-icon' icon-class="zan" /><span class="ques_footer_num">666</span>
-              <nx-svg-icon class-name='international-icon' icon-class="collect" /><span class="ques_footer_num">6</span>
-              <nx-svg-icon class-name='international-icon' icon-class="comment" /><span  class="ques_footer_num">66</span>
-              <el-tag>数学</el-tag>
+              <div class="datum-item-box">
+                <div class="datum-title-box">
+                  联系方式
+                </div>
+                <div class="table-wrap">
+                  <table class="datum-table">
+                    <tr>
+                      <th>QQ</th>
+                      <td>1445327460</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        </el-tab-pane>
+        <el-tab-pane label="最近错题" name="ques">
+          <div class="ques-list">
+            <div class="ques-list_item" v-for="(item,index) in questions" :key="index">
+              <div class="ques_box">
+                <div class="ques_header">
+                  <img :src="user.avatar">
+                  <div class="header_right">
+                    <b>{{user.name}}</b>
+                  </div>
+                </div>
+                <span class="header_time"><i class="el-icon-time"> 19/02/16 19:52:24</i></span>
+                <router-link to="/home/other_answer/1">
+                  <div class="ques_body">
+                    <b class="ques_title">{{item.title}}</b>
+                    <div class="tipbox ques_answer">{{item.answer}}</div>
+                  </div>
+                </router-link>
+                <div class="ques_footer">
+                  <nx-svg-icon class-name='international-icon' icon-class="zan" /><span class="ques_footer_num">666</span>
+                  <nx-svg-icon class-name='international-icon' icon-class="collect" /><span class="ques_footer_num">6</span>
+                  <nx-svg-icon class-name='international-icon' icon-class="comment" /><span  class="ques_footer_num">66</span>
+                  <el-tag>数学</el-tag>
+                </div>
+              </div>
+            </div>
+          </div>
+        </el-tab-pane>
+      </el-tabs>
     </div>
   </div>
 </template>
@@ -68,7 +137,8 @@ export default {
     return {
       user: this.$store.getters,
       questions: [],
-      Attention: true
+      Attention: true,
+      activeName: 'info'
     }
   },
   methods: {
@@ -103,6 +173,13 @@ export default {
 </script>
 
 <style scoped>
+ @import '../../styles/consumer.scss';
+ .datum-table td{
+   padding: 20px 0;
+ }
+ #content{
+   margin-top: 20px;
+ }
 .profile .icon-collect{
   top: 10px;
   right: 20px;

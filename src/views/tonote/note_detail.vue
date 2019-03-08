@@ -1,32 +1,114 @@
 <template>
-  <div class="app-container">
-    <div class="crumbs">
-      <el-breadcrumb separator="/">
-          <el-breadcrumb-item :to="{ path: '/tonote/notes' }"><i class="el-icon-date"></i> 笔记列表</el-breadcrumb-item>
-          <el-breadcrumb-item>笔记详情</el-breadcrumb-item>
-      </el-breadcrumb>
+  <div>
+    <div class="app-container">
+      <div class="crumbs">
+        <el-breadcrumb separator="/">
+            <el-breadcrumb-item :to="{ path: '/tonote/notes' }"><i class="el-icon-date"></i> 笔记列表</el-breadcrumb-item>
+            <el-breadcrumb-item>笔记详情</el-breadcrumb-item>
+        </el-breadcrumb>
+      </div>
+      <div  class="note_d-title">
+        <h3>{{note.Headline}}</h3>
+        <el-tag size="small">{{note.Category}}</el-tag>
+        <p class="note_d-remark">笔记 | {{note.DateTime}}</p>
+      </div>
+      <div class="note_d-content" v-html="note.Content"></div>
     </div>
-    <div  class="note_d-title">
-      <h3>{{note.title}}</h3>
-      <el-tag size="small">笔记</el-tag>
-      <p class="note_d-remark">{{note.category}} | {{note.datetime}}</p>
+    <div class="note_d-edit">
+      <el-dropdown trigger="click">
+        <el-button type="primary" icon="el-icon-plus" circle></el-button>
+        <el-dropdown-menu slot="dropdown">
+          <router-link :to="'/tonote/note_edit/'+ id">
+            <el-dropdown-item icon="el-icon-edit">修改</el-dropdown-item>
+          </router-link>
+          <div @click="toDetele">
+            <el-dropdown-item icon="el-icon-delete" >删除</el-dropdown-item>
+          </div>
+        </el-dropdown-menu>
+      </el-dropdown>
     </div>
-    <div class="note_d-content" v-html="note.content"></div>
   </div>
 </template>
 
 <script>
+import {
+  NoteDetails,
+  DeteleNote
+} from '@/api/toPost'
+import qs from 'qs'
+
 export default {
   name: 'note_detail',
   data() {
     return {
+      id: null,
       note: {
-        title: '向往春常在',
-        category: '笔记',
-        datetime: '2019/12/11 08:08:08',
-        content: '<h6>我是正文</h6><p>我是正文</p>'
+        Headline: '',
+        Category: '',
+        DateTime: '',
+        Content: ''
       }
     }
+  },
+  beforeRouteEnter(to, from, next) {
+    // 这里的vm指的就是vue实例，可以用来当做this使用
+    next(vm => {
+      if (from.path.indexOf('/tonote/note_edit/') === 0) {
+        vm.getNote()
+      }
+    })
+  },
+  methods: {
+    getNote() {
+      NoteDetails(qs.stringify({ Id: this.id })).then(res => {
+        this.note = res.data.data
+        if (!this.note.Category) {
+          var close = document.querySelector('.tags-view-item.active .el-icon-close')
+          close.click()
+          this.$router.push({
+            path: '/tonote/noteList'
+          })
+        }
+      }).catch(() => {
+        this.$message.warning('操作失败...')
+      })
+    },
+    fetchDate() {
+      this.id = this.$route.params.id
+      if (this.id) {
+        this.getNote()
+      }
+    },
+    toDetele() {
+      if (!this.id) {
+        return
+      }
+      this.$confirm('此操作将永久删除该笔记, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        DeteleNote(qs.stringify({ Id: this.id })).then(res => {
+          if (res.data.code === 0) {
+            this.$message.success('删除成功...')
+            var close = document.querySelector('.tags-view-item.active .el-icon-close')
+            close.click()
+            this.$router.push({
+              path: '/tonote/noteList'
+            })
+          } else {
+            this.$message.warning('操作失败...')
+          }
+        }).catch(() => {})
+        //
+      }).catch(() => {})
+    }
+  },
+  // watch: {
+  //   $route: 'fetchDate'
+  // },
+  created() {
+    this.fetchDate()
   }
 }
 </script>
@@ -45,4 +127,5 @@ export default {
 .note_d-content{
   padding: 10px 3px 3px 3px;
 }
+
 </style>

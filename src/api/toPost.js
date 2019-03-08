@@ -7,7 +7,7 @@ export function upQuestion(datas) {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
-    url: '/api/public/?s=Question_CURD.insert',
+    url: '/api/?s=Question.insert',
     method: 'post',
     data: datas
   })
@@ -19,7 +19,7 @@ export function addMistake(datas) {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
-    url: '/api/public/?s=Mistake.add',
+    url: '/api/?s=Mistake.add',
     method: 'post',
     data: datas
   })
@@ -31,7 +31,7 @@ export function ocrQues(datas) {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
-    url: '/api/public/?s=Question_CURD.search',
+    url: '/api/?s=Question.search',
     method: 'post',
     data: datas
   })
@@ -43,7 +43,78 @@ export function SearchQues(datas) {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
-    url: '/api/public/?service=App.Question_CURD.Search',
+    url: '/api/?service=App.Question.Search',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 笔记详情
+export function NoteDetails(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: 'api/?service=App.Note.GetOne',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 笔记列表
+export function NoteList(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: 'api/?service=App.Note.NotesByCate',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 添加笔记
+export function AddNote(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: 'api/?service=App.Note.Add',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 修改笔记
+export function UpdateNote(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: 'api/?service=App.Note.Update',
+    method: 'post',
+    data: datas
+  })
+}
+// 删除笔记
+export function DeteleNote(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: 'api/?service=App.Note.Delete',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 笔记搜索
+export function SearchNote(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: 'api/?service=App.Note.NotesByKeys',
     method: 'post',
     data: datas
   })
@@ -56,7 +127,7 @@ export function P_dianZan(datas) {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
-    url: '/api/public/?service=App.Question_CURD.Search',
+    url: '/api/?service=App.Question.Search',
     method: 'post',
     data: datas
   })
@@ -68,7 +139,7 @@ export function P_toCollect(datas) {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
-    url: '/api/public/?service=App.Question_CURD.Search',
+    url: '/api/?service=App.Collection.Add',
     method: 'post',
     data: datas
   })
@@ -80,7 +151,7 @@ export function P_toAttention(datas) {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
-    url: '/api/public/?service=App.Question_CURD.Search',
+    url: '/api/?service=App.Question.Search',
     method: 'post',
     data: datas
   })

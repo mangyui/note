@@ -1,0 +1,53 @@
+.contariner-wraper {
+  width: 100%;
+  position: relative;
+  margin-bottom: 100px;
+}
+.center-section-wrap {
+  width: 900px;
+  max-width: 100%;
+  margin: 20px auto 0;
+  background: #fff;
+  border-radius: 4px;
+}
+.datum-item-box {
+  padding: 30px 0;
+  border-top: 1px solid #eeeeee;
+}
+.datum-title-box {
+  height: 28px;
+  padding: 0 30px;
+  color: #444444;
+}
+.table-wrap {
+    width: 100%;
+    padding-top: 5px;
+    margin-bottom: -15px;
+    overflow: hidden;
+}
+.datum-table {
+  width: 100%;
+  line-height: 1;
+  font-size: 14px;
+}
+.datum-table th {
+  width: 120px;
+  text-align: right;
+  padding: 20px 0;
+  padding-right: 30px;
+  color: #bbbbbb;
+  font-weight: normal;
+  vertical-align: top;
+}
+.datum-table td {
+  padding: 10px 0;
+  color: #666666;
+  vertical-align: top;
+}
+.datum-table td p{
+  margin: 0;
+  margin-top: -7px;
+  margin-bottom: -7px;
+  line-height: 28px;
+  word-break: break-all;
+}

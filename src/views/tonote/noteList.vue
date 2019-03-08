@@ -10,38 +10,47 @@
     <!--工具条-->
     <el-form :inline="true">
       <el-form-item>
-        <el-input placeholder="题目"></el-input>
+        <el-input placeholder="笔记关键字" v-model="search.keys"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" v-on:click="">查询</el-button>
+        <el-button type="primary" icon="el-icon-search" v-on:click="toSearch"></el-button>
       </el-form-item>
-
-      <el-select  v-model="type" placeholder="选择类型">
-        <el-option label="数学" value="type1"></el-option>
-        <el-option label="语文" value="type2"></el-option>
-        <el-option label="其他" value="type3"></el-option>
-      </el-select>
     </el-form>
-    <div>
-      <router-link  to='/todo/edit/1'>
-        <el-button type="primary" @click="">新增</el-button>
-      </router-link>
-       <el-button type="danger" icon="el-icon-delete" circle @click="showDelete=!showDelete"></el-button>
+    <div class="list-gbtn">
+      <el-select v-model="tolist.NoteCategoryId" placeholder="笔记分类" @change="getNotes">
+        <el-option
+          v-for="item in typelist"
+          :key="item.Id"
+          :label="item.Name"
+          :value="item.Id">
+        </el-option>
+      </el-select>
+      <div>
+        <el-button icon="el-icon-refresh" circle @click="getNotes"></el-button>
+        <router-link  to='/todo/edit'>
+          <el-button type="primary" icon="el-icon-plus" circle></el-button>
+        </router-link>
+        <el-button type="danger" icon="el-icon-delete" circle @click="showDelete=!showDelete"></el-button>
+      </div>
     </div>
     <div class="container">
+      <div v-if="showLoading" class="loading-box">
+        <i class="el-icon-loading"></i>
+        加载中...
+      </div>
       <el-row :gutter="15">
-        <el-col  :xs="24" :sm="24" :md="12" :lg="12" :xl="8" v-for="(item,index) in questions" :key="index">
+        <el-col  :xs="24" :sm="24" :md="12" :lg="12" :xl="8" v-for="(item,index) in notes" :key="index">
             <el-card shadow="hover">
-              <i v-if="showDelete" class="el-icon-close icon-delete" @click="toDetele"></i>
+              <i v-if="showDelete" class="el-icon-close icon-delete" @click="toDetele(item.Id)"></i>
               <div class="big-box">
                 <i class="header-icon el-icon-star-on"></i>
                 <div class="big-body">
-                <router-link  to='/tonote/note_detail/1'>
-                  <b class="big-title">{{item.title}}</b>
-                  <div><p class="tipbox big-content">{{item.answer}}</p></div>
+                <router-link  :to="'/tonote/note_detail/'+item.Id">
+                  <b class="big-title">{{item.Headline}}</b>
+                  <div><p class="tipbox big-content" v-html="item.Content"></p></div>
                 </router-link>
-                  <div class="big-time"><i class="el-icon-time"> 2019-02-16 19:52:24</i></div>
-                  <div><el-tag>数学</el-tag></div>
+                  <div class="big-time"><i class="el-icon-time"> {{item.DateTime}}</i></div>
+                  <div><el-tag>笔记</el-tag></div>
                 </div>
               </div>
             </el-card>
@@ -54,36 +63,82 @@
 <script>
 
 import {
-  getNoteList
-} from '@/api/notes'
+  NoteList,
+  DeteleNote,
+  SearchNote
+} from '@/api/toPost'
+
+import { NoteCategory } from '@/api/toget'
+import qs from 'qs'
 
 export default {
   name: 'noteList',
   data() {
     return {
+      showLoading: true,
       showDelete: false,
-      questions: [],
+      notes: [],
       loading: true,
-      type: 'type1'
+      tolist: {
+        UserId: this.$store.getters.user.Id,
+        NoteCategoryId: 0
+      },
+      search: {
+        keys: '',
+        UserId: this.$store.getters.user.Id
+      },
+      typelist: [
+        {
+          Id: 0,
+          Name: '所有'
+        }
+      ]
     }
   },
+  created() {
+    this.getCategory()
+  },
   methods: {
-    getNotes() {
-      getNoteList().then(res => {
-        this.questions = res.data
+    getCategory() {
+      NoteCategory(this.$store.getters.user.Id).then(res => {
+        if (res.data.code === 0) {
+          this.typelist = this.typelist.concat(res.data.data)
+        } else {
+          this.$message.warning('获取笔记分类失败...')
+        }
       }).catch(() => {})
-      this.loading = false
     },
-    toDetele() {
+    getNotes() {
+      NoteList(qs.stringify(this.tolist)).then(res => {
+        this.notes = res.data.data
+        this.showLoading = false
+      }).catch(() => {})
+    },
+    toDetele(index) {
       this.$confirm('此操作将永久删除该笔记, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
-        })
+        DeteleNote(qs.stringify({ Id: index })).then(res => {
+          if (res.data.code === 0) {
+            this.$message.success('删除成功...')
+          } else {
+            this.$message.warning('操作失败...')
+          }
+        }).catch(() => {})
+        //
+      }).catch(() => {})
+    },
+    toSearch() {
+      if (this.search.keys === '') {
+        this.getNotes()
+        return
+      }
+      this.showLoading = true
+      SearchNote(qs.stringify(this.search)).then(res => {
+        this.notes = res.data.data
+        this.showLoading = false
       }).catch(() => {})
     }
   },

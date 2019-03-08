@@ -4,6 +4,7 @@ import app from './modules/app'
 import user from './modules/user'
 import common from './modules/common'
 import getters from './getters'
+import User from './User'
 import fullScreen from './modules/fullScreen'
 import permission from './modules/permission'
 import tagsView from './modules/tagsView'
@@ -20,7 +21,8 @@ const store = new Vuex.Store({
     tagsView
 
   },
-  getters
+  getters,
+  User
 })
 
 export default store

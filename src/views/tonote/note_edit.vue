@@ -35,7 +35,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submit">确 定</el-button>
+        <el-button type="primary" @click="submit">确定修改</el-button>
       </div>
     </el-dialog>
   </div>
@@ -49,11 +49,14 @@ import 'quill/dist/quill.bubble.css'
 import { quillEditor } from 'vue-quill-editor'
 
 import { NoteCategory } from '@/api/toget'
-import { AddNote } from '@/api/toPost'
+import {
+  UpdateNote,
+  NoteDetails
+} from '@/api/toPost'
 import qs from 'qs'
 
 export default {
-  name: 'edit',
+  name: 'note_edit',
   data: function() {
     return {
       dialogFormVisible: false,
@@ -77,7 +80,7 @@ export default {
       totalwidth: 1430,
       typelist: [],
       note: {
-        UserId: this.$store.getters.user.Id,
+        Id: '',
         Headline: '',
         Content: '',
         NoteCategoryId: ''
@@ -86,9 +89,6 @@ export default {
   },
   components: {
     quillEditor
-  },
-  created() {
-    this.getCategory()
   },
   methods: {
     getCategory() {
@@ -101,10 +101,10 @@ export default {
       }).catch(() => {})
     },
     submit() {
-      AddNote(qs.stringify(this.note)).then(res => {
+      UpdateNote(qs.stringify(this.note)).then(res => {
         if (res.data.code === 0) {
           this.$router.push({
-            path: '/tonote/note_detail/' + res.data.data
+            path: '/tonote/note_detail/' + this.note.Id
           })
           this.dialogFormVisible = false
         } else {
@@ -148,8 +148,34 @@ export default {
       setTimeout(function() {
         clearInterval(ov)
       }, 500)
+    },
+    getNote() {
+      NoteDetails(qs.stringify({ Id: this.note.Id })).then(res => {
+        this.note = res.data.data
+        if (!this.note.Category) {
+          var close = document.querySelector('.tags-view-item.active .el-icon-close')
+          close.click()
+          this.$router.push({
+            path: '/tonote/noteList'
+          })
+        }
+      }).catch(() => {
+        this.$message.warning('操作失败...')
+      })
+    },
+    fetchDate() {
+      this.note.Id = this.$route.params.id
+      if (this.note.Id) {
+        this.getNote()
+      }
     }
-
+  },
+  // watch: {
+  //   $route: 'fetchDate'
+  // },
+  created() {
+    this.fetchDate()
+    this.getCategory()
   }
 }
 </script>

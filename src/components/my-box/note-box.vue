@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="(item,index) in option" :key="index">
-      <router-link  to='/todo/edit/1'>
+      <router-link  :to="'/tonote/note_detail/'+item.Id">
         <el-card shadow="hover">
           <div class="big-box">
             <i class="header-icon el-icon-star-on"></i>

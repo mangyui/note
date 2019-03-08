@@ -15,16 +15,15 @@
         <i class="el-icon-view el-input__icon" slot="suffix" @click="showPassword"></i>
       </el-input>
     </el-form-item>
-    <el-form-item prop="password">
+    <el-form-item prop="phone">
       <div class="svgIcon">
-        <nx-svg-icon class-name='international-icon' icon-class="lock" />
+        <nx-svg-icon class-name='international-icon' icon-class="mobile" />
       </div>
-      <el-input size="small" @keyup.enter.native="handleLogin" :type="passwordType" auto-complete="off" placeholder="再次确认密码">
-        <i class="el-icon-view el-input__icon" slot="suffix" @click="showPassword"></i>
+      <el-input size="small" @keyup.enter.native="handleLogin" v-model="loginForm.phone" auto-complete="off" placeholder="手机号码">
       </el-input>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" size="medium" @click.native.prevent="handleRegister" class="login-submit">注册</el-button>
+      <el-button type="primary" size="medium" @click.native.prevent="handleRegister" class="login-submit" v-loading.fullscreen.lock="fullscreenLoading">注册</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -33,13 +32,15 @@
 import nxSvgIcon from '@/components/nx-svg-icon/index'
 
 export default {
-  name: 'userlogin',
+  name: 'register',
   components: { nxSvgIcon },
   data() {
     return {
+      fullscreenLoading: false,
       loginForm: {
         username: '',
-        password: ''
+        password: '',
+        phone: ''
       },
       loginRules: {
         username: [
@@ -48,6 +49,10 @@ export default {
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
           { min: 6, message: '密码长度最少为6位', trigger: 'blur' }
+        ],
+        phone: [
+          { required: true, message: '请输入手机号', trigger: 'blur' },
+          { min: 11, max: 11, message: '手机号码为11位', trigger: 'blur' }
         ]
       },
       passwordType: 'password'
@@ -68,8 +73,16 @@ export default {
     handleRegister() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
+          this.fullscreenLoading = true
           this.$store.dispatch('Login', this.loginForm).then(res => {
-            this.$router.push({ path: '/' })
+            this.fullscreenLoading = false
+            if (res.data.code === 0) {
+              this.$router.push({ path: '/user/index' })
+            } else {
+              this.$message.warning(res.data.msg)
+            }
+          }).catch(() => {
+            this.fullscreenLoading = false
           })
         }
       })

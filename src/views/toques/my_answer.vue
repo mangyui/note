@@ -136,9 +136,20 @@ export default {
     submit() {
       console.log(this.content)
       this.$message.success('提交成功！')
+    },
+    fetchDate() {
+      this.id = this.$route.params.id
+      if (this.id) {
+        this.getQues()
+      }
     }
   },
-  mounted() {}
+  watch: {
+    $route: 'fetchDate'
+  },
+  created() {
+    this.fetchDate()
+  }
 }
 </script>
 

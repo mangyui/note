@@ -11,7 +11,7 @@
           <router-link to="/tonote/notes"><nx-count-up :start="0" :end="66"/></router-link>
         </p>
         <p>错题
-          <router-link to="/tonote/notes"><nx-count-up :start="0" :end="66"/></router-link>
+          <router-link to="/toques/quesList"><nx-count-up :start="0" :end="66"/></router-link>
         </p>
       </div>
     </div>
@@ -23,8 +23,9 @@
       <input id="Choose_Avatar" ref="referenceUpload" style="display: none" type="file" name="image" accept="image/*" multiple @change="toChoose"/>
       <div>
         <h2>{{user.name}}</h2>
-        <p class="user_address">江西 | 学生</p>
-        <p class="user_mess">这个家伙很懒，什么都没留下</p>
+        <p class="user_address">{{user.Address}} | 学生</p>
+        <p class="user_mess">{{user.Intro}}</p>
+        <p class="user_money">金币：<span>{{user.Coin}}</span></p>
       </div>
     </div>
     <div class="contariner-wraper">
@@ -37,12 +38,12 @@
             <table class="datum-table">
               <tr>
                 <th>用户名</th>
-                <td><el-input v-model="user.name" placeholder="请设置您的用户名"></el-input></td>
+                <td><el-input v-model="form.Name" placeholder="请设置您的用户名"></el-input></td>
               </tr>
               <tr>
                 <th>性别</th>
                 <td>
-                  <el-select v-model="mysex" placeholder="请设置你的性别">
+                  <el-select v-model="form.Sex" placeholder="请设置你的性别">
                     <el-option
                       v-for="item in sex"
                       :key="item.value"
@@ -55,13 +56,13 @@
               <tr>
                 <th>位置</th>
                 <td>
-                  <el-cascader expand-trigger="hover" :options="city" v-model="myaddress" filterable change-on-select></el-cascader>
+                  <el-cascader expand-trigger="hover" :options="city" v-model="form.Address" filterable change-on-select></el-cascader>
                 </td>
               </tr>
               <tr>
                 <th>简介</th>
                 <td class="brief-introduction">
-                  <el-input type="textarea" v-model="myintroduce"></el-input>
+                  <el-input type="textarea" v-model="form.Intro"></el-input>
                 </td>
               </tr>
             </table>
@@ -76,7 +77,7 @@
               <tr>
                 <th>院校</th>
                 <td>
-                  <el-select v-model="myschool" placeholder="请选择">
+                  <el-select v-model="form.SchoolId" placeholder="请选择">
                     <el-option
                       v-for="item in schoolList"
                       :key="item.Id"
@@ -88,7 +89,7 @@
               </tr>
               <tr>
                 <th>年级</th>
-                <td><el-input v-model="myprofession" placeholder="请设置您的年级"></el-input></td>
+                <td><el-input v-model="form.Class" placeholder="请设置您的年级"></el-input></td>
               </tr>
             </table>
           </div>
@@ -100,8 +101,8 @@
           <div class="table-wrap">
             <table class="datum-table">
               <tr>
-                <th>QQ</th>
-                <td><el-input v-model="myQQ" placeholder="请设置您的联系方式"></el-input></td>
+                <th>联系方式</th>
+                <td><el-input v-model="form.Phone" placeholder="请设置您的联系方式"></el-input></td>
               </tr>
             </table>
           </div>
@@ -142,28 +143,30 @@ export default {
   },
   data() {
     return {
-      user: this.$store.getters,
-
+      user: this.$store.getters.user,
+      avatar: this.$store.getters.user.avatar || './static/img/avatar.jpg',
       defaultSrc: '',
       cropImg: '',
       imgSrc: '',
       dialogVisible: false,
-
-      mysex: 'male',
-      myaddress: ['110000', '110100', '110101'],
-      myprofession: '高三',
-      myintroduce: '学习，运动，编程都不擅长，擅长吃饭，睡觉，打游戏',
-      myschool: '',
-      myQQ: '1445327460',
       sex: [{
-        value: 'male',
+        value: '男',
         label: '男'
       }, {
-        value: 'female',
+        value: '男',
         label: '女'
       }],
       city: areajson,
-      schoolList: []
+      schoolList: [],
+      form: {
+        Name: this.$store.getters.user.Name,
+        SchoolId: this.$store.getters.user.SchoolId,
+        Sex: this.$store.getters.user.Sex,
+        Phone: this.$store.getters.user.Phone,
+        Intro: this.$store.getters.user.Intro,
+        Class: this.$store.getters.user.Class,
+        Address: ['110000', '110100', '110101']
+      }
     }
   },
   methods: {
@@ -192,7 +195,7 @@ export default {
     },
     cancelCrop() {
       this.dialogVisible = false
-      this.cropImg = this.user.avatar
+      this.cropImg = this.avatar
     },
     toCrop() {
       this.cropImg = this.$refs.cropper.getCroppedCanvas().toDataURL('image/jpeg', 0.7)
@@ -210,13 +213,14 @@ export default {
     }
   },
   created() {
-    this.cropImg = this.user.avatar
+    this.cropImg = this.avatar
     this.getschool()
   }
 }
 </script>
 
-<style scoped>
+<style scoped lang='scss'>
+ @import '../../styles/consumer.scss';
 .user_top {
   width: 100%;
   height: 350px;
@@ -292,63 +296,20 @@ export default {
 .user_address {
   font-size: 13px;
   color: #ccc;
+    margin: 10px 0
 }
 .user_mess {
   font-size: 15px;
   color: #666;
+  margin: 10px 0
 }
-.contariner-wraper {
-  width: 100%;
-  position: relative;
-  margin-bottom: 100px;
-}
-.center-section-wrap {
-  width: 900px;
-  max-width: 100%;
-  margin: 20px auto 0;
-  background: #fff;
-  border-radius: 4px;
-}
-.datum-item-box {
-  padding: 30px 0;
-  border-top: 1px solid #eeeeee;
-}
-.datum-title-box {
-  height: 28px;
-  padding: 0 30px;
-  color: #444444;
-}
-.table-wrap {
-    width: 100%;
-    padding-top: 5px;
-    margin-bottom: -15px;
-    overflow: hidden;
-}
-.datum-table {
-  width: 100%;
-  line-height: 1;
+.user_money {
   font-size: 14px;
-}
-.datum-table th {
-  width: 120px;
-  text-align: right;
-  padding: 20px 0;
-  padding-right: 30px;
-  color: #bbbbbb;
-  font-weight: normal;
-  vertical-align: top;
-}
-.datum-table td {
-  padding: 10px 0;
-  color: #666666;
-  vertical-align: top;
-}
-.datum-table td p{
-  margin: 0;
-  margin-top: -7px;
-  margin-bottom: -7px;
-  line-height: 28px;
-  word-break: break-all;
+  color: #666;
+  margin: 10px 0;
+  span {
+    color: #52bab5;
+  }
 }
 .save-me{
   text-align: center;

@@ -10,7 +10,7 @@ export function getFriendList() {
 // 验证码
 export function getVCode() {
   return request({
-    url: 'http://192.168.1.106:8080/?s=user.getCode',
+    url: '/api/?s=user.getCode',
     method: 'get'
   })
 }
@@ -18,18 +18,18 @@ export function getVCode() {
 // 学校列表
 export function getSchoolList() {
   return request({
-    url: '/api/public/?service=App.School.GetAll',
+    url: '/api/?service=App.School.GetAll',
     method: 'get'
   })
 }
 
 // 首页推荐
-export function getRecommend() {
+export function getRecommend(uid) {
   return request({
-    url: '/api/public/?s=User.getRecommend',
+    url: '/api/?s=User.getRecommend',
     method: 'get',
     params: {
-      uid: 1
+      uid
     }
   })
 }
@@ -37,13 +37,15 @@ export function getRecommend() {
 // 错题分类
 export function questionCategory() {
   return request({
-    url: '/api/public/?service=App.QCategory.Getcates',
+    url: '/api/?service=App.QCategory.Getcates',
     method: 'get'
   })
 }
+
+// 题目详情
 export function QuesDetails(data) {
   return request({
-    url: 'api/public/?service=App.Question_CURD.GetById',
+    url: 'api/?service=App.Question.GetById',
     method: 'get',
     params: {
       Id: data
@@ -51,3 +53,13 @@ export function QuesDetails(data) {
   })
 }
 
+// 笔记分类
+export function NoteCategory(data) {
+  return request({
+    url: 'api/?service=App.Note.Cates',
+    method: 'get',
+    params: {
+      UserId: data
+    }
+  })
+}

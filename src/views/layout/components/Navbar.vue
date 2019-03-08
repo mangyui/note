@@ -18,7 +18,7 @@
           <i class="el-icon-more"></i>
         </div>
         <el-dropdown-menu slot="dropdown">
-          <router-link to="/user/index">
+          <router-link v-if="user.Name" to="/user/index">
             <el-dropdown-item>
               我的主页
             </el-dropdown-item>
@@ -28,10 +28,10 @@
               github地址
             </el-dropdown-item>
           </a> -->
-          <el-dropdown-item v-if="user.name" divided>
+          <el-dropdown-item v-if="user.Name" divided>
             <span @click="logout" style="display:block;">登出</span>
           </el-dropdown-item>
-          <el-dropdown-item v-if="!user.name" divided>
+          <el-dropdown-item v-if="!user.Name">
             <router-link to="/login">
               <span @click="logout" style="display:block;">登录</span>
             </router-link>
@@ -64,7 +64,7 @@ export default {
   },
   data() {
     return {
-      user: this.$store.getters
+      user: this.$store.getters.user
     }
   },
   computed: {
@@ -79,6 +79,9 @@ export default {
         location.reload() // In order to re-instantiate the vue-router object to avoid bugs
       })
     }
+  },
+  mounted() {
+    console.log(this.user)
   }
 }
 </script>
