@@ -5,16 +5,20 @@
           <el-breadcrumb-item><i class="el-icon-date"></i> 我的错题</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <el-form :inline="true">
+    <div class="top-search">
+      <el-input placeholder="错题关键字" v-model="tolist.keys"></el-input>
+      <el-button type="primary" icon="el-icon-search" v-on:click="toSearch"></el-button>
+    </div>
+    <!-- <el-form :inline="true">
       <el-form-item>
-        <el-input placeholder="错题关键字" v-model="search.keys"></el-input>
+        <el-input placeholder="错题关键字" v-model="tolist.keys"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" v-on:click="toSearch"></el-button>
       </el-form-item>
-    </el-form>
+    </el-form> -->
     <div class="list-gbtn">
-      <el-select v-model="tolist.QuesCategoryId" placeholder="错题分类" @change="getNotes">
+      <el-select v-model="tolist.MistakeCateId" placeholder="错题分类" @change="toSearch">
         <el-option
           v-for="item in typelist"
           :key="item.Id"
@@ -23,7 +27,7 @@
         </el-option>
       </el-select>
       <div>
-        <el-button icon="el-icon-refresh" circle @click="getNotes"></el-button>
+        <el-button icon="el-icon-refresh" circle @click="toSearch"></el-button>
         <router-link  to='/SQu/index'>
           <el-button type="primary" icon="el-icon-plus" circle></el-button>
         </router-link>
@@ -35,13 +39,17 @@
         <i class="el-icon-loading"></i>
         加载中...
       </div>
+      <div v-if="!questions[0]" class="loading-box">
+        <i class="el-icon-search"></i>
+        没有找到...
+      </div>
       <div class="ques-list">
         <div class="ques-list_item" v-for="(item,index) in questions" :key="index">
           <div class="ques_box">
-            <i v-if="showDelete" class="el-icon-close icon-delete" @click="toDetele"></i>
-            <router-link :to="'/toques/my_answer/'+item.Id">
+            <i v-if="showDelete" class="el-icon-close icon-delete" @click="toDetele(item.Id)"></i>
+            <router-link :to="item.QuestionId==0?'/home/mistake/'+item.Id:'/home/question_details/'+item.Id">
               <div class="ques_body tipbox">
-                <b>{{index+1}}.</b><div v-html="item.Content"></div>
+                <b>{{index+1}}.</b><div v-html="item.QuestionContent"></div>
               </div>
             </router-link>
             <el-button class="downMore" @click="clickfun($event)" type="primary" icon="el-icon-caret-bottom" size="mini" ></el-button>
@@ -61,12 +69,12 @@
 <script>
 import nxSvgIcon from '@/components/nx-svg-icon/index'
 import {
-  NoteList,
-  DeteleNote,
-  SearchNote
+  QuesList,
+  DeleteMistake,
+  SearchMistake,
+  mistakeCate
 } from '@/api/toPost'
 
-import { NoteCategory } from '@/api/toget'
 import qs from 'qs'
 
 export default {
@@ -86,7 +94,8 @@ export default {
       ],
       tolist: {
         UserId: this.$store.getters.user.Id,
-        QuesCategoryId: 0
+        MistakeCateId: 0,
+        keys: ''
       },
       search: {
         keys: '',
@@ -99,17 +108,15 @@ export default {
   },
   methods: {
     getCategory() {
-      NoteCategory(this.$store.getters.user.Id).then(res => {
-        if (res.data.code === 0) {
-          this.typelist = this.typelist.concat(res.data.data)
-        } else {
-          this.$message.warning('获取笔记分类失败...')
-        }
-      }).catch(() => {})
+      mistakeCate(qs.stringify({ UserId: this.$store.getters.user.Id })).then(res => {
+        this.typelist = res.data.data
+      }).catch(() => {
+        console.log('获取数据失败！')
+      })
     },
-    getNotes() {
-      NoteList(qs.stringify(this.tolist)).then(res => {
-        this.notes = res.data.data
+    getQues() {
+      QuesList(qs.stringify(this.tolist)).then(res => {
+        this.questions = res.data.data
         this.showLoading = false
       }).catch(() => {})
     },
@@ -119,24 +126,25 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        DeteleNote(qs.stringify({ Id: index })).then(res => {
+        DeleteMistake(qs.stringify({ Id: index, UserId: this.$store.getters.user.Id })).then(res => {
           if (res.data.code === 0) {
             this.$message.success('删除成功...')
           } else {
             this.$message.warning('操作失败...')
           }
+          this.toSearch()
         }).catch(() => {})
         //
       }).catch(() => {})
     },
     toSearch() {
-      if (this.search.keys === '') {
-        this.getNotes()
+      if (this.tolist.keys === '') {
+        this.getQues()
         return
       }
       this.showLoading = true
-      SearchNote(qs.stringify(this.search)).then(res => {
-        this.notes = res.data.data
+      SearchMistake(qs.stringify(this.tolist)).then(res => {
+        this.questions = res.data.data
         this.showLoading = false
       }).catch(() => {})
     },
@@ -144,15 +152,15 @@ export default {
       var p = e.currentTarget.previousElementSibling.firstElementChild
       if (p.style.maxHeight === '1000px') {
         p.style.maxHeight = '200px'
-        e.currentTarget.style.transform = ''
+        e.currentTarget.firstElementChild.style.transform = ''
       } else {
         p.style.maxHeight = '1000px'
-        e.currentTarget.style.transform = 'rotate(180deg)'
+        e.currentTarget.firstElementChild.style.transform = 'rotate(180deg)'
       }
     }
   },
   mounted() {
-    this.getNotes()
+    this.getQues()
   }
 }
 </script>
@@ -160,6 +168,6 @@ export default {
 
 <style lang="scss" scoped>
 .ques-list .ques-list_item .ques_box{
-  padding-top: 40px;
+  padding-top: 35px;
 }
 </style>

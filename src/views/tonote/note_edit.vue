@@ -10,13 +10,13 @@
       <br/>
       <el-button class="editor-btn" type="primary" @click="dialogFormVisible = true">提交</el-button>
     </div>
-    <div ref="btngroup" class="btn-wrapper" :style="{right: btnRight}">
+    <!-- <div ref="btngroup" class="btn-wrapper" :style="{right: btnRight}">
       <el-button-group>
       <el-button class="btngroup_first" icon="el-icon-back" type="primary" @click="toright"></el-button>
       <el-button icon="el-icon-d-arrow-left" @click="scrollLeft"></el-button>
       <el-button icon="el-icon-d-arrow-right" @click="scrollRight"></el-button>
     </el-button-group>
-    </div>
+    </div> -->
     <el-dialog title="笔记备注" :visible.sync="dialogFormVisible">
       <el-form :model="note" ref="form">
         <!-- <el-form-item label="关键字">
@@ -170,9 +170,10 @@ export default {
       }
     }
   },
-  // watch: {
-  //   $route: 'fetchDate'
-  // },
+  // 注意
+  watch: {
+    $route: 'fetchDate'
+  },
   created() {
     this.fetchDate()
     this.getCategory()
@@ -186,72 +187,72 @@ export default {
     margin-bottom: 25px;
     padding: 5px;
   }
-  .quill-editor{
-    .ql-snow.ql-toolbar{
-      position: fixed;
-      background: #fff;
-      z-index: 10;
-      border: 0;
-      border-bottom: 1px solid rgba(0,0,0,.05);
-      box-shadow: 0 1px 10px rgba(90,109,122,.4);
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      // overflow-x: hidden;
-      // overflow-y: visible;
-      left: 210px;
-      right: 0;
-      height: 55px;
-      transition: all .28s;
-      &::-webkit-scrollbar {
-          display: none;
-      }
-      button,.ql-color-picker,.ql-icon-picker{
+  // .quill-editor{
+  //   .ql-snow.ql-toolbar{
+  //     position: fixed;
+  //     background: #fff;
+  //     z-index: 10;
+  //     border: 0;
+  //     border-bottom: 1px solid rgba(0,0,0,.05);
+  //     box-shadow: 0 1px 10px rgba(90,109,122,.4);
+  //     text-overflow: ellipsis;
+  //     white-space: nowrap;
+  //     // overflow-x: hidden;
+  //     // overflow-y: visible;
+  //     left: 210px;
+  //     right: 0;
+  //     height: 55px;
+  //     transition: all .28s;
+  //     &::-webkit-scrollbar {
+  //         display: none;
+  //     }
+  //     button,.ql-color-picker,.ql-icon-picker{
 
-        margin: 5px;
-        height: 28px;
-        width: 31px;
+  //       margin: 5px;
+  //       height: 28px;
+  //       width: 31px;
 
-        &:hover{
-          background: #f1f3f6;
-        }
-      }
-      .ql-picker:hover{
-         background: #f1f3f6;
-      }
-    }
+  //       &:hover{
+  //         background: #f1f3f6;
+  //       }
+  //     }
+  //     .ql-picker:hover{
+  //        background: #f1f3f6;
+  //     }
+  //   }
 
-    .ql-container div.ql-editor{
-      height: 100%;
-      border-bottom: 1px solid rgba(0,0,0,.05);
-      padding-top: 90px;
-    }
-    .ql-container.ql-snow{
-      border: 0;
-    }
-  }
-  .btn-wrapper{
-    position: fixed;
-    right: -96px;
-    bottom: 200px;
-    box-shadow: 0 1px 10px rgba(64, 158, 255,.5);
-    transition: all 0.3s;
-    .el-button{
-      border-radius: 0;
-      padding: 12px 16px;
-    }
-  }
+  //   .ql-container div.ql-editor{
+  //     height: 100%;
+  //     border-bottom: 1px solid rgba(0,0,0,.05);
+  //     padding-top: 90px;
+  //   }
+  //   .ql-container.ql-snow{
+  //     border: 0;
+  //   }
+  // }
+  // .btn-wrapper{
+  //   position: fixed;
+  //   right: -96px;
+  //   bottom: 200px;
+  //   box-shadow: 0 1px 10px rgba(64, 158, 255,.5);
+  //   transition: all 0.3s;
+  //   .el-button{
+  //     border-radius: 0;
+  //     padding: 12px 16px;
+  //   }
+  // }
 }
 @media (max-width: 768px)
 {
-  .edit-container{
-    .quill-editor{
-      .ql-container div.ql-editor{
-       height: calc(100% - 56px);
-      }
-      // .ql-snow.ql-toolbar{
-      //   overflow: auto;
-      // }
-    }
-  }
+  // .edit-container{
+  //   .quill-editor{
+  //     .ql-container div.ql-editor{
+  //      height: calc(100% - 56px);
+  //     }
+  //     // .ql-snow.ql-toolbar{
+  //     //   overflow: auto;
+  //     // }
+  //   }
+  // }
 }
 </style>

@@ -58,11 +58,11 @@ export const constantRouterMap = [
         meta: { title: 'Search' }
       },
       {
-        path: 'other_answer/:id',
-        name: 'other_answer',
+        path: 'mistake/:id',
+        name: 'mistake',
         hidden: true,
-        component: () => import('@/views/home/other_answer'),
-        meta: { title: 'Other_Answer' }
+        component: () => import('@/views/home/mistake'),
+        meta: { title: 'Mistake' }
       },
       {
         path: 'question_details/:id',
@@ -175,7 +175,7 @@ export const constantRouterMap = [
         path: 'noteList',
         name: 'noteList',
         component: () => import('@/views/tonote/noteList'),
-        meta: { title: 'NoteList', icon: 'documentation' }
+        meta: { title: 'NoteList', icon: 'form' }
       },
       {
         path: 'note_detail/:id',
@@ -200,7 +200,7 @@ export const constantRouterMap = [
     redirect: '/toques/my_ques',
     meta: {
       title: 'ToQues',
-      icon: 'form'
+      icon: 'cuoti'
     },
     children: [
       {

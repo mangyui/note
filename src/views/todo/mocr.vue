@@ -27,23 +27,26 @@
           <el-button class="sq-change" type="danger" size="medium" v-if="showBtn" @click="showShou=(showShou==false?true:false)">{{showShou==false?"手动添加":"返回相似"}}</el-button>
           <div v-if="!showShou"  class="ques-list">
             <h3 class="Hpipei">猜你要找:</h3>
-            <slider v-if="questions[0]" ref="slider" :options="sliderOptions" @slide='slide' @tap='onTap' @init='onInit'>
+            <slider v-if="" ref="slider" :options="sliderOptions" @slide='slide' @tap='onTap' @init='onInit'>
               <slideritem class="slider-ques" v-for="(item,index) in questions" :key="index" :style="item.style">
+                <div class="myslide-box">
                 <div class="ques-list_item">
                   <div class="ques_box">
                     <router-link to="/home/question_details/1">
                       <div class="ques_body tipbox">
-                        <span>{{index+1}}.</span><b v-html="item.Content"></b>
+                        <div class="ocr-content" v-html="item.Content"> </div><b>{{index+1}}.</b>
                       </div>
                     </router-link>
                   </div>
                 </div>
+                <h4>添加解答</h4>
+                <quill-editor ref="AnalysisEditor" v-model="haveF.Analysis[index].text" :options="editorOption" ></quill-editor>
+                <el-button class="editor-btn pull-right" type="primary" @click="dialogFormVisible = true">提交</el-button>
+              </div>
               </slideritem>
               <div slot="loading">loading...</div>
             </slider>
-            <h4>添加解答</h4>
-            <quill-editor ref="AnalysisEditor" v-model="haveF.Analysis" :options="editorOption" ></quill-editor>
-            <el-button class="editor-btn" type="primary" @click="dialogFormVisible = true">提交</el-button>
+
           </div>
           <!-- <div class="run_btn">
             <img v-if="showGIF" class="loading-gif" src="@/assets/images/home/loading2.gif" alt="Loading">
@@ -56,7 +59,7 @@
             <quill-editor ref="titleEditor" v-model="form.Content" :options="editorOption" ></quill-editor>
             <h4>错题解答(可选)</h4>
             <quill-editor ref="AnalysisEditor" v-model="form.Analysis" :options="editorOption" ></quill-editor>
-            <el-button class="editor-btn" type="primary" @click="dialogFormVisible = true">提交</el-button>
+            <el-button class="editor-btn pull-right" type="primary" @click="dialogFormVisible = true">提交</el-button>
           </div>
         </div>
       </div>
@@ -85,7 +88,7 @@
             <el-option
               v-for="item in typelist"
               :key="item.Id"
-              :label="item.Subject"
+              :label="item.Name"
               :value="item.Id">
             </el-option>
           </el-select>
@@ -112,14 +115,15 @@ import axios from 'axios'
 import qs from 'qs'
 import { slider, slideritem } from 'vue-concise-slider'
 
-import {
-  questionCategory
-} from '@/api/toget'
+// import {
+//   questionCategory
+// } from '@/api/toget'
 
 import {
   // upQuestion,
   addMistake,
-  ocrQues
+  ocrQues,
+  mistakeCate
 } from '@/api/toPost'
 
 export default {
@@ -177,7 +181,20 @@ export default {
         ]
       },
       haveF: {
-        Analcysis: '',
+        Analysis: [
+          {
+            text: ''
+          },
+          {
+            text: ''
+          },
+          {
+            text: ''
+          },
+          {
+            text: ''
+          }
+        ],
         currentPage: ''
       }
     }
@@ -292,17 +309,28 @@ export default {
         })
         // 这里获取相关题目
         this.getQues()
-        this.showShou = false
-        this.showBtn = true
       } else {
         this.$notify({
           title: '提示',
           message: '没有提取任何文字信息，请检查图片再操作！',
           type: 'info'
         })
+        this.showGIF = false
       }
     },
     submit() {
+      if (!this.$store.getters.user.Id) {
+        this.$confirm('你还没有登录，不能进行该操作！前往登录', '提示', {
+          confirmButtonText: '立即登录',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$router.push({
+            path: '/login'
+          })
+        }).catch(() => {})
+        return
+      }
       let datas
       if (this.showShou) {
         // this.form.Text = this.$refs.titleEditor.quill.getText().trim()
@@ -317,7 +345,7 @@ export default {
           'UserId': 1,
           'QuestionId': this.questions[this.haveF.currentPage].Id,
           'MistakeCateId': this.form.CategoryId,
-          'Correct': this.haveF.Analysis
+          'Correct': this.haveF.Analysis[this.haveF.currentPage].text
         }
       }
       addMistake(qs.stringify(datas)).then(res => {
@@ -330,21 +358,34 @@ export default {
     getQues() {
       ocrQues(qs.stringify({ Text: this.form.Text })).then(res => {
         this.questions = res.data.data
+        this.showShou = false
+        this.showBtn = true
         this.showGIF = false
         this.$notify({
           title: '提示',
-          message: '搜索匹配相关题目！',
+          message: '已搜索相关题目！',
           type: 'success'
         })
-      }).catch(() => {})
+      }).catch(() => {
+        this.showGIF = false
+        this.$notify({
+          title: '提示',
+          message: '请求错误！',
+          type: 'error'
+        })
+      })
     },
 
     // 获取题目分类
     GetCategory() {
-      questionCategory().then(res => {
+      // 未登录 不请求
+      if (!this.$store.getters.user.Id) {
+        return
+      }
+      mistakeCate(qs.stringify({ UserId: this.$store.getters.user.Id })).then(res => {
         this.typelist = res.data.data
       }).catch(() => {
-        console.log('获取数据失败！')
+        console.log('获取题目分类数据失败！')
       })
     },
     // 滑动组件监听事件
@@ -437,7 +478,10 @@ export default {
 @media (max-width: 768px) {
 
   .crop-topimg[data-v-29742ae3] {
-      padding-bottom: 100%;
+      padding-bottom: 60%;
   }
+}
+.ocr-content{
+  white-space:initial!important;
 }
 </style>

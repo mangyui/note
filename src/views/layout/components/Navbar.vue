@@ -2,7 +2,9 @@
   <el-menu class="navbar" mode="horizontal">
     <nx-hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></nx-hamburger>
     <nx-breadcrumb class="breadcrumb-container"></nx-breadcrumb>
-
+    <span v-if="isBack" class="goback toShow" onclick="javascript:history.back(-1);">
+      <i class="el-icon-arrow-left"></i>
+    </span>
     <div class="right-menu">
       <nx-mobile class="nx-help right-menu-item disNone"></nx-mobile>
 
@@ -28,14 +30,16 @@
               github地址
             </el-dropdown-item>
           </a> -->
-          <el-dropdown-item v-if="user.Name" divided>
-            <span @click="logout" style="display:block;">登出</span>
-          </el-dropdown-item>
-          <el-dropdown-item v-if="!user.Name">
-            <router-link to="/login">
-              <span @click="logout" style="display:block;">登录</span>
-            </router-link>
-          </el-dropdown-item>
+          <span @click="logout">
+            <el-dropdown-item v-if="user.Name" divided>
+              <span style="display:block;">登出</span>
+            </el-dropdown-item>
+          </span>
+          <router-link to="/login">
+            <el-dropdown-item v-if="!user.Name">
+                <span style="display:block;">登录</span>
+            </el-dropdown-item>
+          </router-link>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -64,7 +68,8 @@ export default {
   },
   data() {
     return {
-      user: this.$store.getters.user
+      user: this.$store.getters.user,
+      isBack: false
     }
   },
   computed: {
@@ -78,7 +83,21 @@ export default {
       this.$store.dispatch('LogOut').then(() => {
         location.reload() // In order to re-instantiate the vue-router object to avoid bugs
       })
+      location.reload()
+    },
+    fetchDate() {
+      if (this.$route.path === '/home/index') {
+        this.isBack = false
+      } else {
+        this.isBack = true
+      }
     }
+  },
+  watch: {
+    $route: 'fetchDate'
+  },
+  created() {
+    this.fetchDate()
   },
   mounted() {
     console.log(this.user)
@@ -87,6 +106,17 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+.goback{
+  display: inline-block;
+  height: 100%;
+  width: 40px;
+  text-align: center;
+  line-height: 51px;
+  i{
+    font-size: 19px;
+    font-weight: bold;
+  }
+}
 .navbar {
   height: 50px;
   line-height: 50px;

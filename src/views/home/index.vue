@@ -3,10 +3,10 @@
     <div class="big-box1200">
       <!-- <router-link to="/todo/edit/1">
         <el-button class="top-btn_edit" round icon="el-icon-edit" :size="screenWidth>770?'':'small'" :style="screenWidth>770?'':'border:0'">写笔记</el-button>
-      </router-link>
+      </router-link> -->
       <router-link to="/home/search">
         <el-button class="top-btn_search" round icon="el-icon-search" :size="screenWidth>770?'':'small'" :style="screenWidth>770?'':'border:0'">搜索</el-button>
-      </router-link> -->
+      </router-link>
       <div class="top-camera toShow">
         <router-link to="/SQu/index">
           <div class="icon-wrap">
@@ -17,6 +17,8 @@
         </router-link>
       </div>
       <div class="home-box">
+        <div class="bg_updown"><img :src="bg1"/></div>
+        <div class="bg_updown"><img :src="bg2"/></div>
         <div class="home-top">
             <div class="home_item">
               <router-link to="/SQu/index">
@@ -25,9 +27,9 @@
               </router-link>
             </div>
             <div class="home_item">
-              <router-link to="/todo/voice">
-                <nx-svg-icon class-name='more_icon' style="color:#52bab5" icon-class="vioce" />
-                <p>语音识别</p>
+              <router-link to="/toques/quesList">
+                <nx-svg-icon class-name='more_icon' style="color:#52bab5" icon-class="cuoti" />
+                <p>我的错题</p>
               </router-link>
             </div>
             <div class="home_item">
@@ -37,10 +39,10 @@
               </router-link>
             </div>
             <div class="home_item">
-              <router-link to="/home/search">
-                <nx-svg-icon class-name='more_icon' style="color:#E6A23C" icon-class="search" />
-                <p>查找题目</p>
-              </router-link>
+              <div @click="toQidai">
+                <nx-svg-icon class-name='more_icon' style="color:#E6A23C" icon-class="shijuan" />
+                <p>生成练习</p>
+              </div>
             </div>
           <!-- <div class="top-search">
             <el-input placeholder="搜索题目"></el-input>
@@ -49,11 +51,11 @@
         </div>
       </div>
       <div>
-        <h4 v-if="notes[0]">最近笔记</h4>
+        <!-- <h4 class="home-h4" v-if="myques[0]">最近错题</h4>
+        <myquex-box :option="myques"></myquex-box> -->
+        <h4 class="home-h4" v-if="notes[0]"><i class="el-icon-star-off"></i> 最近笔记 <i class="el-icon-star-off"></i></h4>
         <note-box :option="notes"></note-box>
-        <h4 v-if="myques[0]">最近错题</h4>
-        <myquex-box :option="myques"></myquex-box>
-        <h4 v-if="questions[0]">热门题目</h4>
+        <h4 class="home-h4" v-if="questions[0]"><i class="el-icon-star-off"></i> 推荐错题 <i class="el-icon-star-off"></i></h4>
         <quex-box :option="questions"></quex-box>
         <div v-if="showLoading" class="loading-box">
           <i class="el-icon-loading"></i>
@@ -88,7 +90,9 @@ export default {
       notes: [],
       myques: [],
       type: '',
-      showLoading: true
+      showLoading: true,
+      bg1: './static/img/bg_1.png',
+      bg2: './static/img/bg_2.png'
     }
   },
   methods: {
@@ -99,7 +103,7 @@ export default {
     getNotes() {
       if (this.$store.getters.user.Id) {
         getRecommend(this.$store.getters.user.Id).then(res => {
-          this.myques = res.data.data.Questions
+          this.questions = res.data.data.Questions
           this.notes = res.data.data.Notes
           this.showLoading = false
         }).catch(() => {
@@ -114,6 +118,11 @@ export default {
           console.log('获取数据失败！')
         })
       }
+    },
+    toQidai() {
+      this.$alert('敬请期待...', '生成练习', {
+        confirmButtonText: '确定'
+      })
     }
     // handleScroll(e) {
     //   var scrollTop = e.target.scrollTop
@@ -145,7 +154,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.bg_updown{
+  position: absolute;
+  width: 100%;
+  top: 0%;
+  left: 0;
+  animation: upAndDownFast 2s ease-in-out infinite alternate;
+}
+@keyframes upAndDownFast{0%{top:5%}to{top:2%}}
 .home_item{
   color: #444;
   height: 60px;
@@ -176,7 +192,7 @@ export default {
 }
 .home-top{
   border: 1px solid #ebeef5;
-  box-shadow: 0 1px 3px #dfdfdf;
+  box-shadow: 0 1px 0px #dfdfdf;
   border-radius: 3px;
   background: #fff;
   display: flex;
@@ -272,7 +288,7 @@ export default {
     padding-top: 5px;
   }
   .top-btn_search{
-    left: 125px;
+    right: 10px;
   }
   .home-top {
     margin: 20px 0px 40px;

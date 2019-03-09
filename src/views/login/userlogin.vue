@@ -4,7 +4,7 @@
       <div class="svgIcon">
         <nx-svg-icon class-name='international-icon' icon-class="me" />
       </div>
-      <el-input size="small" @keyup.enter.native="handleLogin" v-model="loginForm.username" auto-complete="off" placeholder="用户名">
+      <el-input size="small" @keyup.enter.native="handleLogin" v-model="loginForm.username" auto-complete="off" placeholder="用户名/手机号">
       </el-input>
     </el-form-item>
     <el-form-item prop="password">
@@ -56,7 +56,7 @@ export default {
       },
       loginRules: {
         username: [
-          { required: true, message: '请输入用户名', trigger: 'blur' }
+          { required: true, message: '请输入用户名/手机号', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
@@ -98,10 +98,11 @@ export default {
           this.fullscreenLoading = true
           this.$store.dispatch('Login', this.loginForm).then(res => {
             this.fullscreenLoading = false
+            console.log(res.data.code)
             if (res.data.code === 0) {
               this.$router.push({ path: '/' })
             } else {
-              this.$message.warning(res.data.msg)
+              this.$message.warning('用户名或密码错误')
             }
           }).catch(() => {
             this.fullscreenLoading = false
@@ -120,11 +121,10 @@ export default {
   img{
     position: absolute;
     right: 1px;
-    height: 92%;
-    top: 1px;
+    height: 90%;
+    top: 5%;
     cursor: pointer;
-    width: 50%;
-    border: 1px solid #ccc;
+    width: 40%;
     font-size: 9px;
     color: #666;
   }

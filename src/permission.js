@@ -16,23 +16,30 @@ import {
 // }
 
 const whiteList = ['/login',
+  '/',
   '/home/index', // 主页
   '/SQu/index', // 拍照搜题
   '/more/index', // 更多
   '/merchant/index', // 商家
   '/about/index', // 关于帮助
-  '/home/search' // 搜索页
+  '/home/search', // 搜索页
+  '/todo/edit', // 笔记添加
+  '/home/question_details/', // 题目详情 有id的加上/
+  '/home/other_answer/' // 题友解答
 ] // 不重定向白名单
 router.beforeEach((to, from, next) => {
   NProgress.start()
-  console.log(store.getters.user.Id)
+  // store.dispatch('LogOut')
+  // console.log(store.getters.user.Id)
   if (!store.getters.user.Id) {
-    if (whiteList.indexOf(to.path) !== -1) {
+    if (whiteList.indexOf(to.path.replace(/\d+/g, '')) !== -1) {
       next()
     } else {
       next('/login')
     }
   }
+  // next() !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  next()
   // if (getToken()) {
   // store.dispatch('GetInfo')
 

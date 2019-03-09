@@ -1,21 +1,23 @@
 <template>
-  <div class="">
+  <div class="app-container">
     <div class="big-box1200">
-      <div class="home-top">
-        <el-select  v-model="type" placeholder="选择类型">
-          <el-option label="数学" value="type1"></el-option>
-          <el-option label="语文" value="type2"></el-option>
-          <el-option label="其他" value="type3"></el-option>
-        </el-select>
-        <div class="top-search">
-          <el-input placeholder="搜索题目" v-model="text"></el-input>
-          <el-button type="primary" icon="el-icon-search" v-on:click="SearchQuestion"></el-button>
-        </div>
+      <div class="top-search">
+        <el-input placeholder="搜索题目" v-model="text"></el-input>
+        <el-button type="primary" icon="el-icon-search" v-on:click="SearchQuestion"></el-button>
       </div>
+      <!-- <el-select  v-model="type" placeholder="选择类型">
+        <el-option label="数学" value="type1"></el-option>
+        <el-option label="语文" value="type2"></el-option>
+        <el-option label="其他" value="type3"></el-option>
+      </el-select> -->
       <quex-box :option="questions"></quex-box>
       <div v-if="showLoading" class="loading-box">
         <i class="el-icon-loading"></i>
         加载中...
+      </div>
+      <div v-if="showNone" class="loading-box">
+        <i class="el-icon-search"></i>
+        没有找到...
       </div>
     </div>
   </div>
@@ -44,15 +46,22 @@ export default {
       questions: [],
       type: '',
       text: '',
-      showLoading: false
+      showLoading: false,
+      showNone: false
     }
   },
   methods: {
     SearchQuestion() {
+      this.showNone = false
       this.showLoading = true
-      SearchQues(qs.stringify({ Text: this.text })).then(res => {
+      SearchQues(qs.stringify({ Keys: this.text })).then(res => {
         this.questions = res.data.data
         this.showLoading = false
+        if (!this.questions[0]) {
+          this.showNone = true
+        } else {
+          this.showNone = false
+        }
       }).catch(() => {})
     }
   },

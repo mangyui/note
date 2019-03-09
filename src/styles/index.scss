@@ -306,15 +306,16 @@ code {
         line-height: 28px;
         b{
           position: absolute;
-          left: 0;
+          left: -1px;
           top: -1px;
           display: inline-block;
           background: #52bab5;
-          width: 27px;
+          width: 30px;
           height: 27px;
           text-align: center;
           line-height: 27px;
           color: #fff;
+          border-radius: 0 0 10px 0;
         }
        }
       .ques_footer{
@@ -359,6 +360,7 @@ code {
 }
 
 .ques-list .ques-list_item .ques_box{
+  padding-top: 26px;
   .ques_body{
     max-height: 200px;
     overflow: hidden;
@@ -444,15 +446,19 @@ code {
 
 .top-search{
   display: flex;
-  width: 450px;
-
+  width: 600px;
+  max-width: 100%;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
   .el-input__inner{
-    border-radius: 4px 0 0 4px;
+    border-radius: 50px 0 0 50px;
     border-right: 0;
   }
   .el-button{
-    border-radius: 0 4px 4px 0;
+    border-radius: 0 50px 50px 0;
     height: 40px;
+    width: 70px;
   }
 }
 
@@ -461,6 +467,9 @@ code {
   .slider-container{
     padding-top: 15px;
     margin-bottom: 15px;
+    .slider-wrapper{
+      align-items: flex-start!important;
+    }
     .slider-pagination-bullets{
       bottom: unset!important;
       top: -5px;
@@ -470,6 +479,12 @@ code {
     }
   }
 }
+.myslide-box{
+  width: 100%!important;
+  .ql-toolbar.ql-snow{
+    white-space: initial;
+  }
+}
 
 .loading-box{
   margin: 30px 0 20px;
@@ -477,7 +492,7 @@ code {
 }
 
 .note_d-edit{
-  position: absolute;
+  position: fixed;
   right: 10%;
   bottom: 10%;
   .el-button{
@@ -501,7 +516,42 @@ code {
     text-align: center;
   }
 }
+.sys-notes,.sys-article,.ques_body{
+    p{
+    margin: 10px 0!important;
+    line-height: 1.5em!important;
+    font-size: 15px;
+  }
+}
+// .ques_body{
+//     p{
+//     margin: 10px 0!important;
+//     line-height: 1.5em!important;
+//     font-size: 15px;
+//   }
+// }
+// p
+.ql-editor{
+  p{
+    margin: 5px 0!important;
+    line-height: 1.5em!important;
+    font-size: 15px;
+  }
+}
+// p
+.note_d-content{
+  p{
+    margin: 20px 0!important;
+    line-height: 1.5em!important;
+    font-size: 15px;
+  }
+}
 
+.home-h4{
+  text-align: center;
+  margin: 28px 0 16px;
+  font-size: 20px;
+}
 @media (min-width: 769px)
 {
   .toShow{

@@ -7,7 +7,19 @@ export function upQuestion(datas) {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
-    url: '/api/?s=Question.insert',
+    url: '/?s=Question.insert',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 获取用户错题分类
+export function mistakeCate(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Mistake.Getcate',
     method: 'post',
     data: datas
   })
@@ -19,31 +31,89 @@ export function addMistake(datas) {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
-    url: '/api/?s=Mistake.add',
+    url: '/?service=App.Mistake.Add',
     method: 'post',
     data: datas
   })
 }
 
+// 删除错题
+export function DeleteMistake(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Mistake.Delete',
+    method: 'post',
+    data: datas
+  })
+}
+// 删除错题
+export function UpdateMistake(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Mistake.Update',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 查找错题
+export function SearchMistake(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Mistake.GetByKeys',
+    method: 'post',
+    data: datas
+  })
+}
 // 识别匹配题目
 export function ocrQues(datas) {
   return request({
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
-    url: '/api/?s=Question.search',
+    url: '/?service=App.Question.Search',
     method: 'post',
     data: datas
   })
 }
 
-// 搜索题目
+// 关键字搜索题目
 export function SearchQues(datas) {
   return request({
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
-    url: '/api/?service=App.Question.Search',
+    url: '/?service=App.Question.GetByKeys',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 我的错题列表
+export function QuesList(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Mistake.GetByCateId',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 我的收藏列表
+export function CollectList(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Collection.All',
     method: 'post',
     data: datas
   })
@@ -55,7 +125,7 @@ export function NoteDetails(datas) {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
-    url: 'api/?service=App.Note.GetOne',
+    url: '/?service=App.Note.GetOne',
     method: 'post',
     data: datas
   })
@@ -67,7 +137,7 @@ export function NoteList(datas) {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
-    url: 'api/?service=App.Note.NotesByCate',
+    url: '/?service=App.Note.NotesByCate',
     method: 'post',
     data: datas
   })
@@ -79,7 +149,7 @@ export function AddNote(datas) {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
-    url: 'api/?service=App.Note.Add',
+    url: '/?service=App.Note.Add',
     method: 'post',
     data: datas
   })
@@ -91,7 +161,7 @@ export function UpdateNote(datas) {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
-    url: 'api/?service=App.Note.Update',
+    url: '/?service=App.Note.Update',
     method: 'post',
     data: datas
   })
@@ -102,7 +172,7 @@ export function DeteleNote(datas) {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
-    url: 'api/?service=App.Note.Delete',
+    url: '/?service=App.Note.Delete',
     method: 'post',
     data: datas
   })
@@ -114,7 +184,7 @@ export function SearchNote(datas) {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
-    url: 'api/?service=App.Note.NotesByKeys',
+    url: '/?service=App.Note.NotesByKeys',
     method: 'post',
     data: datas
   })
@@ -127,7 +197,7 @@ export function P_dianZan(datas) {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
-    url: '/api/?service=App.Question.Search',
+    url: '/?service=App.Like.Add',
     method: 'post',
     data: datas
   })
@@ -139,7 +209,7 @@ export function P_toCollect(datas) {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
-    url: '/api/?service=App.Collection.Add',
+    url: '/?service=App.Collection.Add',
     method: 'post',
     data: datas
   })
@@ -151,7 +221,7 @@ export function P_toAttention(datas) {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
-    url: '/api/?service=App.Question.Search',
+    url: '/?service=App.Question.Search',
     method: 'post',
     data: datas
   })

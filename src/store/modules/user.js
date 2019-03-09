@@ -1,4 +1,4 @@
-import { login, register } from '@/api/login'
+import { login, register, UpdateUser } from '@/api/login'
 // import { getToken, setToken, removeToken } from '@/utils/auth'
 import Vue from 'vue'
 import md5 from 'js-md5'
@@ -79,16 +79,48 @@ const user = {
             commit('SET_USER', data)
             // commit('SET_NAME', data.Name)
           }
-          resolve()
+          resolve(response)
         }).catch(error => {
           reject(error)
         })
       })
     },
-    // 登录
-    Register({ commit }, userInfo) {
+    // 修改
+    UpdateMe({ commit }, userInfo) {
+      var datas1 = {
+        username: userInfo.username.trim(),
+        password: userInfo.password
+      }
+      var s = objKeySort(datas1)
+      var datas2 = {
+        username: userInfo.username.trim(),
+        password: userInfo.password,
+        sign: s
+      }
       return new Promise((resolve, reject) => {
-        register(qs.stringify(userInfo)).then(response => {
+        UpdateUser(qs.stringify(datas2)).then(response => {
+          if (response.data.code === 0) {
+            const data = response.data.data
+            // setToken(data.token)
+            commit('SET_USER', data)
+            // commit('SET_NAME', data.Name)
+          }
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    // 注册
+    Register({ commit }, userInfo) {
+      var datas1 = {
+        username: userInfo.username.trim(),
+        password: userInfo.password,
+        phone: userInfo.phone,
+        class: userInfo.class
+      }
+      return new Promise((resolve, reject) => {
+        register(qs.stringify(datas1)).then(response => {
           if (response.data.code === 0) {
             // *************************************************注意
             const data = response.data.data
@@ -96,7 +128,7 @@ const user = {
             commit('SET_USER', data)
             // commit('SET_NAME', data.Name)
           }
-          resolve()
+          resolve(response)
         }).catch(error => {
           reject(error)
         })

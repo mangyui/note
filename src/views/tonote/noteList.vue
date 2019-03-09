@@ -8,14 +8,18 @@
     </div>
 
     <!--工具条-->
-    <el-form :inline="true">
+    <div class="top-search">
+        <el-input placeholder="笔记关键字" v-model="search.keys"></el-input>
+        <el-button type="primary" icon="el-icon-search" v-on:click="toSearch"></el-button>
+    </div>
+    <!-- <el-form :inline="true" class="form-search">
       <el-form-item>
         <el-input placeholder="笔记关键字" v-model="search.keys"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" v-on:click="toSearch"></el-button>
       </el-form-item>
-    </el-form>
+    </el-form> -->
     <div class="list-gbtn">
       <el-select v-model="tolist.NoteCategoryId" placeholder="笔记分类" @change="getNotes">
         <el-option
@@ -37,6 +41,10 @@
       <div v-if="showLoading" class="loading-box">
         <i class="el-icon-loading"></i>
         加载中...
+      </div>
+      <div v-if="!notes[0]" class="loading-box">
+        <i class="el-icon-search"></i>
+        没有找到...
       </div>
       <el-row :gutter="15">
         <el-col  :xs="24" :sm="24" :md="12" :lg="12" :xl="8" v-for="(item,index) in notes" :key="index">
@@ -115,9 +123,9 @@ export default {
       }).catch(() => {})
     },
     toDetele(index) {
-      this.$confirm('此操作将永久删除该笔记, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm('此操作将永久删除该错题, 是否继续?', '提示', {
+        confirmButtonText: '确定不要了',
+        cancelButtonText: '先留着吧',
         type: 'warning'
       }).then(() => {
         DeteleNote(qs.stringify({ Id: index })).then(res => {
@@ -126,6 +134,7 @@ export default {
           } else {
             this.$message.warning('操作失败...')
           }
+          this.getNotes()
         }).catch(() => {})
         //
       }).catch(() => {})

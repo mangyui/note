@@ -7,7 +7,7 @@
             <i class="header-icon el-icon-star-on"></i>
             <div class="big-body">
               <b class="big-title">{{item.Headline}}</b>
-              <div><p class="tipbox big-content">{{item.Content}}</p></div>
+              <div><p class="tipbox big-content" v-html="item.Content"></p></div>
               <div class="big-time"><i class="el-icon-time"> {{item.DateTime}}</i></div>
               <div><el-tag>笔记</el-tag></div>
             </div>

@@ -16,6 +16,10 @@ import ResizeMixin from './mixin/ResizeHandler'
 
 export default {
   name: 'layout',
+  data() {
+    return {
+    }
+  },
   components: {
     Navbar,
     Sidebar,

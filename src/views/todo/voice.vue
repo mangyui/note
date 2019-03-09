@@ -126,7 +126,7 @@ export default {
     },
     SearchQuestion() {
       this.showLoading = true
-      SearchQues(qs.stringify({ Text: this.result })).then(res => {
+      SearchQues(qs.stringify({ Keys: this.result })).then(res => {
         this.questions = res.data.data
         this.showLoading = false
       }).catch(() => {})

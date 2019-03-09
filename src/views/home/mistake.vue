@@ -1,0 +1,298 @@
+<template>
+  <div class="app-container">
+    <div class="crumbs">
+      <el-breadcrumb separator="/">
+        <el-breadcrumb-item>
+          <i class="el-icon-date"></i> 错题详情</el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
+    <div class="note_details">
+      <div class="page-content">
+        <div class="detail-top">
+          <el-tag v-if="question.Category">{{question.Category.Subject}}</el-tag>
+          <el-button class="de-more" size="medium">相似错题</el-button>
+        </div>
+        <h2>错题详情</h2>
+        <div class="sys-notes" v-html="question.Title"></div>
+        <div class="sys-section" v-if="isMe">
+          <div class="title">
+            <strong>我的解答</strong>
+              <div class="ques_header">
+                  <img :src="user.avatar || myavatar">
+                </router-link>
+                <div class="header_right">
+                  <b>{{user.Name}}</b>
+                </div>
+              </div>
+          </div>
+          <quill-editor ref="myTextEditor" v-model="content" :options="editorOption"></quill-editor>
+          <br/>
+          <el-button class="editor-btn" type="primary" @click="submit">保存修改</el-button>
+        </div>
+        <div class="sys-section" v-if="!isMe">
+          <div class="title">
+            <div class="answer_item_top">
+              <div class="ques_header">
+                <router-link to="/user/others/1">
+                  <img v-if="user" :src="user.Avatar || myavatar">
+                </router-link>
+                <div class="header_right">
+                  <b>{{user.Name}}</b>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="sys-article" v-html="question.Correct"></div>
+        </div>
+        <div class="toNum">
+          <div @click="dianZan">
+            <nx-svg-icon class-name='qu-icon' icon-class="zan" :style="isLike==true?'color: #409EFF;border-color: #409EFF':''" /><span>{{question.LikeNumber}}</span>
+          </div>
+          <div @click="toCollect">
+            <nx-svg-icon class-name='qu-icon' icon-class="collect" :style="isCollect==true?'color: #409EFF;border-color: #409EFF':''"/><span>{{question.CollectNumber}}</span>
+          </div>
+        </div>
+        <div class="sys-section" v-if="haveGuanfang">
+        <div class="title">
+            <i class="el-icon-success"></i> <strong>官方解答</strong>
+          </div>
+          <div class="sys-article" v-html="question.Guangfang"></div>
+        </div>
+        <div class="sys-section">
+          <div class="title">
+            <strong>暂无题友解答</strong>
+          </div>
+          <!-- <div class="answer_item" v-for="(item,index) in 1" :key="index">
+            <div class="answer_item_top">
+              <div class="ques_header">
+                <router-link to="/user/others/1">
+                  <img :src="myavatar">
+                </router-link>
+                <div class="header_right">
+                  <b>{{user.Name}}</b>
+                </div>
+              </div>
+            </div>
+            <router-link to="/home/other_answer/2">
+              <div class="sys-article item-article">
+                <p>系统组件主要分为三大类</p>
+                <p>功能类：以实现具体功能为主，包括对第三方组件的二次封装类，尽量不要修改。</p>
+                <p>布局类：以常用布局为主，包括标题、间距、搜索之类的纯布局组件，可按实际项目要求修改</p>
+                <p>辅助类：文档辅助说明及其他组件部分，可能不会应用在正式产品中，该类别可以不引入到正式产品中</p>
+              </div>
+            </router-link>
+            <div class="sys_footer">
+              <span>
+                <nx-svg-icon class-name='sys_footer_icon' icon-class="zan" /><span class="ques_footer_num">66</span>
+              </span>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+import { quillEditor } from 'vue-quill-editor'
+import nxSvgIcon from '@/components/nx-svg-icon/index'
+
+import {
+  MistakeDetails
+} from '@/api/toget'
+import {
+  P_dianZan,
+  P_toCollect,
+  UpdateMistake
+} from '@/api/toPost'
+import qs from 'qs'
+
+export default {
+  name: 'other_answer',
+  components: {
+    nxSvgIcon,
+    quillEditor
+  },
+  data() {
+    return {
+      id: '',
+      user: '',
+      myavatar: './static/img/avatar.jpg',
+      question: {
+        Id: '',
+        Title: '',
+        Correct: '',
+        Guangfang: '',
+        LikeNumber: '',
+        CollectNumber: ''
+      },
+      content: '',
+      editorOption: {
+        placeholder: '等待提取中...',
+        modules: {
+          toolbar: [
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ 'script': 'sub' }, { 'script': 'super' }],
+            [{ 'header': 1 }, { 'header': 2 }],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            [{ 'align': [] }],
+            [{ 'color': [] }, { 'background': [] }],
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+            ['code-block', 'link', 'image']
+          ]
+        }
+      },
+      isMe: true,
+      haveGuanfang: true,
+      isLike: false,
+      isCollect: false
+    }
+  },
+  methods: {
+    handleChange(val) {
+      console.log(val)
+    },
+    dianZan() {
+      if (!this.$store.getters.user.Id) {
+        this.$confirm('你还没有登录，不能进行该操作！前往登录', '提示', {
+          confirmButtonText: '立即登录',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$router.push({
+            path: '/login'
+          })
+        }).catch(() => {})
+        return
+      }
+      var data = {
+        MistakeId: this.id,
+        UserId: this.$store.getters.user.Id
+      }
+      P_dianZan(qs.stringify(data)).then(res => {
+        this.isLike = !this.isLike
+        if (res.data.data === -1) {
+          this.question.LikeNumber--
+        } else {
+          this.question.LikeNumber++
+        }
+      }).catch(() => {
+        this.$message.warning('操作失败...')
+      })
+    },
+    toCollect() {
+      if (!this.$store.getters.user.Id) {
+        this.$confirm('你还没有登录，不能进行该操作！前往登录', '提示', {
+          confirmButtonText: '立即登录',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$router.push({
+            path: '/login'
+          })
+        }).catch(() => {})
+        return
+      }
+      var data = {
+        MistakeId: this.id,
+        UserId: this.$store.getters.user.Id
+      }
+      P_toCollect(qs.stringify(data)).then(res => {
+        this.isCollect = !this.isCollect
+        if (res.data.data === -1) {
+          this.question.CollectNumber--
+        } else {
+          this.question.CollectNumber++
+          this.$notify({
+            title: '成功',
+            message: '收藏错题成功',
+            type: 'success'
+          })
+        }
+      }).catch(() => {
+        this.$message.warning('操作失败...')
+      })
+    },
+    getQues() {
+      var data = {
+        UserId: this.$store.getters.user.Id,
+        Id: this.id
+      }
+      MistakeDetails(data).then(res => {
+        if (res.data.data.QuestionId !== '0') {
+          this.haveGuanfang = true
+          this.question.Id = res.data.data.Id
+          this.question.Title = res.data.data.Question.Content
+          this.question.Guangfang = res.data.data.Question.Analysis
+          this.question.Correct = res.data.data.Correct
+          this.question.LikeNumber = res.data.data.Question.LikeNumber
+          this.question.CollectNumber = res.data.data.Question.CollectNumber
+        } else {
+          this.haveGuanfang = false
+          this.question.Id = res.data.data.Id
+          this.question.Title = res.data.data.QuestionContent
+          this.question.Correct = res.data.data.Correct
+          this.question.LikeNumber = res.data.data.LikeNumber
+          this.question.CollectNumber = res.data.data.CollectNumber
+        }
+        this.user = res.data.data.User
+        this.isLike = res.data.data.Like
+        this.isCollect = res.data.data.Collect
+        if (this.$store.getters.user && this.$store.getters.user.Id === this.user.Id) {
+          this.isMe = true
+          this.content = this.question.Correct
+        } else {
+          this.isMe = false
+        }
+      }).catch((res) => {
+        console.log('请求失败')
+      })
+    },
+    submit() {
+      this.$confirm('确定修改错题整理?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        UpdateMistake(qs.stringify({
+          Id: this.id,
+          UserId: this.$store.getters.user.Id,
+          Correct: this.content })).then(res => {
+          if (res.data.code === 0) {
+            this.$notify({
+              title: '成功',
+              message: '修改成功',
+              type: 'success'
+            })
+          } else {
+            this.$message.warning('操作失败...')
+          }
+        }).catch(() => {})
+        //
+      }).catch(() => {})
+    },
+    fetchDate() {
+      this.id = this.$route.params.id
+      if (this.id) {
+        this.getQues()
+      }
+    }
+  },
+  watch: {
+    $route: 'fetchDate'
+  },
+  created() {
+    this.fetchDate()
+  }
+}
+</script>
+
+<style scoped lang="scss">
+    @import '../../styles/details.scss';
+.sys-section{
+  margin-top: 20px;
+}
+</style>

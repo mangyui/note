@@ -40,10 +40,10 @@ export default {
       var p = e.currentTarget.previousElementSibling.firstElementChild
       if (p.style.maxHeight === '1000px') {
         p.style.maxHeight = '200px'
-        e.currentTarget.style.transform = ''
+        e.currentTarget.firstElementChild.style.transform = ''
       } else {
         p.style.maxHeight = '1000px'
-        e.currentTarget.style.transform = 'rotate(180deg)'
+        e.currentTarget.firstElementChild.style.transform = 'rotate(180deg)'
       }
     }
   }

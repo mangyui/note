@@ -22,8 +22,8 @@
       </div>
       <input id="Choose_Avatar" ref="referenceUpload" style="display: none" type="file" name="image" accept="image/*" multiple @change="toChoose"/>
       <div>
-        <h2>{{user.name}}</h2>
-        <p class="user_address">{{user.Address}} | 学生</p>
+        <h2>{{user.Name}}</h2>
+        <p class="user_address">{{user.Address+'|'}}  学生</p>
         <p class="user_mess">{{user.Intro}}</p>
         <p class="user_money">金币：<span>{{user.Coin}}</span></p>
       </div>
@@ -153,7 +153,7 @@ export default {
         value: '男',
         label: '男'
       }, {
-        value: '男',
+        value: '女',
         label: '女'
       }],
       city: areajson,

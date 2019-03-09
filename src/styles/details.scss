@@ -2,7 +2,7 @@
   .de-more{
     position: absolute;
     right: 20px;
-    top: 20px;
+    top: 50px;
   }
   .note_details{
     font-size: 14px;
@@ -100,4 +100,12 @@
 .item-article{
   max-height: 200px;
   overflow: hidden
+}
+
+@media (max-width: 768px) {
+  .note_details{
+    .de-more{
+      right: 5px;
+    }
+  }
 }

@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { getVersion } from '@/api/version'
+// import { getVersion } from '@/api/version'
 import nxSvgIcon from '@/components/nx-svg-icon/index'
 
 export default {
@@ -28,9 +28,9 @@ export default {
       window.open(this.url)
     },
     toMobile() {
-      getVersion().then(res => {
-        this.url = res.data.url
-      }).catch(() => {})
+      // getVersion().then(res => {
+      //   this.url = res.data.url
+      // }).catch(() => {})
     }
   },
   created() {

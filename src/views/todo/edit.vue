@@ -1,43 +1,50 @@
 <template>
-  <div class="edit-container">
-    <div class="noteEdit-title">
-      <h4>笔记标题</h4>
-      <el-input v-model="note.Headline" placeholder="请输入内容"></el-input>
-    </div>
-    <div class="noteEdit-title">
-    <h4>笔记正文</h4>
-      <quill-editor ref="myTextEditor" v-model="note.Content" :options="editorOption"></quill-editor>
-      <br/>
-      <el-button class="editor-btn" type="primary" @click="dialogFormVisible = true">提交</el-button>
-    </div>
-    <div ref="btngroup" class="btn-wrapper" :style="{right: btnRight}">
-      <el-button-group>
-      <el-button class="btngroup_first" icon="el-icon-back" type="primary" @click="toright"></el-button>
-      <el-button icon="el-icon-d-arrow-left" @click="scrollLeft"></el-button>
-      <el-button icon="el-icon-d-arrow-right" @click="scrollRight"></el-button>
-    </el-button-group>
-    </div>
-    <el-dialog title="笔记备注" :visible.sync="dialogFormVisible">
-      <el-form :model="note" ref="form">
-        <!-- <el-form-item label="关键字">
-          <el-input v-model="form.Keywords"></el-input>
-        </el-form-item> -->
-        <el-form-item label="笔记分类">
-          <el-select v-model="note.NoteCategoryId" placeholder="请选择题目分类">
-            <el-option
-              v-for="item in typelist"
-              :key="item.Id"
-              :label="item.Name"
-              :value="item.Id">
-            </el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submit">确 定</el-button>
+  <div class="app-container">
+      <div class="crumbs">
+        <el-breadcrumb separator="/">
+            <el-breadcrumb-item><i class="el-icon-date"></i> 添加笔记</el-breadcrumb-item>
+        </el-breadcrumb>
       </div>
-    </el-dialog>
+    <div class="big-box1200">
+      <div class="noteEdit-title">
+        <h4>笔记标题</h4>
+        <el-input v-model="note.Headline" placeholder=""></el-input>
+      </div>
+      <div class="noteEdit-title">
+      <h4>笔记正文</h4>
+        <quill-editor ref="myTextEditor" v-model="note.Content" :options="editorOption"></quill-editor>
+        <br/>
+        <el-button class="editor-btn pull-right" type="primary" @click="dialogFormVisible = true">提交</el-button>
+      </div>
+      <!-- <div ref="btngroup" class="btn-wrapper" :style="{right: btnRight}">
+        <el-button-group>
+        <el-button class="btngroup_first" icon="el-icon-back" type="primary" @click="toright"></el-button>
+        <el-button icon="el-icon-d-arrow-left" @click="scrollLeft"></el-button>
+        <el-button icon="el-icon-d-arrow-right" @click="scrollRight"></el-button>
+      </el-button-group>
+      </div> -->
+      <el-dialog title="笔记备注" :visible.sync="dialogFormVisible">
+        <el-form :model="note" ref="form">
+          <!-- <el-form-item label="关键字">
+            <el-input v-model="form.Keywords"></el-input>
+          </el-form-item> -->
+          <el-form-item label="笔记分类">
+            <el-select v-model="note.NoteCategoryId" placeholder="请选择题目分类">
+              <el-option
+                v-for="item in typelist"
+                :key="item.Id"
+                :label="item.Name"
+                :value="item.Id">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="submit">确 定</el-button>
+        </div>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -92,6 +99,9 @@ export default {
   },
   methods: {
     getCategory() {
+      if (!this.$store.getters.user.Id) {
+        return
+      }
       NoteCategory(this.$store.getters.user.Id).then(res => {
         if (res.data.code === 0) {
           this.typelist = res.data.data
@@ -101,6 +111,18 @@ export default {
       }).catch(() => {})
     },
     submit() {
+      if (!this.$store.getters.user.Id) {
+        this.$confirm('你这个操作，登录就能解决', '提示', {
+          confirmButtonText: '立即登录',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$router.push({
+            path: '/login'
+          })
+        }).catch(() => {})
+        return
+      }
       AddNote(qs.stringify(this.note)).then(res => {
         if (res.data.code === 0) {
           this.$router.push({
@@ -121,8 +143,7 @@ export default {
       this.scroll(-2)
     },
     scrollLeft() {
-      this.scroll(
-        2)
+      this.scroll(2)
     },
     scroll(nn) {
       // var toolbar = document.getElementsByClassName('ql-toolbar')[0]
@@ -160,49 +181,49 @@ export default {
     margin-bottom: 25px;
     padding: 5px;
   }
-  .quill-editor{
-    .ql-snow.ql-toolbar{
-      position: fixed;
-      background: #fff;
-      z-index: 10;
-      border: 0;
-      border-bottom: 1px solid rgba(0,0,0,.05);
-      box-shadow: 0 1px 10px rgba(90,109,122,.4);
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      // overflow-x: hidden;
-      // overflow-y: visible;
-      left: 210px;
-      right: 0;
-      height: 55px;
-      transition: all .28s;
-      &::-webkit-scrollbar {
-          display: none;
-      }
-      button,.ql-color-picker,.ql-icon-picker{
+  // .quill-editor{
+  //   .ql-snow.ql-toolbar{
+  //     position: fixed;
+  //     background: #fff;
+  //     z-index: 10;
+  //     border: 0;
+  //     border-bottom: 1px solid rgba(0,0,0,.05);
+  //     box-shadow: 0 1px 10px rgba(90,109,122,.4);
+  //     text-overflow: ellipsis;
+  //     white-space: nowrap;
+  //     // overflow-x: hidden;
+  //     // overflow-y: visible;
+  //     left: 210px;
+  //     right: 0;
+  //     height: 55px;
+  //     transition: all .28s;
+  //     &::-webkit-scrollbar {
+  //         display: none;
+  //     }
+  //     button,.ql-color-picker,.ql-icon-picker{
 
-        margin: 5px;
-        height: 28px;
-        width: 31px;
+  //       margin: 5px;
+  //       height: 28px;
+  //       width: 31px;
 
-        &:hover{
-          background: #f1f3f6;
-        }
-      }
-      .ql-picker:hover{
-         background: #f1f3f6;
-      }
-    }
+  //       &:hover{
+  //         background: #f1f3f6;
+  //       }
+  //     }
+  //     .ql-picker:hover{
+  //        background: #f1f3f6;
+  //     }
+  //   }
 
-    .ql-container div.ql-editor{
-      height: 100%;
-      border-bottom: 1px solid rgba(0,0,0,.05);
-      padding-top: 90px;
-    }
-    .ql-container.ql-snow{
-      border: 0;
-    }
-  }
+  //   .ql-container div.ql-editor{
+  //     height: 100%;
+  //     border-bottom: 1px solid rgba(0,0,0,.05);
+  //     padding-top: 90px;
+  //   }
+  //   .ql-container.ql-snow{
+  //     border: 0;
+  //   }
+  // }
   .btn-wrapper{
     position: fixed;
     right: -96px;
@@ -217,15 +238,15 @@ export default {
 }
 @media (max-width: 768px)
 {
-  .edit-container{
-    .quill-editor{
-      .ql-container div.ql-editor{
-       height: calc(100% - 56px);
-      }
-      // .ql-snow.ql-toolbar{
-      //   overflow: auto;
-      // }
-    }
-  }
+  // .edit-container{
+  //   .quill-editor{
+  //     .ql-container div.ql-editor{
+  //      height: calc(100% - 56px);
+  //     }
+  //     // .ql-snow.ql-toolbar{
+  //     //   overflow: auto;
+  //     // }
+  //   }
+  // }
 }
 </style>

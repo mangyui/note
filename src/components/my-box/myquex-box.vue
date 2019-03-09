@@ -2,7 +2,7 @@
   <div class="ques-list">
     <div class="ques-list_item" v-for="(item,index) in option" :key="index">
       <div class="ques_box">
-        <router-link :to="'/toques/my_answer/'+item.Id">
+        <router-link :to="'/home/mistake/'+item.Id">
           <div class="ques_body tipbox">
             <b>{{index+1}}.</b><div v-html="item.Content"></div>
           </div>

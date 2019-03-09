@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <h2 class="top-title">商家</h2>
+    <h2 class="top-title">商城</h2>
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane :label="'商家'+(index+1)" v-for="(item,index) in 5" :key="index"  :name="index">
         <el-row :gutter="10">

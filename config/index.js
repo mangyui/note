@@ -11,8 +11,8 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api': {         //名字自取，可以不同，但要跟后面得接口名一致
-        target: "http://192.168.1.103",
+      '/api': {         //名字自取，可以不同，但要跟后面得接口名一致http://192.168.1.103
+        target: "http://1975386453.38haotyhn.duihuanche.com",
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''

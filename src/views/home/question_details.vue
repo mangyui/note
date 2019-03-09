@@ -3,20 +3,20 @@
     <div class="crumbs">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>
-          <i class="el-icon-date"></i> 详情</el-breadcrumb-item>
+          <i class="el-icon-date"></i> 题目详情</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="note_details">
       <div class="page-content">
         <div class="detail-top">
           <el-tag v-if="question.Category">{{question.Category.Subject}}</el-tag>
-          <el-button class="de-more" size="medium">更多相似</el-button>
+          <el-button class="de-more" size="medium">相似题型</el-button>
         </div>
         <h2>题目</h2>
         <div class="sys-notes" v-html="question.Content"></div>
         <div class="sys-section">
           <div class="title">
-            <i class="el-icon-success"></i> <strong>解答</strong>
+            <i class="el-icon-success"></i> <strong>官方解答</strong>
           </div>
           <div class="sys-article" v-html="question.Analysis"></div>
         </div>
@@ -31,14 +31,14 @@
               <el-tooltip class="item" effect="dark" content="解答有错误？" placement="top-end">
                <nx-svg-icon class-name='qu-icon' icon-class="bug" />
               </el-tooltip>
-               <span>2</span>
+               <span></span>
             </div>
         </div>
         <div class="sys-section">
           <div class="title">
-            <strong>题友解答(66)</strong>
+            <strong>暂无题友解答</strong>
           </div>
-          <div class="answer_item" v-for="(item,index) in 4" :key="index">
+          <!-- <div class="answer_item" v-for="(item,index) in 4" :key="index">
             <div class="answer_item_top">
               <div class="ques_header">
                 <router-link to="/user/others/1">
@@ -62,7 +62,7 @@
                 <nx-svg-icon class-name='sys_footer_icon' icon-class="zan" /><span class="ques_footer_num">66</span>
               </span>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -81,15 +81,17 @@ import {
   P_toCollect
 } from '@/api/toPost'
 
+import qs from 'qs'
+
 export default {
   name: 'question_details',
   components: { nxSvgIcon },
   data() {
     return {
       id: '',
-      user: this.$store.getters,
+      user: this.$store.getters.user,
       question: '',
-      isLike: true,
+      isLike: false,
       isCollect: false
     }
   },
@@ -98,15 +100,57 @@ export default {
       console.log(val)
     },
     dianZan() {
-      P_dianZan().then(res => {
+      if (!this.$store.getters.user.Id) {
+        this.$confirm('你还没有登录，不能进行该操作！前往登录', '提示', {
+          confirmButtonText: '立即登录',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$router.push({
+            path: '/login'
+          })
+        }).catch(() => {})
+        return
+      }
+      var data = {
+        QuestionId: this.id,
+        UserId: this.user.Id
+      }
+      P_dianZan(qs.stringify(data)).then(res => {
         this.isLike = !this.isLike
+        if (res.data.data === -1) {
+          this.question.LikeNumber--
+        } else {
+          this.question.LikeNumber++
+        }
       }).catch(() => {
         this.$message.warning('操作失败...')
       })
     },
     toCollect() {
-      P_toCollect().then(res => {
+      if (!this.$store.getters.user.Id) {
+        this.$confirm('你还没有登录，不能进行该操作！前往登录', '提示', {
+          confirmButtonText: '立即登录',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$router.push({
+            path: '/login'
+          })
+        }).catch(() => {})
+        return
+      }
+      var data = {
+        QuestionId: this.id,
+        UserId: this.user.Id
+      }
+      P_toCollect(qs.stringify(data)).then(res => {
         this.isCollect = !this.isCollect
+        if (res.data.data === -1) {
+          this.question.CollectNumber--
+        } else {
+          this.question.CollectNumber++
+        }
       }).catch(() => {
         this.$message.warning('操作失败...')
       })
@@ -126,8 +170,14 @@ export default {
       })
     },
     getQues() {
-      QuesDetails(this.id).then(res => {
+      var data = {
+        Id: this.id,
+        UserId: this.user.Id
+      }
+      QuesDetails(data).then(res => {
         this.question = res.data.data
+        this.isLike = res.data.data.Like || false
+        this.isCollect = res.data.data.Collection || false
       }).catch(() => {
         console.log('获取数据失败！')
       })
