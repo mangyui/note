@@ -2,13 +2,15 @@
   <div class="user">
     <div class="user_top">
       <div class="bg-blur"></div>
-      <el-button class="toAttention"
-        type="danger"
-        round >关注(66)
-      </el-button>
+      <router-link :to="'/user/fans/'+user.Id">
+        <el-button class="toAttention"
+          type="danger"
+          round >题友
+        </el-button>
+      </router-link>
       <div class="top_item">
         <p>笔记
-          <router-link to="/tonote/notes"><nx-count-up :start="0" :end="66"/></router-link>
+          <router-link to="/tonote/noteList"><nx-count-up :start="0" :end="66"/></router-link>
         </p>
         <p>错题
           <router-link to="/toques/quesList"><nx-count-up :start="0" :end="66"/></router-link>
@@ -23,12 +25,12 @@
       <input id="Choose_Avatar" ref="referenceUpload" style="display: none" type="file" name="image" accept="image/*" multiple @change="toChoose"/>
       <div>
         <h2>{{user.Name}}</h2>
-        <p class="user_address">{{user.Address+'|'}}  学生</p>
-        <p class="user_mess">{{user.Intro}}</p>
-        <p class="user_money">金币：<span>{{user.Coin}}</span></p>
+        <p class="user_address">{{user.Address==null?'':user.Address+' |'}}  学生</p>
+        <!-- <p class="user_mess">{{user.Intro}}</p> -->
+        <p class="user_money">金币：<span>{{user.Coin||0}}</span> <el-button size="mini" round @click="chongzhiBox = true">充值</el-button></p>
       </div>
     </div>
-    <div class="contariner-wraper">
+    <div v-if="!isUpdate" class="contariner-wraper UserInfo">
       <div class="center-section-wrap">
         <div class="datum-item-box">
           <div class="datum-title-box">
@@ -38,8 +40,74 @@
             <table class="datum-table">
               <tr>
                 <th>用户名</th>
-                <td><el-input v-model="form.Name" placeholder="请设置您的用户名"></el-input></td>
+                <td>{{user.Name}}</td>
               </tr>
+              <tr>
+                <th>性别</th>
+                <td>{{user.Sex}}</td>
+              </tr>
+              <tr>
+                <th>地址</th>
+                <td>
+                  {{user.Address}}
+                </td>
+              </tr>
+              <tr>
+                <th>简介</th>
+                <td class="brief-introduction">
+                  <p>{{user.Intro}}</p>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="datum-item-box">
+          <div class="datum-title-box">
+            教育背景
+          </div>
+          <div class="table-wrap">
+            <table class="datum-table">
+              <tr>
+                <th>在读院校</th>
+                <td>{{School}}</td>
+              </tr>
+               <tr>
+                <th>年级</th>
+                <td>{{Class}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="datum-item-box">
+          <div class="datum-title-box">
+            联系方式
+          </div>
+          <div class="table-wrap">
+            <table class="datum-table">
+              <tr>
+                <th>手机号码</th>
+                <td>{{user.Phone}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="save-me">
+          <el-button v-if="!isUpdate" @click="isUpdate=!isUpdate">修改资料</el-button>
+      </div>
+      </div>
+    </div>
+    <div v-if="isUpdate" class="contariner-wraper">
+      <div class="center-section-wrap">
+        <div class="datum-item-box">
+          <div class="datum-title-box">
+            基本信息
+          </div>
+          <div class="table-wrap">
+            <table class="datum-table">
+              <!-- <tr>
+                <th>用户名</th>
+                <td><el-input v-model="form.Name" placeholder="请设置您的用户名"></el-input></td>
+              </tr> -->
               <tr>
                 <th>性别</th>
                 <td>
@@ -56,7 +124,7 @@
               <tr>
                 <th>位置</th>
                 <td>
-                  <el-cascader expand-trigger="hover" :options="city" v-model="form.Address" filterable change-on-select></el-cascader>
+                  <el-input v-model="form.Address" placeholder="请设置你的地址"></el-input>
                 </td>
               </tr>
               <tr>
@@ -77,7 +145,7 @@
               <tr>
                 <th>院校</th>
                 <td>
-                  <el-select v-model="form.SchoolId" placeholder="请选择">
+                  <el-select v-model="form.SchoolId" placeholder="请选择您的学校">
                     <el-option
                       v-for="item in schoolList"
                       :key="item.Id"
@@ -89,12 +157,22 @@
               </tr>
               <tr>
                 <th>年级</th>
-                <td><el-input v-model="form.Class" placeholder="请设置您的年级"></el-input></td>
+                <td>
+                  <el-select v-model="form.Class" placeholder="请正确选择您的年级">
+                    <el-option
+                      v-for="item in classlist"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                </el-select>
+      <!-- <el-input v-model="form.Class" placeholder="请设置您的年级"></el-input> -->
+                </td>
               </tr>
             </table>
           </div>
         </div>
-        <div class="datum-item-box">
+        <!-- <div class="datum-item-box">
           <div class="datum-title-box">
             联系方式
           </div>
@@ -106,16 +184,38 @@
               </tr>
             </table>
           </div>
-        </div>
+        </div> -->
         <el-alert
           title="修改了信息，别忘了保存哦！"
           type="warning">
         </el-alert>
       </div>
       <div class="save-me">
-          <el-button @click="toSave">保存修改</el-button>
+        <el-button v-if="isUpdate" @click="isUpdate=false">返回</el-button>
+        <el-button @click="toSave">保存修改</el-button>
       </div>
     </div>
+    <el-dialog
+      title="金币"
+      :visible.sync="chongzhiBox"
+      width="40%"
+      center>
+      <div class="jinbi">金币数：<nx-count-up class="num" :start="0" :end="parseInt(user.Coin)"/></div>
+      <div class="jinbi">
+        <el-select v-model="addJinbi" placeholder="请选择">
+          <el-option
+            v-for="item in numList"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="chongzhiBox = false">取 消</el-button>
+        <el-button type="primary" @click="chongZhi">确定充值</el-button>
+      </span>
+    </el-dialog>
     <el-dialog title="裁剪图片" :visible.sync="dialogVisible" :before-close="cancelCrop" width="30%">
       <vue-cropper class="dgCropper" ref='cropper' :auto-crop-area="1" :aspectRatio="1/1"  :src="imgSrc" :ready="cropImage" :zoom="cropImage" :cropmove="cropImage" style="width:100%;height:300px;"></vue-cropper>
       <span slot="footer" class="dialog-footer">
@@ -130,6 +230,7 @@
 <script>
 import nxCountUp from '@/components/nx-count-up/index.vue'
 import { areajson } from '@/assets/js/city.js'
+import { classList } from '@/assets/js/class.js'
 import VueCropper from 'vue-cropperjs'
 import {
   getSchoolList
@@ -149,6 +250,8 @@ export default {
       cropImg: '',
       imgSrc: '',
       dialogVisible: false,
+      chongzhiBox: false,
+      isUpdate: false,
       sex: [{
         value: '男',
         label: '男'
@@ -157,21 +260,56 @@ export default {
         label: '女'
       }],
       city: areajson,
+      classlist: classList,
+      Class: '',
       schoolList: [],
+      School: '',
       form: {
-        Name: this.$store.getters.user.Name,
+        username: this.$store.getters.user.Name,
+        userid: this.$store.getters.user.Id,
+        password: this.$store.getters.user.Password,
         SchoolId: this.$store.getters.user.SchoolId,
         Sex: this.$store.getters.user.Sex,
-        Phone: this.$store.getters.user.Phone,
         Intro: this.$store.getters.user.Intro,
         Class: this.$store.getters.user.Class,
-        Address: ['110000', '110100', '110101']
-      }
+        Address: this.$store.getters.user.Address
+      },
+      numList: [{
+        value: '10',
+        label: '10'
+      }, {
+        value: '50',
+        label: '50'
+      }, {
+        value: '100',
+        label: '100'
+      }, {
+        value: '500',
+        label: '500'
+      }, {
+        value: '1000',
+        label: '1000'
+      }],
+      addJinbi: '10'
     }
   },
   methods: {
     toSave() {
-
+      // this.$prompt('请输入密码', '修改资料输入密码', {
+      //   confirmButtonText: '确定',
+      //   cancelButtonText: '取消'
+      //   // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
+      //   // inputErrorMessage: '邮箱格式不正确'
+      // }).then(({ value }) => {
+      // this.form.password = value
+      this.$store.dispatch('UpdateMe', this.form).then(res => {
+        if (res.data.code === 0) {
+          this.isUpdate = false
+        } else {
+          this.$message.warning('操作失败...')
+        }
+      })
+      // }).catch(() => {})
     },
     toChoose(e) {
       const file = e.target.files[0]
@@ -207,20 +345,42 @@ export default {
     getschool() {
       getSchoolList().then(res => {
         this.schoolList = res.data.data
+        var index = this.schoolList.find((item) => {
+          return item.Id === this.user.SchoolId
+        })
+        this.School = index.Name
       }).catch(() => {
-        console.log('获取学校数据失败！')
       })
+    },
+    chongZhi() {
+      var data = {
+        coin: this.addJinbi,
+        userId: this.$store.getters.user.Id
+      }
+      console.log(data)
     }
   },
   created() {
     this.cropImg = this.avatar
     this.getschool()
+    var index = this.classlist.find((item) => {
+      return item.value === this.user.Class
+    })
+    this.Class = index.label
   }
 }
 </script>
 
 <style scoped lang='scss'>
  @import '../../styles/consumer.scss';
+ .UserInfo{
+   .datum-table td{
+      padding: 12px 0;
+   }
+   .datum-table th{
+     padding: 12px 30px 12px 0px;
+   }
+ }
 .user_top {
   width: 100%;
   height: 350px;
@@ -314,6 +474,14 @@ export default {
 .save-me{
   text-align: center;
   margin-top: 20px;
+}
+.jinbi {
+  text-align: center;
+  margin-bottom: 20px;
+  .num{
+    font-size: 28px;
+    color: #52bab5;
+  }
 }
 @media (min-width: 1600px)
 {

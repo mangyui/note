@@ -17,8 +17,8 @@
         </router-link>
       </div>
       <div class="home-box">
-        <div class="bg_updown"><img :src="bg1"/></div>
-        <div class="bg_updown"><img :src="bg2"/></div>
+        <!-- <div class="bg_updown"><img :src="bg1"/></div>
+        <div class="bg_updown"><img :src="bg2"/></div> -->
         <div class="home-top">
             <div class="home_item">
               <router-link to="/SQu/index">
@@ -51,6 +51,10 @@
         </div>
       </div>
       <div>
+        <div v-if="!showLoading && !questions[0]" class="loading-box">
+          <i class="el-icon-search"></i>
+          空空如也...
+        </div>
         <!-- <h4 class="home-h4" v-if="myques[0]">最近错题</h4>
         <myquex-box :option="myques"></myquex-box> -->
         <h4 class="home-h4" v-if="notes[0]"><i class="el-icon-star-off"></i> 最近笔记 <i class="el-icon-star-off"></i></h4>
@@ -95,6 +99,11 @@ export default {
       bg2: './static/img/bg_2.png'
     }
   },
+  // beforeRouteEnter(to, from, next) {
+  //   next(vm => {
+  //     vm.getNotes()
+  //   })
+  // },
   methods: {
     // loadmore() {
     //   console.log('11')
@@ -111,8 +120,8 @@ export default {
         })
       } else {
         getRecommend().then(res => {
-          this.questions = res.data.data.Questions
-          this.notes = res.data.data.Notes
+          this.questions = res.data.data
+          // this.notes = res.data.data.Notes
           this.showLoading = false
         }).catch(() => {
           console.log('获取数据失败！')

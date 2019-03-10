@@ -25,6 +25,7 @@ const whiteList = ['/login',
   '/home/search', // 搜索页
   '/todo/edit', // 笔记添加
   '/home/question_details/', // 题目详情 有id的加上/
+  '/home/mistake/', // 题目详情 有id的加上/
   '/home/other_answer/' // 题友解答
 ] // 不重定向白名单
 router.beforeEach((to, from, next) => {

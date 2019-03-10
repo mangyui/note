@@ -2,7 +2,7 @@
 export default {
   // 导航栏
   navbar: {
-    title: 'MANGYU笔记',
+    title: 'vNote',
     languageSwitch: '语言切换',
     theme: '主题'
   },
@@ -34,6 +34,8 @@ export default {
     Mistake: '错题详情',
     Merchant: '商城',
     OcrSQu: '拍照搜题',
+    addMistake: '添加错题',
+    Fans: '粉丝',
     Search: '搜索',
     form: '表单',
     Tabs: '选项卡',
@@ -43,8 +45,8 @@ export default {
     BaseForm: '基本表单',
     VueEditor: '文本编辑',
     Upload: '文件上传',
-    Edit: '笔记编辑',
-    Voice: '语音输入',
+    Edit: '添加笔记',
+    Voice: '语音识别',
     Camera: '剪切上传',
     ToDo: '操作',
     Speech: '语音合成',

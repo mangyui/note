@@ -1,43 +1,55 @@
 <template>
-  <div class="edit-container">
-    <div class="noteEdit-title">
-      <h4>笔记标题</h4>
-      <el-input v-model="note.Headline" placeholder="请输入内容"></el-input>
+  <div class="app-container">
+    <div v-if="showLoading" class="loading-box">
+      <i class="el-icon-loading"></i>
+      加载中...
     </div>
-    <div class="noteEdit-title">
-    <h4>笔记正文</h4>
-      <quill-editor ref="myTextEditor" v-model="note.Content" :options="editorOption"></quill-editor>
-      <br/>
-      <el-button class="editor-btn" type="primary" @click="dialogFormVisible = true">提交</el-button>
+    <div class="crumbs">
+      <el-breadcrumb separator="/">
+          <el-breadcrumb-item><i class="el-icon-date"></i> 笔记本</el-breadcrumb-item>
+          <el-breadcrumb-item>修改笔记</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
-    <!-- <div ref="btngroup" class="btn-wrapper" :style="{right: btnRight}">
-      <el-button-group>
-      <el-button class="btngroup_first" icon="el-icon-back" type="primary" @click="toright"></el-button>
-      <el-button icon="el-icon-d-arrow-left" @click="scrollLeft"></el-button>
-      <el-button icon="el-icon-d-arrow-right" @click="scrollRight"></el-button>
-    </el-button-group>
-    </div> -->
-    <el-dialog title="笔记备注" :visible.sync="dialogFormVisible">
-      <el-form :model="note" ref="form">
-        <!-- <el-form-item label="关键字">
-          <el-input v-model="form.Keywords"></el-input>
-        </el-form-item> -->
-        <el-form-item label="笔记分类">
-          <el-select v-model="note.NoteCategoryId" placeholder="请选择题目分类">
-            <el-option
-              v-for="item in typelist"
-              :key="item.Id"
-              :label="item.Name"
-              :value="item.Id">
-            </el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submit">确定修改</el-button>
+    <div class="container big-box1200">
+      <div class="noteEdit-title">
+        <h4>笔记标题</h4>
+        <el-input v-model="note.Headline" placeholder="请输入内容"></el-input>
       </div>
-    </el-dialog>
+      <div class="noteEdit-title">
+      <h4>笔记正文</h4>
+        <quill-editor ref="myTextEditor" v-model="note.Content" :options="editorOption"></quill-editor>
+        <br/>
+        <el-button class="editor-btn" type="primary" @click="dialogFormVisible = true">提交</el-button>
+      </div>
+      <!-- <div ref="btngroup" class="btn-wrapper" :style="{right: btnRight}">
+        <el-button-group>
+        <el-button class="btngroup_first" icon="el-icon-back" type="primary" @click="toright"></el-button>
+        <el-button icon="el-icon-d-arrow-left" @click="scrollLeft"></el-button>
+        <el-button icon="el-icon-d-arrow-right" @click="scrollRight"></el-button>
+      </el-button-group>
+      </div> -->
+      <el-dialog title="笔记备注" :visible.sync="dialogFormVisible">
+        <el-form :model="note" ref="form">
+          <!-- <el-form-item label="关键字">
+            <el-input v-model="form.Keywords"></el-input>
+          </el-form-item> -->
+          <el-form-item label="笔记分类">
+            <el-select v-model="note.NoteCategoryId" placeholder="请选择题目分类">
+              <el-option
+                v-for="item in typelist"
+                :key="item.Id"
+                :label="item.Name"
+                :value="item.Id">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="submit">确定修改</el-button>
+        </div>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -60,6 +72,7 @@ export default {
   data: function() {
     return {
       dialogFormVisible: false,
+      showLoading: true,
       editorOption: {
         placeholder: '等待输入中...',
         modules: {
@@ -152,15 +165,16 @@ export default {
     getNote() {
       NoteDetails(qs.stringify({ Id: this.note.Id })).then(res => {
         this.note = res.data.data
-        if (!this.note.Category) {
+        this.showLoading = false
+        if (!this.note.UserId || this.note.UserId !== this.$store.getters.user.Id) {
+          this.$message.warning('没有找到...')
           var close = document.querySelector('.tags-view-item.active .el-icon-close')
           close.click()
-          this.$router.push({
-            path: '/tonote/noteList'
-          })
         }
       }).catch(() => {
-        this.$message.warning('操作失败...')
+        this.$message.warning('没有找到...')
+        var close = document.querySelector('.tags-view-item.active .el-icon-close')
+        close.click()
       })
     },
     fetchDate() {
@@ -171,9 +185,9 @@ export default {
     }
   },
   // 注意
-  watch: {
-    $route: 'fetchDate'
-  },
+  // watch: {
+  //   $route: 'fetchDate'
+  // },
   created() {
     this.fetchDate()
     this.getCategory()

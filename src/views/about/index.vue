@@ -2,12 +2,12 @@
   <div class="app-container">
     <div class="crumbs">
       <el-breadcrumb separator="/">
-          <el-breadcrumb-item><i class="el-icon-date"></i> 关于NOTE</el-breadcrumb-item>
+          <el-breadcrumb-item><i class="el-icon-date"></i> 关于vNote</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="about-top">
       <img src="../../assets/images/home/logo.png" width="100px" height="100px" alt="logo" style="vertical-align: middle;" />
-      <b>NOTE</b>
+      <b>vNote</b>
       <i>V {{version}}</i>
     </div>
     <div>
@@ -31,14 +31,14 @@
       </div>
     </div>
     <div class="about-bottom">
-     Copyright © 2019 MANGYU
+     Copyright © 2019 - why not -
     </div>
   </div>
 </template>
 
 <script>
-import { getVersion } from '@/api/version'
-import { getHello } from '@/api/test'
+// import { getVersion } from '@/api/version'
+// import { getHello } from '@/api/test'
 export default {
   name: 'about',
   data() {
@@ -51,17 +51,17 @@ export default {
   },
   methods: {
     toUpdate() {
-      getVersion().then(res => {
-        var ver = res.data.version
-        if (ver === this.version) {
-          this.text = '已是最新版本'
-          this.isup = false
-        } else {
-          this.text = '新版本 ' + ver
-          this.isup = true
-          this.upUrl = res.data.url
-        }
-      }).catch(() => {})
+      // getVersion().then(res => {
+      //   var ver = res.data.version
+      //   if (ver === this.version) {
+      //     this.text = '已是最新版本'
+      //     this.isup = false
+      //   } else {
+      //     this.text = '新版本 ' + ver
+      //     this.isup = true
+      //     this.upUrl = res.data.url
+      //   }
+      // }).catch(() => {})
     },
     toUp() {
       if (this.upUrl !== '') {
@@ -80,9 +80,9 @@ export default {
       }
     },
     getApi() {
-      getHello().then(res => {
-        console.log('1:', res.data)
-      }).catch(() => {})
+      // getHello().then(res => {
+      //   console.log('1:', res.data)
+      // }).catch(() => {})
     }
   },
   created() {

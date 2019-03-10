@@ -1,0 +1,40 @@
+export var classList = [{
+  value: '00',
+  label: '其他'
+}, {
+  value: '33',
+  label: '高三'
+}, {
+  value: '32',
+  label: '高二'
+}, {
+  value: '31',
+  label: '高一'
+}, {
+  value: '23',
+  label: '初三'
+}, {
+  value: '22',
+  label: '初二'
+}, {
+  value: '21',
+  label: '初一'
+}, {
+  value: '16',
+  label: '六年级'
+}, {
+  value: '15',
+  label: '五年级'
+}, {
+  value: '14',
+  label: '四年级'
+}, {
+  value: '13',
+  label: '三年级'
+}, {
+  value: '12',
+  label: '二年级'
+}, {
+  value: '11',
+  label: '一年级'
+}]

@@ -17,7 +17,7 @@
       </div>
     </div>
     <div id="content">
-      <el-tabs v-model="activeName" @tab-click="handleClick" class='is_stretch' >
+      <el-tabs v-model="activeName" class='is_stretch' >
         <el-tab-pane name="info">
           <div slot="label"><i class="el-icon-date"></i>基本资料</div>
           <div class="contariner-wraper">
@@ -127,7 +127,7 @@ import {
 } from '@/api/notes'
 
 import {
-  P_toAttention
+  P_toFollowee
 } from '@/api/toPost'
 
 export default {
@@ -149,7 +149,7 @@ export default {
       this.loading = false
     },
     toAttention() {
-      P_toAttention().then(res => {
+      P_toFollowee().then(res => {
         this.Attention = !this.Attention
       }).catch(() => {
         this.$message.warning('操作失败...')

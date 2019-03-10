@@ -3,16 +3,18 @@
     <div class="app-container">
       <div class="crumbs">
         <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{ path: '/tonote/notes' }"><i class="el-icon-date"></i> 笔记列表</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/tonote/noteList' }"><i class="el-icon-date"></i> 笔记列表</el-breadcrumb-item>
             <el-breadcrumb-item>笔记详情</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
-      <div  class="note_d-title">
-        <h3>{{note.Headline}}</h3>
-        <el-tag size="small">{{note.Category}}</el-tag>
-        <p class="note_d-remark">笔记 | {{note.DateTime}}</p>
+      <div class="big-box1200">
+        <div class="note_d-title">
+          <h3>{{note.Headline}}</h3>
+          <el-tag size="small">{{note.Category}}</el-tag>
+          <p class="note_d-remark">笔记 | {{note.DateTime}}</p>
+        </div>
+        <div class="note_d-content" v-html="note.Content"></div>
       </div>
-      <div class="note_d-content" v-html="note.Content"></div>
     </div>
     <div class="note_d-edit">
       <el-dropdown trigger="click">
@@ -22,7 +24,7 @@
             <el-dropdown-item icon="el-icon-edit">修改</el-dropdown-item>
           </router-link>
           <div @click="toDetele">
-            <el-dropdown-item icon="el-icon-delete" >删除</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-delete" divided>删除</el-dropdown-item>
           </div>
         </el-dropdown-menu>
       </el-dropdown>
@@ -62,15 +64,18 @@ export default {
     getNote() {
       NoteDetails(qs.stringify({ Id: this.id })).then(res => {
         this.note = res.data.data
-        if (!this.note.Category) {
+        if (!this.note.UserId || this.note.UserId !== this.$store.getters.user.Id) {
+          this.$message.warning('没有找到...')
           var close = document.querySelector('.tags-view-item.active .el-icon-close')
           close.click()
-          this.$router.push({
-            path: '/tonote/noteList'
-          })
+          // this.$router.push({
+          //   path: '/tonote/noteList'
+          // })
         }
       }).catch(() => {
-        this.$message.warning('操作失败...')
+        this.$message.warning('没有找到...')
+        var close = document.querySelector('.tags-view-item.active .el-icon-close')
+        close.click()
       })
     },
     fetchDate() {
@@ -104,9 +109,10 @@ export default {
       }).catch(() => {})
     }
   },
-  watch: {
-    $route: 'fetchDate'
-  },
+  // 该监听是全局的  可怕
+  // watch: {
+  //   $route: 'fetchDate'
+  // },
   created() {
     this.fetchDate()
   }

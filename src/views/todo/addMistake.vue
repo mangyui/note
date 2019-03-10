@@ -24,8 +24,8 @@
           </div>
         </div>
         <div class="sq-body">
-          <el-button class="sq-change" type="danger" size="medium" v-if="showBtn" @click="showShou=(showShou==false?true:false)">{{showShou==false?"手动添加":"返回搜题"}}</el-button>
-          <div v-if="!showShou && questions[0]"  class="ques-list">
+          <el-button class="sq-change" type="danger" size="medium" v-if="showBtn" @click="showShou=(showShou==false?true:false)">{{showShou==false?"手动添加":"返回相似"}}</el-button>
+          <!-- <div v-if="!showShou"  class="ques-list">
             <h3 class="Hpipei">猜你要找:</h3>
             <slider v-if="" ref="slider" :options="sliderOptions" @slide='slide' @tap='onTap' @init='onInit'>
               <slideritem class="slider-ques" v-for="(item,index) in questions" :key="index" :style="item.style">
@@ -47,13 +47,13 @@
               <div slot="loading">loading...</div>
             </slider>
 
-          </div>
-          <!-- <div class="run_btn">
+          </div> -->
+          <div class="run_btn">
             <img v-if="showGIF" class="loading-gif" src="@/assets/images/home/loading2.gif" alt="Loading">
             <el-checkbox v-model="isHand" label="含手写" border></el-checkbox>
             <el-button class="editor-btn" type="danger" @click="torun">提取文字</el-button>
-          </div> -->
-          <div v-if="showShou" class="ocr-edit">
+          </div>
+          <div class="ocr-edit">
             <h3 class="Hpipei">手动添加</h3>
             <h4>错题题目(不含答案)</h4>
             <quill-editor ref="titleEditor" v-model="form.Content" :options="editorOption" ></quill-editor>
@@ -113,7 +113,7 @@ import { quillEditor } from 'vue-quill-editor'
 import VueCropper from 'vue-cropperjs'
 import axios from 'axios'
 import qs from 'qs'
-import { slider, slideritem } from 'vue-concise-slider'
+// import { slider, slideritem } from 'vue-concise-slider'
 
 // import {
 //   questionCategory
@@ -122,24 +122,24 @@ import { slider, slideritem } from 'vue-concise-slider'
 import {
   // upQuestion,
   addMistake,
-  ocrQues,
+  // ocrQues,
   mistakeCate
 } from '@/api/toPost'
 
 export default {
-  name: 'mocr',
+  name: 'addMistake',
   components: {
     VueCropper,
     quillEditor,
     quexBox,
-    nxSvgIcon,
-    slider,
-    slideritem
+    nxSvgIcon
+    // slider,
+    // slideritem
   },
   data: function() {
     return {
       showGIF: false,
-      showShou: false,
+      // showShou: true,
       showBtn: false,
       lines: '',
       result: '',
@@ -179,23 +179,6 @@ export default {
         CategoryId: [
           { required: true, message: '请选择题目类型', trigger: 'change' }
         ]
-      },
-      haveF: {
-        Analysis: [
-          {
-            text: ''
-          },
-          {
-            text: ''
-          },
-          {
-            text: ''
-          },
-          {
-            text: ''
-          }
-        ],
-        currentPage: ''
       }
     }
   },
@@ -265,7 +248,7 @@ export default {
     toCrop() {
       this.cropImg = this.$refs.cropper.getCroppedCanvas().toDataURL('image/jpeg', 0.7)
       this.dialogVisible = false
-      this.torun()
+      // this.torun()
     },
     // handleClose(done) {
     //   this.cropImg = ''
@@ -307,8 +290,8 @@ export default {
           this.form.Content = this.form.Content + item.words + '<br />'
           this.form.Text = this.form.Text + item.words
         })
-        // 这里获取相关题目
-        this.getQues()
+        // // 这里获取相关题目
+        // this.getQues()
       } else {
         this.$notify({
           title: '提示',
@@ -333,22 +316,12 @@ export default {
       }
       this.$refs.Form.validate(valid => {
         if (valid) {
-          let datas
-          if (this.showShou) {
-            // this.form.Text = this.$refs.titleEditor.quill.getText().trim()
-            datas = {
-              'UserId': 1,
-              'QuestionContent': this.form.Content,
-              'MistakeCateId': this.form.CategoryId,
-              'Correct': this.form.Analysis
-            }
-          } else {
-            datas = {
-              'UserId': 1,
-              'QuestionId': this.questions[this.haveF.currentPage].Id,
-              'MistakeCateId': this.form.CategoryId,
-              'Correct': this.haveF.Analysis[this.haveF.currentPage].text
-            }
+          // this.form.Text = this.$refs.titleEditor.quill.getText().trim()
+          var datas = {
+            'UserId': 1,
+            'QuestionContent': this.form.Content,
+            'MistakeCateId': this.form.CategoryId,
+            'Correct': this.form.Analysis
           }
           addMistake(qs.stringify(datas)).then(res => {
             this.dialogFormVisible = false
@@ -362,26 +335,26 @@ export default {
         }
       })
     },
-    getQues() {
-      ocrQues(qs.stringify({ Text: this.form.Text })).then(res => {
-        this.questions = res.data.data
-        this.showShou = false
-        this.showBtn = true
-        this.showGIF = false
-        this.$notify({
-          title: '提示',
-          message: '已搜索相关题目！',
-          type: 'success'
-        })
-      }).catch(() => {
-        this.showGIF = false
-        this.$notify({
-          title: '提示',
-          message: '请求错误！',
-          type: 'error'
-        })
-      })
-    },
+    // getQues() {
+    //   ocrQues(qs.stringify({ Text: this.form.Text })).then(res => {
+    //     this.questions = res.data.data
+    //     this.showShou = false
+    //     this.showBtn = true
+    //     this.showGIF = false
+    //     this.$notify({
+    //       title: '提示',
+    //       message: '已搜索相关题目！',
+    //       type: 'success'
+    //     })
+    //   }).catch(() => {
+    //     this.showGIF = false
+    //     this.$notify({
+    //       title: '提示',
+    //       message: '请求错误！',
+    //       type: 'error'
+    //     })
+    //   })
+    // },
 
     // 获取题目分类
     GetCategory() {
@@ -394,15 +367,15 @@ export default {
       }).catch(() => {
         console.log('获取题目分类数据失败！')
       })
-    },
-    // 滑动组件监听事件
-    slide(data) {
-      this.haveF.currentPage = data.currentPage
-    },
-    onTap(data) {
-    },
-    onInit(data) {
     }
+    // 滑动组件监听事件
+    // slide(data) {
+    //   this.haveF.currentPage = data.currentPage
+    // },
+    // onTap(data) {
+    // },
+    // onInit(data) {
+    // }
   },
   mounted() {
     this.$refs.select_frame.ondragleave = (e) => {

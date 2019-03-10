@@ -20,6 +20,9 @@
           <i class="el-icon-more"></i>
         </div>
         <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item>
+
+          </el-dropdown-item>
           <router-link v-if="user.Name" to="/user/index">
             <el-dropdown-item>
               我的主页

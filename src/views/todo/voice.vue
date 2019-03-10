@@ -53,6 +53,10 @@
         <i class="el-icon-loading"></i>
         加载中...
       </div>
+      <div v-if="showNone" class="loading-box">
+        <i class="el-icon-search"></i>
+        没有找到...
+      </div>
       <!-- <quill-editor ref="myTextEditor" v-model="content" :options="editorOption" @change="onEditorChange($event)"></quill-editor>
       <el-button class="editor-btn" type="primary" @click="submit">提交</el-button> -->
     </div>
@@ -82,6 +86,7 @@ export default {
   data() {
     return {
       showLoading: false,
+      showNone: false,
       result: '',
       oldResult: '',
       content: '',
@@ -125,10 +130,16 @@ export default {
       this.result = str
     },
     SearchQuestion() {
+      this.showNone = false
       this.showLoading = true
-      SearchQues(qs.stringify({ Keys: this.result })).then(res => {
+      SearchQues(qs.stringify({ Keys: this.content })).then(res => {
         this.questions = res.data.data
         this.showLoading = false
+        if (!this.questions[0]) {
+          this.showNone = true
+        } else {
+          this.showNone = false
+        }
       }).catch(() => {})
     },
     toeditor() {

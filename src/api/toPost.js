@@ -190,7 +190,6 @@ export function SearchNote(datas) {
   })
 }
 
-// *******************
 // 点赞
 export function P_dianZan(datas) {
   return request({
@@ -216,12 +215,36 @@ export function P_toCollect(datas) {
 }
 
 // 关注
-export function P_toAttention(datas) {
+export function P_toFollowee(datas) {
   return request({
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
-    url: '/?service=App.Question.Search',
+    url: '/?service=App.Focus.Add',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 粉丝
+export function GetFans(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Focus.GetFans',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 关注的人
+export function GetFollowee(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Focus.GetFollowee',
     method: 'post',
     data: datas
   })

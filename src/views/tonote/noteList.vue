@@ -2,68 +2,69 @@
   <div class="app-container notes">
     <div class="crumbs">
       <el-breadcrumb separator="/">
-          <el-breadcrumb-item><i class="el-icon-date"></i> 我的笔记</el-breadcrumb-item>
+          <el-breadcrumb-item><i class="el-icon-date"></i> 笔记本</el-breadcrumb-item>
           <el-breadcrumb-item>笔记列表</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-
-    <!--工具条-->
-    <div class="top-search">
-        <el-input placeholder="笔记关键字" v-model="search.keys"></el-input>
-        <el-button type="primary" icon="el-icon-search" v-on:click="toSearch"></el-button>
-    </div>
-    <!-- <el-form :inline="true" class="form-search">
-      <el-form-item>
-        <el-input placeholder="笔记关键字" v-model="search.keys"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" v-on:click="toSearch"></el-button>
-      </el-form-item>
-    </el-form> -->
-    <div class="list-gbtn">
-      <el-select v-model="tolist.NoteCategoryId" placeholder="笔记分类" @change="getNotes">
-        <el-option
-          v-for="item in typelist"
-          :key="item.Id"
-          :label="item.Name"
-          :value="item.Id">
-        </el-option>
-      </el-select>
-      <div>
-        <el-button icon="el-icon-refresh" circle @click="getNotes"></el-button>
-        <router-link  to='/todo/edit'>
-          <el-button type="primary" icon="el-icon-plus" circle></el-button>
-        </router-link>
-        <el-button type="danger" icon="el-icon-delete" circle @click="showDelete=!showDelete"></el-button>
+    <div class="big-box1200">
+      <!--工具条-->
+      <div class="top-search">
+          <el-input placeholder="笔记关键字" v-model="search.keys"></el-input>
+          <el-button type="primary" icon="el-icon-search" v-on:click="toSearch"></el-button>
       </div>
-    </div>
-    <div class="container">
-      <div v-if="showLoading" class="loading-box">
-        <i class="el-icon-loading"></i>
-        加载中...
+      <!-- <el-form :inline="true" class="form-search">
+        <el-form-item>
+          <el-input placeholder="笔记关键字" v-model="search.keys"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" icon="el-icon-search" v-on:click="toSearch"></el-button>
+        </el-form-item>
+      </el-form> -->
+      <div class="list-gbtn">
+        <el-select v-model="tolist.NoteCategoryId" placeholder="笔记分类" @change="getNotes">
+          <el-option
+            v-for="item in typelist"
+            :key="item.Id"
+            :label="item.Name"
+            :value="item.Id">
+          </el-option>
+        </el-select>
+        <div>
+          <el-button icon="el-icon-refresh" circle @click="getNotes"></el-button>
+          <router-link  to='/todo/edit'>
+            <el-button type="primary" icon="el-icon-plus" circle></el-button>
+          </router-link>
+          <el-button type="danger" icon="el-icon-delete" circle @click="showDelete=!showDelete"></el-button>
+        </div>
       </div>
-      <div v-if="!notes[0]" class="loading-box">
-        <i class="el-icon-search"></i>
-        没有找到...
-      </div>
-      <el-row :gutter="15">
-        <el-col  :xs="24" :sm="24" :md="12" :lg="12" :xl="8" v-for="(item,index) in notes" :key="index">
-            <el-card shadow="hover">
-              <i v-if="showDelete" class="el-icon-close icon-delete" @click="toDetele(item.Id)"></i>
-              <div class="big-box">
-                <i class="header-icon el-icon-star-on"></i>
-                <div class="big-body">
-                <router-link  :to="'/tonote/note_detail/'+item.Id">
-                  <b class="big-title">{{item.Headline}}</b>
-                  <div><p class="tipbox big-content" v-html="item.Content"></p></div>
-                </router-link>
-                  <div class="big-time"><i class="el-icon-time"> {{item.DateTime}}</i></div>
-                  <div><el-tag>笔记</el-tag></div>
+      <div class="container">
+        <div v-if="showLoading" class="loading-box">
+          <i class="el-icon-loading"></i>
+          加载中...
+        </div>
+        <div v-if="!notes[0] && !showLoading" class="loading-box">
+          <i class="el-icon-search"></i>
+          空空如也...
+        </div>
+        <el-row :gutter="15">
+          <el-col  :xs="24" :sm="24" :md="12" :lg="12" :xl="8" v-for="(item,index) in notes" :key="index">
+              <el-card shadow="hover">
+                <i v-if="showDelete" class="el-icon-close icon-delete" @click="toDetele(item.Id)"></i>
+                <div class="big-box">
+                  <i class="header-icon el-icon-star-on"></i>
+                  <div class="big-body">
+                  <router-link  :to="'/tonote/note_detail/'+item.Id">
+                    <b class="big-title">{{item.Headline}}</b>
+                    <div><p class="tipbox big-content" v-html="item.Content"></p></div>
+                  </router-link>
+                    <div class="big-time"><i class="el-icon-time"> {{item.DateTime}}</i></div>
+                    <div><el-tag>笔记</el-tag></div>
+                  </div>
                 </div>
-              </div>
-            </el-card>
-        </el-col>
-      </el-row>
+              </el-card>
+          </el-col>
+        </el-row>
+      </div>
     </div>
   </div>
 </template>
@@ -105,18 +106,26 @@ export default {
   },
   created() {
     this.getCategory()
+    this.getNotes()
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.getCategory()
+      vm.getNotes()
+    })
   },
   methods: {
     getCategory() {
       NoteCategory(this.$store.getters.user.Id).then(res => {
         if (res.data.code === 0) {
-          this.typelist = this.typelist.concat(res.data.data)
+          this.typelist = res.data.data
         } else {
           this.$message.warning('获取笔记分类失败...')
         }
       }).catch(() => {})
     },
     getNotes() {
+      this.showLoading = true
       NoteList(qs.stringify(this.tolist)).then(res => {
         this.notes = res.data.data
         this.showLoading = false
@@ -152,7 +161,6 @@ export default {
     }
   },
   mounted() {
-    this.getNotes()
   }
 }
 </script>

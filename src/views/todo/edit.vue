@@ -5,7 +5,7 @@
             <el-breadcrumb-item><i class="el-icon-date"></i> 添加笔记</el-breadcrumb-item>
         </el-breadcrumb>
       </div>
-    <div class="big-box1200">
+    <div class="container big-box1200">
       <div class="noteEdit-title">
         <h4>笔记标题</h4>
         <el-input v-model="note.Headline" placeholder=""></el-input>
@@ -24,11 +24,11 @@
       </el-button-group>
       </div> -->
       <el-dialog title="笔记备注" :visible.sync="dialogFormVisible">
-        <el-form :model="note" ref="form">
+        <el-form :model="note" :rules="rules" ref="Form">
           <!-- <el-form-item label="关键字">
             <el-input v-model="form.Keywords"></el-input>
           </el-form-item> -->
-          <el-form-item label="笔记分类">
+          <el-form-item label="笔记分类" prop="NoteCategoryId">
             <el-select v-model="note.NoteCategoryId" placeholder="请选择题目分类">
               <el-option
                 v-for="item in typelist"
@@ -88,6 +88,11 @@ export default {
         Headline: '',
         Content: '',
         NoteCategoryId: ''
+      },
+      rules: {
+        NoteCategoryId: [
+          { required: true, message: '请选择题目类型', trigger: 'change' }
+        ]
       }
     }
   },
@@ -123,16 +128,20 @@ export default {
         }).catch(() => {})
         return
       }
-      AddNote(qs.stringify(this.note)).then(res => {
-        if (res.data.code === 0) {
-          this.$router.push({
-            path: '/tonote/note_detail/' + res.data.data
-          })
-          this.dialogFormVisible = false
-        } else {
-          this.$message.warning('添加失败...')
+      this.$refs.Form.validate(valid => {
+        if (valid) {
+          AddNote(qs.stringify(this.note)).then(res => {
+            if (res.data.code === 0) {
+              this.$router.push({
+                path: '/tonote/note_detail/' + res.data.data
+              })
+              this.dialogFormVisible = false
+            } else {
+              this.$message.warning('添加失败...')
+            }
+          }).catch(() => {})
         }
-      }).catch(() => {})
+      })
     },
     toright() {
       this.btnRight = this.btnRight === '0' ? '-96px' : '0'

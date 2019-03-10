@@ -55,7 +55,7 @@ export function isvalidatemobile(phone) {
   const list = []
   let result = true
   let msg = ''
-  var isPhone = /^0\d{2,3}-?\d{7,8}$/
+  var isPhone = /^[1][3,4,5,7,8,9][0-9]{9}$/
   // 增加134 减少|1349[0-9]{7}，增加181,增加145，增加17[678]
   // const isMob = /^((\+?86)|(\(\+86\)))?(13[0123456789][0-9]{8}|15[012356789][0-9]{8}|18[012356789][0-9]{8}|14[57][0-9]{8}|17[3678][0-9]{8})$/
   if (!validatenull(phone)) {

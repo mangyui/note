@@ -77,7 +77,7 @@ export const constantRouterMap = [
   {
     path: '/SQu',
     component: Layout,
-    redirect: '/add/mocr',
+    redirect: '/SQu/mocr',
     meta: {
       title: 'SQu',
       icon: 'camera3'
@@ -88,6 +88,25 @@ export const constantRouterMap = [
         name: 'mocr',
         component: () => import('@/views/todo/mocr'),
         meta: { title: 'OcrSQu', icon: 'camera3' }
+      }
+
+    ]
+  },
+  // 语音
+  {
+    path: '/Voice',
+    component: Layout,
+    redirect: '/Voice/index',
+    meta: {
+      title: 'Voice',
+      icon: 'voice'
+    },
+    children: [
+      {
+        path: 'index',
+        name: 'Voice',
+        component: () => import('@/views/todo/voice'),
+        meta: { title: 'Voice', icon: 'voice' }
       }
 
     ]
@@ -105,6 +124,12 @@ export const constantRouterMap = [
         name: 'user',
         component: () => import('@/views/user/index'),
         meta: { title: 'user', icon: 'me' }
+      },
+      {
+        path: 'fans/:id',
+        name: 'fans',
+        component: () => import('@/views/user/fans'),
+        meta: { title: 'Fans', icon: 'me' }
       },
       {
         path: 'others/:id',
@@ -140,11 +165,18 @@ export const constantRouterMap = [
         meta: { title: 'Edit', icon: 'edit' }
       },
       {
-        path: 'voice',
-        name: 'voice',
-        component: () => import('@/views/todo/voice'),
-        meta: { title: 'Voice' }
+        path: 'addMistake',
+        name: 'addMistake',
+        hidden: true,
+        component: () => import('@/views/todo/addMistake'),
+        meta: { title: 'addMistake' }
       }
+      // {
+      //   path: 'voice',
+      //   name: 'voice',
+      //   component: () => import('@/views/todo/voice'),
+      //   meta: { title: 'Voice' }
+      // }
       // {
       //   path: 'ocr',
       //   name: 'ocr',
@@ -209,12 +241,12 @@ export const constantRouterMap = [
         component: () => import('@/views/toques/collect'),
         meta: { title: 'Collect' }
       },
-      {
-        path: 'knowledge',
-        name: 'knowledge',
-        component: () => import('@/views/toques/knowledge'),
-        meta: { title: 'Knowledge' }
-      },
+      // {
+      //   path: 'knowledge',
+      //   name: 'knowledge',
+      //   component: () => import('@/views/toques/knowledge'),
+      //   meta: { title: 'Knowledge' }
+      // },
       {
         path: 'my_answer/:id',
         name: 'my_answer',
@@ -232,26 +264,26 @@ export const constantRouterMap = [
   },
 
   // 题友
-  {
-    path: '/friends',
-    component: Layout,
-    redirect: '/friends/schoolfellow',
-    meta: { title: 'Friends', icon: 'peoples' },
-    children: [
-      {
-        path: 'schoolfellow',
-        name: 'schoolfellow',
-        component: () => import('@/views/friends/schoolfellow'),
-        meta: { title: 'Schoolfellow' }
-      },
-      {
-        path: 'followee',
-        name: 'followee',
-        component: () => import('@/views/friends/followee'),
-        meta: { title: 'Followee' }
-      }
-    ]
-  },
+  // {
+  //   path: '/friends',
+  //   component: Layout,
+  //   redirect: '/friends/schoolfellow',
+  //   meta: { title: 'Friends', icon: 'peoples' },
+  //   children: [
+  //     {
+  //       path: 'schoolfellow',
+  //       name: 'schoolfellow',
+  //       component: () => import('@/views/friends/schoolfellow'),
+  //       meta: { title: 'Schoolfellow' }
+  //     },
+  //     {
+  //       path: 'followee',
+  //       name: 'followee',
+  //       component: () => import('@/views/friends/followee'),
+  //       meta: { title: 'Followee' }
+  //     }
+  //   ]
+  // },
   // 表单
   // {
   //   path: '/form',

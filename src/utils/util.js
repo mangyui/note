@@ -14,7 +14,7 @@ export const loadStyle = url => {
  * 设置浏览器头部标题
  */
 export const setTitle = function(title) {
-  title = title ? `${title}` : 'NOTE'
+  title = title ? `${title}` : 'vNote'
   window.document.title = title
 }
 

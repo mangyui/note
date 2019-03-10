@@ -2,59 +2,61 @@
   <div class="app-container">
     <div class="crumbs">
       <el-breadcrumb separator="/">
-          <el-breadcrumb-item><i class="el-icon-date"></i> 我的笔记</el-breadcrumb-item>
-          <el-breadcrumb-item>笔记分类</el-breadcrumb-item>
+          <el-breadcrumb-item><i class="el-icon-date"></i> 错题本</el-breadcrumb-item>
+          <el-breadcrumb-item>我的收藏</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <!-- <el-form :inline="true">
-      <el-form-item>
-        <el-input placeholder="错题关键字" v-model="search.keys"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" v-on:click="toSearch"></el-button>
-      </el-form-item>
-    </el-form> -->
-    <div class="list-gbtn">
-      <!-- <el-select v-model="tolist.QuesCategoryId" placeholder="错题分类" @change="getNotes">
-        <el-option
-          v-for="item in typelist"
-          :key="item.Id"
-          :label="item.Name"
-          :value="item.Id">
-        </el-option>
-      </el-select> -->
-      <div>
-        <el-button type="primary" icon="el-icon-refresh" circle @click="getCollects"></el-button>
+    <div class="big-box1200">
+      <!-- <el-form :inline="true">
+        <el-form-item>
+          <el-input placeholder="错题关键字" v-model="search.keys"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" icon="el-icon-search" v-on:click="toSearch"></el-button>
+        </el-form-item>
+      </el-form> -->
+      <div class="list-gbtn">
+        <!-- <el-select v-model="tolist.QuesCategoryId" placeholder="错题分类" @change="getNotes">
+          <el-option
+            v-for="item in typelist"
+            :key="item.Id"
+            :label="item.Name"
+            :value="item.Id">
+          </el-option>
+        </el-select> -->
+        <div>
+          <el-button type="primary" icon="el-icon-refresh" circle @click="getCollects"></el-button>
+        </div>
       </div>
-    </div>
-    <div class="container">
-      <div v-if="showLoading" class="loading-box">
-        <i class="el-icon-loading"></i>
-        加载中...
-      </div>
-      <div v-if="!collects[0]" class="loading-box">
-        <i class="el-icon-search"></i>
-        没有找到...
-      </div>
-      <div class="ques-list">
-        <div class="ques-list_item" v-for="(item,index) in collects" :key="index">
-          <div class="ques_box">
-            <span @click="toCollect(index)" >
-              <nx-svg-icon
-                class-name='international-icon icon-collect'
-                style="color: #F56C6C"
-                icon-class="collect" />
-            </span>
-             <router-link :to="item.QuestionId==0?'/home/mistake/'+item.Id:(item.MistakeId==0?'/home/question_details/'+item.Id:'/home/mistake/'+item.Id)">
-              <div class="ques_body tipbox">
-                <b>{{index+1}}.</b><div v-html="item.Question.Content"></div>
+      <div class="container">
+        <div v-if="showLoading" class="loading-box">
+          <i class="el-icon-loading"></i>
+          加载中...
+        </div>
+        <div v-if="!collects[0] && !showLoading" class="loading-box">
+          <i class="el-icon-search"></i>
+          没有找到...
+        </div>
+        <div class="ques-list">
+          <div class="ques-list_item" v-for="(item,index) in collects" :key="index">
+            <div class="ques_box">
+              <span @click="toCollect(index)" >
+                <nx-svg-icon
+                  class-name='international-icon icon-collect'
+                  style="color: #F56C6C"
+                  icon-class="collect" />
+              </span>
+              <router-link :to="item.QuestionId==0?'/home/mistake/'+item.Id:(item.MistakeId==0?'/home/question_details/'+item.Id:'/home/mistake/'+item.Id)">
+                <div class="ques_body tipbox">
+                  <b>{{index+1}}.</b><div v-html="item.Question.Content"></div>
+                </div>
+              </router-link>
+              <el-button class="downMore" @click="clickfun($event)" type="primary" icon="el-icon-caret-bottom" size="mini" ></el-button>
+              <div class="ques_footer">
+                <nx-svg-icon class-name='international-icon' icon-class="zan" /><span class="ques_footer_num">{{item.Question.LikeNumber}}</span>
+                <nx-svg-icon class-name='international-icon' icon-class="collect" /><span class="ques_footer_num">{{item.Question.CollectNumber}}</span>
+                <el-tag>错题</el-tag>
               </div>
-            </router-link>
-            <el-button class="downMore" @click="clickfun($event)" type="primary" icon="el-icon-caret-bottom" size="mini" ></el-button>
-            <div class="ques_footer">
-              <nx-svg-icon class-name='international-icon' icon-class="zan" /><span class="ques_footer_num">{{item.Question.LikeNumber}}</span>
-              <nx-svg-icon class-name='international-icon' icon-class="collect" /><span class="ques_footer_num">{{item.Question.CollectNumber}}</span>
-              <el-tag>错题</el-tag>
             </div>
           </div>
         </div>
@@ -100,8 +102,14 @@ export default {
   created() {
     this.getCollects()
   },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.getCollects()
+    })
+  },
   methods: {
     getCollects() {
+      this.showLoading = true
       CollectList(qs.stringify(this.tolist)).then(res => {
         this.collects = res.data.data
         this.showLoading = false

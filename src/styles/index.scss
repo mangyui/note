@@ -235,6 +235,12 @@ code {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
+  .el-select{
+    width: 128px;
+    input{
+      border-radius: 50px;
+    }
+  }
 }
 
 .to-left{
@@ -588,10 +594,13 @@ code {
   .el-dialog__body{
     padding: 0px 20px 10px;
   }
-  .app-container,.container{
+  .app-container{
     padding: 20px 6px;
   }
-  .app-container>.container{
+  .container{
+    padding: 10px 0;
+  }
+  .container{
     border-left: 0;
     border-right: 0;
   }

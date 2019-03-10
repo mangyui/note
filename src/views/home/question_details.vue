@@ -1,5 +1,9 @@
 <template>
   <div class="app-container">
+    <div v-if="showLoading" class="loading-box">
+      <i class="el-icon-loading"></i>
+      加载中...
+    </div>
     <div class="crumbs">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>
@@ -88,6 +92,7 @@ export default {
   components: { nxSvgIcon },
   data() {
     return {
+      showLoading: true,
       id: '',
       user: this.$store.getters.user,
       question: '',
@@ -175,11 +180,19 @@ export default {
         UserId: this.user.Id
       }
       QuesDetails(data).then(res => {
+        if (!res.data.data.Id) {
+          this.$message.warning('没有找到...')
+          var close = document.querySelector('.tags-view-item.active .el-icon-close')
+          close.click()
+        }
         this.question = res.data.data
         this.isLike = res.data.data.Like || false
         this.isCollect = res.data.data.Collection || false
+        this.showLoading = false
       }).catch(() => {
-        console.log('获取数据失败！')
+        this.$message.warning('没有找到...')
+        var close = document.querySelector('.tags-view-item.active .el-icon-close')
+        close.click()
       })
     },
     fetchDate() {
@@ -189,9 +202,9 @@ export default {
       }
     }
   },
-  watch: {
-    $route: 'fetchDate'
-  },
+  // watch: {
+  //   $route: 'fetchDate'
+  // },
   created() {
     this.fetchDate()
   }

@@ -1,5 +1,9 @@
 <template>
   <div class="app-container">
+    <div v-if="showLoading" class="loading-box">
+      <i class="el-icon-loading"></i>
+      加载中...
+    </div>
     <div class="crumbs">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>
@@ -18,6 +22,7 @@
           <div class="title">
             <strong>我的解答</strong>
               <div class="ques_header">
+                <router-link to="/user/index">
                   <img :src="user.avatar || myavatar">
                 </router-link>
                 <div class="header_right">
@@ -25,15 +30,18 @@
                 </div>
               </div>
           </div>
-          <quill-editor ref="myTextEditor" v-model="content" :options="editorOption"></quill-editor>
+          <div v-if="!isUpdae" class="sys-article" v-html="content"></div>
+          <quill-editor v-if="isUpdae" ref="myTextEditor" v-model="content" :options="editorOption"></quill-editor>
           <br/>
-          <el-button class="editor-btn" type="primary" @click="submit">保存修改</el-button>
+          <el-button v-if="!isUpdae" class="editor-btn" type="primary" @click="isUpdae=true">修改解答</el-button>
+          <el-button v-if="isUpdae" class="editor-btn" @click="isUpdae=false">返回</el-button>
+          <el-button v-if="isUpdae" class="editor-btn" type="danger" @click="submit">确定修改</el-button>
         </div>
         <div class="sys-section" v-if="!isMe">
           <div class="title">
             <div class="answer_item_top">
               <div class="ques_header">
-                <router-link to="/user/others/1">
+                <router-link :to="'/user/others/'+ user.id">
                   <img v-if="user" :src="user.Avatar || myavatar">
                 </router-link>
                 <div class="header_right">
@@ -118,6 +126,8 @@ export default {
   },
   data() {
     return {
+      showLoading: true,
+      isUpdae: false,
       id: '',
       user: '',
       myavatar: './static/img/avatar.jpg',
@@ -222,6 +232,11 @@ export default {
         Id: this.id
       }
       MistakeDetails(data).then(res => {
+        if (!res.data.data.Id) {
+          this.$message.warning('没有找到...')
+          var close = document.querySelector('.tags-view-item.active .el-icon-close')
+          close.click()
+        }
         if (res.data.data.QuestionId !== '0') {
           this.haveGuanfang = true
           this.question.Id = res.data.data.Id
@@ -247,8 +262,11 @@ export default {
         } else {
           this.isMe = false
         }
+        this.showLoading = false
       }).catch((res) => {
-        console.log('请求失败')
+        this.$message.warning('没有找到...')
+        var close = document.querySelector('.tags-view-item.active .el-icon-close')
+        close.click()
       })
     },
     submit() {
@@ -267,6 +285,7 @@ export default {
               message: '修改成功',
               type: 'success'
             })
+            this.isUpdae = false
           } else {
             this.$message.warning('操作失败...')
           }
@@ -281,9 +300,9 @@ export default {
       }
     }
   },
-  watch: {
-    $route: 'fetchDate'
-  },
+  // watch: {
+  //   $route: 'fetchDate'
+  // },
   created() {
     this.fetchDate()
   }

@@ -56,7 +56,7 @@ export default {
       },
       loginRules: {
         username: [
-          { required: true, message: '请输入用户名/手机号', trigger: 'blur' }
+          { required: true, message: '请输入用户号/手机号', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
@@ -98,11 +98,10 @@ export default {
           this.fullscreenLoading = true
           this.$store.dispatch('Login', this.loginForm).then(res => {
             this.fullscreenLoading = false
-            console.log(res.data.code)
             if (res.data.code === 0) {
               this.$router.push({ path: '/' })
             } else {
-              this.$message.warning('用户名或密码错误')
+              this.$message.warning('用户号或密码错误')
             }
           }).catch(() => {
             this.fullscreenLoading = false

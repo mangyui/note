@@ -5,7 +5,7 @@
     </router-link>
     <div class="login-info text-white animated fadeInLeft">
       <div class="logo">
-          <img src="../../assets/images/home/logo.png" width="160px" height="160px" alt="logo" style="vertical-align: middle;" />
+          <img src="../../assets/images/home/logo.png" width="200px" height="200px" alt="logo" style="vertical-align: middle;" />
       </div>
       <h2 class="login-info-title">{{website.info.title}}</h2>
       <ul class="login-info-list">
@@ -232,8 +232,8 @@ export default {
 @media (max-width: 768px)
 {
   .logo img{
-    width: 120px;
-    height: 120px;
+    width: 160px;
+    height: 160px;
   }
   .login-border{
     padding: 20px 28px 10px;

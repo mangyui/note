@@ -16,6 +16,8 @@ function objKeySort(obj) {
   for (var j = 0; j < newkey.length; j++) {
     signature += newObj[newkey[j]]
   }
+  var date = new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, '').replace(/\.[\d]{3}Z/, '')
+  signature += date.substring(0, 10)
   signature += 'soq'
   signature = md5(signature.toUpperCase())
   return signature
@@ -63,12 +65,12 @@ const user = {
     Login({ commit }, userInfo) {
       var datas1 = {
         username: userInfo.username.trim(),
-        password: userInfo.password
+        password: md5(userInfo.password)
       }
       var s = objKeySort(datas1)
       var datas2 = {
         username: userInfo.username.trim(),
-        password: userInfo.password,
+        password: md5(userInfo.password),
         sign: s
       }
       return new Promise((resolve, reject) => {
@@ -89,19 +91,27 @@ const user = {
     UpdateMe({ commit }, userInfo) {
       var datas1 = {
         username: userInfo.username.trim(),
-        password: userInfo.password
+        password: md5(userInfo.password)
       }
       var s = objKeySort(datas1)
       var datas2 = {
         username: userInfo.username.trim(),
+        userid: userInfo.userid,
         password: userInfo.password,
+        sex: userInfo.Sex,
+        class: userInfo.Class,
+        schoolId: userInfo.SchoolId,
+        address: userInfo.Address,
+        intro: userInfo.Intro,
         sign: s
       }
+      console.log(datas2)
       return new Promise((resolve, reject) => {
         UpdateUser(qs.stringify(datas2)).then(response => {
           if (response.data.code === 0) {
             const data = response.data.data
             // setToken(data.token)
+            commit('OUT_USER')
             commit('SET_USER', data)
             // commit('SET_NAME', data.Name)
           }
@@ -115,7 +125,7 @@ const user = {
     Register({ commit }, userInfo) {
       var datas1 = {
         username: userInfo.username.trim(),
-        password: userInfo.password,
+        password: md5(userInfo.password),
         phone: userInfo.phone,
         class: userInfo.class
       }

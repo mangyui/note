@@ -31,7 +31,7 @@ service.interceptors.response.use(
     const res = response.data
     if (res.ret !== 200) {
       Message({
-        message: res.message,
+        message: '未正常响应',
         type: 'error',
         duration: 5 * 1000
       })
@@ -56,7 +56,7 @@ service.interceptors.response.use(
   error => {
     console.log('err' + error)// for debug
     Message({
-      message: '网络请求超时',
+      message: '请求错误',
       type: 'error',
       duration: 5 * 1000
     })
