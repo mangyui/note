@@ -456,10 +456,9 @@ code {
   max-width: 100%;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 20px;
+  margin: 0 auto 10px;
   .el-input__inner{
-    border-radius: 50px 0 0 50px;
-    border-right: 0;
+    border-radius: 50px;
   }
   .el-button{
     border-radius: 0 50px 50px 0;
@@ -471,14 +470,18 @@ code {
 /* 滑动组件*/
 .ques-list{
   .slider-container{
-    padding-top: 15px;
+    padding-top: 22px;
     margin-bottom: 15px;
     .slider-wrapper{
       align-items: flex-start!important;
     }
     .slider-pagination-bullets{
       bottom: unset!important;
-      top: -5px;
+      top: 1px;
+      .slider-pagination-bullet{
+        width: 15px;
+        height: 15px;
+      }
       .slider-pagination-bullet-active{
           background-color: #52bab5!important;
       }
@@ -495,6 +498,7 @@ code {
 .loading-box{
   margin: 30px 0 20px;
   text-align: center;
+  color: #888;
 }
 
 .note_d-edit{
@@ -563,10 +567,34 @@ code {
   .toShow{
     display: none!important;
   }
+  .header-title{
+    display: none!important;
+  }
 }
 /*移动端*/
 @media (max-width: 768px)
 {
+  #topNav{
+    background: #52bab5;
+    border-bottom: 1px solid #52bab5;
+    box-shadow: 0 0 1px 0px #52bab5;
+  }
+  .hamburger-container{
+    float: right!important;
+    fill: #fff;
+  }
+  .header-title{
+    display: inline-block!important;
+    position: fixed;
+    top: 0px;
+    left: 50%;
+    z-index: 99;
+    line-height: 50px;
+    transform: translateX(-50%);
+    color: #fff;
+    font-weight: 500;
+    font-size: 16px;
+  }
   .navbar .app-breadcrumb.el-breadcrumb,.login-info-title,.login-info-list{
     display: none!important;
   }
@@ -595,14 +623,11 @@ code {
     padding: 0px 20px 10px;
   }
   .app-container{
-    padding: 20px 6px;
+    padding: 10px 6px 20px;
   }
   .container{
-    padding: 10px 0;
-  }
-  .container{
-    border-left: 0;
-    border-right: 0;
+    padding: 5px 0 10px;
+    border: 0;
   }
   .el-message{
     min-width: 350px;

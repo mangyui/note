@@ -4,7 +4,7 @@
       <i class="el-icon-loading"></i>
       加载中...
     </div>
-    <div class="crumbs">
+    <div class="crumbs disNone">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>
           <i class="el-icon-date"></i> 错题详情</el-breadcrumb-item>
@@ -39,9 +39,10 @@
         </div>
         <div class="sys-section" v-if="!isMe">
           <div class="title">
+            <strong>题主解答</strong>
             <div class="answer_item_top">
               <div class="ques_header">
-                <router-link :to="'/user/others/'+ user.id">
+                <router-link :to="'/user/others/'+ user.Id">
                   <img v-if="user" :src="user.Avatar || myavatar">
                 </router-link>
                 <div class="header_right">

@@ -17,7 +17,7 @@
       <el-collapse>
         <el-collapse-item title="功能介绍" name="2">
           <ul>
-            <li>NOTE-MANGYU 是一个基于vue + element-ui 开发，响应式布局，PC端和移动端都支持。</li>
+            <li>vNote 是一个基于vue + element-ui 开发，响应式布局，PC端和移动端都支持。</li>
             <li>在这里你可以记录和管理你的笔记。录入笔记的方式由如下三种：</li>
             <li>1.直接手写编辑文本，内置quill-editor富文本编辑器，功能丰富强大。</li>
             <li>2.语音识别方式，你可通过语音录入，网站将识别你的录音，转化为文本。</li>
@@ -43,7 +43,7 @@ export default {
   name: 'about',
   data() {
     return {
-      version: '1.0.4',
+      version: '1.0.5',
       isup: false,
       text: '已是最新版本',
       upUrl: ''

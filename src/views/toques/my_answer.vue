@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div class="crumbs">
+    <div class="crumbs disNone">
       <el-breadcrumb separator="/">
           <el-breadcrumb-item :to="{ path: '/toques/my_ques' }"><i class="el-icon-date"></i> 错题列表</el-breadcrumb-item>
           <el-breadcrumb-item>错题详情</el-breadcrumb-item>

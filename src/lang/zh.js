@@ -16,7 +16,6 @@ export default {
   route: {
     home: '主页',
     contextmenu: '右键菜单',
-    Note_type: '收藏',
     Friends: '题友',
     Schoolfellow: '校友',
     Followee: '关注',
@@ -26,6 +25,7 @@ export default {
     QuesList: '错题列表',
     Knowledge: '知识点',
     NoteList: '笔记本',
+    Note_type: '笔记分类',
     Note_detail: '笔记详情',
     Note_edit: '笔记编辑',
     Question_Details: '解题详情',

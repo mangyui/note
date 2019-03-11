@@ -13,6 +13,7 @@ export function upQuestion(datas) {
   })
 }
 
+// *********************** 错题*/
 // 获取用户错题分类
 export function mistakeCate(datas) {
   return request({
@@ -48,7 +49,7 @@ export function DeleteMistake(datas) {
     data: datas
   })
 }
-// 删除错题
+// 更新错题
 export function UpdateMistake(datas) {
   return request({
     headers: {
@@ -59,7 +60,6 @@ export function UpdateMistake(datas) {
     data: datas
   })
 }
-
 // 查找错题
 export function SearchMistake(datas) {
   return request({
@@ -71,6 +71,19 @@ export function SearchMistake(datas) {
     data: datas
   })
 }
+
+// 查找题目题友解答 ****************************************************/!!!!!!!!!!!!!!!!!!
+export function QFriendCorrect(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Mistake.GetByQuestionId',
+    method: 'post',
+    data: datas
+  })
+}
+
 // 识别匹配题目
 export function ocrQues(datas) {
   return request({
@@ -119,6 +132,7 @@ export function CollectList(datas) {
   })
 }
 
+// ***************************** 笔记*/
 // 笔记详情
 export function NoteDetails(datas) {
   return request({
@@ -190,6 +204,19 @@ export function SearchNote(datas) {
   })
 }
 
+// 添加笔记分类
+export function AddNoteType(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Note.AddCate',
+    method: 'post',
+    data: datas
+  })
+}
+
+// ******************************* 点赞收藏*/
 // 点赞
 export function P_dianZan(datas) {
   return request({
@@ -214,6 +241,7 @@ export function P_toCollect(datas) {
   })
 }
 
+// ******************* 关注*/
 // 关注
 export function P_toFollowee(datas) {
   return request({

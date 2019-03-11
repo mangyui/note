@@ -1,6 +1,7 @@
 <template>
   <div class="app-container notes">
-    <div class="crumbs">
+    <span class="header-title">笔记本</span>
+    <div class="crumbs disNone">
       <el-breadcrumb separator="/">
           <el-breadcrumb-item><i class="el-icon-date"></i> 笔记本</el-breadcrumb-item>
           <el-breadcrumb-item>笔记列表</el-breadcrumb-item>
@@ -9,8 +10,14 @@
     <div class="big-box1200">
       <!--工具条-->
       <div class="top-search">
-          <el-input placeholder="笔记关键字" v-model="search.keys"></el-input>
-          <el-button type="primary" icon="el-icon-search" v-on:click="toSearch"></el-button>
+        <el-input
+          placeholder="请输入内容"
+          @keyup.enter.native="toSearch"
+          v-model="search.keys">
+          <i slot="prefix" class="el-input__icon el-icon-search"></i>
+        </el-input>
+          <!-- <el-input placeholder="笔记关键字" @keyup.enter.native="toSearch" v-model="search.keys"></el-input>
+          <el-button type="primary" icon="el-icon-search" v-on:click="toSearch"></el-button> -->
       </div>
       <!-- <el-form :inline="true" class="form-search">
         <el-form-item>
@@ -47,7 +54,7 @@
           空空如也...
         </div>
         <el-row :gutter="15">
-          <el-col  :xs="24" :sm="24" :md="12" :lg="12" :xl="8" v-for="(item,index) in notes" :key="index">
+          <el-col  :xs="24" :sm="24" :md="12" :lg="12" :xl="12" v-for="(item,index) in notes" :key="index">
               <el-card shadow="hover">
                 <i v-if="showDelete" class="el-icon-close icon-delete" @click="toDetele(item.Id)"></i>
                 <div class="big-box">
@@ -84,10 +91,10 @@ export default {
   name: 'noteList',
   data() {
     return {
+      homeTop: 0,
       showLoading: true,
       showDelete: false,
       notes: [],
-      loading: true,
       tolist: {
         UserId: this.$store.getters.user.Id,
         NoteCategoryId: 0
@@ -108,11 +115,14 @@ export default {
     this.getCategory()
     this.getNotes()
   },
-  beforeRouteEnter(to, from, next) {
-    next(vm => {
-      vm.getCategory()
-      vm.getNotes()
-    })
+  activated() {
+    document.querySelector('.app-main').scrollTop = this.homeTop || 0
+    this.getCategory()
+    this.getNotes()
+  },
+  beforeRouteLeave(to, from, next) {
+    this.homeTop = document.querySelector('.app-main').scrollTop || 0
+    next()
   },
   methods: {
     getCategory() {

@@ -1,5 +1,6 @@
 <template>
   <div class="">
+    <span class="header-title">添加错题</span>
     <div class="container">
       <div class="inside-box">
         <!-- <el-alert
@@ -192,7 +193,11 @@ export default {
   },
   methods: {
     cameraTakePicture() {
-      this.$message.warning('网页端请选择上传图片方式...')
+      this.$notify({
+        title: '提示',
+        message: '网页端请选择上传图片的方式！',
+        type: 'info'
+      })
       // navigator.camera.getPicture(this.onSuccess, this.onFail, {
       //   quality: 50,
       //   destinationType: Camera.DestinationType.DATA_URL,

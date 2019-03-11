@@ -2,7 +2,7 @@
   .de-more{
     position: absolute;
     right: 20px;
-    top: 50px;
+    top: 25px;
   }
   .note_details{
     font-size: 14px;
@@ -19,7 +19,8 @@
   }
   .sys-notes {
     padding: 15px 10px 15px 14px;
-    border-left: 5px solid #52bab5;
+    border-bottom: 4px solid #52bab5;
+    border-top: 4px solid #52bab5;
     background: #eef1f6;
     line-height: 30px;
     margin-bottom: 20px;
@@ -63,10 +64,10 @@
         border-radius: 50%;
         padding: 4px;
         transition: .28s;
-        &:hover, &.ic-active{
-          color: #409EFF;
-          border-color: #409EFF;
-        }
+        // &:hover, &.ic-active{
+        //   color: #409EFF;
+        //   border-color: #409EFF;
+        // }
       }
       span{
         display: block;
@@ -100,6 +101,12 @@
 .item-article{
   max-height: 200px;
   overflow: hidden
+}
+@media (min-width: 769px) {
+  .note_details .toNum div .qu-icon:hover{
+    color: #409EFF;
+    border-color: #409EFF;
+  }
 }
 
 @media (max-width: 768px) {

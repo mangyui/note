@@ -82,6 +82,7 @@ export const constantRouterMap = [
       title: 'SQu',
       icon: 'camera3'
     },
+    hidden: true,
     children: [
       {
         path: 'index',
@@ -97,6 +98,7 @@ export const constantRouterMap = [
     path: '/Voice',
     component: Layout,
     redirect: '/Voice/index',
+    hidden: true,
     meta: {
       title: 'Voice',
       icon: 'voice'
@@ -207,7 +209,13 @@ export const constantRouterMap = [
         path: 'noteList',
         name: 'noteList',
         component: () => import('@/views/tonote/noteList'),
-        meta: { title: 'NoteList', icon: 'form' }
+        meta: { title: 'NoteList' }
+      },
+      {
+        path: 'note_type',
+        name: 'note_type',
+        component: () => import('@/views/tonote/note_type'),
+        meta: { title: 'Note_type' }
       },
       {
         path: 'note_detail/:id',

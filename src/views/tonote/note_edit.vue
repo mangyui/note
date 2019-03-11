@@ -1,10 +1,11 @@
 <template>
   <div class="app-container">
+    <span class="header-title">笔记编辑</span>
     <div v-if="showLoading" class="loading-box">
       <i class="el-icon-loading"></i>
       加载中...
     </div>
-    <div class="crumbs">
+    <div class="crumbs disNone">
       <el-breadcrumb separator="/">
           <el-breadcrumb-item><i class="el-icon-date"></i> 笔记本</el-breadcrumb-item>
           <el-breadcrumb-item>修改笔记</el-breadcrumb-item>
@@ -19,7 +20,7 @@
       <h4>笔记正文</h4>
         <quill-editor ref="myTextEditor" v-model="note.Content" :options="editorOption"></quill-editor>
         <br/>
-        <el-button class="editor-btn" type="primary" @click="dialogFormVisible = true">提交</el-button>
+        <el-button type="primary" @click="dialogFormVisible = true">提交</el-button>
       </div>
       <!-- <div ref="btngroup" class="btn-wrapper" :style="{right: btnRight}">
         <el-button-group>
@@ -34,7 +35,7 @@
             <el-input v-model="form.Keywords"></el-input>
           </el-form-item> -->
           <el-form-item label="笔记分类">
-            <el-select v-model="note.NoteCategoryId" placeholder="请选择题目分类">
+            <el-select v-model="note.NoteCategoryId" placeholder="请选择笔记分类">
               <el-option
                 v-for="item in typelist"
                 :key="item.Id"
@@ -114,6 +115,14 @@ export default {
       }).catch(() => {})
     },
     submit() {
+      if (this.note.Headline.trim().length === 0) {
+        this.$notify({
+          title: '提示',
+          message: '笔记标题不能为空！',
+          type: 'warning'
+        })
+        return
+      }
       UpdateNote(qs.stringify(this.note)).then(res => {
         if (res.data.code === 0) {
           this.$router.push({

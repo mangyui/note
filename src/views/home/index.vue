@@ -1,10 +1,10 @@
 <template>
-  <div ref="scoll-home" class="">
+  <div ref="scollWhere" class="">
     <div class="big-box1200">
       <!-- <router-link to="/todo/edit/1">
         <el-button class="top-btn_edit" round icon="el-icon-edit" :size="screenWidth>770?'':'small'" :style="screenWidth>770?'':'border:0'">写笔记</el-button>
       </router-link> -->
-      <router-link to="/home/search">
+      <router-link to="/home/search" class="disNone">
         <el-button class="top-btn_search" round icon="el-icon-search" :size="screenWidth>770?'':'small'" :style="screenWidth>770?'':'border:0'">搜索</el-button>
       </router-link>
       <div class="top-camera toShow">
@@ -20,10 +20,16 @@
         <!-- <div class="bg_updown"><img :src="bg1"/></div>
         <div class="bg_updown"><img :src="bg2"/></div> -->
         <div class="home-top">
-            <div class="home_item">
+            <div class="home_item" v-if="screenWidth>770">
               <router-link to="/SQu/index">
-                <nx-svg-icon class-name='more_icon' style="color:#F56C6C" icon-class="camera3" />
+                <nx-svg-icon class-name='more_icon' style="color:#52bab5" icon-class="camera3" />
                 <p>拍照搜题</p>
+              </router-link>
+            </div>
+            <div class="home_item">
+              <router-link to="/Voice/index">
+                <nx-svg-icon class-name='more_icon' style="color:#F56C6C" icon-class="voice" />
+                <p>语音识别</p>
               </router-link>
             </div>
             <div class="home_item">
@@ -89,6 +95,7 @@ export default {
   },
   data() {
     return {
+      homeTop: 0,
       screenWidth: document.body.clientWidth,
       questions: [],
       notes: [],
@@ -98,6 +105,14 @@ export default {
       bg1: './static/img/bg_1.png',
       bg2: './static/img/bg_2.png'
     }
+  },
+  activated() {
+    document.querySelector('.app-main').scrollTop = this.homeTop || 0
+    this.getNotes()
+  },
+  beforeRouteLeave(to, from, next) {
+    this.homeTop = document.querySelector('.app-main').scrollTop || 0
+    next()
   },
   // beforeRouteEnter(to, from, next) {
   //   next(vm => {

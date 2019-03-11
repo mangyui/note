@@ -11,10 +11,10 @@
           <div class="">
             <el-row :gutter="12">
               <el-col  :xs="12" :sm="12" :md="8" :lg="6" :xl="6" v-for="(item,index) in Followees" :key="index">
-                <el-card class="friend-box" :body-style="{ padding: '0px' }"  shadow="hover">
+                <el-card v-if="item.UserId!=0" class="friend-box" :body-style="{ padding: '0px' }"  shadow="hover">
                   <div>
                     <div class="friend-top" :style="{backgroundImage:'url(' + top_bg + ')'}"><div class="top_bg"></div></div>
-                    <span @click="toAttention(index)" >
+                    <span @click="toAttention(item.UserId)" >
                       <nx-svg-icon
                         class-name='international-icon icon-collect'
                         style="color: #F56C6C"

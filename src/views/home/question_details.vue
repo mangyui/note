@@ -4,7 +4,7 @@
       <i class="el-icon-loading"></i>
       加载中...
     </div>
-    <div class="crumbs">
+    <div class="crumbs disNone">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>
           <i class="el-icon-date"></i> 题目详情</el-breadcrumb-item>

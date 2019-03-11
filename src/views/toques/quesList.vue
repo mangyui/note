@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
-    <div class="crumbs">
+    <span class="header-title">错题本</span>
+    <div class="crumbs disNone">
       <el-breadcrumb separator="/">
           <el-breadcrumb-item><i class="el-icon-date"></i> 错题本</el-breadcrumb-item>
           <el-breadcrumb-item>我的错题</el-breadcrumb-item>
@@ -8,8 +9,14 @@
     </div>
     <div class="big-box1200">
       <div class="top-search">
-        <el-input placeholder="错题关键字" v-model="tolist.keys"></el-input>
-        <el-button type="primary" icon="el-icon-search" v-on:click="toSearch"></el-button>
+        <el-input
+          placeholder="请输入内容"
+          @keyup.enter.native="toSearch"
+          v-model="tolist.keys">
+          <i slot="prefix" class="el-input__icon el-icon-search"></i>
+        </el-input>
+        <!-- <el-input placeholder="错题关键字" @keyup.enter.native="toSearch" v-model="tolist.keys"></el-input>
+        <el-button type="primary" icon="el-icon-search" v-on:click="toSearch"></el-button> -->
       </div>
       <!-- <el-form :inline="true">
         <el-form-item>
@@ -43,7 +50,7 @@
         </div>
         <div v-if="!questions[0] && !showLoading" class="loading-box">
           <i class="el-icon-search"></i>
-          没有找到...
+          空空如也...
         </div>
         <div class="ques-list">
           <div class="ques-list_item" v-for="(item,index) in questions" :key="index">
@@ -58,7 +65,8 @@
               <div class="ques_footer">
                 <nx-svg-icon class-name='international-icon' icon-class="zan" /><span class="ques_footer_num">{{item.LikeNumber}}</span>
                 <nx-svg-icon class-name='international-icon' icon-class="collect" /><span class="ques_footer_num">{{item.CollectNumber}}</span>
-                <el-tag>错题</el-tag>
+                <el-tag v-if="item.QuestionContent" type="info">个人</el-tag>
+                <el-tag v-if="!item.QuestionContent">官方</el-tag>
               </div>
             </div>
           </div>
@@ -85,6 +93,7 @@ export default {
   components: { nxSvgIcon },
   data() {
     return {
+      homeTop: 0,
       showLoading: true,
       showDelete: false,
       questions: [],
@@ -110,11 +119,14 @@ export default {
     this.getCategory()
     this.getQues()
   },
-  beforeRouteEnter(to, from, next) {
-    next(vm => {
-      vm.getCategory()
-      vm.getQues()
-    })
+  activated() {
+    document.querySelector('.app-main').scrollTop = this.homeTop || 0
+    this.getCategory()
+    this.getQues()
+  },
+  beforeRouteLeave(to, from, next) {
+    this.homeTop = document.querySelector('.app-main').scrollTop || 0
+    next()
   },
   methods: {
     getCategory() {

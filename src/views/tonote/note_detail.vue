@@ -1,7 +1,8 @@
 <template>
   <div>
+    <span class="header-title">笔记详情</span>
     <div class="app-container">
-      <div class="crumbs">
+      <div class="crumbs disNone">
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/tonote/noteList' }"><i class="el-icon-date"></i> 笔记列表</el-breadcrumb-item>
             <el-breadcrumb-item>笔记详情</el-breadcrumb-item>

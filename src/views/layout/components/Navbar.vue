@@ -1,11 +1,14 @@
 <template>
-  <el-menu class="navbar" mode="horizontal">
+  <el-menu id="topNav" class="navbar" mode="horizontal">
     <nx-hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></nx-hamburger>
     <nx-breadcrumb class="breadcrumb-container"></nx-breadcrumb>
-    <span v-if="isBack" class="goback toShow" onclick="javascript:history.back(-1);">
+    <span v-if="isBack" class="goback toShow" @click="$router.go(-1)">
       <i class="el-icon-arrow-left"></i>
     </span>
-    <div class="right-menu">
+    <router-link v-if="!isBack" to="/home/search" class="toShow">
+      <el-button class="top-btn_search" round icon="el-icon-search" size="small" style=" margin-left:10px;border:0">搜索</el-button>
+    </router-link>
+    <div class="right-menu disNone">
       <nx-mobile class="nx-help right-menu-item disNone"></nx-mobile>
 
       <nx-message class="nx-help right-menu-item disNone" />
@@ -115,6 +118,10 @@ export default {
   width: 40px;
   text-align: center;
   line-height: 51px;
+  color: #fff;
+  &:focus{
+    outline: none;
+  }
   i{
     font-size: 19px;
     font-weight: bold;

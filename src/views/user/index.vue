@@ -18,6 +18,7 @@
       </div>
     </div>
     <div class="user_center">
+      <!-- <div class="div-logout toShow"><nx-svg-icon class-name='more_icon' icon-class="logout" /></div> -->
       <div class="avatar">
         <img :src="cropImg" />
         <label for="Choose_Avatar">更换头像</label>
@@ -94,6 +95,7 @@
         <div class="save-me">
           <el-button v-if="!isUpdate" @click="isUpdate=!isUpdate">修改资料</el-button>
       </div>
+      <div class="div-logout toShow" @click="logout"><el-button type="danger">退出登录</el-button></div>
       </div>
     </div>
     <div v-if="isUpdate" class="contariner-wraper">
@@ -229,6 +231,7 @@
 
 <script>
 import nxCountUp from '@/components/nx-count-up/index.vue'
+import nxSvgIcon from '@/components/nx-svg-icon/index'
 import { areajson } from '@/assets/js/city.js'
 import { classList } from '@/assets/js/class.js'
 import VueCropper from 'vue-cropperjs'
@@ -240,7 +243,8 @@ export default {
   name: 'user',
   components: {
     VueCropper,
-    nxCountUp
+    nxCountUp,
+    nxSvgIcon
   },
   data() {
     return {
@@ -305,6 +309,11 @@ export default {
       this.$store.dispatch('UpdateMe', this.form).then(res => {
         if (res.data.code === 0) {
           this.isUpdate = false
+          this.$notify({
+            title: '消息',
+            message: '修改资料成功！',
+            type: 'success'
+          })
         } else {
           this.$message.warning('操作失败...')
         }
@@ -358,6 +367,12 @@ export default {
         userId: this.$store.getters.user.Id
       }
       console.log(data)
+    },
+    logout() {
+      this.$store.dispatch('LogOut').then(() => {
+        location.reload() // In order to re-instantiate the vue-router object to avoid bugs
+      })
+      location.reload()
     }
   },
   created() {
@@ -508,6 +523,14 @@ export default {
   }
   .datum-table th{
     width: 105px;
+  }
+  .div-logout{
+    width: 400px;
+    max-width: 95%;
+    margin: 50px auto 0;
+    button{
+      width: 100%;
+    }
   }
 }
 </style>

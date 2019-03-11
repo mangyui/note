@@ -1,5 +1,6 @@
 <template>
   <div class="">
+    <span class="header-title">拍照搜题</span>
     <div class="container">
       <div class="inside-box">
         <!-- <el-alert
@@ -33,7 +34,7 @@
                 <div class="ques-list_item">
                   <div class="ques_box">
                     <router-link to="/home/question_details/1">
-                      <div class="ques_body tipbox">
+                      <div class="ques_body tipbox heightAuto">
                         <div class="ocr-content" v-html="item.Content"> </div><b>{{index+1}}.</b>
                       </div>
                     </router-link>
@@ -160,7 +161,9 @@ export default {
         }
       },
       sliderOptions: {
-        currentPage: 0
+        currentPage: 0,
+        thresholdDistance: '50',
+        thresholdTime: '500'
       },
       cropImg: '',
       imgSrc: '',
@@ -209,7 +212,11 @@ export default {
   },
   methods: {
     cameraTakePicture() {
-      this.$message.warning('网页端请选择上传图片方式...')
+      this.$notify({
+        title: '提示',
+        message: '网页端请选择上传图片的方式！',
+        type: 'info'
+      })
       // navigator.camera.getPicture(this.onSuccess, this.onFail, {
       //   quality: 50,
       //   destinationType: Camera.DestinationType.DATA_URL,
@@ -481,6 +488,9 @@ export default {
     right: 0;
     top: 0;
   }
+}
+.heightAuto{
+  max-height: initial;
 }
 @media (max-width: 768px) {
 

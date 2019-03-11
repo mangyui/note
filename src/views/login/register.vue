@@ -65,10 +65,10 @@ export default {
       }
     }
     const validateName = (rule, value, callback) => {
-      if (value.length < 2 || value.length > 16) {
-        return callback(new Error('用户号长度为2到16位'))
+      if (value.length < 3 || value.length > 16) {
+        return callback(new Error('用户号长度为3到16位'))
       } else {
-        const reg = /^[a-zA-Z0-9_-]{4,16}$/
+        const reg = /^[a-zA-Z0-9_-]{3,16}$/
         if (reg.test(value)) {
           callback()
         } else {

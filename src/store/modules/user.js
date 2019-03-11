@@ -139,7 +139,7 @@ const user = {
       return new Promise((resolve, reject) => {
         register(qs.stringify(datas1)).then(response => {
           if (response.data.code === 0) {
-            // *************************************************注意
+            // *************************************************
             const data = response.data.data
             // setToken(data.token)
             commit('SET_USER', data)
@@ -151,6 +151,19 @@ const user = {
         })
       })
     },
+    // 登出
+    LogOut({ commit, state }) {
+      return new Promise((resolve, reject) => {
+        // logout().then(() => {
+        commit('OUT_USER')
+        // commit('SET_ROLES', [])
+        // removeToken()
+        //   resolve()
+        // }).catch(error => {
+        //   reject(error)
+        // })
+      })
+    }
     // 获取用户信息
     // GetInfo({ commit, state }) {
     //   return new Promise((resolve, reject) => {
@@ -169,20 +182,6 @@ const user = {
     //     })
     //   })
     // },
-
-    // 登出
-    LogOut({ commit, state }) {
-      return new Promise((resolve, reject) => {
-        // logout().then(() => {
-        commit('OUT_USER')
-        // commit('SET_ROLES', [])
-        // removeToken()
-        //   resolve()
-        // }).catch(error => {
-        //   reject(error)
-        // })
-      })
-    }
 
     // 前端 登出
     // FedLogOut({ commit }) {

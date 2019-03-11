@@ -2,7 +2,7 @@
   <el-scrollbar wrapClass="scrollbar-wrapper">
     <logo :isCollapse="isCollapse"></logo>
     <div class="user_center">
-      <router-link  to="/user/index" class="avatar"><img :src="avatar"></router-link>
+      <router-link  :to="user.Id?'/user/index':'/login'" class="avatar"><img :src="avatar"></router-link>
       <div>
         <p class="user_name">{{user.Name||'未登录'}}</p>
         <p  v-if="user.Id" class="user_address">{{user.Address==null?'':user.Address+' |'}} 学生</p>

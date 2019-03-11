@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
-    <div class="crumbs">
+    <span class="header-title">我的收藏</span>
+    <div class="crumbs disNone">
       <el-breadcrumb separator="/">
           <el-breadcrumb-item><i class="el-icon-date"></i> 错题本</el-breadcrumb-item>
           <el-breadcrumb-item>我的收藏</el-breadcrumb-item>
@@ -24,6 +25,7 @@
             :value="item.Id">
           </el-option>
         </el-select> -->
+        <div></div>
         <div>
           <el-button type="primary" icon="el-icon-refresh" circle @click="getCollects"></el-button>
         </div>
@@ -35,7 +37,7 @@
         </div>
         <div v-if="!collects[0] && !showLoading" class="loading-box">
           <i class="el-icon-search"></i>
-          没有找到...
+          空空如也...
         </div>
         <div class="ques-list">
           <div class="ques-list_item" v-for="(item,index) in collects" :key="index">
@@ -55,7 +57,9 @@
               <div class="ques_footer">
                 <nx-svg-icon class-name='international-icon' icon-class="zan" /><span class="ques_footer_num">{{item.Question.LikeNumber}}</span>
                 <nx-svg-icon class-name='international-icon' icon-class="collect" /><span class="ques_footer_num">{{item.Question.CollectNumber}}</span>
-                <el-tag>错题</el-tag>
+                <el-tag v-if="item.QuestionId==0" type="info">个人</el-tag>
+                <el-tag v-if="item.QuestionId!=0 && item.MistakeId==0">官方</el-tag>
+                <el-tag v-if="item.MistakeId!=0" type="warning">题友</el-tag>
               </div>
             </div>
           </div>
@@ -80,6 +84,7 @@ export default {
   components: { nxSvgIcon },
   data() {
     return {
+      homeTop: 0,
       showLoading: true,
       showDelete: false,
       collects: [],
@@ -102,10 +107,13 @@ export default {
   created() {
     this.getCollects()
   },
-  beforeRouteEnter(to, from, next) {
-    next(vm => {
-      vm.getCollects()
-    })
+  activated() {
+    document.querySelector('.app-main').scrollTop = this.homeTop || 0
+    this.getCollects()
+  },
+  beforeRouteLeave(to, from, next) {
+    this.homeTop = document.querySelector('.app-main').scrollTop || 0
+    next()
   },
   methods: {
     getCollects() {

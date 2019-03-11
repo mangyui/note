@@ -1,9 +1,9 @@
 <template>
   <div class="app-container notes">
-    <div class="crumbs">
+    <div class="crumbs disNone">
       <el-breadcrumb separator="/">
-          <el-breadcrumb-item><i class="el-icon-date"></i> 我的笔记</el-breadcrumb-item>
-          <el-breadcrumb-item>笔记列表</el-breadcrumb-item>
+          <el-breadcrumb-item><i class="el-icon-date"></i> 错题本</el-breadcrumb-item>
+          <el-breadcrumb-item>知识点</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
 

@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
-    <div class="crumbs">
+    <span class="header-title">语音搜题</span>
+    <div class="crumbs disNone">
       <el-breadcrumb separator="/">
           <el-breadcrumb-item><i class="el-icon-date"></i> 操作</el-breadcrumb-item>
           <el-breadcrumb-item>语音输入</el-breadcrumb-item>
@@ -23,7 +24,7 @@
           <el-button type="danger" icon="el-icon-close" circle @click="allDelete"></el-button>
         </el-tooltip>
       </div>
-      <textarea class="result" v-model="result" placeholder="等待录入中..."></textarea>
+      <!-- <textarea class="result" v-model="result" placeholder="等待录入中..."></textarea> -->
       <div class="voice-button">
          <el-tooltip class="item" effect="dark" content="按住开始语音" placement="bottom-start">
           <div class="voice-input-button-wrapper">
@@ -44,10 +45,11 @@
           </div>
         </el-tooltip>
       </div>
-      <div class="">
+      <!-- <div class="">
         <el-button type="primary" icon="el-icon-search" @click="SearchQuestion"></el-button>
-      </div>
-      <h3 v-if="questions[0]" class="Hpipei">猜你要找:</h3>
+      </div> -->
+      <p>以下匹配：<b v-text="result"></b></p>
+      <h3 v-if="questions[0]" class="Hpipei"> </h3>
       <quex-box :option="questions"></quex-box>
       <div v-if="showLoading" class="loading-box">
         <i class="el-icon-loading"></i>
@@ -55,7 +57,7 @@
       </div>
       <div v-if="showNone" class="loading-box">
         <i class="el-icon-search"></i>
-        没有找到...
+        没找到你想要的...
       </div>
       <!-- <quill-editor ref="myTextEditor" v-model="content" :options="editorOption" @change="onEditorChange($event)"></quill-editor>
       <el-button class="editor-btn" type="primary" @click="submit">提交</el-button> -->
@@ -107,6 +109,7 @@ export default {
     showResult(text) {
       this.oldResult = this.result
       this.result = this.result + text.substr(0, text.length - 1)
+      this.SearchQuestion()
     },
     recordStart() {
       console.info('录音开始')
@@ -132,7 +135,7 @@ export default {
     SearchQuestion() {
       this.showNone = false
       this.showLoading = true
-      SearchQues(qs.stringify({ Keys: this.content })).then(res => {
+      SearchQues(qs.stringify({ Keys: this.result })).then(res => {
         this.questions = res.data.data
         this.showLoading = false
         if (!this.questions[0]) {

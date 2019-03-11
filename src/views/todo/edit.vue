@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
-      <div class="crumbs">
+    <span class="header-title">添加笔记</span>
+      <div class="crumbs disNone">
         <el-breadcrumb separator="/">
             <el-breadcrumb-item><i class="el-icon-date"></i> 添加笔记</el-breadcrumb-item>
         </el-breadcrumb>
@@ -14,7 +15,7 @@
       <h4>笔记正文</h4>
         <quill-editor ref="myTextEditor" v-model="note.Content" :options="editorOption"></quill-editor>
         <br/>
-        <el-button class="editor-btn pull-right" type="primary" @click="dialogFormVisible = true">提交</el-button>
+        <el-button type="primary" @click="dialogFormVisible = true">提交</el-button>
       </div>
       <!-- <div ref="btngroup" class="btn-wrapper" :style="{right: btnRight}">
         <el-button-group>
@@ -29,7 +30,7 @@
             <el-input v-model="form.Keywords"></el-input>
           </el-form-item> -->
           <el-form-item label="笔记分类" prop="NoteCategoryId">
-            <el-select v-model="note.NoteCategoryId" placeholder="请选择题目分类">
+            <el-select v-model="note.NoteCategoryId" placeholder="请选择笔记分类">
               <el-option
                 v-for="item in typelist"
                 :key="item.Id"
@@ -37,6 +38,7 @@
                 :value="item.Id">
               </el-option>
             </el-select>
+             <el-button type="primary" icon="el-icon-plus" @click="showAdd=!showAdd" circle></el-button>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -45,6 +47,20 @@
         </div>
       </el-dialog>
     </div>
+    <el-dialog title="添加笔记分类" :visible.sync="showAdd">
+      <el-form :model="toadd" :rules="addrules" ref="addForm" label-width="100px">
+        <el-form-item label="笔记分类名" prop="Name">
+          <el-input v-model="toadd.Name"></el-input>
+        </el-form-item>
+        <el-form-item label="分类说明" prop="Intro">
+          <el-input type="textarea" v-model="toadd.Intro"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="showAdd = false">取 消</el-button>
+        <el-button type="primary" @click="addNoteType">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -56,7 +72,7 @@ import 'quill/dist/quill.bubble.css'
 import { quillEditor } from 'vue-quill-editor'
 
 import { NoteCategory } from '@/api/toget'
-import { AddNote } from '@/api/toPost'
+import { AddNote, AddNoteType } from '@/api/toPost'
 import qs from 'qs'
 
 export default {
@@ -64,6 +80,7 @@ export default {
   data: function() {
     return {
       dialogFormVisible: false,
+      showAdd: false,
       editorOption: {
         placeholder: '等待输入中...',
         modules: {
@@ -93,6 +110,21 @@ export default {
         NoteCategoryId: [
           { required: true, message: '请选择题目类型', trigger: 'change' }
         ]
+      },
+      toadd: {
+        UserId: this.$store.getters.user.Id,
+        Name: '',
+        Intro: ''
+      },
+      addrules: {
+        Name: [
+          { required: true, message: '请输入分类名', trigger: 'blur' },
+          { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
+        ],
+        Intro: [
+          { required: true, message: '请输入分类说明', trigger: 'blur' },
+          { min: 1, max: 30, message: '长度在 1 到 30 个字符', trigger: 'blur' }
+        ]
       }
     }
   },
@@ -115,6 +147,37 @@ export default {
         }
       }).catch(() => {})
     },
+    addNoteType() {
+      if (!this.$store.getters.user.Id) {
+        this.$confirm('你这个操作，登录就能解决', '提示', {
+          confirmButtonText: '立即登录',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$router.push({
+            path: '/login'
+          })
+        }).catch(() => {})
+        return
+      }
+      this.$refs.addForm.validate(valid => {
+        if (valid) {
+          AddNoteType(qs.stringify(this.toadd)).then(res => {
+            if (res.data.code === 0) {
+              this.$notify({
+                title: '提示',
+                message: '添加分类成功！',
+                type: 'success'
+              })
+            } else {
+              this.$message.warning('操作失败...')
+            }
+            this.showAdd = false
+            this.getCategory()
+          }).catch(() => {})
+        }
+      })
+    },
     submit() {
       if (!this.$store.getters.user.Id) {
         this.$confirm('你这个操作，登录就能解决', '提示', {
@@ -126,6 +189,14 @@ export default {
             path: '/login'
           })
         }).catch(() => {})
+        return
+      }
+      if (this.note.Headline.trim().length === 0) {
+        this.$notify({
+          title: '提示',
+          message: '笔记标题不能为空！',
+          type: 'warning'
+        })
         return
       }
       this.$refs.Form.validate(valid => {

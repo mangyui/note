@@ -1,9 +1,16 @@
 <template>
   <div class="app-container">
+    <span class="header-title">搜索</span>
     <div class="big-box1200">
       <div class="top-search">
-        <el-input placeholder="搜索题目" v-model="text"></el-input>
-        <el-button type="primary" icon="el-icon-search" v-on:click="SearchQuestion"></el-button>
+        <el-input
+          placeholder="请输入内容"
+          @keyup.enter.native="SearchQuestion"
+          v-model="text">
+          <i slot="prefix" class="el-input__icon el-icon-search"></i>
+        </el-input>
+        <!-- <el-input placeholder="搜索题目" @keyup.enter.native="SearchQuestion" v-model="text"></el-input>
+        <el-button type="primary" icon="el-icon-search" v-on:click="SearchQuestion"></el-button> -->
       </div>
       <!-- <el-select  v-model="type" placeholder="选择类型">
         <el-option label="数学" value="type1"></el-option>
@@ -17,7 +24,7 @@
       </div>
       <div v-if="showNone" class="loading-box">
         <i class="el-icon-search"></i>
-        没有找到...
+        空空如也...
       </div>
     </div>
   </div>
@@ -42,6 +49,7 @@ export default {
   },
   data() {
     return {
+      homeTop: 0,
       screenWidth: document.body.clientWidth,
       questions: [],
       type: '',
@@ -49,6 +57,13 @@ export default {
       showLoading: false,
       showNone: false
     }
+  },
+  activated() {
+    document.querySelector('.app-main').scrollTop = this.homeTop || 0
+  },
+  beforeRouteLeave(to, from, next) {
+    this.homeTop = document.querySelector('.app-main').scrollTop || 0
+    next()
   },
   methods: {
     SearchQuestion() {
@@ -78,7 +93,6 @@ export default {
 
   },
   deactivated() {
-    console.log('deactivated')
   }
 }
 </script>
