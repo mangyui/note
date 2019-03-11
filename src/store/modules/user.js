@@ -5,7 +5,9 @@ import md5 from 'js-md5'
 import qs from 'qs'
 // import { mapState } from 'vuex'
 
-// 排序加密
+// sign排序加密,直接在传入数组中添加sign字段
+
+// 规则：传入数组中所有字段排序后组合成一个字符串，并将字符串前后加soq，变成大写 并md5加密
 function objKeySort(obj) {
   var newkey = Object.keys(obj).sort()
   var newObj = {}
@@ -20,6 +22,9 @@ function objKeySort(obj) {
   signature += date.substring(0, 10)
   signature += 'soq'
   signature = md5(signature.toUpperCase())
+
+  obj.sign = signature
+
   return signature
 }
 
@@ -63,16 +68,17 @@ const user = {
   actions: {
     // 登录
     Login({ commit }, userInfo) {
-      var datas1 = {
-        username: userInfo.username.trim(),
-        password: md5(userInfo.password)
-      }
-      var s = objKeySort(datas1)
+      // var datas1 = {
+      //   username: userInfo.username.trim(),
+      //   password: md5(userInfo.password)
+      // }
       var datas2 = {
         username: userInfo.username.trim(),
-        password: md5(userInfo.password),
-        sign: s
+        password: md5(userInfo.password)
+        // sign: s
       }
+      objKeySort(datas2) // 添加sign字段
+      // datas2.sign = s
       return new Promise((resolve, reject) => {
         login(qs.stringify(datas2)).then(response => {
           if (response.data.code === 0) {
@@ -89,11 +95,11 @@ const user = {
     },
     // 修改
     UpdateMe({ commit }, userInfo) {
-      var datas1 = {
-        username: userInfo.username.trim(),
-        password: md5(userInfo.password)
-      }
-      var s = objKeySort(datas1)
+      // var datas1 = {
+      //   username: userInfo.username.trim(),
+      //   password: userInfo.password
+      // }
+      // var s = objKeySort(datas1)
       var datas2 = {
         username: userInfo.username.trim(),
         userid: userInfo.userid,
@@ -102,9 +108,10 @@ const user = {
         class: userInfo.Class,
         schoolId: userInfo.SchoolId,
         address: userInfo.Address,
-        intro: userInfo.Intro,
-        sign: s
+        intro: userInfo.Intro
       }
+      objKeySort(datas2)// 添加sign字段，sign规则已修改
+      // datas2.sign = s
       console.log(datas2)
       return new Promise((resolve, reject) => {
         UpdateUser(qs.stringify(datas2)).then(response => {
