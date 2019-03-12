@@ -132,6 +132,7 @@ export default {
           this.showLoading = false
         }).catch(() => {
           console.log('获取数据失败！')
+          this.showLoading = false
         })
       } else {
         getRecommend().then(res => {
@@ -140,6 +141,7 @@ export default {
           this.showLoading = false
         }).catch(() => {
           console.log('获取数据失败！')
+          this.showLoading = false
         })
       }
     },
@@ -322,8 +324,8 @@ export default {
       width: 100px;
       padding-top: 20px;
       .more_icon{
-        width: 3em;
-        height: 3em;
+        width: 3.5em;
+        height: 3.5em;
       }
       p{
         font-size: 15px;
@@ -336,6 +338,10 @@ export default {
 {
   .home-box{
     background: linear-gradient(to bottom, #52bab5, #ffffff);
+  }
+  .home_item p{
+    font-size: 12px;
+    line-height: 2.0em;
   }
 }
 </style>

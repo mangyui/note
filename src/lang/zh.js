@@ -35,6 +35,7 @@ export default {
     Merchant: '商城',
     OcrSQu: '拍照搜题',
     addMistake: '添加错题',
+    Mistake_type: '错题分类',
     Fans: '粉丝',
     Search: '搜索',
     form: '表单',

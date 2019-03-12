@@ -272,6 +272,21 @@ code {
   }
  }
 
+ .icon-update{
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 50%;
+  font-size: 20px;
+  padding: 2px;
+  color: #666;
+  &:hover{
+    color: #409EFF;
+  }
+}
+
  .icon-delete{
   position: absolute;
   right: 5px;
@@ -295,7 +310,7 @@ code {
     width: 100%;
     .ques_box{
       border: 1px solid #ebeef5;
-      box-shadow: 0 2px 3px 0 rgba(0,0,0,.1);
+      box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
       padding: 15px 10px 5px;
       position: relative;
 
@@ -576,8 +591,8 @@ code {
 {
   #topNav{
     background: #52bab5;
-    border-bottom: 1px solid #52bab5;
-    box-shadow: 0 0 1px 0px #52bab5;
+    border: 0;
+    // box-shadow: 0 0 1px 0px #52bab5;
   }
   .hamburger-container{
     float: right!important;
@@ -593,7 +608,8 @@ code {
     transform: translateX(-50%);
     color: #fff;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 17px;
+    height: 50px;
   }
   .navbar .app-breadcrumb.el-breadcrumb,.login-info-title,.login-info-list{
     display: none!important;

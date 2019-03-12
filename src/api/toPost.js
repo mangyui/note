@@ -26,6 +26,42 @@ export function mistakeCate(datas) {
   })
 }
 
+// 添加用户错题分类
+export function AddMistakeCate(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Mistake.AddCate',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 修改用户错题分类
+export function UpdateMistakeCate(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Mistake.UpdateCate',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 删除用户错题分类
+export function DeleteMistakeCate(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Mistake.DeleteCate',
+    method: 'post',
+    data: datas
+  })
+}
+
 // 添加错题
 export function addMistake(datas) {
   return request({
@@ -216,6 +252,29 @@ export function AddNoteType(datas) {
   })
 }
 
+// 修改笔记分类
+export function UpdateNoteType(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Note.UpdateCategory',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 删除笔记分类
+export function DeteleNoteType(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Note.DeleteCategory',
+    method: 'post',
+    data: datas
+  })
+}
 // ******************************* 点赞收藏*/
 // 点赞
 export function P_dianZan(datas) {
@@ -273,6 +332,18 @@ export function GetFollowee(datas) {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
     url: '/?service=App.Focus.GetFollowee',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 他人信息
+export function GetCustomer(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.User.GetById',
     method: 'post',
     data: datas
   })

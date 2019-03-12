@@ -9,10 +9,10 @@ import '../static/css/iconfont/1.0.0/index.css' /* icofont*/
 import 'normalize.css/normalize.css'// A modern alternative to CSS resets
 import '@/styles/index.scss' // global css
 
-import './mock' // simulation data
+// import './mock' // simulation data
 
 // font-awesome
-import '@/assets/library/font-awesome-4.7.0/css/font-awesome.min.css'
+// import '@/assets/library/font-awesome-4.7.0/css/font-awesome.min.css'
 
 import App from './App'
 

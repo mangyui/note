@@ -50,7 +50,7 @@
               </span>
               <router-link :to="item.QuestionId==0?'/home/mistake/'+item.Id:(item.MistakeId==0?'/home/question_details/'+item.Id:'/home/mistake/'+item.Id)">
                 <div class="ques_body tipbox">
-                  <b>{{index+1}}.</b><div v-html="item.Question.Content"></div>
+                  <b>{{index+1}}.</b><div v-html="item.Question.Content||item.Mistake.QuestionContent"></div>
                 </div>
               </router-link>
               <el-button class="downMore" @click="clickfun($event)" type="primary" icon="el-icon-caret-bottom" size="mini" ></el-button>
@@ -59,10 +59,18 @@
                 <nx-svg-icon class-name='international-icon' icon-class="collect" /><span class="ques_footer_num">{{item.Question.CollectNumber}}</span>
                 <el-tag v-if="item.QuestionId==0" type="info">个人</el-tag>
                 <el-tag v-if="item.QuestionId!=0 && item.MistakeId==0">官方</el-tag>
-                <el-tag v-if="item.MistakeId!=0" type="warning">题友</el-tag>
+                <!-- <el-tag v-if="item.MistakeId!=0" type="warning">题友</el-tag> -->
               </div>
             </div>
           </div>
+        </div>
+        <div v-if="showMore" class="loading-box">
+          <i class="el-icon-loading"></i>
+          加载更多中...
+        </div>
+        <div v-if="!showMore && NoneMore" class="loading-box">
+          <i class="el-icon-search"></i>
+          没有更多了...
         </div>
       </div>
     </div>
@@ -86,7 +94,9 @@ export default {
     return {
       homeTop: 0,
       showLoading: true,
-      showDelete: false,
+      showNone: false,
+      showMore: false,
+      NoneMore: false,
       collects: [],
       // type: '',
       // typelist: [
@@ -96,7 +106,9 @@ export default {
       //   }
       // ],
       tolist: {
-        UserId: this.$store.getters.user.Id
+        UserId: this.$store.getters.user.Id,
+        Number: 3,
+        Page: 1
       },
       search: {
         keys: '',
@@ -114,6 +126,9 @@ export default {
   beforeRouteLeave(to, from, next) {
     this.homeTop = document.querySelector('.app-main').scrollTop || 0
     next()
+  },
+  mounted() {
+    document.querySelector('.app-main').addEventListener('scroll', this.onScroll)
   },
   methods: {
     getCollects() {
@@ -172,6 +187,27 @@ export default {
       } else {
         p.style.maxHeight = '1000px'
         e.currentTarget.firstElementChild.style.transform = 'rotate(180deg)'
+      }
+    },
+    onScroll() {
+      var innerHeight = document.querySelector('.app-container').clientHeight
+      var outerHeight = document.querySelector('.app-main').clientHeight
+      var scrollTop = document.querySelector('.app-main').scrollTop
+      if (innerHeight <= (outerHeight + scrollTop)) {
+        if (this.NoneMore) {
+          return
+        }
+        this.showMore = true
+        this.tolist.Page++
+        CollectList(qs.stringify(this.tolist)).then(res => {
+          this.collects = this.collects.concat(res.data.data)
+          this.showMore = false
+          if (res.data.data.length < this.tolist.Number) {
+            this.NoneMore = true
+          } else {
+            this.NoneMore = false
+          }
+        }).catch(() => {})
       }
     }
   }

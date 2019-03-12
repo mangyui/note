@@ -10,8 +10,8 @@
           round >{{Attention==true?'已关注':'关注'}}
       </el-button>
 
-      <img class="header-avatar" :src="user.avatar">
-      <span class="header-name">{{user.name}}</span>
+      <img class="header-avatar" :src="user.Avatar">
+      <span class="header-name">{{user.Name}}</span>
       <span class="header-bio">这个家伙很懒，什么都没留下</span>
       <div class="header-info">
       </div>
@@ -30,30 +30,22 @@
                   <table class="datum-table">
                     <tr>
                       <th>用户名</th>
-                      <td>mangyu</td>
+                      <td>{{user.Name}}</td>
                     </tr>
                     <tr>
                       <th>性别</th>
-                      <td>男</td>
+                      <td>{{user.Sex}}</td>
                     </tr>
                     <tr>
-                      <th>家乡</th>
+                      <th>地址</th>
                       <td>
-                        江西/赣州
+                        {{user.Address}}
                       </td>
-                    </tr>
-                    <tr>
-                      <th>现居</th>
-                      <td>浙江/绍兴</td>
-                    </tr>
-                    <tr>
-                      <th>职业</th>
-                      <td>学生</td>
                     </tr>
                     <tr>
                       <th>简介</th>
                       <td class="brief-introduction">
-                        <p>学习，运动，编程都不擅长，擅长吃饭，睡觉，打游戏</p>
+                        <p>{{user.Intro}}</p>
                       </td>
                     </tr>
                   </table>
@@ -67,7 +59,11 @@
                   <table class="datum-table">
                     <tr>
                       <th>在读院校</th>
-                      <td>Shaoxing University</td>
+                      <td>{{School}}</td>
+                    </tr>
+                    <tr>
+                      <th>年级</th>
+                      <td>{{Class}}</td>
                     </tr>
                   </table>
                 </div>
@@ -79,8 +75,8 @@
                 <div class="table-wrap">
                   <table class="datum-table">
                     <tr>
-                      <th>QQ</th>
-                      <td>1445327460</td>
+                      <th>手机号码</th>
+                      <td>{{user.Phone}}</td>
                     </tr>
                   </table>
                 </div>
@@ -93,9 +89,9 @@
             <div class="ques-list_item" v-for="(item,index) in questions" :key="index">
               <div class="ques_box">
                 <div class="ques_header">
-                  <img :src="user.avatar">
+                  <img :src="user.Avatar">
                   <div class="header_right">
-                    <b>{{user.name}}</b>
+                    <b>{{user.Name}}</b>
                   </div>
                 </div>
                 <span class="header_time"><i class="el-icon-time"> 19/02/16 19:52:24</i></span>
@@ -122,31 +118,68 @@
 
 <script>
 import nxSvgIcon from '@/components/nx-svg-icon/index'
-import {
-  getNoteList
-} from '@/api/notes'
+// import {
+//   getNoteList
+// } from '@/api/notes'
 
 import {
-  P_toFollowee
+  P_toFollowee,
+  GetCustomer
 } from '@/api/toPost'
+import { classList } from '@/assets/js/class.js'
+import {
+  getSchoolList
+} from '@/api/toget'
+
+import qs from 'qs'
 
 export default {
   name: 'others',
   components: { nxSvgIcon },
   data() {
     return {
-      user: this.$store.getters,
+      id: '',
+      user: '',
       questions: [],
       Attention: true,
-      activeName: 'info'
+      activeName: 'info',
+      classlist: classList,
+      Class: '',
+      schoolList: [],
+      School: ''
     }
   },
   methods: {
-    getNotes() {
-      getNoteList().then(res => {
-        this.questions = res.data
+    getCustomer() {
+      GetCustomer(qs.stringify({ UserId: this.id, RequesterId: this.$store.getters.user.Id })).then(res => {
+        this.user = res.data.data
+        if (!this.user.Id) {
+          this.$message.warning('没有找到...')
+          var close = document.querySelector('.tags-view-item.active .el-icon-close')
+          close.click()
+        } else {
+          var index = this.classlist.find((item) => {
+            return item.value === this.user.Class
+          })
+          this.Class = index.label
+        }
       }).catch(() => {})
-      this.loading = false
+    },
+    getschool() {
+      getSchoolList().then(res => {
+        this.schoolList = res.data.data
+        var index = this.schoolList.find((item) => {
+          return item.Id === this.user.SchoolId
+        })
+        this.School = index.Name
+      }).catch(() => {
+      })
+    },
+    getNotes() {
+      // getNoteList().then(res => {
+      //   this.questions = res.data
+      // }).catch(() => {})
+      // this.loading = false
     },
     toAttention() {
       P_toFollowee().then(res => {
@@ -164,10 +197,18 @@ export default {
       // } else {
       //   this.Attention = true
       // }
+    },
+    fetchDate() {
+      this.id = this.$route.params.id
+      if (this.id) {
+        this.getCustomer()
+      }
     }
   },
   created() {
-    this.getNotes()
+    // this.getNotes()
+    this.fetchDate()
+    this.getschool()
   }
 }
 </script>

@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <span class="header-title">错题详情</span>
     <div v-if="showLoading" class="loading-box">
       <i class="el-icon-loading"></i>
       加载中...
@@ -256,7 +257,7 @@ export default {
         }
         this.user = res.data.data.User
         this.isLike = res.data.data.Like
-        this.isCollect = res.data.data.Collect
+        this.isCollect = res.data.data.Collection
         if (this.$store.getters.user && this.$store.getters.user.Id === this.user.Id) {
           this.isMe = true
           this.content = this.question.Correct
@@ -265,6 +266,7 @@ export default {
         }
         this.showLoading = false
       }).catch((res) => {
+        console.log(res)
         this.$message.warning('没有找到...')
         var close = document.querySelector('.tags-view-item.active .el-icon-close')
         close.click()

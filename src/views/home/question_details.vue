@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <span class="header-title">题目详情</span>
     <div v-if="showLoading" class="loading-box">
       <i class="el-icon-loading"></i>
       加载中...

@@ -24,7 +24,7 @@
           <el-button type="danger" icon="el-icon-close" circle @click="allDelete"></el-button>
         </el-tooltip>
       </div>
-      <!-- <textarea class="result" v-model="result" placeholder="等待录入中..."></textarea> -->
+      <textarea class="result" v-model="result" placeholder="等待录入中..."></textarea>
       <div class="voice-button">
          <el-tooltip class="item" effect="dark" content="按住开始语音" placement="bottom-start">
           <div class="voice-input-button-wrapper">
@@ -45,9 +45,9 @@
           </div>
         </el-tooltip>
       </div>
-      <!-- <div class="">
+      <div class="">
         <el-button type="primary" icon="el-icon-search" @click="SearchQuestion"></el-button>
-      </div> -->
+      </div>
       <p>以下匹配：<b v-text="result"></b></p>
       <h3 v-if="questions[0]" class="Hpipei"> </h3>
       <quex-box :option="questions"></quex-box>
@@ -58,6 +58,14 @@
       <div v-if="showNone" class="loading-box">
         <i class="el-icon-search"></i>
         没找到你想要的...
+      </div>
+      <div v-if="showMore" class="loading-box">
+        <i class="el-icon-loading"></i>
+        加载更多中...
+      </div>
+      <div v-if="!showMore && NoneMore" class="loading-box">
+        <i class="el-icon-search"></i>
+        没有更多了...
       </div>
       <!-- <quill-editor ref="myTextEditor" v-model="content" :options="editorOption" @change="onEditorChange($event)"></quill-editor>
       <el-button class="editor-btn" type="primary" @click="submit">提交</el-button> -->
@@ -95,17 +103,26 @@ export default {
       editorOption: {
         placeholder: '等待转入中...'
       },
-      questions: []
+      questions: [],
+      showMore: false,
+      NoneMore: false,
+      Sdata: {
+        Keys: '',
+        Page: 1,
+        Number: 10,
+        CategoryId: 0
+      }
+
     }
   },
   methods: {
-    onEditorChange({ quill, html, text }) {
-      this.content = html
-    },
-    submit() {
-      console.log(this.content)
-      this.$message.success('提交成功！')
-    },
+    // onEditorChange({ quill, html, text }) {
+    //   this.content = html
+    // },
+    // submit() {
+    //   console.log(this.content)
+    //   this.$message.success('提交成功！')
+    // },
     showResult(text) {
       this.oldResult = this.result
       this.result = this.result + text.substr(0, text.length - 1)
@@ -133,9 +150,12 @@ export default {
       this.result = str
     },
     SearchQuestion() {
+      this.Sdata.Page = 1
       this.showNone = false
+      this.NoneMore = false
       this.showLoading = true
-      SearchQues(qs.stringify({ Keys: this.result })).then(res => {
+      this.Sdata.Keys = this.result.substring(0, 50)
+      SearchQues(qs.stringify(this.Sdata)).then(res => {
         this.questions = res.data.data
         this.showLoading = false
         if (!this.questions[0]) {
@@ -148,7 +168,31 @@ export default {
     toeditor() {
       this.content = this.content + this.result
       this.SearchQuestion()
+    },
+    onScroll() {
+      var innerHeight = document.querySelector('.app-container').clientHeight
+      var outerHeight = document.querySelector('.app-main').clientHeight
+      var scrollTop = document.querySelector('.app-main').scrollTop
+      if (innerHeight <= (outerHeight + scrollTop)) {
+        if (this.NoneMore) {
+          return
+        }
+        this.showMore = true
+        this.Sdata.Page++
+        SearchQues(qs.stringify(this.Sdata)).then(res => {
+          this.questions = this.questions.concat(res.data.data)
+          this.showMore = false
+          if (res.data.data.length < this.Sdata.Number) {
+            this.NoneMore = true
+          } else {
+            this.NoneMore = false
+          }
+        }).catch(() => {})
+      }
     }
+  },
+  mounted() {
+    document.querySelector('.app-main').addEventListener('scroll', this.onScroll)
   },
   created() {
   }

@@ -249,6 +249,12 @@ export const constantRouterMap = [
         component: () => import('@/views/toques/collect'),
         meta: { title: 'Collect' }
       },
+      {
+        path: 'mistake_type',
+        name: 'mistake_type',
+        component: () => import('@/views/toques/mistake_type'),
+        meta: { title: 'Mistake_type' }
+      },
       // {
       //   path: 'knowledge',
       //   name: 'knowledge',

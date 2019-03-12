@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
-    <span class="header-title">笔记分类</span>
+    <span class="header-title">错题分类</span>
     <div class="crumbs disNone">
       <el-breadcrumb separator="/">
-          <el-breadcrumb-item><i class="el-icon-date"></i> 笔记本</el-breadcrumb-item>
-          <el-breadcrumb-item>笔记分类</el-breadcrumb-item>
+          <el-breadcrumb-item><i class="el-icon-date"></i> 错题本</el-breadcrumb-item>
+          <el-breadcrumb-item>错题分类</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="big-box1200">
@@ -42,9 +42,9 @@
         </el-row>
       </div>
     </div>
-    <el-dialog title="添加笔记分类" :visible.sync="showAdd">
+    <el-dialog title="添加错题分类" :visible.sync="showAdd">
       <el-form :model="toadd" :rules="rules" ref="Form" label-width="100px">
-        <el-form-item label="笔记分类名" prop="Name">
+        <el-form-item label="错题分类名" prop="Name">
           <el-input v-model="toadd.Name"></el-input>
         </el-form-item>
         <el-form-item label="分类说明" prop="Intro">
@@ -53,12 +53,12 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="showAdd = false">取 消</el-button>
-        <el-button type="primary" @click="addNoteType">确 定</el-button>
+        <el-button type="primary" @click="addMistakeType">确 定</el-button>
       </div>
     </el-dialog>
-    <el-dialog title="修改笔记分类" :visible.sync="showUpdate">
+    <el-dialog title="修改错题分类" :visible.sync="showUpdate">
       <el-form :model="toupdate" :rules="rules" ref="updateForm" label-width="100px">
-        <el-form-item label="笔记分类名" prop="Name">
+        <el-form-item label="错题分类名" prop="Name">
           <el-input v-model="toupdate.Name"></el-input>
         </el-form-item>
         <el-form-item label="分类说明" prop="Intro">
@@ -67,7 +67,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="showUpdate = false">取 消</el-button>
-        <el-button type="primary" @click="updateNoteType">确 定</el-button>
+        <el-button type="primary" @click="updateMistakeCate">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -76,16 +76,16 @@
 <script>
 
 import {
-  AddNoteType,
-  UpdateNoteType,
-  DeteleNoteType
+  mistakeCate,
+  AddMistakeCate,
+  DeleteMistakeCate,
+  UpdateMistakeCate
 } from '@/api/toPost'
 
-import { NoteCategory } from '@/api/toget'
 import qs from 'qs'
 
 export default {
-  name: 'note_type',
+  name: 'mistake_type',
   data() {
     return {
       homeTop: 0,
@@ -102,7 +102,7 @@ export default {
       },
       toupdate: {
         UserId: this.$store.getters.user.Id,
-        NoteCategoryId: '',
+        MistakeCateId: '',
         Name: '',
         Intro: ''
       },
@@ -127,19 +127,19 @@ export default {
   methods: {
     getCategory() {
       this.showLoading = true
-      NoteCategory(this.$store.getters.user.Id).then(res => {
+      mistakeCate(qs.stringify({ UserId: this.$store.getters.user.Id })).then(res => {
         if (res.data.code === 0) {
           this.types = res.data.data
         } else {
-          this.$message.warning('获取笔记分类失败...')
+          this.$message.warning('获取错题分类失败...')
         }
         this.showLoading = false
       }).catch(() => {})
     },
-    addNoteType() {
+    addMistakeType() {
       this.$refs.Form.validate(valid => {
         if (valid) {
-          AddNoteType(qs.stringify(this.toadd)).then(res => {
+          AddMistakeCate(qs.stringify(this.toadd)).then(res => {
             if (res.data.code === 0) {
               this.$notify({
                 title: '提示',
@@ -156,15 +156,15 @@ export default {
       })
     },
     showEditBox(index) {
-      this.toupdate.NoteCategoryId = this.types[index].Id
+      this.toupdate.MistakeCateId = this.types[index].Id
       this.toupdate.Name = this.types[index].Name
       this.toupdate.Intro = this.types[index].Intro
       this.showUpdate = true
     },
-    updateNoteType() {
+    updateMistakeCate() {
       this.$refs.updateForm.validate(valid => {
         if (valid) {
-          UpdateNoteType(qs.stringify(this.toupdate)).then(res => {
+          UpdateMistakeCate(qs.stringify(this.toupdate)).then(res => {
             if (res.data.code === 0) {
               this.$notify({
                 title: '提示',
@@ -181,17 +181,17 @@ export default {
       })
     },
     toDetele(index) {
-      this.$confirm('此操作将不仅删除该分类,该分类下的笔记都将删除，无法还原, 是否继续?', '警告', {
+      this.$confirm('此操作将不仅删除该分类,该分类下的错题都将删除，无法还原, 是否继续?', '警告', {
         confirmButtonText: '全都不要了',
         cancelButtonText: '先留着吧',
         type: 'error'
       }).then(() => {
-        DeteleNoteType(qs.stringify({ UserId: this.$store.getters.user.Id, NoteCategoryId: index })).then(res => {
+        DeleteMistakeCate(qs.stringify({ UserId: this.$store.getters.user.Id, MistakeCateId: index })).then(res => {
           if (res.data.code === 0) {
             this.$notify({
               title: '提示',
-              message: '成功删除分类，并删除了' + res.data.data + '条笔记',
-              type: 'info'
+              message: '成功删除分类，并删除了' + res.data.data + '条错题',
+              type: 'success'
             })
           } else {
             this.$message.warning('操作失败...')

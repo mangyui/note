@@ -1,6 +1,7 @@
 .el-card{
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   position: relative;
+  border-radius: 1px;
 }
 .big-box{
   display: flex;
@@ -15,14 +16,15 @@
   border-radius: 3px;
   background: #fff;
   margin-bottom: 5px;
+  display: block;
 }
 .big-content{
   font-size: 14px;
   color: #666;
-  line-height: 1.5em;
+  line-height: 1.7em;
   height: 55px;
   overflow: hidden;
-  padding: 10px 5px;
+  padding: 5px 5px;
   margin: 10px 0;
 }
 i.header-icon{

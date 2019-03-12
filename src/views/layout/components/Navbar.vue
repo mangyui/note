@@ -2,7 +2,7 @@
   <el-menu id="topNav" class="navbar" mode="horizontal">
     <nx-hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></nx-hamburger>
     <nx-breadcrumb class="breadcrumb-container"></nx-breadcrumb>
-    <span v-if="isBack" class="goback toShow" @click="$router.go(-1)">
+    <span v-if="isBack" class="goback toShow" @click="goBack">
       <i class="el-icon-arrow-left"></i>
     </span>
     <router-link v-if="!isBack" to="/home/search" class="toShow">
@@ -75,7 +75,18 @@ export default {
   data() {
     return {
       user: this.$store.getters.user,
-      isBack: false
+      isBack: false,
+      whiteList: [
+        '/home/index',
+        '/SQu/index', // 拍照搜题
+        '/more/index', // 更多
+        '/merchant/index', // 商家
+        '/about/index', // 关于帮助
+        '/home/search', // 搜索页
+        '/tonote/noteList',
+        '/toques/collect',
+        '/toques/quesList'
+      ]
     }
   },
   computed: {
@@ -96,6 +107,15 @@ export default {
         this.isBack = false
       } else {
         this.isBack = true
+      }
+    },
+    goBack() {
+      if (this.whiteList.indexOf(this.$route.path) !== -1) {
+        this.$router.push({
+          path: '/home/index'
+        })
+      } else {
+        this.$router.go(-1)
       }
     }
   },
