@@ -37,7 +37,7 @@
           </el-option>
         </el-select>
         <div>
-          <el-button icon="el-icon-refresh" circle @click="getNotes"></el-button>
+          <el-button icon="el-icon-refresh" circle @click="refresh"></el-button>
           <router-link  to='/todo/edit'>
             <el-button type="primary" icon="el-icon-plus" circle></el-button>
           </router-link>
@@ -71,7 +71,18 @@
               </el-card>
           </el-col>
         </el-row>
+        <div v-if="showMore" class="loading-box">
+          <i class="el-icon-loading"></i>
+          加载更多中...
+        </div>
+        <div v-if="!showMore && NoneMore" class="loading-box">
+          <i class="el-icon-search"></i>
+          没有更多了...
+        </div>
       </div>
+    </div>
+    <div v-if="ScrollTop>700" class="note_d-edit" onclick="document.querySelector('.app-main').scrollTop=0">
+      <el-button class="tototop" icon="el-icon-d-arrow-left" circle></el-button>
     </div>
   </div>
 </template>
@@ -92,12 +103,17 @@ export default {
   data() {
     return {
       homeTop: 0,
+      ScrollTop: 0,
       showLoading: true,
       showDelete: false,
+      showMore: false,
+      NoneMore: false,
       notes: [],
       tolist: {
         UserId: this.$store.getters.user.Id,
-        NoteCategoryId: 0
+        NoteCategoryId: 0,
+        Number: 3,
+        Page: 1
       },
       search: {
         keys: '',
@@ -117,25 +133,34 @@ export default {
   },
   activated() {
     document.querySelector('.app-main').scrollTop = this.homeTop || 0
-    this.getCategory()
-    this.getNotes()
+    document.querySelector('.app-main').addEventListener('scroll', this.onScroll)
   },
   beforeRouteLeave(to, from, next) {
     this.homeTop = document.querySelector('.app-main').scrollTop || 0
+    document.querySelector('.app-main').removeEventListener('scroll', this.onScroll)
     next()
   },
+  mounted() {
+    document.querySelector('.app-main').addEventListener('scroll', this.onScroll)
+  },
   methods: {
+    refresh() {
+      this.getCategory()
+      this.getQues()
+    },
     getCategory() {
       NoteCategory(this.$store.getters.user.Id).then(res => {
         if (res.data.code === 0) {
-          this.typelist = res.data.data
+          this.typelist = this.typelist.concat(res.data.data)
         } else {
           this.$message.warning('获取笔记分类失败...')
         }
       }).catch(() => {})
     },
     getNotes() {
+      this.NoneMore = false
       this.showLoading = true
+      this.tolist.Page = 1
       NoteList(qs.stringify(this.tolist)).then(res => {
         this.notes = res.data.data
         this.showLoading = false
@@ -168,9 +193,29 @@ export default {
         this.notes = res.data.data
         this.showLoading = false
       }).catch(() => {})
+    },
+    onScroll() {
+      var innerHeight = document.querySelector('.app-container').clientHeight
+      var outerHeight = document.querySelector('.app-main').clientHeight
+      var scrollTop = document.querySelector('.app-main').scrollTop
+      this.ScrollTop = scrollTop
+      if (innerHeight <= (outerHeight + scrollTop)) {
+        if (this.NoneMore || this.showMore || this.search.keys.trim() !== '') {
+          return
+        }
+        this.showMore = true
+        this.tolist.Page++
+        NoteList(qs.stringify(this.tolist)).then(res => {
+          this.notes = this.notes.concat(res.data.data)
+          this.showMore = false
+          if (res.data.data.length < this.tolist.Number) {
+            this.NoneMore = true
+          } else {
+            this.NoneMore = false
+          }
+        }).catch(() => {})
+      }
     }
-  },
-  mounted() {
   }
 }
 </script>

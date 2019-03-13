@@ -440,6 +440,7 @@ code {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      margin-top: 5px;
     }
   }
 }
@@ -459,7 +460,7 @@ code {
   position: absolute;
   top: 10px;
   right: 10px;
-
+  border: 0;
   [class^=el-icon-]{
     font-weight: bold
   }
@@ -524,6 +525,10 @@ code {
     font-size: 33px;
     box-shadow: 0 0 5px #337ab7;
   }
+  .tototop i{
+    transform: rotate(90deg);
+    color:#409EFF;
+  }
 }
 .crop-pic .el-dialog__body{
   padding: 0 20px;
@@ -577,6 +582,48 @@ code {
   margin: 28px 0 16px;
   font-size: 20px;
 }
+
+// wangediter 的编辑器改写样式
+.divWangeditor{
+  .w-e-toolbar{
+    flex-wrap: wrap;
+    background: #fff!important;
+    .w-e-menu{
+      z-index: 10!important;
+      i{
+        // color: #525252;
+      }
+    }
+  }
+  .w-e-text-container{
+    z-index: 9!important;
+    .w-e-text{
+      overflow-y: auto;
+    }
+  }
+}
+
+// 系统管理
+.systom-group{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  text-align: center;
+  color: #fff;
+  margin-bottom: 30px;
+  svg{
+    width: 20px;
+    height: 20px;
+    font-size: 20px!important;
+    margin: 0 0 8px!important;
+    fill: #fff!important;
+    color: #fff;
+  }
+  p{
+    font-size: 11px;
+  }
+}
+
 @media (min-width: 769px)
 {
   .toShow{
@@ -660,7 +707,7 @@ code {
       height: 100px;
     }
     .friend-body{
-      padding: 50px 5px 5px;
+      padding: 46px 5px 5px;
       img{
         height: 80px;
         width: 80px;

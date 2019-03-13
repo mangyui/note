@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <span class="header-title">关于vNote</span>
     <div class="crumbs">
       <el-breadcrumb separator="/">
           <el-breadcrumb-item><i class="el-icon-date"></i> 关于vNote</el-breadcrumb-item>
@@ -17,12 +18,13 @@
       <el-collapse>
         <el-collapse-item title="功能介绍" name="2">
           <ul>
-            <li>vNote 是一个基于vue + element-ui 开发，响应式布局，PC端和移动端都支持。</li>
-            <li>在这里你可以记录和管理你的笔记。录入笔记的方式由如下三种：</li>
-            <li>1.直接手写编辑文本，内置quill-editor富文本编辑器，功能丰富强大。</li>
-            <li>2.语音识别方式，你可通过语音录入，网站将识别你的录音，转化为文本。</li>
-            <li>3.图片文字识别，你可上传笔记图片并支持剪切和旋转，网站将识别该图片中的文本，手机端部分浏览器还支持拍照上传。</li>
-            <li>页面间互换不影响页面的数据记录，即页面保留已输入的数据，不刷新（手动关闭或强制刷新除外）</li>
+            <li>vNote 响应式布局，PC端和移动端都支持。</li>
+            <li>在这里你可以记录和管理你的笔记错题。</li>
+            <li>笔记整理</li>
+            <li>错题整理。</li>
+            <li>语音识别。</li>
+            <li>拍照搜题。</li>
+            <li>智能推荐。</li>
           </ul>
         </el-collapse-item>
       </el-collapse>

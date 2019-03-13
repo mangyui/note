@@ -41,33 +41,30 @@
         </div>
         <div class="sys-section">
           <div class="title">
-            <strong>暂无题友解答</strong>
+            <strong>题友解答</strong>
           </div>
-          <!-- <div class="answer_item" v-for="(item,index) in 4" :key="index">
+          <div class="answer_item" v-for="(item,index) in friendCorrect" :key="index">
             <div class="answer_item_top">
               <div class="ques_header">
-                <router-link to="/user/others/1">
-                  <img :src="user.avatar">
+                <router-link :to="'/user/others/'+item.UserId">
+                  <img :src="item.Avatar||'./static/img/avatar.jpg'">
                 </router-link>
                 <div class="header_right">
-                  <b>{{user.name}}</b>
+                  <b>{{item.userName || '匿名'}}</b>
                 </div>
               </div>
             </div>
-            <router-link to="/home/other_answer/1">
-              <div class="sys-article item-article">
-                <p>系统组件主要分为三大类</p>
-                <p>功能类：以实现具体功能为主，包括对第三方组件的二次封装类，尽量不要修改。</p>
-                <p>布局类：以常用布局为主，包括标题、间距、搜索之类的纯布局组件，可按实际项目要求修改</p>
-                <p>辅助类：文档辅助说明及其他组件部分，可能不会应用在正式产品中，该类别可以不引入到正式产品中</p>
+            <router-link :to="'/home/mistake/'+item.MistakeCateId">
+              <div class="sys-article item-article" v-html="item.Correct">
               </div>
             </router-link>
             <div class="sys_footer">
               <span>
-                <nx-svg-icon class-name='sys_footer_icon' icon-class="zan" /><span class="ques_footer_num">66</span>
+                <nx-svg-icon class-name='sys_footer_icon' icon-class="zan" /><span class="ques_footer_num">{{item.LikeNumber}}</span>
+                <nx-svg-icon class-name='sys_footer_icon' icon-class="collect" /><span class="ques_footer_num">{{item.CollectNumber}}</span>
               </span>
             </div>
-          </div> -->
+          </div>
         </div>
       </div>
     </div>
@@ -83,7 +80,8 @@ import {
 
 import {
   P_dianZan,
-  P_toCollect
+  P_toCollect,
+  QFriendCorrect
 } from '@/api/toPost'
 
 import qs from 'qs'
@@ -97,6 +95,7 @@ export default {
       id: '',
       user: this.$store.getters.user,
       question: '',
+      friendCorrect: [],
       isLike: false,
       isCollect: false
     }
@@ -175,6 +174,13 @@ export default {
 
       })
     },
+    getFriendCorrect() {
+      QFriendCorrect(qs.stringify({ QuestionId: this.id })).then(res => {
+        this.friendCorrect = res.data.data
+      }).catch((res) => {
+        console.log(res)
+      })
+    },
     getQues() {
       var data = {
         Id: this.id,
@@ -190,10 +196,11 @@ export default {
         this.isLike = res.data.data.Like || false
         this.isCollect = res.data.data.Collection || false
         this.showLoading = false
-      }).catch(() => {
+        this.getFriendCorrect()
+      }).catch((res) => {
         this.$message.warning('没有找到...')
-        var close = document.querySelector('.tags-view-item.active .el-icon-close')
-        close.click()
+        // var close = document.querySelector('.tags-view-item.active .el-icon-close')
+        // close.click()
       })
     },
     fetchDate() {

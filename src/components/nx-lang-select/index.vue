@@ -1,5 +1,4 @@
 <template>
- <el-tooltip class="item" effect="dark" content="修改语言" placement="bottom-end">
   <el-dropdown trigger="click" class='international' @command="handleSetLanguage">
     <div>
       <nx-svg-icon class-name='international-icon' icon-class="language" />
@@ -9,7 +8,6 @@
       <el-dropdown-item command="en" :disabled="language==='en'">English</el-dropdown-item>
     </el-dropdown-menu>
   </el-dropdown>
- </el-tooltip>
 </template>
 
 <script>
@@ -44,8 +42,10 @@ export default {
 .el-dropdown{
   color:#5a5e66;
 }
-.el-dropdown:hover{
-  color: #52bab5;
+@media (min-width: 769px) {
+  .el-dropdown:hover{
+    color: #52bab5;
+  }
 }
 </style>
 

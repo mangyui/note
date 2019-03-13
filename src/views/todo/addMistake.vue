@@ -26,29 +26,6 @@
         </div>
         <div class="sq-body">
           <el-button class="sq-change" type="danger" size="medium" v-if="showBtn" @click="showShou=(showShou==false?true:false)">{{showShou==false?"手动添加":"返回相似"}}</el-button>
-          <!-- <div v-if="!showShou"  class="ques-list">
-            <h3 class="Hpipei">猜你要找:</h3>
-            <slider v-if="" ref="slider" :options="sliderOptions" @slide='slide' @tap='onTap' @init='onInit'>
-              <slideritem class="slider-ques" v-for="(item,index) in questions" :key="index" :style="item.style">
-                <div class="myslide-box">
-                <div class="ques-list_item">
-                  <div class="ques_box">
-                    <router-link to="/home/question_details/1">
-                      <div class="ques_body tipbox">
-                        <div class="ocr-content" v-html="item.Content"> </div><b>{{index+1}}.</b>
-                      </div>
-                    </router-link>
-                  </div>
-                </div>
-                <h4>添加解答</h4>
-                <quill-editor ref="AnalysisEditor" v-model="haveF.Analysis[index].text" :options="editorOption" ></quill-editor>
-                <el-button class="editor-btn pull-right" type="primary" @click="dialogFormVisible = true">提交</el-button>
-              </div>
-              </slideritem>
-              <div slot="loading">loading...</div>
-            </slider>
-
-          </div> -->
           <div class="run_btn">
             <img v-if="showGIF" class="loading-gif" src="@/assets/images/home/loading2.gif" alt="Loading">
             <el-checkbox v-model="isHand" label="含手写" border></el-checkbox>
@@ -57,9 +34,12 @@
           <div class="ocr-edit">
             <h3 class="Hpipei">手动添加</h3>
             <h4>错题题目(不含答案)</h4>
-            <quill-editor ref="titleEditor" v-model="form.Content" :options="editorOption" ></quill-editor>
+            <div ref="ShouTitle" class="divWangeditor" style="text-align:left"></div>
+            <!-- <quill-editor ref="titleEditor" v-model="form.Content" :options="editorOption" ></quill-editor> -->
             <h4>错题解答(可选)</h4>
-            <quill-editor ref="AnalysisEditor" v-model="form.Analysis" :options="editorOption" ></quill-editor>
+            <div ref="ShouCorrect" class="divWangeditor" style="text-align:left"></div>
+            <!-- <quill-editor ref="AnalysisEditor" v-model="form.Analysis" :options="editorOption" ></quill-editor> -->
+            <br/>
             <el-button class="editor-btn pull-right" type="primary" @click="dialogFormVisible = true">提交</el-button>
           </div>
         </div>
@@ -93,6 +73,7 @@
               :value="item.Id">
             </el-option>
           </el-select>
+          <el-button type="primary" icon="el-icon-plus" @click="showAdd=!showAdd" circle></el-button>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -100,17 +81,31 @@
         <el-button type="primary" @click="submit">确 定</el-button>
       </div>
     </el-dialog>
+    <el-dialog title="添加错题分类" :visible.sync="showAdd">
+      <el-form :model="toadd" :rules="addrules" ref="addForm" label-width="100px">
+        <el-form-item label="错题分类名" prop="Name">
+          <el-input v-model="toadd.Name"></el-input>
+        </el-form-item>
+        <el-form-item label="分类说明" prop="Intro">
+          <el-input type="textarea" v-model="toadd.Intro"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="showAdd = false">取 消</el-button>
+        <el-button type="primary" @click="addMistakeType">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
+
+// wangeditor 富文本
+import E from 'wangeditor'
+var ShouTitle, ShouCorrect
 
 import nxSvgIcon from '@/components/nx-svg-icon/index'
 import quexBox from '@/components/my-box/quex-box'
-import { quillEditor } from 'vue-quill-editor'
 import VueCropper from 'vue-cropperjs'
 import axios from 'axios'
 import qs from 'qs'
@@ -124,14 +119,14 @@ import {
   // upQuestion,
   addMistake,
   // ocrQues,
-  mistakeCate
+  mistakeCate,
+  AddMistakeCate
 } from '@/api/toPost'
 
 export default {
   name: 'addMistake',
   components: {
     VueCropper,
-    quillEditor,
     quexBox,
     nxSvgIcon
     // slider,
@@ -145,21 +140,6 @@ export default {
       lines: '',
       result: '',
       isHand: false,
-      editorOption: {
-        placeholder: '等待提取中...',
-        modules: {
-          toolbar: [
-            ['bold', 'italic', 'underline', 'strike'],
-            [{ 'script': 'sub' }, { 'script': 'super' }],
-            [{ 'header': 1 }, { 'header': 2 }],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-            [{ 'align': [] }],
-            [{ 'color': [] }, { 'background': [] }],
-            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-            ['code-block', 'link', 'image']
-          ]
-        }
-      },
       sliderOptions: {
         currentPage: 0
       },
@@ -167,6 +147,7 @@ export default {
       imgSrc: '',
       dialogVisible: false,
       dialogFormVisible: false,
+      showAdd: false,
       questions: [],
       typelist: [],
       form: {
@@ -179,6 +160,20 @@ export default {
       rules: {
         CategoryId: [
           { required: true, message: '请选择题目类型', trigger: 'change' }
+        ]
+      },
+      toadd: {
+        UserId: this.$store.getters.user.Id,
+        Name: '',
+        Intro: ''
+      },
+      addrules: {
+        Name: [
+          { required: true, message: '请输入分类名', trigger: 'blur' },
+          { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
+        ],
+        Intro: [
+          { min: 0, max: 30, message: '长度在 0 到 30 个字符', trigger: 'blur' }
         ]
       }
     }
@@ -198,7 +193,7 @@ export default {
         message: '网页端请选择上传图片的方式！',
         type: 'info'
       })
-      // navigator.camera.getPicture(this.onSuccess, this.onFail, {
+      //  navigator.camera.getPicture(this.onSuccess, this.onFail, {
       //   quality: 50,
       //   destinationType: Camera.DestinationType.DATA_URL,
       //   encodingType: Camera.EncodingType.JPEG,
@@ -306,6 +301,37 @@ export default {
         this.showGIF = false
       }
     },
+    addMistakeType() {
+      if (!this.$store.getters.user.Id) {
+        this.$confirm('你这个操作，登录就能解决', '提示', {
+          confirmButtonText: '立即登录',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$router.push({
+            path: '/login'
+          })
+        }).catch(() => {})
+        return
+      }
+      this.$refs.addForm.validate(valid => {
+        if (valid) {
+          AddMistakeCate(qs.stringify(this.toadd)).then(res => {
+            if (res.data.code === 0) {
+              this.$notify({
+                title: '提示',
+                message: '添加分类成功！',
+                type: 'success'
+              })
+            } else {
+              this.$message.warning('操作失败...')
+            }
+            this.showAdd = false
+            this.GetCategory()
+          }).catch(() => {})
+        }
+      })
+    },
     submit() {
       if (!this.$store.getters.user.Id) {
         this.$confirm('你还没有登录，不能进行该操作！前往登录', '提示', {
@@ -340,26 +366,6 @@ export default {
         }
       })
     },
-    // getQues() {
-    //   ocrQues(qs.stringify({ Text: this.form.Text })).then(res => {
-    //     this.questions = res.data.data
-    //     this.showShou = false
-    //     this.showBtn = true
-    //     this.showGIF = false
-    //     this.$notify({
-    //       title: '提示',
-    //       message: '已搜索相关题目！',
-    //       type: 'success'
-    //     })
-    //   }).catch(() => {
-    //     this.showGIF = false
-    //     this.$notify({
-    //       title: '提示',
-    //       message: '请求错误！',
-    //       type: 'error'
-    //     })
-    //   })
-    // },
 
     // 获取题目分类
     GetCategory() {
@@ -373,16 +379,54 @@ export default {
         console.log('获取题目分类数据失败！')
       })
     }
-    // 滑动组件监听事件
-    // slide(data) {
-    //   this.haveF.currentPage = data.currentPage
-    // },
-    // onTap(data) {
-    // },
-    // onInit(data) {
-    // }
   },
   mounted() {
+    // 富文本配置
+    var That = this
+    ShouTitle = new E(this.$refs.ShouTitle)
+    ShouCorrect = new E(this.$refs.ShouCorrect)
+    ShouTitle.customConfig = {
+      onchange: function(html) {
+        That.form.Content = html
+      },
+      uploadImgServer: '/api/UploadImg', // 上传图片到服务器
+      uploadFileName: 'Content', // 后端使用这个字段获取图片信息
+      uploadImgMaxLength: 1 // 限制一次最多上传 1 张图片
+    }
+    ShouCorrect.customConfig = {
+      onchange: function(html) {
+        That.form.Analysis = html
+      },
+      uploadImgServer: '/api/UploadImg', // 上传图片到服务器
+      uploadFileName: 'Content', // 后端使用这个字段获取图片信息
+      uploadImgMaxLength: 1 // 限制一次最多上传 1 张图片
+    }
+    ShouTitle.customConfig.menus =
+    ShouCorrect.customConfig.menus = [
+      'head', // 标题
+      'bold', // 粗体
+      'fontSize', // 字号
+      'fontName', // 字体
+      'italic', // 斜体
+      'underline', // 下划线
+      'strikeThrough', // 删除线
+      'foreColor', // 文字颜色
+      'backColor', // 背景颜色
+      'link', // 插入链接
+      'list', // 列表
+      'justify', // 对齐方式
+      'quote', // 引用
+      'emoticon', // 表情
+      'image', // 插入图片
+      'table', // 表格
+      // 'video',  // 插入视频
+      'code', // 插入代码
+      'undo', // 撤销
+      'redo' // 重复
+    ]
+    ShouTitle.create()
+    ShouCorrect.create()
+
     this.$refs.select_frame.ondragleave = (e) => {
       // 阻止离开时的浏览器默认行为
       e.preventDefault()
@@ -409,6 +453,9 @@ export default {
     }
   },
   created() {
+    this.GetCategory()
+  },
+  activated() {
     this.GetCategory()
   }
 }

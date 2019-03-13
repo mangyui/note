@@ -1,23 +1,27 @@
 <template>
   <div class="profile">
+    <div v-if="showLoading" class="loading-box">
+      <i class="el-icon-loading"></i>
+      加载中...
+    </div>
     <div class="profile-header">
       <div class="bg-blur"></div>
 
       <el-button class="toAttention"
           :type="Attention==true?'danger':''"
           :icon="Attention==true?'':'el-icon-plus'"
-          @click="toAttention($event)"
+          @click="toAttention()"
           round >{{Attention==true?'已关注':'关注'}}
       </el-button>
 
-      <img class="header-avatar" :src="user.Avatar">
+      <img class="header-avatar" :src="user.Avatar||'./static/img/avatar.jpg'">
       <span class="header-name">{{user.Name}}</span>
-      <span class="header-bio">这个家伙很懒，什么都没留下</span>
+      <span class="header-bio">{{user.Intro}}</span>
       <div class="header-info">
       </div>
     </div>
-    <div id="content">
-      <el-tabs v-model="activeName" class='is_stretch' >
+    <div id="content" class="big-box1200">
+      <el-tabs v-model="activeName" class='is_stretch' @tab-click="handleClick">
         <el-tab-pane name="info">
           <div slot="label"><i class="el-icon-date"></i>基本资料</div>
           <div class="contariner-wraper">
@@ -84,31 +88,36 @@
             </div>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="最近错题" name="ques">
+        <el-tab-pane label="TA的错题" name="ques">
           <div class="ques-list">
             <div class="ques-list_item" v-for="(item,index) in questions" :key="index">
               <div class="ques_box">
-                <div class="ques_header">
-                  <img :src="user.Avatar">
-                  <div class="header_right">
-                    <b>{{user.Name}}</b>
-                  </div>
-                </div>
-                <span class="header_time"><i class="el-icon-time"> 19/02/16 19:52:24</i></span>
-                <router-link to="/home/other_answer/1">
-                  <div class="ques_body">
-                    <b class="ques_title">{{item.title}}</b>
-                    <div class="tipbox ques_answer">{{item.answer}}</div>
+                <router-link :to="'/home/mistake/'+item.Id">
+                  <div class="ques_body tipbox">
+                    <b>{{index+1}}.</b><div v-html="item.QuestionContent||item.Question.Content"></div>
                   </div>
                 </router-link>
+                <el-button class="downMore" @click="clickfun($event)" type="primary" icon="el-icon-caret-bottom" size="mini" ></el-button>
                 <div class="ques_footer">
-                  <nx-svg-icon class-name='international-icon' icon-class="zan" /><span class="ques_footer_num">666</span>
-                  <nx-svg-icon class-name='international-icon' icon-class="collect" /><span class="ques_footer_num">6</span>
-                  <nx-svg-icon class-name='international-icon' icon-class="comment" /><span  class="ques_footer_num">66</span>
-                  <el-tag>数学</el-tag>
+                  <nx-svg-icon class-name='international-icon' icon-class="zan" /><span class="ques_footer_num">{{item.LikeNumber}}</span>
+                  <nx-svg-icon class-name='international-icon' icon-class="collect" /><span class="ques_footer_num">{{item.CollectNumber}}</span>
+                  <el-tag v-if="item.QuestionContent" type="info">个人</el-tag>
+                  <el-tag v-if="!item.QuestionContent">官方</el-tag>
                 </div>
               </div>
             </div>
+          </div>
+          <div v-if="!questions[0]" class="loading-box">
+            <i class="el-icon-search"></i>
+            空空如也...
+          </div>
+          <div v-if="showMore" class="loading-box">
+            <i class="el-icon-loading"></i>
+            加载更多中...
+          </div>
+          <div v-if="!showMore && NoneMore" class="loading-box">
+            <i class="el-icon-search"></i>
+            没有更多了...
           </div>
         </el-tab-pane>
       </el-tabs>
@@ -124,7 +133,8 @@ import nxSvgIcon from '@/components/nx-svg-icon/index'
 
 import {
   P_toFollowee,
-  GetCustomer
+  GetCustomer,
+  QuesList
 } from '@/api/toPost'
 import { classList } from '@/assets/js/class.js'
 import {
@@ -138,16 +148,38 @@ export default {
   components: { nxSvgIcon },
   data() {
     return {
+      showLoading: true,
+      showNone: false,
+      showMore: false,
+      NoneMore: false,
       id: '',
       user: '',
       questions: [],
-      Attention: true,
+      Attention: false,
       activeName: 'info',
       classlist: classList,
       Class: '',
       schoolList: [],
-      School: ''
+      School: '',
+      tolist: {
+        UserId: 0,
+        MistakeCateId: 0,
+        Number: 3,
+        Page: 1
+      }
     }
+  },
+  activated() {
+    document.querySelector('.app-main').scrollTop = this.homeTop || 0
+    document.querySelector('.app-main').addEventListener('scroll', this.onScroll)
+  },
+  beforeRouteLeave(to, from, next) {
+    this.homeTop = document.querySelector('.app-main').scrollTop || 0
+    document.querySelector('.app-main').removeEventListener('scroll', this.onScroll)
+    next()
+  },
+  mounted() {
+    document.querySelector('.app-main').addEventListener('scroll', this.onScroll)
   },
   methods: {
     getCustomer() {
@@ -162,7 +194,11 @@ export default {
             return item.value === this.user.Class
           })
           this.Class = index.label
+          this.showLoading = false
+          this.Attention = this.user.Focus || false
         }
+        this.tolist.UserId = this.user.Id
+        this.getschool()
       }).catch(() => {})
     },
     getschool() {
@@ -172,31 +208,77 @@ export default {
           return item.Id === this.user.SchoolId
         })
         this.School = index.Name
-      }).catch(() => {
+      }).catch((res) => {
+        console.log(res)
       })
     },
-    getNotes() {
-      // getNoteList().then(res => {
-      //   this.questions = res.data
-      // }).catch(() => {})
-      // this.loading = false
+    getQues() {
+      this.NoneMore = false
+      this.showLoading = true
+      this.tolist.Page = 1
+      QuesList(qs.stringify(this.tolist)).then(res => {
+        this.questions = res.data.data
+        this.showLoading = false
+      }).catch(() => {})
+    },
+    onScroll() {
+      var innerHeight = document.querySelector('.profile').clientHeight
+      var outerHeight = document.querySelector('.app-main').clientHeight
+      var scrollTop = document.querySelector('.app-main').scrollTop
+      this.ScrollTop = scrollTop
+      if (innerHeight <= (outerHeight + scrollTop)) {
+        if (this.NoneMore || this.showMore) {
+          return
+        }
+        this.showMore = true
+        this.tolist.Page++
+        QuesList(qs.stringify(this.tolist)).then(res => {
+          this.questions = this.questions.concat(res.data.data)
+          this.showMore = false
+          if (res.data.data.length < this.tolist.Number) {
+            this.NoneMore = true
+          } else {
+            this.NoneMore = false
+          }
+        }).catch(() => {})
+      }
+    },
+    handleClick(tab) {
+      if (tab.name === 'ques' && !this.questions[0]) {
+        console.log(tab.name)
+        this.getQues()
+      }
     },
     toAttention() {
-      P_toFollowee().then(res => {
+      if (!this.$store.getters.user.Id) {
+        this.$confirm('你还没有登录，不能进行该操作！前往登录', '提示', {
+          confirmButtonText: '立即登录',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$router.push({
+            path: '/login'
+          })
+        }).catch(() => {})
+        return
+      }
+      var data = {
+        FolloweeId: this.user.Id,
+        UserId: this.$store.getters.user.Id
+      }
+      P_toFollowee(qs.stringify(data)).then(res => {
+        if (res.data.data === -1) {
+          this.$notify({
+            title: '提示',
+            message: '已取消关注',
+            type: 'info'
+          })
+        }
         this.Attention = !this.Attention
+        // this.fetchDate()
       }).catch(() => {
         this.$message.warning('操作失败...')
       })
-      // if (this.Attention === true) {
-      //   this.Attention = false
-      //   this.$notify({
-      //     title: '提示',
-      //     message: '已取消关注',
-      //     type: 'info'
-      //   })
-      // } else {
-      //   this.Attention = true
-      // }
     },
     fetchDate() {
       this.id = this.$route.params.id
@@ -208,7 +290,6 @@ export default {
   created() {
     // this.getNotes()
     this.fetchDate()
-    this.getschool()
   }
 }
 </script>
@@ -264,7 +345,7 @@ export default {
     line-height: 50px;
     position: absolute;
     bottom: 0;
-    background: linear-gradient( to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 100% )
+    background: linear-gradient( to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.4) 100% )
 }
 
 .profile-header .header-name,.profile-header .header-bio {
@@ -300,7 +381,7 @@ export default {
     height: 240px;
   }
   .profile-header .header-avatar{
-    margin-top: 25px;
+    margin-top: 50px;
   }
 }
 </style>

@@ -5,6 +5,9 @@
     <span v-if="isBack" class="goback toShow" @click="goBack">
       <i class="el-icon-arrow-left"></i>
     </span>
+    <span class="goback toShow" onclick="location.reload()">
+      <i class="el-icon-refresh"></i>
+    </span>
     <router-link v-if="!isBack" to="/home/search" class="toShow">
       <el-button class="top-btn_search" round icon="el-icon-search" size="small" style=" margin-left:10px;border:0">搜索</el-button>
     </router-link>

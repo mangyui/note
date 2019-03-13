@@ -7,7 +7,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-fromurlencodeed
 // 创建axios实例
 const service = axios.create({
   baseURL: process.env.BASE_API, // api的base_url
-  timeout: 4000 // 请求超时时间
+  timeout: 5000 // 请求超时时间
 })
 
 // request拦截器
@@ -31,7 +31,7 @@ service.interceptors.response.use(
     const res = response.data
     if (res.ret !== 200) {
       Message({
-        message: '未正常响应',
+        message: '请求错误',
         type: 'error',
         duration: 5 * 1000
       })
@@ -56,7 +56,7 @@ service.interceptors.response.use(
   error => {
     console.log('err' + error)// for debug
     Message({
-      message: '请求错误',
+      message: '未正常响应',
       type: 'error',
       duration: 5 * 1000
     })

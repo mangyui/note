@@ -18,7 +18,8 @@
       </div>
       <div class="noteEdit-title">
       <h4>笔记正文</h4>
-        <quill-editor ref="myTextEditor" v-model="note.Content" :options="editorOption"></quill-editor>
+        <div ref="editor" class="divWangeditor" style="text-align:left"></div>
+        <!-- <quill-editor ref="myTextEditor" v-model="note.Content" :options="editorOption"></quill-editor> -->
         <br/>
         <el-button type="primary" @click="dialogFormVisible = true">提交</el-button>
       </div>
@@ -55,11 +56,14 @@
 </template>
 
 <script>
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
+// import 'quill/dist/quill.core.css'
+// import 'quill/dist/quill.snow.css'
+// import 'quill/dist/quill.bubble.css'
+// import { quillEditor } from 'vue-quill-editor'
 
-import { quillEditor } from 'vue-quill-editor'
+// wangeditor 富文本
+import E from 'wangeditor'
+var editor
 
 import { NoteCategory } from '@/api/toget'
 import {
@@ -74,21 +78,6 @@ export default {
     return {
       dialogFormVisible: false,
       showLoading: true,
-      editorOption: {
-        placeholder: '等待输入中...',
-        modules: {
-          toolbar: [
-            ['bold', 'italic', 'underline', 'strike'],
-            [{ 'script': 'sub' }, { 'script': 'super' }],
-            [{ 'header': 1 }, { 'header': 2 }],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-            [{ 'align': [] }],
-            [{ 'color': [] }, { 'background': [] }],
-            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-            ['code-block', 'link', 'image']
-          ]
-        }
-      },
       btnRight: '-96px',
       marginL: 0,
       totalwidth: 1430,
@@ -102,7 +91,7 @@ export default {
     }
   },
   components: {
-    quillEditor
+
   },
   methods: {
     getCategory() {
@@ -174,16 +163,16 @@ export default {
     getNote() {
       NoteDetails(qs.stringify({ Id: this.note.Id })).then(res => {
         this.note = res.data.data
-        this.showLoading = false
         if (!this.note.UserId || this.note.UserId !== this.$store.getters.user.Id) {
           this.$message.warning('没有找到...')
           var close = document.querySelector('.tags-view-item.active .el-icon-close')
           close.click()
+        } else {
+          this.showLoading = false
+          editor.txt.html(this.note.Content)
         }
       }).catch(() => {
-        this.$message.warning('没有找到...')
-        var close = document.querySelector('.tags-view-item.active .el-icon-close')
-        close.click()
+        this.$message.warning('系统错误...')
       })
     },
     fetchDate() {
@@ -200,6 +189,41 @@ export default {
   created() {
     this.fetchDate()
     this.getCategory()
+  },
+  mounted() {
+    var That = this
+    editor = new E(this.$refs.editor)
+    editor.customConfig = {
+      onchange: function(html) {
+        That.note.Content = html
+      },
+      uploadImgServer: '/api/UploadImg', // 上传图片到服务器
+      uploadFileName: 'Content', // 后端使用这个字段获取图片信息
+      uploadImgMaxLength: 1 // 限制一次最多上传 1 张图片
+    }
+    editor.customConfig.menus = [
+      'head', // 标题
+      'bold', // 粗体
+      'fontSize', // 字号
+      'fontName', // 字体
+      'italic', // 斜体
+      'underline', // 下划线
+      'strikeThrough', // 删除线
+      'foreColor', // 文字颜色
+      'backColor', // 背景颜色
+      'link', // 插入链接
+      'list', // 列表
+      'justify', // 对齐方式
+      'quote', // 引用
+      'emoticon', // 表情
+      'image', // 插入图片
+      'table', // 表格
+      // 'video',  // 插入视频
+      'code', // 插入代码
+      'undo', // 撤销
+      'redo' // 重复
+    ]
+    editor.create()
   }
 }
 </script>

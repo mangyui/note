@@ -19,6 +19,22 @@
     >
     <sidebar-item :routes="permission_routers"></sidebar-item>
     </el-menu>
+    <div class="systom-group toShow">
+      <div @click="logout">
+        <div style="height:27px">
+          <nx-svg-icon icon-class="logout"/>
+        </div>
+        <p>{{user.Id?'登出':'登录'}}</p>
+      </div>
+      <div>
+        <nx-lang-select class="" style="height:27px"></nx-lang-select>
+        <p>语言</p>
+      </div>
+      <div>
+        <nx-full-screen class="" style="height:27px"></nx-full-screen>
+        <p>全屏</p>
+      </div>
+    </div>
   </el-scrollbar>
 </template>
 
@@ -27,8 +43,17 @@ import { mapGetters } from 'vuex'
 import SidebarItem from './SidebarItem'
 import logo from './logo'
 import store from '@/store'
+import nxFullScreen from '@/components/nx-full-screen/index'
+import nxLangSelect from '@/components/nx-lang-select/index'
+import nxSvgIcon from '@/components/nx-svg-icon/index'
 export default {
-  components: { SidebarItem, logo },
+  components: {
+    SidebarItem,
+    logo,
+    nxLangSelect,
+    nxFullScreen,
+    nxSvgIcon
+  },
   data() {
     return {
       user: this.$store.getters.user,
@@ -42,6 +67,18 @@ export default {
     ]),
     isCollapse() {
       return !this.sidebar.opened
+    }
+  },
+  methods: {
+    logout() {
+      if (this.user.Id) {
+        this.$store.dispatch('LogOut')
+        location.reload()
+      } else {
+        this.$router.push({
+          path: '/login'
+        })
+      }
     }
   },
   created() {

@@ -12,7 +12,7 @@
         <el-input
           placeholder="请输入内容"
           @keyup.enter.native="toSearch"
-          v-model="tolist.keys">
+          v-model="search.keys">
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
         <!-- <el-input placeholder="错题关键字" @keyup.enter.native="toSearch" v-model="tolist.keys"></el-input>
@@ -36,7 +36,7 @@
           </el-option>
         </el-select>
         <div>
-          <el-button icon="el-icon-refresh" circle @click="toSearch"></el-button>
+          <el-button icon="el-icon-refresh" circle @click="refresh"></el-button>
           <router-link  to='/todo/addMistake'>
             <el-button type="primary" icon="el-icon-plus" circle></el-button>
           </router-link>
@@ -71,7 +71,18 @@
             </div>
           </div>
         </div>
+        <div v-if="showMore" class="loading-box">
+          <i class="el-icon-loading"></i>
+          加载更多中...
+        </div>
+        <div v-if="!showMore && NoneMore" class="loading-box">
+          <i class="el-icon-search"></i>
+          没有更多了...
+        </div>
       </div>
+    </div>
+    <div v-if="ScrollTop>700" class="note_d-edit" onclick="document.querySelector('.app-main').scrollTop=0">
+      <el-button class="tototop" icon="el-icon-d-arrow-left" circle></el-button>
     </div>
   </div>
 </template>
@@ -94,7 +105,10 @@ export default {
   data() {
     return {
       homeTop: 0,
+      ScrollTop: 0,
       showLoading: true,
+      showMore: false,
+      NoneMore: false,
       showDelete: false,
       questions: [],
       type: '',
@@ -107,7 +121,8 @@ export default {
       tolist: {
         UserId: this.$store.getters.user.Id,
         MistakeCateId: 0,
-        keys: ''
+        Number: 3,
+        Page: 1
       },
       search: {
         keys: '',
@@ -121,23 +136,32 @@ export default {
   },
   activated() {
     document.querySelector('.app-main').scrollTop = this.homeTop || 0
-    this.getCategory()
-    this.getQues()
+    document.querySelector('.app-main').addEventListener('scroll', this.onScroll)
   },
   beforeRouteLeave(to, from, next) {
     this.homeTop = document.querySelector('.app-main').scrollTop || 0
+    document.querySelector('.app-main').removeEventListener('scroll', this.onScroll)
     next()
   },
+  mounted() {
+    document.querySelector('.app-main').addEventListener('scroll', this.onScroll)
+  },
   methods: {
+    refresh() {
+      this.getCategory()
+      this.getQues()
+    },
     getCategory() {
       mistakeCate(qs.stringify({ UserId: this.$store.getters.user.Id })).then(res => {
-        this.typelist = res.data.data
+        this.typelist = this.typelist.concat(res.data.data)
       }).catch(() => {
         console.log('获取数据失败！')
       })
     },
     getQues() {
+      this.NoneMore = false
       this.showLoading = true
+      this.tolist.Page = 1
       QuesList(qs.stringify(this.tolist)).then(res => {
         this.questions = res.data.data
         this.showLoading = false
@@ -161,12 +185,12 @@ export default {
       }).catch(() => {})
     },
     toSearch() {
-      if (this.tolist.keys === '') {
+      if (this.search.keys.trim() === '') {
         this.getQues()
         return
       }
       this.showLoading = true
-      SearchMistake(qs.stringify(this.tolist)).then(res => {
+      SearchMistake(qs.stringify(this.search)).then(res => {
         this.questions = res.data.data
         this.showLoading = false
       }).catch(() => {})
@@ -180,10 +204,29 @@ export default {
         p.style.maxHeight = '1000px'
         e.currentTarget.firstElementChild.style.transform = 'rotate(180deg)'
       }
+    },
+    onScroll() {
+      var innerHeight = document.querySelector('.app-container').clientHeight
+      var outerHeight = document.querySelector('.app-main').clientHeight
+      var scrollTop = document.querySelector('.app-main').scrollTop
+      this.ScrollTop = scrollTop
+      if (innerHeight <= (outerHeight + scrollTop)) {
+        if (this.NoneMore || this.showMore || this.search.keys.trim() !== '') {
+          return
+        }
+        this.showMore = true
+        this.tolist.Page++
+        QuesList(qs.stringify(this.tolist)).then(res => {
+          this.questions = this.questions.concat(res.data.data)
+          this.showMore = false
+          if (res.data.data.length < this.tolist.Number) {
+            this.NoneMore = true
+          } else {
+            this.NoneMore = false
+          }
+        }).catch(() => {})
+      }
     }
-  },
-  mounted() {
-
   }
 }
 </script>

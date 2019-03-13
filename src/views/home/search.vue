@@ -35,6 +35,9 @@
         没有更多了...
       </div>
     </div>
+    <div v-if="ScrollTop>700" class="note_d-edit" onclick="document.querySelector('.app-main').scrollTop=0">
+      <el-button class="tototop" icon="el-icon-d-arrow-left" circle></el-button>
+    </div>
   </div>
 </template>
 
@@ -58,6 +61,7 @@ export default {
   data() {
     return {
       homeTop: 0,
+      ScrollTop: 0,
       screenWidth: document.body.clientWidth,
       questions: [],
       type: '',
@@ -76,16 +80,18 @@ export default {
   },
   activated() {
     document.querySelector('.app-main').scrollTop = this.homeTop || 0
+    document.querySelector('.app-main').addEventListener('scroll', this.onScroll)
   },
   beforeRouteLeave(to, from, next) {
     this.homeTop = document.querySelector('.app-main').scrollTop || 0
+    document.querySelector('.app-main').removeEventListener('scroll', this.onScroll)
     next()
   },
   methods: {
     SearchQuestion() {
-      if (this.Sdata.Keys.trim() === '') {
-        return
-      }
+      // if (this.Sdata.Keys.trim() === '') {
+      //   return
+      // }
       this.Sdata.Page = 1
       this.showNone = false
       this.NoneMore = false
@@ -105,8 +111,9 @@ export default {
       var innerHeight = document.querySelector('.app-container').clientHeight
       var outerHeight = document.querySelector('.app-main').clientHeight
       var scrollTop = document.querySelector('.app-main').scrollTop
+      this.ScrollTop = scrollTop
       if (innerHeight <= (outerHeight + scrollTop)) {
-        if (this.NoneMore) {
+        if (this.NoneMore || this.showMore) {
           return
         }
         this.showMore = true

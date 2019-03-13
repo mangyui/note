@@ -13,7 +13,9 @@
       </div>
       <div class="noteEdit-title">
       <h4>笔记正文</h4>
-        <quill-editor ref="myTextEditor" v-model="note.Content" :options="editorOption"></quill-editor>
+        <div ref="editor" class="divWangeditor" style="text-align:left"></div>
+        <!-- <br/>
+        <quill-editor ref="myTextEditor" v-model="note.Content" :options="editorOption"></quill-editor> -->
         <br/>
         <el-button type="primary" @click="dialogFormVisible = true">提交</el-button>
       </div>
@@ -38,7 +40,7 @@
                 :value="item.Id">
               </el-option>
             </el-select>
-             <el-button type="primary" icon="el-icon-plus" @click="showAdd=!showAdd" circle></el-button>
+            <el-button type="primary" icon="el-icon-plus" @click="showAdd=!showAdd" circle></el-button>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -65,11 +67,15 @@
 </template>
 
 <script>
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
+// vue-quill-editor 富文本
+// import 'quill/dist/quill.core.css'
+// import 'quill/dist/quill.snow.css'
+// import 'quill/dist/quill.bubble.css'
+// import { quillEditor } from 'vue-quill-editor'
 
-import { quillEditor } from 'vue-quill-editor'
+// wangeditor 富文本
+import E from 'wangeditor'
+var editor
 
 import { NoteCategory } from '@/api/toget'
 import { AddNote, AddNoteType } from '@/api/toPost'
@@ -81,25 +87,11 @@ export default {
     return {
       dialogFormVisible: false,
       showAdd: false,
-      editorOption: {
-        placeholder: '等待输入中...',
-        modules: {
-          toolbar: [
-            ['bold', 'italic', 'underline', 'strike'],
-            [{ 'script': 'sub' }, { 'script': 'super' }],
-            [{ 'header': 1 }, { 'header': 2 }],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-            [{ 'align': [] }],
-            [{ 'color': [] }, { 'background': [] }],
-            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-            ['code-block', 'link', 'image']
-          ]
-        }
-      },
       btnRight: '-96px',
       marginL: 0,
       totalwidth: 1430,
       typelist: [],
+      Content: '',
       note: {
         UserId: this.$store.getters.user.Id,
         Headline: '',
@@ -122,14 +114,13 @@ export default {
           { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
         ],
         Intro: [
-          { required: true, message: '请输入分类说明', trigger: 'blur' },
-          { min: 1, max: 30, message: '长度在 1 到 30 个字符', trigger: 'blur' }
+          { min: 0, max: 30, message: '长度在 0 到 30 个字符', trigger: 'blur' }
         ]
       }
     }
   },
   components: {
-    quillEditor
+    // quillEditor
   },
   created() {
     this.getCategory()
@@ -250,7 +241,41 @@ export default {
         clearInterval(ov)
       }, 500)
     }
-
+  },
+  mounted() {
+    var That = this
+    editor = new E(this.$refs.editor)
+    console.log(editor.customConfig)
+    editor.customConfig = {
+      onchange: function(html) {
+        That.note.Content = html
+      },
+      uploadImgServer: '/api/UploadImg', // 上传图片到服务器
+      uploadFileName: 'Content', // 后端使用这个字段获取图片信息
+      uploadImgMaxLength: 1 // 限制一次最多上传 1 张图片
+    }
+    editor.customConfig.menus = [
+      'head1', // 标题
+      'bold', // 粗体
+      'fontSize', // 字号
+      'fontName', // 字体
+      'italic', // 斜体
+      'underline', // 下划线
+      'strikeThrough', // 删除线
+      'foreColor', // 文字颜色
+      'backColor', // 背景颜色
+      'link', // 插入链接
+      'list', // 列表
+      'justify', // 对齐方式
+      'quote', // 引用
+      'emoticon', // 表情
+      'image', // 插入图片
+      'table', // 表格
+      'code', // 插入代码
+      'undo', // 撤销
+      'redo' // 重复
+    ]
+    editor.create()
   }
 }
 </script>
@@ -261,49 +286,6 @@ export default {
     margin-bottom: 25px;
     padding: 5px;
   }
-  // .quill-editor{
-  //   .ql-snow.ql-toolbar{
-  //     position: fixed;
-  //     background: #fff;
-  //     z-index: 10;
-  //     border: 0;
-  //     border-bottom: 1px solid rgba(0,0,0,.05);
-  //     box-shadow: 0 1px 10px rgba(90,109,122,.4);
-  //     text-overflow: ellipsis;
-  //     white-space: nowrap;
-  //     // overflow-x: hidden;
-  //     // overflow-y: visible;
-  //     left: 210px;
-  //     right: 0;
-  //     height: 55px;
-  //     transition: all .28s;
-  //     &::-webkit-scrollbar {
-  //         display: none;
-  //     }
-  //     button,.ql-color-picker,.ql-icon-picker{
-
-  //       margin: 5px;
-  //       height: 28px;
-  //       width: 31px;
-
-  //       &:hover{
-  //         background: #f1f3f6;
-  //       }
-  //     }
-  //     .ql-picker:hover{
-  //        background: #f1f3f6;
-  //     }
-  //   }
-
-  //   .ql-container div.ql-editor{
-  //     height: 100%;
-  //     border-bottom: 1px solid rgba(0,0,0,.05);
-  //     padding-top: 90px;
-  //   }
-  //   .ql-container.ql-snow{
-  //     border: 0;
-  //   }
-  // }
   .btn-wrapper{
     position: fixed;
     right: -96px;

@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <span class="header-title">更多</span>
     <h2 class="top-title">更多</h2>
     <el-row :gutter="10">
       <el-col v-for="(item,index) in moreList" :key="index" :xs="12" :sm="8" :md="6" :lg="6" :xl="5">

@@ -2,6 +2,10 @@
   <div>
     <span class="header-title">笔记详情</span>
     <div class="app-container">
+      <div v-if="showLoading" class="loading-box">
+        <i class="el-icon-loading"></i>
+        加载中...
+      </div>
       <div class="crumbs disNone">
         <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/tonote/noteList' }"><i class="el-icon-date"></i> 笔记列表</el-breadcrumb-item>
@@ -45,7 +49,9 @@ export default {
   data() {
     return {
       id: null,
+      showLoading: true,
       note: {
+
         Headline: '',
         Category: '',
         DateTime: '',
@@ -73,6 +79,7 @@ export default {
           //   path: '/tonote/noteList'
           // })
         }
+        this.showLoading = false
       }).catch(() => {
         this.$message.warning('没有找到...')
         var close = document.querySelector('.tags-view-item.active .el-icon-close')

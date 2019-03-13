@@ -32,7 +32,10 @@
               </div>
           </div>
           <div v-if="!isUpdae" class="sys-article" v-html="content"></div>
-          <quill-editor v-if="isUpdae" ref="myTextEditor" v-model="content" :options="editorOption"></quill-editor>
+          <div>
+            <div v-show="isUpdae" ref="editor" class="divWangeditor" style=""></div>
+          </div>
+          <!-- <quill-editor v-if="isUpdae" ref="myTextEditor" v-model="content" :options="editorOption"></quill-editor> -->
           <br/>
           <el-button v-if="!isUpdae" class="editor-btn" type="primary" @click="isUpdae=true">修改解答</el-button>
           <el-button v-if="isUpdae" class="editor-btn" @click="isUpdae=false">返回</el-button>
@@ -104,10 +107,15 @@
 </template>
 
 <script>
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
-import { quillEditor } from 'vue-quill-editor'
+// import 'quill/dist/quill.core.css'
+// import 'quill/dist/quill.snow.css'
+// import 'quill/dist/quill.bubble.css'
+// import { quillEditor } from 'vue-quill-editor'
+
+// wangeditor 富文本
+import E from 'wangeditor'
+var editor
+
 import nxSvgIcon from '@/components/nx-svg-icon/index'
 
 import {
@@ -123,8 +131,7 @@ import qs from 'qs'
 export default {
   name: 'other_answer',
   components: {
-    nxSvgIcon,
-    quillEditor
+    nxSvgIcon
   },
   data() {
     return {
@@ -142,21 +149,21 @@ export default {
         CollectNumber: ''
       },
       content: '',
-      editorOption: {
-        placeholder: '等待提取中...',
-        modules: {
-          toolbar: [
-            ['bold', 'italic', 'underline', 'strike'],
-            [{ 'script': 'sub' }, { 'script': 'super' }],
-            [{ 'header': 1 }, { 'header': 2 }],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-            [{ 'align': [] }],
-            [{ 'color': [] }, { 'background': [] }],
-            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-            ['code-block', 'link', 'image']
-          ]
-        }
-      },
+      // editorOption: {
+      //   placeholder: '等待提取中...',
+      //   modules: {
+      //     toolbar: [
+      //       ['bold', 'italic', 'underline', 'strike'],
+      //       [{ 'script': 'sub' }, { 'script': 'super' }],
+      //       [{ 'header': 1 }, { 'header': 2 }],
+      //       [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      //       [{ 'align': [] }],
+      //       [{ 'color': [] }, { 'background': [] }],
+      //       [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      //       ['code-block', 'link', 'image']
+      //     ]
+      //   }
+      // },
       isMe: true,
       haveGuanfang: true,
       isLike: false,
@@ -261,15 +268,16 @@ export default {
         if (this.$store.getters.user && this.$store.getters.user.Id === this.user.Id) {
           this.isMe = true
           this.content = this.question.Correct
+          editor.txt.html(this.content)
         } else {
           this.isMe = false
         }
         this.showLoading = false
       }).catch((res) => {
         console.log(res)
-        this.$message.warning('没有找到...')
-        var close = document.querySelector('.tags-view-item.active .el-icon-close')
-        close.click()
+        // this.$message.warning('没有找到...')
+        // var close = document.querySelector('.tags-view-item.active .el-icon-close')
+        // close.click()
       })
     },
     submit() {
@@ -308,6 +316,41 @@ export default {
   // },
   created() {
     this.fetchDate()
+  },
+  mounted() {
+    var That = this
+    editor = new E(this.$refs.editor)
+    editor.customConfig = {
+      onchange: function(html) {
+        That.content = html
+      },
+      uploadImgServer: '/api/UploadImg', // 上传图片到服务器
+      uploadFileName: 'Content', // 后端使用这个字段获取图片信息
+      uploadImgMaxLength: 1 // 限制一次最多上传 1 张图片
+    }
+    editor.customConfig.menus = [
+      'head', // 标题
+      'bold', // 粗体
+      'fontSize', // 字号
+      'fontName', // 字体
+      'italic', // 斜体
+      'underline', // 下划线
+      'strikeThrough', // 删除线
+      'foreColor', // 文字颜色
+      'backColor', // 背景颜色
+      'link', // 插入链接
+      'list', // 列表
+      'justify', // 对齐方式
+      'quote', // 引用
+      'emoticon', // 表情
+      'image', // 插入图片
+      'table', // 表格
+      // 'video',  // 插入视频
+      'code', // 插入代码
+      'undo', // 撤销
+      'redo' // 重复
+    ]
+    editor.create()
   }
 }
 </script>

@@ -74,6 +74,9 @@
         </div>
       </div>
     </div>
+    <div v-if="ScrollTop>700" class="note_d-edit" onclick="document.querySelector('.app-main').scrollTop=0">
+      <el-button class="tototop" icon="el-icon-d-arrow-left" circle></el-button>
+    </div>
   </div>
 </template>
 
@@ -93,8 +96,8 @@ export default {
   data() {
     return {
       homeTop: 0,
+      ScrollTop: 0,
       showLoading: true,
-      showNone: false,
       showMore: false,
       NoneMore: false,
       collects: [],
@@ -121,10 +124,11 @@ export default {
   },
   activated() {
     document.querySelector('.app-main').scrollTop = this.homeTop || 0
-    this.getCollects()
+    document.querySelector('.app-main').addEventListener('scroll', this.onScroll)
   },
   beforeRouteLeave(to, from, next) {
     this.homeTop = document.querySelector('.app-main').scrollTop || 0
+    document.querySelector('.app-main').removeEventListener('scroll', this.onScroll)
     next()
   },
   mounted() {
@@ -133,6 +137,7 @@ export default {
   methods: {
     getCollects() {
       this.showLoading = true
+      this.tolist.Page = 1
       CollectList(qs.stringify(this.tolist)).then(res => {
         this.collects = res.data.data
         this.showLoading = false
@@ -193,8 +198,9 @@ export default {
       var innerHeight = document.querySelector('.app-container').clientHeight
       var outerHeight = document.querySelector('.app-main').clientHeight
       var scrollTop = document.querySelector('.app-main').scrollTop
+      this.ScrollTop = scrollTop
       if (innerHeight <= (outerHeight + scrollTop)) {
-        if (this.NoneMore) {
+        if (this.NoneMore || this.showMore) {
           return
         }
         this.showMore = true

@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <span class="header-title">题友</span>
     <div class="crumbs">
       <el-breadcrumb separator="/">
           <el-breadcrumb-item><i class="el-icon-date"></i> 题友</el-breadcrumb-item>

@@ -55,15 +55,15 @@ Vue.use(ElementUI, {
 Vue.config.productionTip = false
 
 // 监听手机设备加载，以实现打开相机功能
-// document.addEventListener('deviceready', function() {
-new Vue({
-  el: '#app',
-  router,
-  store,
-  i18n,
-  // template: '<App/>',
-  // components: { App }
-  render: h => h(App)
-})
-//   window.navigator.splashscreen.hide()
-// }, false)
+document.addEventListener('deviceready', function() {
+  new Vue({
+    el: '#app',
+    router,
+    store,
+    i18n,
+    // template: '<App/>',
+    // components: { App }
+    render: h => h(App)
+  })
+  window.navigator.splashscreen.hide()
+}, false)
