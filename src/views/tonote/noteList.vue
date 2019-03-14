@@ -37,7 +37,7 @@
           </el-option>
         </el-select>
         <div>
-          <el-button icon="el-icon-refresh" circle @click="refresh"></el-button>
+          <!-- <el-button icon="el-icon-refresh" circle @click="refresh"></el-button> -->
           <router-link  to='/todo/edit'>
             <el-button type="primary" icon="el-icon-plus" circle></el-button>
           </router-link>

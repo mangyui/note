@@ -113,7 +113,7 @@ export default {
       var scrollTop = document.querySelector('.app-main').scrollTop
       this.ScrollTop = scrollTop
       if (innerHeight <= (outerHeight + scrollTop)) {
-        if (this.NoneMore || this.showMore) {
+        if (this.NoneMore || this.showMore || this.Sdata.Keys.trim() === '') {
           return
         }
         this.showMore = true

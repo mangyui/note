@@ -16,7 +16,7 @@ function objKeySort(obj) {
   }
   let signature = 'soq'
   for (var j = 0; j < newkey.length; j++) {
-    signature += newObj[newkey[j]]
+    signature += newObj[newkey[j]] || ''
   }
   var date = new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, '').replace(/\.[\d]{3}Z/, '')
   signature += date.substring(0, 10)
@@ -112,7 +112,7 @@ const user = {
       }
       objKeySort(datas2)// 添加sign字段，sign规则已修改
       // datas2.sign = s
-      console.log(datas2)
+      // console.log(datas2)
       return new Promise((resolve, reject) => {
         UpdateUser(qs.stringify(datas2)).then(response => {
           if (response.data.code === 0) {

@@ -310,6 +310,11 @@ export default {
     },
     formatText() {
       if (this.lines > 0) {
+        // 清空
+        this.form.Content = ''
+        this.form.Text = ''
+        ShouTitle.txt.html('')
+        // 重加
         this.result.forEach(item => {
           this.form.Content = this.form.Content + item.words + '<br />'
           this.form.Text = this.form.Text + item.words
@@ -345,14 +350,14 @@ export default {
           if (this.showShou) {
             // this.form.Text = this.$refs.titleEditor.quill.getText().trim()
             datas = {
-              'UserId': 1,
+              'UserId': this.$store.getters.user.Id,
               'QuestionContent': this.form.Content,
               'MistakeCateId': this.form.CategoryId,
               'Correct': this.form.Analysis
             }
           } else {
             datas = {
-              'UserId': 1,
+              'UserId': this.$store.getters.user.Id,
               'QuestionId': this.questions[this.haveF.currentPage].Id,
               'MistakeCateId': this.form.CategoryId,
               'Correct': this.haveF.Correct

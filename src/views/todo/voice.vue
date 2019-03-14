@@ -46,7 +46,7 @@
         </el-tooltip>
       </div>
       <div class="">
-        <el-button type="primary" icon="el-icon-search" @click="SearchQuestion"></el-button>
+        <el-button type="primary" circle icon="el-icon-search" @click="SearchQuestion"></el-button>
       </div>
       <p>以下匹配：<b v-text="result"></b></p>
       <h3 v-if="questions[0]" class="Hpipei"> </h3>

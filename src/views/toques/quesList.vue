@@ -36,7 +36,7 @@
           </el-option>
         </el-select>
         <div>
-          <el-button icon="el-icon-refresh" circle @click="refresh"></el-button>
+          <!-- <el-button icon="el-icon-refresh" circle @click="refresh"></el-button> -->
           <router-link  to='/todo/addMistake'>
             <el-button type="primary" icon="el-icon-plus" circle></el-button>
           </router-link>
@@ -211,7 +211,7 @@ export default {
       var scrollTop = document.querySelector('.app-main').scrollTop
       this.ScrollTop = scrollTop
       if (innerHeight <= (outerHeight + scrollTop)) {
-        if (this.NoneMore || this.showMore || this.search.keys.trim() !== '') {
+        if (this.NoneMore || this.showMore || this.showLoading || this.search.keys.trim() !== '') {
           return
         }
         this.showMore = true

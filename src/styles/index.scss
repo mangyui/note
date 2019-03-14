@@ -597,6 +597,11 @@ code {
   }
   .w-e-text-container{
     z-index: 9!important;
+    .w-e-panel-container{
+      max-width: 100%;
+      margin-left: 0!important;
+      transform: translateX(-50%);
+    }
     .w-e-text{
       overflow-y: auto;
     }

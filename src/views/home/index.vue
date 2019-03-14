@@ -20,21 +20,21 @@
         <!-- <div class="bg_updown"><img :src="bg1"/></div>
         <div class="bg_updown"><img :src="bg2"/></div> -->
         <div class="home-top">
-            <div class="home_item" v-if="screenWidth>770">
+            <div class="home_item">
               <router-link to="/SQu/index">
                 <nx-svg-icon class-name='more_icon' style="color:#52bab5" icon-class="camera3" />
                 <p>拍照搜题</p>
               </router-link>
             </div>
-            <div class="home_item">
+            <!-- <div class="home_item">
               <router-link to="/Voice/index">
                 <nx-svg-icon class-name='more_icon' style="color:#F56C6C" icon-class="voice" />
                 <p>语音识别</p>
               </router-link>
-            </div>
+            </div> -->
             <div class="home_item">
               <router-link to="/toques/quesList">
-                <nx-svg-icon class-name='more_icon' style="color:#52bab5" icon-class="cuoti" />
+                <nx-svg-icon class-name='more_icon' style="color:#F56C6C" icon-class="cuoti" />
                 <p>我的错题</p>
               </router-link>
             </div>
@@ -45,10 +45,11 @@
               </router-link>
             </div>
             <div class="home_item">
-              <div @click="toQidai">
+              <!-- <div @click="toQidai"> -->
+              <router-link to="/getTest/index">
                 <nx-svg-icon class-name='more_icon' style="color:#E6A23C" icon-class="shijuan" />
-                <p>生成练习</p>
-              </div>
+                <p>生成试题</p>
+              </router-link>
             </div>
           <!-- <div class="top-search">
             <el-input placeholder="搜索题目"></el-input>

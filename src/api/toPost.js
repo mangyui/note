@@ -348,3 +348,15 @@ export function GetCustomer(datas) {
     data: datas
   })
 }
+
+// 生成试题
+export function GetTest(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.User.GetTest',
+    method: 'post',
+    data: datas
+  })
+}

@@ -16,20 +16,12 @@
           <el-button type="primary" icon="el-icon-search" v-on:click="toSearch"></el-button>
         </el-form-item>
       </el-form> -->
-      <div class="list-gbtn">
-        <!-- <el-select v-model="tolist.QuesCategoryId" placeholder="错题分类" @change="getNotes">
-          <el-option
-            v-for="item in typelist"
-            :key="item.Id"
-            :label="item.Name"
-            :value="item.Id">
-          </el-option>
-        </el-select> -->
+      <!-- <div class="list-gbtn">
         <div></div>
         <div>
           <el-button type="primary" icon="el-icon-refresh" circle @click="getCollects"></el-button>
         </div>
-      </div>
+      </div> -->
       <div class="container">
         <div v-if="showLoading" class="loading-box">
           <i class="el-icon-loading"></i>
@@ -48,7 +40,7 @@
                   style="color: #F56C6C"
                   icon-class="collect" />
               </span>
-              <router-link :to="item.QuestionId==0?'/home/mistake/'+item.Id:(item.MistakeId==0?'/home/question_details/'+item.Id:'/home/mistake/'+item.Id)">
+              <router-link :to="item.QuestionId==0?'/home/mistake/'+item.MistakeId:(item.MistakeId==0?'/home/question_details/'+item.QuestionId:'/home/mistake/'+item.MistakeId)">
                 <div class="ques_body tipbox">
                   <b>{{index+1}}.</b><div v-html="item.Question.Content||item.Mistake.QuestionContent"></div>
                 </div>

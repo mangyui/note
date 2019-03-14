@@ -187,16 +187,31 @@ export default {
         }).catch(() => {})
         return
       }
+      if (this.isLike === true) {
+        this.isLike = false
+        this.question.LikeNumber--
+      } else {
+        this.isLike = true
+        this.question.LikeNumber++
+      }
       var data = {
         MistakeId: this.id,
         UserId: this.$store.getters.user.Id
       }
       P_dianZan(qs.stringify(data)).then(res => {
-        this.isLike = !this.isLike
-        if (res.data.data === -1) {
-          this.question.LikeNumber--
-        } else {
-          this.question.LikeNumber++
+        if (res.data.code !== 0) {
+          this.$notify({
+            title: '提示',
+            message: '网络错误，操作失败',
+            type: 'error'
+          })
+          if (this.isLike === true) {
+            this.isLike = false
+            this.question.LikeNumber--
+          } else {
+            this.isLike = true
+            this.question.LikeNumber++
+          }
         }
       }).catch(() => {
         this.$message.warning('操作失败...')
@@ -215,21 +230,31 @@ export default {
         }).catch(() => {})
         return
       }
+      if (this.isCollect === true) {
+        this.isCollect = false
+        this.question.CollectNumber--
+      } else {
+        this.isCollect = true
+        this.question.CollectNumber++
+      }
       var data = {
         MistakeId: this.id,
         UserId: this.$store.getters.user.Id
       }
       P_toCollect(qs.stringify(data)).then(res => {
-        this.isCollect = !this.isCollect
-        if (res.data.data === -1) {
-          this.question.CollectNumber--
-        } else {
-          this.question.CollectNumber++
+        if (res.data.code !== 0) {
           this.$notify({
-            title: '成功',
-            message: '收藏错题成功',
-            type: 'success'
+            title: '提示',
+            message: '网络错误，操作失败',
+            type: 'error'
           })
+          if (this.isCollect === true) {
+            this.isCollect = false
+            this.question.CollectNumber--
+          } else {
+            this.isCollect = true
+            this.question.CollectNumber++
+          }
         }
       }).catch(() => {
         this.$message.warning('操作失败...')

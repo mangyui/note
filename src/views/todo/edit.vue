@@ -250,7 +250,7 @@ export default {
       onchange: function(html) {
         That.note.Content = html
       },
-      uploadImgServer: '/api/UploadImg', // 上传图片到服务器
+      uploadImgServer: 'http://192.168.1.105/?s=App.Like.UpImage', // 上传图片到服务器
       uploadFileName: 'Content', // 后端使用这个字段获取图片信息
       uploadImgMaxLength: 1 // 限制一次最多上传 1 张图片
     }

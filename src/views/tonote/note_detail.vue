@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="note_d-edit">
-      <el-dropdown trigger="click">
+      <el-dropdown>
         <el-button type="primary" icon="el-icon-edit" circle></el-button>
         <el-dropdown-menu slot="dropdown">
           <router-link :to="'/tonote/note_edit/'+ id">

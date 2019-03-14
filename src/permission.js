@@ -17,6 +17,7 @@ import {
 
 const whiteList = ['/login',
   '/',
+  '/getTest/index',
   '/home/index', // 主页
   '/SQu/index', // 拍照搜题
   '/more/index', // 更多
@@ -38,9 +39,16 @@ router.beforeEach((to, from, next) => {
     } else {
       next('/login')
     }
+  } else {
+    if (to.path === '/login') {
+      next({ path: '/' })
+    } else {
+      next()
+    }
   }
+  NProgress.done()
   // next() !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  next()
+  // next()
   // if (getToken()) {
   // store.dispatch('GetInfo')
 

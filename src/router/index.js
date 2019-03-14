@@ -93,6 +93,26 @@ export const constantRouterMap = [
 
     ]
   },
+  // 组卷
+  {
+    path: '/getTest',
+    component: Layout,
+    redirect: '/getTest/index',
+    meta: {
+      title: 'getTest',
+      icon: 'camera3'
+    },
+    hidden: true,
+    children: [
+      {
+        path: 'index',
+        name: 'getTest',
+        component: () => import('@/views/getTest/index'),
+        meta: { title: 'getTest', icon: 'camera3' }
+      }
+
+    ]
+  },
   // 语音
   {
     path: '/Voice',

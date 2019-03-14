@@ -349,7 +349,7 @@ export default {
         if (valid) {
           // this.form.Text = this.$refs.titleEditor.quill.getText().trim()
           var datas = {
-            'UserId': 1,
+            'UserId': this.$store.getters.user.Id,
             'QuestionContent': this.form.Content,
             'MistakeCateId': this.form.CategoryId,
             'Correct': this.form.Analysis
