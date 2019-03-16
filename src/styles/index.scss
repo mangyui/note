@@ -233,6 +233,7 @@ code {
 
 .list-gbtn{
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   margin-bottom: 10px;
   .el-select{
@@ -522,8 +523,8 @@ code {
   right: 10%;
   bottom: 10%;
   .el-button{
-    font-size: 33px;
-    box-shadow: 0 0 5px #337ab7;
+    font-size: 25px;
+    box-shadow: 0 0 2px #36a2ff;;
   }
   .tototop i{
     transform: rotate(90deg);

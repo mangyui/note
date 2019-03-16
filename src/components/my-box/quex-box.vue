@@ -4,7 +4,7 @@
       <div class="ques_box">
         <router-link :to="'/home/question_details/'+item.Id">
           <div class="ques_body tipbox">
-            <b>{{index+1}}.</b><div v-html="item.Content"></div>
+            <b>{{index+1}}.</b><div class="QUesTitle" v-html="item.Content"></div>
           </div>
         </router-link>
         <el-button class="downMore" @click="clickfun($event)" type="primary" icon="el-icon-caret-bottom" size="mini" ></el-button>

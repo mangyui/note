@@ -46,8 +46,8 @@ export default {
     return {
       fullscreenLoading: false,
       loginForm: {
-        username: 'ipso',
-        password: '123456',
+        username: '',
+        password: '',
         code: ''
       },
       checked: false,

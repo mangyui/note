@@ -111,7 +111,7 @@ export default {
       notes: [],
       tolist: {
         UserId: this.$store.getters.user.Id,
-        NoteCategoryId: 0,
+        NoteCategoryId: this.$route.params.cateId || 0,
         Number: 3,
         Page: 1
       },
@@ -126,6 +126,19 @@ export default {
         }
       ]
     }
+  },
+  beforeRouteEnter(to, from, next) {
+    // 这里的vm指的就是vue实例，可以用来当做this使用
+    next(vm => {
+      if (from.path === '/tonote/note_type') {
+        var cateid = vm.$route.params.cateId
+        if (cateid) {
+          vm.tolist.NoteCategoryId = cateid
+          vm.getNotes()
+        }
+        // console.log(cateid, vm.tolist.NoteCategoryId)
+      }
+    })
   },
   created() {
     this.getCategory()

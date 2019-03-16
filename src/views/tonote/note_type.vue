@@ -34,7 +34,7 @@
                 <div class="big-box">
                   <div class="big-body">
                     <b class="type_title">{{item.Name}}</b>
-                    <div><p class="tipbox type_content" v-html="item.Intro"></p></div>
+                    <div @click="ToList(item.Id)"><p class="tipbox type_content" v-html="item.Intro"></p></div>
                   </div>
                 </div>
               </el-card>
@@ -200,6 +200,15 @@ export default {
         }).catch(() => {})
         //
       }).catch(() => {})
+    },
+    ToList(Id) {
+      this.$router.push({
+        // params 传参只能用name 来指定路由
+        name: 'noteList',
+        params: {
+          cateId: Id
+        }
+      })
     }
   },
   mounted() {
@@ -230,6 +239,7 @@ export default {
     -webkit-line-clamp: 2;
     overflow: hidden;
     height: 62px;
+    cursor: pointer;
   }
 }
 @media (max-width: 768px) {

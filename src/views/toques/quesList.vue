@@ -120,7 +120,7 @@ export default {
       ],
       tolist: {
         UserId: this.$store.getters.user.Id,
-        MistakeCateId: 0,
+        MistakeCateId: this.$route.params.cateId || 0,
         Number: 3,
         Page: 1
       },
@@ -129,6 +129,19 @@ export default {
         UserId: this.$store.getters.user.Id
       }
     }
+  },
+  beforeRouteEnter(to, from, next) {
+    // 这里的vm指的就是vue实例，可以用来当做this使用
+    next(vm => {
+      if (from.path === '/toques/mistake_type') {
+        var cateid = vm.$route.params.cateId
+        if (cateid) {
+          vm.tolist.MistakeCateId = cateid
+          vm.getQues()
+        }
+        // console.log(cateid, vm.tolist.MistakeCateId)
+      }
+    })
   },
   created() {
     this.getCategory()

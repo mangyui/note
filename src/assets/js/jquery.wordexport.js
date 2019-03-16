@@ -1,4 +1,4 @@
-if (typeof jQuery !== "undefined" && typeof saveAs !== "undefined") {
+if (typeof jQuery !== "undefined") {
   (function($) {
       $.fn.wordExport = function(fileName) {
           fileName = typeof fileName !== 'undefined' ? fileName : "jQuery-Word-Export";
@@ -30,43 +30,42 @@ if (typeof jQuery !== "undefined" && typeof saveAs !== "undefined") {
               var w = Math.min(img[i].width, options.maxWidth);
               var h = img[i].height * (w / img[i].width);
 
-              // 修改
-              // img[i].setAttribute("id", "test_img_" + i)
-              // var img_id = "#"+img[i].id;
-              // var v = $('<canvas>').attr("id", "test_word_img_" + i).width(w).height(h);
-              // v.insertAfter(img_id);
-              // console.log(v);
-              //  var data = v.toDataURL("image/png");
-              // img[i].setAttribute("src", data);
-
-              // 删除
               // Create canvas for converting image to data URL
               var imgs = img[i]
-              imgs.crossOrigin = 'anonymous'
+              // imgs.crossOrigin = 'anonymous'
               // img[i].setAttribute('crossOrigin','*')
-              console.log(img[i])
+
+              // 目前只能用绝对地址超链接方式来加载图片，base64 word不能显示。
+              // 其他方式未知/
+              // 强制将https转换为http,https不显示可能是因为安全问题。
+              var urlNos = $(img[i]).attr("src").substring(4,5);
+              // console.log(urlNos)
+              if(urlNos=="s"){
+                imgs.src = "http"+$(img[i]).attr("src").substring(5);
+              }
+              // console.log(img[i])
               img[i].onload = function(){
+              // img[i].onload = function(){
                 var canvas = document.createElement("CANVAS");
                 // console.log("CANVAS"+i,canvas)
                 canvas.width = w;
                 canvas.height = h;
                 // Draw image to canvas
                 var context = canvas.getContext('2d');
-                context.drawImage(img[i], 0, 0, w, h);
+                context.drawImage(this, 0, 0, w, h);
                 // Get data URL encoding of image
-                console.log(canvas)
-                var uri = canvas.toDataURL("image/jpg");
-                $(img[i]).attr("src", uri);
-                img[i].width = w;
-                img[i].height = h;
-                // Save encoded image to array
-                images[i] = {
-                    type: uri.substring(uri.indexOf(":") + 1, uri.indexOf(";")),
-                    encoding: uri.substring(uri.indexOf(";") + 1, uri.indexOf(",")),
-                    location: $(img[i]).attr("src"),
-                    data: uri.substring(uri.indexOf(",") + 1)
-                };
-              }
+                // var uri = canvas.toDataURL("image/jpg");
+                // $(this).attr("src", uri);
+                // this.width = w;
+                // this.height = h;
+                // // Save encoded image to array
+                // images[i] = {
+                //     type: uri.substring(uri.indexOf(":") + 1, uri.indexOf(";")),
+                //     encoding: uri.substring(uri.indexOf(";") + 1, uri.indexOf(",")),
+                //     location: $(this).attr("src"),
+                //     data: uri.substring(uri.indexOf(",") + 1)
+                // };
+            }
           }
 
           // Prepare bottom of mhtml file with image data
@@ -81,7 +80,7 @@ if (typeof jQuery !== "undefined" && typeof saveAs !== "undefined") {
           mhtmlBottom += "--NEXT.ITEM-BOUNDARY--";
 
           //TODO: load css from included stylesheet
-          var styles = ".test_title{display: flex;margin: 20px 0 15px;}.test_index{margin-right: 5px;line-height: 1.8em;}.test_content{line-height: 1.8em;}.test_Correct{line-height: 1.8em; font-size: 15px;} table,th,td{border:0}";
+          var styles = "table,th,td{border:0}";
 
           // Aggregate parts of the file together
           var fileContent = mystatic.mhtml.top.replace("_html_", mystatic.mhtml.head.replace("_styles_", styles) + mystatic.mhtml.body.replace("_body_", markup.html())) + mhtmlBottom;
@@ -90,15 +89,49 @@ if (typeof jQuery !== "undefined" && typeof saveAs !== "undefined") {
           var blob = new Blob([fileContent], {
               type: "application/msword;charset=utf-8"
           });
-          window.saveAs(blob, fileName + ".doc");
-          alert('文件保存'+fileName + ".doc")
+          // a 连接点击方式 省去了FileSaver类
+          // var a = document.createElement('a');
+          // a.target = '_blank';
+          // a.innerHTML = fileName;
+          // // 指定生成的文件名
+          // a.download = fileName + ".doc";
+          // a.href = URL.createObjectURL(blob);
+          // document.body.appendChild(a);
+          // a.click();
+          // document.body.removeChild(a);
+          // alert(URL.createObjectURL(blob))
+          // $("#alink").attr("href", URL.createObjectURL(blob))
+          // var uri = encodeURI(URL.createObjectURL(blob))
+          // var fileTransfer = new FileTransfer();
+          // fileTransfer.download(
+          //   'http://blog.mccyu.com/img/avatar.gif',
+          //   "filepath",
+          //   function(entry) {
+          //     console.log("download complete: " + entry.toURL());
+          //   },
+          //   function(error) {
+          //       console.log("download error source " + error.source);
+          //       console.log("download error target " + error.target);
+          //       console.log("download error code" + error.code);
+          //   },
+          //   true,
+          //   {
+          //       headers: {
+          //           // "Authorization": "Basic dGVzdHVzZXJuYW1lOnRlc3RwYXNzd29yZA=="
+          //       }
+          //   }
+          // );
+          // $("#alink").click();
+          // 跳转 ，为了让手机端能够看到 无奈
+          //  window.location.href = URL.createObjectURL(blob)
+          // window.open(URL.createObjectURL(blob),'_system')
+          // 原方式
+          // window.saveAs(blob, fileName + ".doc")
+          return blob
       };
   })(jQuery);
 } else {
   if (typeof jQuery === "undefined") {
       console.error("jQuery Word Export: missing dependency (jQuery)");
-  }
-  if (typeof saveAs === "undefined") {
-      console.error("jQuery Word Export: missing dependency (FileSaver.js)");
   }
 }

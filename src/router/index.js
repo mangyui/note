@@ -22,6 +22,10 @@ import Layout from '../views/layout/Layout'
     icon: 'svg-name'             the icon show in the sidebar,
   }
 **/
+
+// 搜索不用懒加载
+import Csearch from '@/views/home/search'
+
 export const constantRouterMap = [
   // {
   //   path: '/',
@@ -54,7 +58,8 @@ export const constantRouterMap = [
         path: 'search',
         name: 'search',
         hidden: true,
-        component: () => import('@/views/home/search'),
+        component: Csearch,
+        // component: () => import('@/views/home/search'),
         meta: { title: 'Search' }
       },
       {
@@ -114,25 +119,25 @@ export const constantRouterMap = [
     ]
   },
   // 语音
-  {
-    path: '/Voice',
-    component: Layout,
-    redirect: '/Voice/index',
-    hidden: true,
-    meta: {
-      title: 'Voice',
-      icon: 'voice'
-    },
-    children: [
-      {
-        path: 'index',
-        name: 'Voice',
-        component: () => import('@/views/todo/voice'),
-        meta: { title: 'Voice', icon: 'voice' }
-      }
+  // {
+  //   path: '/Voice',
+  //   component: Layout,
+  //   redirect: '/Voice/index',
+  //   hidden: true,
+  //   meta: {
+  //     title: 'Voice',
+  //     icon: 'voice'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'Voice',
+  //       component: () => import('@/views/todo/voice'),
+  //       meta: { title: 'Voice', icon: 'voice' }
+  //     }
 
-    ]
-  },
+  //   ]
+  // },
   // 用户
   {
     path: '/user',
@@ -173,12 +178,12 @@ export const constantRouterMap = [
     },
     hidden: true,
     children: [
-      {
-        path: 'speech',
-        name: 'speech',
-        component: () => import('@/views/todo/speech'),
-        meta: { title: 'Speech' }
-      },
+      // {
+      //   path: 'speech',
+      //   name: 'speech',
+      //   component: () => import('@/views/todo/speech'),
+      //   meta: { title: 'Speech' }
+      // },
       {
         path: 'edit',
         name: 'edit',

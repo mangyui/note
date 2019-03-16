@@ -25,6 +25,7 @@
             <li>语音识别。</li>
             <li>拍照搜题。</li>
             <li>智能推荐。</li>
+            <li>下载试题。</li>
           </ul>
         </el-collapse-item>
       </el-collapse>
@@ -45,10 +46,10 @@ export default {
   name: 'about',
   data() {
     return {
-      version: '1.0.5',
+      version: '1.0.6',
       isup: false,
       text: '已是最新版本',
-      upUrl: ''
+      upUrl: 'https://dn-coding-net-production-file.codehub.cn/e415d970-4725-11e9-8fcf-a1ca3c5c1ac9.vnd.android.package-archive?attname=vNote_1.0.6.apk&e=1552659982&token=goE9CtaiT5YaIP6ZQ1nAafd_C1Z_H2gVP8AwuC-5:Xe6-aiKxTGH9Z5TNnazoCjh46og='
     }
   },
   methods: {

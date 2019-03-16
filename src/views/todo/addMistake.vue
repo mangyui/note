@@ -290,6 +290,12 @@ export default {
           this.form.Content = this.form.Content + item.words + '<br />'
           this.form.Text = this.form.Text + item.words
         })
+        ShouTitle.txt.html(this.form.Content)
+        this.$notify({
+          title: '提示',
+          message: '已提取图中文字',
+          type: 'info'
+        })
         // // 这里获取相关题目
         // this.getQues()
       } else {
@@ -298,8 +304,8 @@ export default {
           message: '没有提取任何文字信息，请检查图片再操作！',
           type: 'info'
         })
-        this.showGIF = false
       }
+      this.showGIF = false
     },
     addMistakeType() {
       if (!this.$store.getters.user.Id) {

@@ -309,6 +309,14 @@ export default {
       this.$store.dispatch('UpdateMe', this.form).then(res => {
         if (res.data.code === 0) {
           this.isUpdate = false
+          var index1 = this.classlist.find((item) => {
+            return item.value === this.user.Class
+          })
+          this.Class = index1.label
+          var index2 = this.schoolList.find((item) => {
+            return item.Id === this.user.SchoolId
+          })
+          this.School = index2.Name
           this.$notify({
             title: '消息',
             message: '修改资料成功！',

@@ -8,9 +8,30 @@
           @keyup.enter.native="SearchQuestion"
           v-model="Sdata.Keys">
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
+          <i slot="suffix" v-show="Sdata.Keys" class="el-input__icon el-icon-close" @click="Sdata.Keys=''"></i>
         </el-input>
         <!-- <el-input placeholder="搜索题目" @keyup.enter.native="SearchQuestion" v-model="text"></el-input>
         <el-button type="primary" icon="el-icon-search" v-on:click="SearchQuestion"></el-button> -->
+      </div>
+      <div class="voice-button">
+         <el-tooltip class="item" effect="dark" content="按住开始语音" placement="bottom-start">
+          <div class="voice-input-button-wrapper">
+            <voice-input-button
+                server="https://www.mccyu.com:444/"
+                appId="5c52f87b"
+                APIKey="3d0fba416f2a2423e7380ea2ab397d9e"
+                @record="showResult"
+                @record-start="recordStart"
+                @record-stop="recordStop"
+                @record-blank="recordNoResult"
+                @record-failed="recordFailed"
+                color="#fff"
+                tipPosition="top"
+            >
+              <template slot="no-speak">没听清您说的什么</template>
+            </voice-input-button>
+          </div>
+        </el-tooltip>
       </div>
       <!-- <el-select  v-model="type" placeholder="选择类型">
         <el-option label="数学" value="type1"></el-option>
@@ -44,7 +65,7 @@
 
 <script>
 import nxSvgIcon from '@/components/nx-svg-icon/index'
-
+import VoiceInputButton from 'voice-input-button'
 import {
   SearchQues
 } from '@/api/toPost'
@@ -56,7 +77,8 @@ export default {
   name: 'search',
   components: {
     nxSvgIcon,
-    quexBox
+    quexBox,
+    VoiceInputButton
   },
   data() {
     return {
@@ -64,6 +86,7 @@ export default {
       ScrollTop: 0,
       screenWidth: document.body.clientWidth,
       questions: [],
+      oldQuetions: [],
       type: '',
       text: '',
       showLoading: false,
@@ -98,7 +121,9 @@ export default {
       this.showLoading = true
       this.Sdata.Keys = this.Sdata.Keys.substring(0, 50)
       SearchQues(qs.stringify(this.Sdata)).then(res => {
-        this.questions = res.data.data
+        this.oldQuetions = res.data.data
+        this.Gaoliang()
+        this.questions = this.oldQuetions
         this.showLoading = false
         if (!this.questions[0]) {
           this.showNone = true
@@ -106,6 +131,22 @@ export default {
           this.showNone = false
         }
       }).catch(() => {})
+    },
+    Gaoliang() {
+      var value = this.Sdata.Keys
+      this.oldQuetions.forEach(item => {
+        for (var i = 0; i < value.length; i++) {
+          if (value[i] !== 'b' && value[i] !== 's' && value[i] !== 'p' && value[i] !== 'n') {
+            // 匹配关键字正则
+            var replaceReg = new RegExp(value[i], 'g')
+            // 高亮替换v-html值
+            var replaceString = '<span style="background:#ff0;font-weight: bold;">' + value[i] + '</span>'
+            // 开始替换
+            item.Content = item.Content.replace(replaceReg, replaceString)
+            // item.Content = item.Content.split(value[i]).join('<span style="background:#ff0;font-weight: bold;">' + value + '</span>')
+          }
+        }
+      })
     },
     onScroll() {
       var innerHeight = document.querySelector('.app-container').clientHeight
@@ -119,7 +160,9 @@ export default {
         this.showMore = true
         this.Sdata.Page++
         SearchQues(qs.stringify(this.Sdata)).then(res => {
-          this.questions = this.questions.concat(res.data.data)
+          this.oldQuetions = res.data.data
+          this.Gaoliang()
+          this.questions = this.questions.concat(this.oldQuetions)
           this.showMore = false
           if (res.data.data.length < this.Sdata.Number) {
             this.NoneMore = true
@@ -128,6 +171,23 @@ export default {
           }
         }).catch(() => {})
       }
+    },
+    showResult(text) {
+      this.Sdata.Keys = this.Sdata.Keys + text.substr(0, text.length - 1)
+      if (text !== '') {
+        this.SearchQuestion()
+      }
+      // console.log(this.Sdata.keys)
+      // this.SearchQuestion()
+    },
+    recordStart() {
+    },
+    recordStop() {
+    },
+    recordNoResult() {
+    },
+    recordFailed(error) {
+      console.info('识别失败，错误栈：', error)
     }
   },
   mounted() {
@@ -151,6 +211,13 @@ export default {
 <style lang="scss" scoped>
 .big-box1200{
   position: relative;
+}
+.voice-input-button-wrapper{
+  width: 42px;
+  height: 42px;
+  background-color: #52bab5;
+  border-radius: 50%;
+  margin: 0 auto;
 }
 .home-top{
   display: flex;

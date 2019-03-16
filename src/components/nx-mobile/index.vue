@@ -20,7 +20,7 @@ export default {
   components: { nxSvgIcon },
   data() {
     return {
-      url: ''
+      url: 'https://coding.net/api/share/download/925b6a78-ea70-489d-826f-aa394fb0ea1d'
     }
   },
   methods: {
