@@ -188,7 +188,11 @@ export default {
       }).then(() => {
         DeleteMistake(qs.stringify({ Id: index, UserId: this.$store.getters.user.Id })).then(res => {
           if (res.data.code === 0) {
-            this.$message.success('删除成功...')
+            this.$notify({
+              title: '提示',
+              message: '删除成功！',
+              type: 'info'
+            })
           } else {
             this.$message.warning('操作失败...')
           }

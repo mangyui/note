@@ -29,14 +29,14 @@ export default {
       moreList: [
         {
           id: 1,
-          title: '数据汇总',
+          title: '记录汇总',
           icon: 'dashboard',
           route: '/more/dataNum',
           color: '#F56C6C'
         },
         {
           id: 2,
-          title: '图表统计',
+          title: '数据统计',
           icon: 'heatmapChart',
           route: '/more/charts',
           color: '#52bab5'

@@ -36,6 +36,7 @@
             <h4>错题题目(不含答案)</h4>
             <div ref="ShouTitle" class="divWangeditor" style="text-align:left"></div>
             <!-- <quill-editor ref="titleEditor" v-model="form.Content" :options="editorOption" ></quill-editor> -->
+            <br/>
             <h4>错题解答(可选)</h4>
             <div ref="ShouCorrect" class="divWangeditor" style="text-align:left"></div>
             <!-- <quill-editor ref="AnalysisEditor" v-model="form.Analysis" :options="editorOption" ></quill-editor> -->
@@ -193,7 +194,7 @@ export default {
         message: '网页端请选择上传图片的方式！',
         type: 'info'
       })
-      //  navigator.camera.getPicture(this.onSuccess, this.onFail, {
+      // navigator.camera.getPicture(this.onSuccess, this.onFail, {
       //   quality: 50,
       //   destinationType: Camera.DestinationType.DATA_URL,
       //   encodingType: Camera.EncodingType.JPEG,
@@ -427,6 +428,7 @@ export default {
       'table', // 表格
       // 'video',  // 插入视频
       'code', // 插入代码
+      'symbols',
       'undo', // 撤销
       'redo' // 重复
     ]

@@ -107,6 +107,7 @@ code {
   box-sizing: border-box;
   overflow: auto;
   position: relative;
+  // height: 100%;
 }
 
 .components-container {
@@ -591,6 +592,9 @@ code {
     background: #fff!important;
     .w-e-menu{
       z-index: 10!important;
+      &:hover{
+        background: #eee;
+      }
       i{
         // color: #525252;
       }

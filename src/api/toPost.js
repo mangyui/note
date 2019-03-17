@@ -349,6 +349,18 @@ export function GetCustomer(datas) {
   })
 }
 
+// 他人信息
+export function SearchUsers(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.User.GetByName',
+    method: 'post',
+    data: datas
+  })
+}
+
 // 生成试题
 export function GetTest(datas) {
   return request({
@@ -360,3 +372,4 @@ export function GetTest(datas) {
     data: datas
   })
 }
+

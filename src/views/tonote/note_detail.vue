@@ -103,7 +103,11 @@ export default {
       }).then(() => {
         DeteleNote(qs.stringify({ Id: this.id })).then(res => {
           if (res.data.code === 0) {
-            this.$message.success('删除成功...')
+            this.$notify({
+              title: '提示',
+              message: '删除成功！',
+              type: 'info'
+            })
             var close = document.querySelector('.tags-view-item.active .el-icon-close')
             close.click()
             this.$router.push({

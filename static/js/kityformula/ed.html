@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="assets/styles/base.css">
+    <link rel="stylesheet" href="assets/styles/ui.css">
+
+    <script src="js/jquery-1.11.0.min.js"></script>
+    <script src="js/kitygraph.all.js"></script>
+    <script src="js/kity-formula-render.all.js"></script>
+    <script src="js/kity-formula-parser.all.min.js"></script>
+    <script src="js/kityformula-editor.all.min.js"></script>
+    <script src="js/editor-control.js"></script>
+
+    <style media="screen">
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    /*公式*/
+    .kf-editor{
+      width: 99%!important;
+    }
+    .kf-editor-edit-area{
+      width: initial!important;
+    }
+    #loading {
+        height: 32px;
+        width: 100%;
+        line-height: 32px;
+        position: absolute;
+        top: 42%;
+        left: 50%;
+        margin-left: -170px;
+        font-family: arial, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+    }
+
+    #loading img {
+        position: absolute;
+    }
+
+    #loading p {
+        display: block;
+        position: absolute;
+        left: 40px;
+        top: 0px;
+        margin: 0;
+    }
+
+    .button_area {
+        padding-top: 10px;
+        float: right;
+    }
+
+    .button {
+      font-size: 14px;
+      color: #1e88e5;
+      border: none;
+      padding: 5px 10px;
+      background-color: #fff;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+
+    .button:hover {
+      background-color: #f1f1f1;
+    }
+    </style>
+</head>
+
+<body>
+    <!-- 可视化编辑 -->
+    <div style="position: relative; top: 0; left: 0; margin: 0 auto; overflow: auto;">
+        <div id="kfEditorContainer" class="kf-editor">
+            <div id="tips" class="tips">
+                sorry! 插入公式功能仅支持IE9及以上版本的浏览器，请升级您的浏览器！
+            </div>
+        </div>
+    </div>
+
+    <div class="button_area">
+        <button class="button" type="button" name="button" id="ok">
+            插入
+        </button>
+        <!-- <button class="button" type="button" name="button" id="cancel">
+            取消
+        </button> -->
+    </div>
+
+    <script>
+        jQuery(function($) {
+            if (document.body.addEventListener) {
+                $("#tips").html('<div id="loading"><img src="loading.gif" alt="loading" /><p>正在加载，请耐心等待...</p></div>');
+                var factory = kf.EditorFactory.create($("#kfEditorContainer")[0], {
+                    render: {
+                        fontsize: 40
+                    },
+                    resource: {
+                        path: "resource/"
+                    }
+                });
+                factory.ready(function(KFEditor) {
+                    $("#tips").remove();
+                    // this指向KFEditor
+                    this.execCommand("render", "\\placeholder");
+                    this.execCommand("focus");
+                    window.kfe = this;
+                });
+
+            } else {
+                $("#tips").css("color", "black");
+                $("#tips").css("padding", "10px");
+            }
+
+            if (self != top) {
+                // var editor = window.parent.activeEditor;
+                // var elem = editor.getRangeElem();
+                // var e = editor.getSelfOrParentByName(elem, 'a');
+                $('#ok').on('click', function() {
+                    kfe.execCommand('get.image.data', function(data) {
+                        var latex = kfe.execCommand('get.source');
+                        // console.log(latex === "\\placeholder ")
+                        // console.log($(".w-e-panel-container",window.parent.document)[0].parentNode.childNodes[0])
+                        if(latex === "\\placeholder "){
+                          $(".w-e-panel-container",window.parent.document)[0].childNodes[0].click()
+                          return;
+                        }
+                        var html = '<img class="formula" src="' + data.img + '" data-latex="' + latex + '" />';
+                        // editor.command(e, 'insertHtml', html);
+                        $(".w-e-panel-container",window.parent.document)[0].parentNode.childNodes[0].innerHTML +=  html
+                        $(".w-e-panel-container",window.parent.document)[0].childNodes[0].click()
+                    });
+                });
+
+                $('#cancel').on('click', function() {
+                    // editor.command(e, 'bold');
+                    //任意执行命令，隐藏窗口
+                });
+            } else {
+                alert("请将该页面置于父窗口iframe中！")
+            }
+        });
+    </script>
+</body>
+
+</html>

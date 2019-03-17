@@ -1,6 +1,6 @@
 <template>
   <div class="profile">
-    <div v-if="showLoading" class="loading-box">
+    <div v-if="Loadingtop" class="loading-box">
       <i class="el-icon-loading"></i>
       加载中...
     </div>
@@ -89,6 +89,10 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="TA的错题" name="ques">
+          <div v-if="showLoading" class="loading-box">
+            <i class="el-icon-loading"></i>
+            加载中...
+          </div>
           <div class="ques-list">
             <div class="ques-list_item" v-for="(item,index) in questions" :key="index">
               <div class="ques_box">
@@ -148,7 +152,8 @@ export default {
   components: { nxSvgIcon },
   data() {
     return {
-      showLoading: true,
+      Loadingtop: true,
+      showLoading: false,
       showNone: false,
       showMore: false,
       NoneMore: false,
@@ -194,11 +199,12 @@ export default {
             return item.value === this.user.Class
           })
           this.Class = index.label
-          this.showLoading = false
+          this.Loadingtop = false
           this.Attention = this.user.Focus || false
         }
         this.tolist.UserId = this.user.Id
         this.getschool()
+        this.getQues()
       }).catch(() => {})
     },
     getschool() {
@@ -244,10 +250,10 @@ export default {
       }
     },
     handleClick(tab) {
-      if (tab.name === 'ques' && !this.questions[0]) {
-        console.log(tab.name)
-        this.getQues()
-      }
+      // if (tab.name === 'ques' && !this.questions[0]) {
+      //   // console.log(tab.name)
+      //   this.getQues()
+      // }
     },
     toAttention() {
       if (!this.$store.getters.user.Id) {

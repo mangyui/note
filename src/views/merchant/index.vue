@@ -7,7 +7,7 @@
         <el-row :gutter="10">
           <el-col v-for="(item2,index2) in 10" :key="index2" :xs="12" :sm="8" :md="8" :lg="6" :xl="4">
             <div class="more_item">
-              <router-link to="#">
+              <router-link to="">
                 <el-card :body-style="{ padding: '0px' }">
                   <img :src="item1.img" class="image">
                   <div style="padding: 10px;">

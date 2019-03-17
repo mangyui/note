@@ -14,47 +14,79 @@
         <el-button type="primary" icon="el-icon-search" v-on:click="SearchQuestion"></el-button> -->
       </div>
       <div class="voice-button">
-         <el-tooltip class="item" effect="dark" content="按住开始语音" placement="bottom-start">
-          <div class="voice-input-button-wrapper">
-            <voice-input-button
-                server="https://www.mccyu.com:444/"
-                appId="5c52f87b"
-                APIKey="3d0fba416f2a2423e7380ea2ab397d9e"
-                @record="showResult"
-                @record-start="recordStart"
-                @record-stop="recordStop"
-                @record-blank="recordNoResult"
-                @record-failed="recordFailed"
-                color="#fff"
-                tipPosition="top"
-            >
-              <template slot="no-speak">没听清您说的什么</template>
-            </voice-input-button>
-          </div>
-        </el-tooltip>
+        <div class="voice-input-button-wrapper">
+          <voice-input-button
+              server="https://www.mccyu.com:444/"
+              appId="5c52f87b"
+              APIKey="3d0fba416f2a2423e7380ea2ab397d9e"
+              @record="showResult"
+              @record-start="recordStart"
+              @record-stop="recordStop"
+              @record-blank="recordNoResult"
+              @record-failed="recordFailed"
+              color="#fff"
+              tipPosition="top"
+          >
+            <template slot="no-speak">没听清您说的什么</template>
+          </voice-input-button>
+        </div>
       </div>
       <!-- <el-select  v-model="type" placeholder="选择类型">
         <el-option label="数学" value="type1"></el-option>
         <el-option label="语文" value="type2"></el-option>
         <el-option label="其他" value="type3"></el-option>
       </el-select> -->
-      <quex-box :option="questions"></quex-box>
-      <div v-if="showLoading" class="loading-box">
-        <i class="el-icon-loading"></i>
-        加载中...
-      </div>
-      <div v-if="showNone" class="loading-box">
-        <i class="el-icon-search"></i>
-        空空如也...
-      </div>
-      <div v-if="showMore" class="loading-box">
-        <i class="el-icon-loading"></i>
-        加载更多中...
-      </div>
-      <div v-if="!showMore && NoneMore" class="loading-box">
-        <i class="el-icon-search"></i>
-        没有更多了...
-      </div>
+      <el-tabs v-model="activeName" class='is_stretch'>
+        <el-tab-pane name="ques">
+          <div slot="label">题目</div>
+            <quex-box :option="questions"></quex-box>
+            <div v-if="showLoading" class="loading-box">
+              <i class="el-icon-loading"></i>
+              加载中...
+            </div>
+            <div v-if="showNone" class="loading-box">
+              <i class="el-icon-search"></i>
+              空空如也...
+            </div>
+            <div v-if="showMore" class="loading-box">
+              <i class="el-icon-loading"></i>
+              加载更多中...
+            </div>
+            <div v-if="!showMore && NoneMore" class="loading-box">
+              <i class="el-icon-search"></i>
+              没有更多了...
+            </div>
+          </el-tab-pane>
+        <el-tab-pane name="user">
+          <div slot="label">用户</div>
+            <div v-if="showLoading" class="loading-box">
+              <i class="el-icon-loading"></i>
+              加载中...
+            </div>
+            <el-row :gutter="12">
+            <el-col  :xs="12" :sm="12" :md="8" :lg="6" :xl="6" v-for="(item,index) in users" :key="index">
+              <el-card class="friend-box" :body-style="{ padding: '0px' }"  shadow="hover">
+                <div>
+                  <div class="friend-top" :style="{backgroundImage:'url(' + './static/img/box_bg.jpg' + ')'}"><div class="top_bg"></div></div>
+                  <!-- <span @click="toAttention(index)" >
+                    <nx-svg-icon
+                      class-name='international-icon icon-collect'
+                      :style="item.attention==true?'color: #F56C6C':''"
+                      icon-class="collect" />
+                  </span> -->
+                  <router-link  :to="'/user/others/'+item.Id">
+                    <div class="friend-body">
+                      <img src="#" :src="item.Avatar||'./static/img/avatar.jpg'">
+                      <b>{{item.Name|| '匿名'}}</b>
+                      <p>{{item.Intro||'这个家伙很懒，什么都没留下'}}</p>
+                    </div>
+                  </router-link>
+                </div>
+              </el-card>
+            </el-col>
+          </el-row>
+        </el-tab-pane>
+      </el-tabs>
     </div>
     <div v-if="ScrollTop>700" class="note_d-edit" onclick="document.querySelector('.app-main').scrollTop=0">
       <el-button class="tototop" icon="el-icon-d-arrow-left" circle></el-button>
@@ -67,7 +99,8 @@
 import nxSvgIcon from '@/components/nx-svg-icon/index'
 import VoiceInputButton from 'voice-input-button'
 import {
-  SearchQues
+  SearchQues,
+  SearchUsers
 } from '@/api/toPost'
 
 import quexBox from '@/components/my-box/quex-box'
@@ -85,6 +118,8 @@ export default {
       homeTop: 0,
       ScrollTop: 0,
       screenWidth: document.body.clientWidth,
+      activeName: 'ques',
+      users: [],
       questions: [],
       oldQuetions: [],
       type: '',
@@ -115,6 +150,8 @@ export default {
       // if (this.Sdata.Keys.trim() === '') {
       //   return
       // }
+      this.searchuser()
+
       this.Sdata.Page = 1
       this.showNone = false
       this.NoneMore = false
@@ -136,7 +173,8 @@ export default {
       var value = this.Sdata.Keys
       this.oldQuetions.forEach(item => {
         for (var i = 0; i < value.length; i++) {
-          if (value[i] !== 'b' && value[i] !== 's' && value[i] !== 'p' && value[i] !== 'n') {
+          var pattern = new RegExp('[\u4E00-\u9FA5]+')
+          if (pattern.test(value[i])) {
             // 匹配关键字正则
             var replaceReg = new RegExp(value[i], 'g')
             // 高亮替换v-html值
@@ -153,6 +191,7 @@ export default {
       var outerHeight = document.querySelector('.app-main').clientHeight
       var scrollTop = document.querySelector('.app-main').scrollTop
       this.ScrollTop = scrollTop
+      // console.log(innerHeight, outerHeight, scrollTop)
       if (innerHeight <= (outerHeight + scrollTop)) {
         if (this.NoneMore || this.showMore || this.Sdata.Keys.trim() === '') {
           return
@@ -172,6 +211,11 @@ export default {
         }).catch(() => {})
       }
     },
+    searchuser() {
+      SearchUsers(qs.stringify({ name: this.Sdata.Keys })).then(res => {
+        this.users = res.data.data
+      }).catch(() => {})
+    },
     showResult(text) {
       this.Sdata.Keys = this.Sdata.Keys + text.substr(0, text.length - 1)
       if (text !== '') {
@@ -189,6 +233,12 @@ export default {
     recordFailed(error) {
       console.info('识别失败，错误栈：', error)
     }
+    // handleClick(tab) {
+    //   if (tab.name === 'user' && !this.users[0]) {
+    //     // console.log(tab.name)
+    //     this.searchuser()
+    //   }
+    // }
   },
   mounted() {
     const that = this

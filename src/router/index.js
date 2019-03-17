@@ -269,6 +269,12 @@ export const constantRouterMap = [
     },
     children: [
       {
+        path: 'quesList',
+        name: 'quesList',
+        component: () => import('@/views/toques/quesList'),
+        meta: { title: 'QuesList' }
+      },
+      {
         path: 'collect',
         name: 'collect',
         component: () => import('@/views/toques/collect'),
@@ -279,26 +285,20 @@ export const constantRouterMap = [
         name: 'mistake_type',
         component: () => import('@/views/toques/mistake_type'),
         meta: { title: 'Mistake_type' }
-      },
+      }
       // {
       //   path: 'knowledge',
       //   name: 'knowledge',
       //   component: () => import('@/views/toques/knowledge'),
       //   meta: { title: 'Knowledge' }
       // },
-      {
-        path: 'my_answer/:id',
-        name: 'my_answer',
-        hidden: true,
-        component: () => import('@/views/toques/my_answer'),
-        meta: { title: 'My_Answer' }
-      },
-      {
-        path: 'quesList',
-        name: 'quesList',
-        component: () => import('@/views/toques/quesList'),
-        meta: { title: 'QuesList' }
-      }
+      // {
+      //   path: 'my_answer/:id',
+      //   name: 'my_answer',
+      //   hidden: true,
+      //   component: () => import('@/views/toques/my_answer'),
+      //   meta: { title: 'My_Answer' }
+      // },
     ]
   },
 

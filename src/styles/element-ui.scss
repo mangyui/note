@@ -35,3 +35,14 @@
   }
 }
 
+// .el-tabs__active-bar {
+//   width: 56px!important;
+//   border-radius: 100px;
+//   left: 50%;
+//   height: 3px;
+//   margin-left: -30%;
+// }
+
+.el-tabs__nav-wrap::after{
+  background-color: transparent;
+}

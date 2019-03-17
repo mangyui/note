@@ -73,6 +73,10 @@
 // import 'quill/dist/quill.bubble.css'
 // import { quillEditor } from 'vue-quill-editor'
 
+// import '@/assets/js/editor/css/wangEditor.min.css'
+// import '@/assets/js/editor/js/wangEditor.min.js'
+// import '@/assets/js/editor/js/custom-menu.js'
+
 // wangeditor 富文本
 import E from 'wangeditor'
 var editor
@@ -188,6 +192,8 @@ export default {
           message: '笔记标题不能为空！',
           type: 'warning'
         })
+        // this.note.Content += '<br/>'
+        console.log(this.note.Content)
         return
       }
       this.$refs.Form.validate(valid => {
@@ -249,8 +255,9 @@ export default {
     editor.customConfig = {
       onchange: function(html) {
         That.note.Content = html
+        // console.log(That.note.Content)
       },
-      uploadImgServer: 'http://192.168.1.105/?s=App.Like.UpImage', // 上传图片到服务器
+      uploadImgServer: 'http://1975386453.38haotyhn.duihuanche.com/?service=App.Upload.Upload', // 上传图片到服务器
       uploadFileName: 'Content', // 后端使用这个字段获取图片信息
       uploadImgMaxLength: 1 // 限制一次最多上传 1 张图片
     }
@@ -272,6 +279,7 @@ export default {
       'image', // 插入图片
       'table', // 表格
       'code', // 插入代码
+      'symbols',
       'undo', // 撤销
       'redo' // 重复
     ]
