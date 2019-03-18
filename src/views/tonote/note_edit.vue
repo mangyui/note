@@ -68,7 +68,8 @@ var editor
 import { NoteCategory } from '@/api/toget'
 import {
   UpdateNote,
-  NoteDetails
+  NoteDetails,
+  Imgurl
 } from '@/api/toPost'
 import qs from 'qs'
 
@@ -192,14 +193,23 @@ export default {
   },
   mounted() {
     var That = this
+    // var Imgurl = 'http://192.168.1.105/'
     editor = new E(this.$refs.editor)
     editor.customConfig = {
       onchange: function(html) {
         That.note.Content = html
       },
-      uploadImgServer: '/api/UploadImg', // 上传图片到服务器
-      uploadFileName: 'Content', // 后端使用这个字段获取图片信息
-      uploadImgMaxLength: 1 // 限制一次最多上传 1 张图片
+      uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
+      uploadFileName: 'file', // 后端使用这个字段获取图片信息
+      uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
+      showLinkImg: false,
+      uploadImgHooks: {
+        customInsert: function(insertImg, result, editor) {
+          var url = Imgurl + 'upload/' + result.data.data.data
+          // console.log(result.data.data.data)
+          insertImg(url)
+        }
+      }
     }
     editor.customConfig.menus = [
       'head', // 标题

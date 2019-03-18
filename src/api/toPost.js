@@ -1,5 +1,7 @@
 import request from '@/utils/request'
 
+export var Imgurl = 'http://1975386453.38haotyhn.duihuanche.com/'
+
 // api前缀 ,代理跨域拦截
 // 上传题库
 export function upQuestion(datas) {
@@ -103,6 +105,18 @@ export function SearchMistake(datas) {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
     url: '/?service=App.Mistake.GetByKeys',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 查找相识体型
+export function QuestionMore(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Question.GetRecommendByQId',
     method: 'post',
     data: datas
   })

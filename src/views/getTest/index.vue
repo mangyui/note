@@ -42,6 +42,7 @@
         </div>
         <!-- <img :src="'http://127.0.0.1:9528/static/img/avatar.jpg'" alt=""> -->
         <!-- <img src="http://p0.so.qhimgs1.com/sdr/400__/t014c2f774eb0ffbd3a.jpg" alt=""> -->
+        <p>有种你就在手机端把我下载喽</p>
         <div v-for="(item,index) in Tests" :key="index">
           <div class="test_title">
             <div class="test_content" v-html="item.Content"></div>
@@ -53,6 +54,7 @@
       </div>
       <br/>
       <el-button v-if="Tests[0]" type="primary"  @click="ToWord">生成Word</el-button>
+      <el-button type="primary"  @click="ToWord">生成Word</el-button>
       <!-- <a href="https://www.baidu.com/">打开百度</a>-->
       <!-- <a href="https://www.baidu.com/" id="alink" download="test.doc">test</a> -->
       <!-- <a href="" id="alink" target="_blank" style="display: none">test</a> -->
@@ -148,6 +150,8 @@ export default {
       var blob = $('#Test').wordExport('test')
       var filename = 'test_' + new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, '').replace(/\.[\d]{3}Z/, '')
       window.saveAs(blob, filename + '.doc')
+
+      // window.navigator.msSaveBlob(blob, filename + '.doc')
       // window.open(URL.createObjectURL(blob), '_system')
       // alert(blob)
       // 手机端保存

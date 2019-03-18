@@ -75,6 +75,13 @@ export const constantRouterMap = [
         hidden: true,
         component: () => import('@/views/home/question_details'),
         meta: { title: 'Question_Details' }
+      },
+      {
+        path: 'ques_more/:id',
+        name: 'ques_more',
+        hidden: true,
+        component: () => import('@/views/home/ques_more'),
+        meta: { title: 'Ques_more' }
       }
     ]
   },

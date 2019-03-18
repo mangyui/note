@@ -129,7 +129,7 @@ export default {
     this.fetchDate()
   },
   mounted() {
-    console.log(this.user)
+    // console.log(this.user)
   }
 }
 </script>

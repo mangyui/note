@@ -15,9 +15,11 @@
       <div class="page-content">
         <div class="detail-top">
           <el-tag v-if="question.Category">{{question.Category.Subject}}</el-tag>
-          <el-button class="de-more" size="medium">相似题型</el-button>
+          <router-link :to="'/home/ques_more/'+ this.id">
+            <el-button class="de-more" size="medium" >相似题型</el-button>
+          </router-link>
         </div>
-        <h2>题目</h2>
+        <!-- <h2>题目</h2> -->
         <div class="sys-notes" v-html="question.Content"></div>
         <div class="sys-section">
           <div class="title">
@@ -67,7 +69,7 @@
           </div>
           <div v-if="!friendCorrect[0]" class="loading-box">
             <i class="el-icon-search"></i>
-            没有更多题友解答...
+            暂无更多题友解答...
           </div>
         </div>
       </div>

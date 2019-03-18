@@ -1,4 +1,7 @@
 .note_details{
+  .detail-top{
+    height: 50px;
+  }
   .de-more{
     position: absolute;
     right: 20px;
@@ -73,6 +76,7 @@
         display: block;
         margin-top: 8px;
         color: #444;
+        font-size: 13px;
       }
     }
   }
@@ -113,6 +117,10 @@
   .note_details{
     .de-more{
       right: 5px;
+      top: 10px;
+    }
+    .sys-notes{
+      line-height: 23px;
     }
   }
 }

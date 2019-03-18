@@ -119,7 +119,7 @@
             <i class="el-icon-loading"></i>
             加载更多中...
           </div>
-          <div v-if="!showMore && NoneMore" class="loading-box">
+          <div v-if="questions[0]&&!showMore && NoneMore" class="loading-box">
             <i class="el-icon-search"></i>
             没有更多了...
           </div>
@@ -380,7 +380,10 @@ export default {
 .info-tab .info-tag {
     flex: 1;
 }
-
+.datum-item-box{
+    border-top: 0;
+    border-bottom: 1px solid #eeeeee;
+}
 @media (max-width: 768px)
 {
   .profile-header{

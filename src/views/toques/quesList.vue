@@ -250,7 +250,7 @@ export default {
 
 
 <style lang="scss" scoped>
-.ques-list .ques-list_item .ques_box{
-  padding-top: 35px;
-}
+// .ques-list .ques-list_item .ques_box{
+//   padding-top: 35px;
+// }
 </style>

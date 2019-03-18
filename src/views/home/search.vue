@@ -64,24 +64,19 @@
               加载中...
             </div>
             <el-row :gutter="12">
-            <el-col  :xs="12" :sm="12" :md="8" :lg="6" :xl="6" v-for="(item,index) in users" :key="index">
+            <el-col  :xs="24" :sm="12" :md="8" :lg="8" :xl="6" v-for="(item,index) in users" :key="index">
               <el-card class="friend-box" :body-style="{ padding: '0px' }"  shadow="hover">
-                <div>
-                  <div class="friend-top" :style="{backgroundImage:'url(' + './static/img/box_bg.jpg' + ')'}"><div class="top_bg"></div></div>
-                  <!-- <span @click="toAttention(index)" >
-                    <nx-svg-icon
-                      class-name='international-icon icon-collect'
-                      :style="item.attention==true?'color: #F56C6C':''"
-                      icon-class="collect" />
-                  </span> -->
-                  <router-link  :to="'/user/others/'+item.Id">
-                    <div class="friend-body">
-                      <img src="#" :src="item.Avatar||'./static/img/avatar.jpg'">
-                      <b>{{item.Name|| '匿名'}}</b>
-                      <p>{{item.Intro||'这个家伙很懒，什么都没留下'}}</p>
-                    </div>
-                  </router-link>
-                </div>
+                <div class="people">
+                    <router-link  :to="'/user/others/'+item.Id">
+                      <div class="friend-body">
+                        <img src="#" :src="item.Avatar||'./static/img/avatar.jpg'">
+                        <div class="peo-right">
+                          <b>{{item.Name|| '匿名'}}</b>
+                          <p>{{item.Intro||'这个家伙很懒，什么都没留下'}}</p>
+                        </div>
+                      </div>
+                    </router-link>
+                  </div>
               </el-card>
             </el-col>
           </el-row>

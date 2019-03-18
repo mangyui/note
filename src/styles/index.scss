@@ -308,7 +308,7 @@ code {
 .ques-list{
   margin-bottom: 20px;
   .ques-list_item{
-    margin-top: 15px;
+    margin-bottom: 15px;
     width: 100%;
     .ques_box{
       border: 1px solid #ebeef5;
@@ -413,6 +413,10 @@ code {
     box-shadow: 0 0 1px #000;
 }
 
+.people{
+  padding: 25px 35px 25px 10px;
+}
+
 .friend-box{
   margin-bottom: 15px;
   position: relative;
@@ -424,17 +428,28 @@ code {
     background-size: cover;
   }
   .friend-body{
-    text-align: center;
     position: relative;
-    padding: 64px 5px 8px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    .peo-right{
+      margin-left: 23px;
+      line-height: 32px;
+      flex-grow: 1;
+      width: 0;
+      overflow: hidden;
+      b{
+        font-size: 17px;
+      }
+    }
     img{
       border: 1px solid #fff;
       border-radius: 50%;
       height: 100px;
       width: 100px;
-      position: absolute;
-      top: -50px;
-      left:  calc(50% - 50px);
+      // position: absolute;
+      // top: -50px;
+      // left:  calc(50% - 50px);
     }
     p{
       color: #888;
@@ -582,7 +597,7 @@ code {
 .home-h4{
   text-align: center;
   margin: 28px 0 16px;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 // wangediter 的编辑器改写样式
@@ -717,7 +732,7 @@ code {
       height: 100px;
     }
     .friend-body{
-      padding: 46px 5px 5px;
+      padding: 5px 5px 5px;
       img{
         height: 80px;
         width: 80px;
@@ -731,5 +746,18 @@ code {
         font-size: 12px;
       }
    }
+  }
+  .el-card__body{
+    padding: 10px;
+  }
+  .ques-list {
+    .ques-list_item {
+     .ques_box{
+      .ques_body,.ques_body p{
+        line-height: 26px;
+        font-size: 14px;
+        }
+      }
+    }
   }
 }

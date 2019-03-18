@@ -9,11 +9,11 @@
         </el-button>
       </router-link>
       <div class="top_item">
-        <p>笔记
-          <router-link to="/tonote/noteList"><nx-count-up :start="0" :end="66"/></router-link>
+        <p style="height:80px">
+          <router-link to="/tonote/noteList"></router-link>
         </p>
-        <p>错题
-          <router-link to="/toques/quesList"><nx-count-up :start="0" :end="66"/></router-link>
+        <p>
+          <router-link to="/toques/quesList"></router-link>
         </p>
       </div>
     </div>
@@ -26,7 +26,7 @@
       <input id="Choose_Avatar" ref="referenceUpload" style="display: none" type="file" name="image" accept="image/*" multiple @change="toChoose"/>
       <div>
         <h2>{{user.Name}}</h2>
-        <p class="user_address">{{user.Address==null?'':user.Address+' |'}}  学生</p>
+        <p class="user_address">{{Class==null?'':Class+' |'}}  学生</p>
         <!-- <p class="user_mess">{{user.Intro}}</p> -->
         <p class="user_money">金币：<span>{{user.Coin||0}}</span> <el-button size="mini" round @click="chongzhiBox = true">充值</el-button></p>
       </div>

@@ -117,7 +117,7 @@ import qs from 'qs'
 // } from '@/api/toget'
 
 import {
-  // upQuestion,
+  Imgurl,
   addMistake,
   // ocrQues,
   mistakeCate,
@@ -390,23 +390,40 @@ export default {
   mounted() {
     // 富文本配置
     var That = this
+    // var Imgurl = 'http://192.168.1.105/'
     ShouTitle = new E(this.$refs.ShouTitle)
     ShouCorrect = new E(this.$refs.ShouCorrect)
     ShouTitle.customConfig = {
       onchange: function(html) {
         That.form.Content = html
       },
-      uploadImgServer: '/api/UploadImg', // 上传图片到服务器
-      uploadFileName: 'Content', // 后端使用这个字段获取图片信息
-      uploadImgMaxLength: 1 // 限制一次最多上传 1 张图片
+      uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
+      uploadFileName: 'file', // 后端使用这个字段获取图片信息
+      uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
+      showLinkImg: false,
+      uploadImgHooks: {
+        customInsert: function(insertImg, result, editor) {
+          var url = Imgurl + 'upload/' + result.data.data.data
+          // console.log(result.data.data.data)
+          insertImg(url)
+        }
+      }
     }
     ShouCorrect.customConfig = {
       onchange: function(html) {
         That.form.Analysis = html
       },
-      uploadImgServer: '/api/UploadImg', // 上传图片到服务器
-      uploadFileName: 'Content', // 后端使用这个字段获取图片信息
-      uploadImgMaxLength: 1 // 限制一次最多上传 1 张图片
+      uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
+      uploadFileName: 'file', // 后端使用这个字段获取图片信息
+      uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
+      showLinkImg: false,
+      uploadImgHooks: {
+        customInsert: function(insertImg, result, editor) {
+          var url = Imgurl + 'upload/' + result.data.data.data
+          // console.log(result.data.data.data)
+          insertImg(url)
+        }
+      }
     }
     ShouTitle.customConfig.menus =
     ShouCorrect.customConfig.menus = [

@@ -11,10 +11,10 @@
         <div slot="label"><i class="el-icon-date"></i>关注的人</div>
           <div class="">
             <el-row :gutter="12">
-              <el-col  :xs="12" :sm="12" :md="8" :lg="6" :xl="6" v-for="(item,index) in Followees" :key="index">
+              <el-col  :xs="24" :sm="12" :md="8" :lg="8" :xl="6" v-for="(item,index) in Followees" :key="index">
                 <el-card v-if="item.UserId!=0" class="friend-box" :body-style="{ padding: '0px' }"  shadow="hover">
-                  <div>
-                    <div class="friend-top" :style="{backgroundImage:'url(' + top_bg + ')'}"><div class="top_bg"></div></div>
+                  <div class="people">
+                    <!-- <div class="friend-top" :style="{backgroundImage:'url(' + top_bg + ')'}"><div class="top_bg"></div></div> -->
                     <span @click="toAttention(item.UserId)" >
                       <nx-svg-icon
                         class-name='international-icon icon-collect'
@@ -24,8 +24,10 @@
                     <router-link  :to="'/user/others/'+item.User.Id">
                       <div class="friend-body">
                         <img src="#" :src="item.User.Avatar||deAvatar">
-                        <b>{{item.User.Name|| '匿名'}}</b>
-                        <p>{{item.User.Intro||'这个家伙很懒，什么都没留下'}}</p>
+                        <div class="peo-right">
+                          <b>{{item.User.Name|| '匿名'}}</b>
+                          <p>{{item.User.Intro||'这个家伙很懒，什么都没留下'}}</p>
+                        </div>
                       </div>
                     </router-link>
                   </div>
@@ -38,21 +40,23 @@
         <div slot="label"><i class="el-icon-date"></i>粉丝</div>
         <div class="">
           <el-row :gutter="12">
-            <el-col  :xs="12" :sm="12" :md="8" :lg="6" :xl="6" v-for="(item,index) in Fans" :key="index">
+            <el-col  :xs="24" :sm="12" :md="8" :lg="8" :xl="6" v-for="(item,index) in Fans" :key="index">
               <el-card class="friend-box" :body-style="{ padding: '0px' }"  shadow="hover">
-                <div>
-                  <div class="friend-top" :style="{backgroundImage:'url(' + top_bg + ')'}"><div class="top_bg"></div></div>
-                  <!-- <span @click="toAttention(index)" >
+                <div class="people">
+                  <!-- <div class="friend-top" :style="{backgroundImage:'url(' + top_bg + ')'}"><div class="top_bg"></div></div> -->
+                  <span @click="toAttention(item.UserId)" >
                     <nx-svg-icon
                       class-name='international-icon icon-collect'
-                      :style="item.attention==true?'color: #F56C6C':''"
+                      style="color: #F56C6C"
                       icon-class="collect" />
-                  </span> -->
+                  </span>
                   <router-link  :to="'/user/others/'+item.User.Id">
                     <div class="friend-body">
                       <img src="#" :src="item.User.Avatar||deAvatar">
-                      <b>{{item.User.Name|| '匿名'}}</b>
-                      <p>{{item.User.Intro||'这个家伙很懒，什么都没留下'}}</p>
+                      <div class="peo-right">
+                        <b>{{item.User.Name|| '匿名'}}</b>
+                        <p>{{item.User.Intro||'这个家伙很懒，什么都没留下'}}</p>
+                      </div>
                     </div>
                   </router-link>
                 </div>

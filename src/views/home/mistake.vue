@@ -15,9 +15,8 @@
       <div class="page-content">
         <div class="detail-top">
           <el-tag v-if="question.Category">{{question.Category.Subject}}</el-tag>
-          <el-button class="de-more" size="medium">相似错题</el-button>
+          <!-- <el-button class="de-more" size="medium">相似错题</el-button> -->
         </div>
-        <h2>错题详情</h2>
         <div class="sys-notes" v-html="question.Title"></div>
         <div class="sys-section" v-if="isMe">
           <div class="title">
@@ -37,7 +36,7 @@
           </div>
           <!-- <quill-editor v-if="isUpdae" ref="myTextEditor" v-model="content" :options="editorOption"></quill-editor> -->
           <br/>
-          <el-button v-if="!isUpdae" class="editor-btn" type="primary" @click="isUpdae=true">修改解答</el-button>
+          <el-button v-if="!isUpdae" class="editor-btn" type="primary" @click="handleChange">修改解答</el-button>
           <el-button v-if="isUpdae" class="editor-btn" @click="isUpdae=false">返回</el-button>
           <el-button v-if="isUpdae" class="editor-btn" type="danger" @click="submit">确定修改</el-button>
         </div>
@@ -72,9 +71,9 @@
           <div class="sys-article" v-html="question.Guangfang"></div>
         </div>
         <div class="sys-section">
-          <div class="title">
+          <!-- <div class="title">
             <strong>暂无题友解答</strong>
-          </div>
+          </div> -->
           <!-- <div class="answer_item" v-for="(item,index) in 1" :key="index">
             <div class="answer_item_top">
               <div class="ques_header">
@@ -124,7 +123,8 @@ import {
 import {
   P_dianZan,
   P_toCollect,
-  UpdateMistake
+  UpdateMistake,
+  Imgurl
 } from '@/api/toPost'
 import qs from 'qs'
 
@@ -171,8 +171,26 @@ export default {
     }
   },
   methods: {
-    handleChange(val) {
-      console.log(val)
+    handleChange() {
+      // var That = this
+      // var Imgurl = 'http://192.168.1.105/'
+      // editor.customConfig = {
+      //   onchange: function(html) {
+      //     That.content = html
+      //   },
+      //   uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
+      //   uploadFileName: 'file', // 后端使用这个字段获取图片信息
+      //   uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
+      //   showLinkImg: false,
+      //   uploadImgHooks: {
+      //     customInsert: function(insertImg, result, editor) {
+      //       var url = Imgurl + 'upload/' + result.data.data.data
+      //       // console.log(result.data.data.data)
+      //       insertImg(url)
+      //     }
+      //   }
+      // }
+      this.isUpdae = true
     },
     dianZan() {
       if (!this.$store.getters.user.Id) {
@@ -344,14 +362,23 @@ export default {
   },
   mounted() {
     var That = this
+    // var Imgurl = 'http://192.168.1.105/'
     editor = new E(this.$refs.editor)
     editor.customConfig = {
       onchange: function(html) {
         That.content = html
       },
-      uploadImgServer: '/api/UploadImg', // 上传图片到服务器
-      uploadFileName: 'Content', // 后端使用这个字段获取图片信息
-      uploadImgMaxLength: 1 // 限制一次最多上传 1 张图片
+      uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
+      uploadFileName: 'file', // 后端使用这个字段获取图片信息
+      uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
+      showLinkImg: false,
+      uploadImgHooks: {
+        customInsert: function(insertImg, result, editor) {
+          var url = Imgurl + 'upload/' + result.data.data.data
+          // console.log(result.data.data.data)
+          insertImg(url)
+        }
+      }
     }
     editor.customConfig.menus = [
       'head', // 标题
@@ -385,5 +412,11 @@ export default {
     @import '../../styles/details.scss';
 .sys-section{
   margin-top: 20px;
+}
+.note_details{
+  .sys-notes {
+    border-bottom: 4px solid #f7b3b3;
+    border-top: 4px solid #f7b3b3;
+  }
 }
 </style>

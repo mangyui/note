@@ -18,6 +18,7 @@ import {
 const whiteList = ['/login',
   '/',
   '/home/index', // 主页
+  '/home/ques_more/',
   '/SQu/index', // 拍照搜题
   '/more/index', // 更多
   '/merchant/index', // 商家

@@ -82,7 +82,7 @@ import E from 'wangeditor'
 var editor
 
 import { NoteCategory } from '@/api/toget'
-import { AddNote, AddNoteType } from '@/api/toPost'
+import { AddNote, AddNoteType, Imgurl } from '@/api/toPost'
 import qs from 'qs'
 
 export default {
@@ -250,6 +250,7 @@ export default {
   },
   mounted() {
     var That = this
+    // var Imgurl = 'http://1975386453.38haotyhn.duihuanche.com/'
     editor = new E(this.$refs.editor)
     console.log(editor.customConfig)
     editor.customConfig = {
@@ -257,9 +258,17 @@ export default {
         That.note.Content = html
         // console.log(That.note.Content)
       },
-      uploadImgServer: 'http://1975386453.38haotyhn.duihuanche.com/?service=App.Upload.Upload', // 上传图片到服务器
-      uploadFileName: 'Content', // 后端使用这个字段获取图片信息
-      uploadImgMaxLength: 1 // 限制一次最多上传 1 张图片
+      uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
+      uploadFileName: 'file', // 后端使用这个字段获取图片信息
+      uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
+      showLinkImg: false,
+      uploadImgHooks: {
+        customInsert: function(insertImg, result, editor) {
+          var url = Imgurl + 'upload/' + result.data.data.data
+          // console.log(result.data.data.data)
+          insertImg(url)
+        }
+      }
     }
     editor.customConfig.menus = [
       'head1', // 标题
