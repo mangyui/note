@@ -17,6 +17,24 @@
         <!-- <br/>
         <quill-editor ref="myTextEditor" v-model="note.Content" :options="editorOption"></quill-editor> -->
         <br/>
+        <div class="voice-button">
+          <div class="voice-input-button-wrapper">
+            <voice-input-button
+                server="https://www.mccyu.com:444/"
+                appId="5c52f87b"
+                APIKey="3d0fba416f2a2423e7380ea2ab397d9e"
+                @record="showResult"
+                @record-start="recordStart"
+                @record-stop="recordStop"
+                @record-blank="recordNoResult"
+                @record-failed="recordFailed"
+                color="#fff"
+                tipPosition="top"
+            >
+              <template slot="no-speak">没听清您说的什么</template>
+            </voice-input-button>
+          </div>
+        </div>
         <el-button type="primary" @click="dialogFormVisible = true">提交</el-button>
       </div>
       <!-- <div ref="btngroup" class="btn-wrapper" :style="{right: btnRight}">
@@ -81,12 +99,16 @@
 import E from 'wangeditor'
 var editor
 
+import VoiceInputButton from 'voice-input-button'
 import { NoteCategory } from '@/api/toget'
 import { AddNote, AddNoteType, Imgurl } from '@/api/toPost'
 import qs from 'qs'
 
 export default {
   name: 'edit',
+  components: {
+    VoiceInputButton
+  },
   data: function() {
     return {
       dialogFormVisible: false,
@@ -122,9 +144,6 @@ export default {
         ]
       }
     }
-  },
-  components: {
-    // quillEditor
   },
   created() {
     this.getCategory()
@@ -186,6 +205,7 @@ export default {
         }).catch(() => {})
         return
       }
+      editor.change && editor.change()
       if (this.note.Headline.trim().length === 0) {
         this.$notify({
           title: '提示',
@@ -246,6 +266,19 @@ export default {
       setTimeout(function() {
         clearInterval(ov)
       }, 500)
+    },
+    showResult(text) {
+      editor.txt.append('<span>' + text.substr(0, text.length - 1) + '</span>')
+      // console.log(text.substr(0, text.length - 1))
+    },
+    recordStart() {
+    },
+    recordStop() {
+    },
+    recordNoResult() {
+    },
+    recordFailed(error) {
+      console.info('识别失败，错误栈：', error)
     }
   },
   mounted() {
@@ -264,7 +297,7 @@ export default {
       showLinkImg: false,
       uploadImgHooks: {
         customInsert: function(insertImg, result, editor) {
-          var url = Imgurl + 'upload/' + result.data.data.data
+          var url = result.data.data.data
           // console.log(result.data.data.data)
           insertImg(url)
         }

@@ -11,19 +11,19 @@
           <i class="el-icon-date"></i> 错题详情</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <div class="note_details">
+    <div v-show="question" class="note_details">
       <div class="page-content">
-        <div class="detail-top">
+        <!-- <div class="detail-top">
           <el-tag v-if="question.Category">{{question.Category.Subject}}</el-tag>
-          <!-- <el-button class="de-more" size="medium">相似错题</el-button> -->
-        </div>
+          <el-button class="de-more" size="medium">相似错题</el-button>
+        </div> -->
         <div class="sys-notes" v-html="question.Title"></div>
         <div class="sys-section" v-if="isMe">
           <div class="title">
             <strong>我的解答</strong>
               <div class="ques_header">
                 <router-link to="/user/index">
-                  <img :src="user.avatar || myavatar">
+                  <img :src="user.Avatar || myavatar">
                 </router-link>
                 <div class="header_right">
                   <b>{{user.Name}}</b>
@@ -374,7 +374,7 @@ export default {
       showLinkImg: false,
       uploadImgHooks: {
         customInsert: function(insertImg, result, editor) {
-          var url = Imgurl + 'upload/' + result.data.data.data
+          var url = result.data.data.data
           // console.log(result.data.data.data)
           insertImg(url)
         }
@@ -415,8 +415,7 @@ export default {
 }
 .note_details{
   .sys-notes {
-    border-bottom: 4px solid #f7b3b3;
-    border-top: 4px solid #f7b3b3;
+    background: #ffe9e9
   }
 }
 </style>

@@ -18,13 +18,16 @@ export default {
     key() {
       return this.$route.fullPath
     }
-  }
+  },
   // 监听路由，使每次更换页面都滚动到顶部
-  // watch: {
-  //   $route(to, from) {
-  //     var ele = document.querySelector('.app-main')
-  //     ele.scrollTop = '0px'
-  //   }
-  // }
+  watch: {
+    $route(to, from) {
+      var ele = document.querySelector('.app-main')
+      ele.scrollTop = '0px'
+      $('body>ul').remove()
+      $('body>div').not('#app').remove()
+    }
+
+  }
 }
 </script>

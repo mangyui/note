@@ -25,7 +25,7 @@
           </div>
         </div>
         <div class="sq-body">
-          <el-button class="sq-change" type="danger" size="medium" v-if="showBtn" @click="showShou=(showShou==false?true:false)">{{showShou==false?"手动添加":"返回搜题"}}</el-button>
+          <el-button class="sq-change" size="small" v-if="showBtn" @click="showShou=(showShou==false?true:false)">{{showShou==false?"手动添加":"返回搜题"}}</el-button>
           <div v-show="!showShou && questions[0]"  class="ques-list">
             <h3 class="Hpipei">猜你要找:</h3>
             <slider v-if="" ref="slider" :options="sliderOptions" @slide='slide' @tap='onTap' @init='onInit'>
@@ -183,8 +183,7 @@ export default {
       },
       haveF: {
         Correct: '',
-        Analysis: [
-        ],
+        Analysis: '',
         currentPage: ''
       },
       toadd: {
@@ -280,7 +279,7 @@ export default {
     //   done()
     // },
     toRotate() {
-      this.$refs.cropper.rotate(10)
+      this.$refs.cropper.rotate(45)
     },
     torun() {
       if (!this.cropImg) {
@@ -296,7 +295,7 @@ export default {
         'image': this.cropImg.replace(/data:image\/.*;base64,/, '')
       }
       axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
-      var url = 'https://mccyu.com:444/ocr'
+      var url = 'https://mccyu.com:444/acc'
       if (this.isHand === true) {
         url = 'https://mccyu.com:444/shouxie'
       }
@@ -465,7 +464,7 @@ export default {
       showLinkImg: false,
       uploadImgHooks: {
         customInsert: function(insertImg, result, ShouTitle) {
-          var url = Imgurl + 'upload/' + result.data.data.data
+          var url = result.data.data.data
           // console.log(result.data.data.data)
           insertImg(url)
         }
@@ -481,7 +480,7 @@ export default {
       showLinkImg: false,
       uploadImgHooks: {
         customInsert: function(insertImg, result, editor) {
-          var url = Imgurl + 'upload/' + result.data.data.data
+          var url = result.data.data.data
           // console.log(result.data.data.data)
           insertImg(url)
         }
@@ -497,7 +496,7 @@ export default {
       showLinkImg: false,
       uploadImgHooks: {
         customInsert: function(insertImg, result, editor) {
-          var url = Imgurl + 'upload/' + result.data.data.data
+          var url = result.data.data.data
           // console.log(result.data.data.data)
           insertImg(url)
         }
@@ -605,7 +604,7 @@ export default {
   margin-top: 10px;
   .sq-change{
     position: absolute;
-    right: 0;
+    right: 5px;
     top: 0;
   }
 }

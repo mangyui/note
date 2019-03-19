@@ -257,6 +257,13 @@ export const constantRouterMap = [
         meta: { title: 'Note_detail' }
       },
       {
+        path: 'note_more',
+        name: 'note_more',
+        hidden: true,
+        component: () => import('@/views/tonote/note_more'),
+        meta: { title: 'Note_more' }
+      },
+      {
         path: 'note_edit/:id',
         name: 'note_edit',
         hidden: true,

@@ -29,6 +29,7 @@ export default {
     NoteList: '笔记本',
     Note_type: '笔记分类',
     Note_detail: '笔记详情',
+    Note_more: '相关题目',
     Note_edit: '笔记编辑',
     Question_Details: '解题详情',
     Other_Answer: '题友解答',

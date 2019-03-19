@@ -37,10 +37,38 @@
             <div ref="ShouTitle" class="divWangeditor" style="text-align:left"></div>
             <!-- <quill-editor ref="titleEditor" v-model="form.Content" :options="editorOption" ></quill-editor> -->
             <br/>
+            <div class="voice-button">
+              <div class="voice-input-button-wrapper">
+                <voice-input-button
+                    server="https://www.mccyu.com:444/"
+                    appId="5c52f87b"
+                    APIKey="3d0fba416f2a2423e7380ea2ab397d9e"
+                    @record="showResult1"
+                    color="#fff"
+                    tipPosition="top"
+                >
+                  <template slot="no-speak">没听清您说的什么</template>
+                </voice-input-button>
+              </div>
+            </div>
             <h4>错题解答(可选)</h4>
             <div ref="ShouCorrect" class="divWangeditor" style="text-align:left"></div>
             <!-- <quill-editor ref="AnalysisEditor" v-model="form.Analysis" :options="editorOption" ></quill-editor> -->
             <br/>
+            <div class="voice-button">
+              <div class="voice-input-button-wrapper">
+                <voice-input-button
+                    server="https://www.mccyu.com:444/"
+                    appId="5c52f87b"
+                    APIKey="3d0fba416f2a2423e7380ea2ab397d9e"
+                    @record="showResult2"
+                    color="#fff"
+                    tipPosition="top"
+                >
+                  <template slot="no-speak">没听清您说的什么</template>
+                </voice-input-button>
+              </div>
+            </div>
             <el-button class="editor-btn pull-right" type="primary" @click="dialogFormVisible = true">提交</el-button>
           </div>
         </div>
@@ -105,6 +133,7 @@
 import E from 'wangeditor'
 var ShouTitle, ShouCorrect
 
+import VoiceInputButton from 'voice-input-button'
 import nxSvgIcon from '@/components/nx-svg-icon/index'
 import quexBox from '@/components/my-box/quex-box'
 import VueCropper from 'vue-cropperjs'
@@ -129,7 +158,8 @@ export default {
   components: {
     VueCropper,
     quexBox,
-    nxSvgIcon
+    nxSvgIcon,
+    VoiceInputButton
     // slider,
     // slideritem
   },
@@ -256,7 +286,7 @@ export default {
     //   done()
     // },
     toRotate() {
-      this.$refs.cropper.rotate(10)
+      this.$refs.cropper.rotate(45)
     },
     torun() {
       if (!this.cropImg) {
@@ -385,6 +415,14 @@ export default {
       }).catch(() => {
         console.log('获取题目分类数据失败！')
       })
+    },
+    showResult1(text) {
+      ShouTitle.txt.append('<span>' + text.substr(0, text.length - 1) + '</span>')
+      // console.log(text.substr(0, text.length - 1))
+    },
+    showResult2(text) {
+      ShouCorrect.txt.append('<span>' + text.substr(0, text.length - 1) + '</span>')
+      // console.log(text.substr(0, text.length - 1))
     }
   },
   mounted() {
@@ -403,7 +441,7 @@ export default {
       showLinkImg: false,
       uploadImgHooks: {
         customInsert: function(insertImg, result, editor) {
-          var url = Imgurl + 'upload/' + result.data.data.data
+          var url = result.data.data.data
           // console.log(result.data.data.data)
           insertImg(url)
         }
@@ -419,7 +457,7 @@ export default {
       showLinkImg: false,
       uploadImgHooks: {
         customInsert: function(insertImg, result, editor) {
-          var url = Imgurl + 'upload/' + result.data.data.data
+          var url = result.data.data.data
           // console.log(result.data.data.data)
           insertImg(url)
         }

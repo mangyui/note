@@ -238,6 +238,10 @@ import VueCropper from 'vue-cropperjs'
 import {
   getSchoolList
 } from '@/api/toget'
+import {
+  ChangeUserAvatar
+} from '@/api/toPost'
+// import qs from 'qs'
 
 export default {
   name: 'user',
@@ -249,7 +253,7 @@ export default {
   data() {
     return {
       user: this.$store.getters.user,
-      avatar: this.$store.getters.user.avatar || './static/img/avatar.jpg',
+      avatar: this.$store.getters.user.Avatar || './static/img/avatar.jpg',
       defaultSrc: '',
       cropImg: '',
       imgSrc: '',
@@ -355,9 +359,48 @@ export default {
     toCrop() {
       this.cropImg = this.$refs.cropper.getCroppedCanvas().toDataURL('image/jpeg', 0.7)
       this.dialogVisible = false
+      this.changeAvatar()
     },
     toRotate() {
       this.$refs.cropper.rotate(10)
+    },
+    changeAvatar() {
+      // var file = this.dataURLtoFile(this.cropImg, 'avatar.png')
+      // console.log(file)
+      var data = new FormData()
+      data.append('file', this.dataURLtoFile(this.cropImg, 'avatar.png'))
+      data.append('UserId', this.user.Id)
+      // var data = {
+      //   UserId: this.user.Id,
+      //   file: this.dataURLtoFile(this.cropImg, 'avatar.png')
+      // }
+      // console.log(data)
+      ChangeUserAvatar(data).then(res => {
+        if (res.data.data.data[0]) {
+          this.$store.dispatch('UpdateAvatar', res.data.data.data[0])
+          location.reload()
+        } else {
+          this.$notify({
+            title: '提示',
+            message: '修改图片失败',
+            type: 'info'
+          })
+          this.cropImg = this.avatar
+        }
+      }).catch(() => {
+
+      })
+    },
+    dataURLtoFile(dataurl, filename) { // 将base64转换为文件
+      var arr = dataurl.split(',')
+      var mime = arr[0].match(/:(.*?);/)[1]
+      var bstr = atob(arr[1])
+      var n = bstr.length
+      var u8arr = new Uint8Array(n)
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n)
+      }
+      return new File([u8arr], filename, { type: mime })
     },
     getschool() {
       getSchoolList().then(res => {

@@ -51,7 +51,7 @@ export function QuesDetails(data) {
   })
 }
 
-// 题目详情
+// 错题详情
 export function MistakeDetails(data) {
   return request({
     url: '/?service=App.Mistake.GetMistake',
@@ -70,3 +70,15 @@ export function NoteCategory(data) {
     }
   })
 }
+
+// 笔记分类
+export function GetNoteCount(data) {
+  return request({
+    url: '/?service=App.Note.Count',
+    method: 'get',
+    params: {
+      UserId: data
+    }
+  })
+}
+

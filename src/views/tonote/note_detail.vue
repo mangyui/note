@@ -1,38 +1,43 @@
 <template>
   <div>
     <span class="header-title">笔记详情</span>
-    <div class="app-container">
-      <div v-if="showLoading" class="loading-box">
-        <i class="el-icon-loading"></i>
-        加载中...
-      </div>
-      <div class="crumbs disNone">
-        <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{ path: '/tonote/noteList' }"><i class="el-icon-date"></i> 笔记列表</el-breadcrumb-item>
-            <el-breadcrumb-item>笔记详情</el-breadcrumb-item>
-        </el-breadcrumb>
-      </div>
-      <div class="big-box1200">
-        <div class="note_d-title">
-          <h3>{{note.Headline}}</h3>
-          <el-tag size="small">{{note.Category}}</el-tag>
-          <p class="note_d-remark">笔记 | {{note.DateTime}}</p>
-        </div>
-        <div class="note_d-content" v-html="note.Content"></div>
-      </div>
+    <div v-if="showLoading" class="loading-box">
+      <i class="el-icon-loading"></i>
+      加载中...
     </div>
-    <div class="note_d-edit">
-      <el-dropdown>
-        <el-button type="primary" icon="el-icon-edit" circle></el-button>
-        <el-dropdown-menu slot="dropdown">
-          <router-link :to="'/tonote/note_edit/'+ id">
-            <el-dropdown-item icon="el-icon-edit">修改</el-dropdown-item>
-          </router-link>
-          <div @click="toDetele">
-            <el-dropdown-item icon="el-icon-delete" divided>删除</el-dropdown-item>
+    <div v-show="note.Id">
+      <div class="app-container">
+        <div class="crumbs disNone">
+          <el-breadcrumb separator="/">
+              <el-breadcrumb-item :to="{ path: '/tonote/noteList' }"><i class="el-icon-date"></i> 笔记列表</el-breadcrumb-item>
+              <el-breadcrumb-item>笔记详情</el-breadcrumb-item>
+          </el-breadcrumb>
+        </div>
+        <div class="big-box1200">
+          <!-- <router-link :to="'/tonote/note_more/'+ this.id"> -->
+            <el-button class="de-more" size="small" @click="to_more">相关题目</el-button>
+          <!-- </router-link> -->
+          <div class="note_d-title">
+            <h3>{{note.Headline}}</h3>
+            <el-tag size="small">{{note.Category}}</el-tag>
+            <p class="note_d-remark">笔记 | {{note.DateTime}}</p>
           </div>
-        </el-dropdown-menu>
-      </el-dropdown>
+          <div ref="noteContent" class="note_d-content" v-html="note.Content"></div>
+        </div>
+      </div>
+      <div class="note_d-edit">
+        <el-dropdown>
+          <el-button type="primary" icon="el-icon-edit" circle></el-button>
+          <el-dropdown-menu slot="dropdown">
+            <router-link :to="'/tonote/note_edit/'+ id">
+              <el-dropdown-item icon="el-icon-edit">修改</el-dropdown-item>
+            </router-link>
+            <div @click="toDetele">
+              <el-dropdown-item icon="el-icon-delete" divided>删除</el-dropdown-item>
+            </div>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
     </div>
   </div>
 </template>
@@ -51,7 +56,6 @@ export default {
       id: null,
       showLoading: true,
       note: {
-
         Headline: '',
         Category: '',
         DateTime: '',
@@ -81,9 +85,9 @@ export default {
         }
         this.showLoading = false
       }).catch(() => {
-        this.$message.warning('没有找到...')
-        var close = document.querySelector('.tags-view-item.active .el-icon-close')
-        close.click()
+        this.$message.warning('系统错误...')
+        // var close = document.querySelector('.tags-view-item.active .el-icon-close')
+        // close.click()
       })
     },
     fetchDate() {
@@ -119,6 +123,18 @@ export default {
         }).catch(() => {})
         //
       }).catch(() => {})
+    },
+    to_more() {
+      this.$router.push({
+        // params 传参只能用name 来指定路由
+        path: '/tonote/note_more',
+        query: {
+          id: this.id,
+          content: this.note.Headline + this.$refs.noteContent.innerText,
+          Headline: this.note.Headline,
+          Category: this.note.Category
+        }
+      })
     }
   },
   // 该监听是全局的  可怕

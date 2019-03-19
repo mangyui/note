@@ -1,26 +1,27 @@
 <template>
   <div class="app-container">
-    <span class="header-title">相似题目</span>
-    <div v-if="topLoading" class="loading-box">
+    <span class="header-title">相关题目</span>
+    <!-- <div v-if="topLoading" class="loading-box">
       <i class="el-icon-loading"></i>
       加载中...
-    </div>
+    </div> -->
     <div class="crumbs disNone">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>
-          <i class="el-icon-date"></i> 相似题目</el-breadcrumb-item>
+          <i class="el-icon-date"></i> 相关题目</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="note_details">
       <div class="page-content">
         <div class="detail-top">
-          <el-tag v-if="question.Category">{{question.Category.Subject}}</el-tag>
+          <el-tag size="small" v-if="note">{{note.Category}}</el-tag>
         </div>
         <!-- <h2>题目</h2> -->
-        <div class="sys-notes" v-html="question.Content"></div>
+        <h3 v-if="note">《 {{note.Headline}} 》</h3>
+        <!-- <div v-show="false" ref="noteContent" v-html="note.Content"></div> -->
         <div class="sys-section">
           <div class="" style="margin-bottom:20px;">
-            <i class="el-icon-share"></i> <strong>相似题目</strong>
+            <i class="el-icon-share"></i> <strong>相关题目</strong>
           </div>
           <quex-box :option="quesList"></quex-box>
           <div v-if="showLoading" class="loading-box">
@@ -48,18 +49,16 @@
 <script>
 import nxSvgIcon from '@/components/nx-svg-icon/index'
 import quexBox from '@/components/my-box/quex-box'
-import {
-  QuesDetails
-} from '@/api/toget'
 
 import {
-  QuestionMore
+  // NoteDetails,
+  GetQuestionsByText
 } from '@/api/toPost'
 
 import qs from 'qs'
 
 export default {
-  name: 'ques_more',
+  name: 'note_more',
   components: {
     nxSvgIcon,
     quexBox
@@ -73,16 +72,14 @@ export default {
       showNone: false,
       NoneMore: false,
       showLoading: true,
-      id: '',
+      id: null,
       user: this.$store.getters.user,
-      question: '',
+      note: {
+        Headline: '',
+        Category: ''
+      },
       quesList: [],
-      tolist: {
-        UserId: this.$store.getters.user.Id,
-        Id: '',
-        Number: 3
-        // Page: 1
-      }
+      Text: ''
     }
   },
   activated() {
@@ -97,48 +94,65 @@ export default {
   mounted() {
     document.querySelector('.app-main').addEventListener('scroll', this.onScroll)
   },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      // 这里的vm指的就是vue实例，可以用来当做this使用
+      // console.log(to, from, vm.$route)
+      vm.id = vm.$route.query.id
+      vm.Text = vm.$route.query.content
+      vm.note.Headline = vm.$route.query.Headline
+      vm.note.Category = vm.$route.query.Category
+      // console.log(vm.$route)
+      vm.getQues()
+    })
+  },
   methods: {
+    // getNote() {
+    //   NoteDetails(qs.stringify({ Id: this.id })).then(res => {
+    //     this.note = res.data.data
+    //     if (!this.note.UserId || this.note.UserId !== this.$store.getters.user.Id) {
+    //       this.$message.warning('没有找到...')
+    //       var close = document.querySelector('.tags-view-item.active .el-icon-close')
+    //       close.click()
+    //     } else {
+    //       this.getQues()
+    //     }
+    //     this.topLoading = false
+    //   }).catch((res) => {
+    //     console.log(res)
+    //     this.$message.warning('系统错误...')
+    //     // var close = document.querySelector('.tags-view-item.active .el-icon-close')
+    //     // close.click()
+    //   })
+    // },
     getQues() {
-      var data = {
-        Id: this.id,
-        UserId: this.user.Id
+      if (!this.id) {
+        this.$notify({
+          title: '提示',
+          message: '请关闭本页面重新打开',
+          type: 'info'
+        })
+        var close = document.querySelector('.tags-view-item.active .el-icon-close')
+        close.click()
+        return
       }
-      QuesDetails(data).then(res => {
-        if (!res.data.data.Id) {
-          this.$message.warning('没有找到...')
-          var close = document.querySelector('.tags-view-item.active .el-icon-close')
-          close.click()
-        }
-        this.question = res.data.data
-        this.isLike = res.data.data.Like || false
-        this.isCollect = res.data.data.Collection || false
-        this.topLoading = false
-        this.getQuestionMore()
-      }).catch((res) => {
-        this.$message.warning('没有找到...')
-        // var close = document.querySelector('.tags-view-item.active .el-icon-close')
-        // close.click()
-      })
-    },
-    fetchDate() {
-      this.id = this.$route.params.id
-      if (this.id) {
-        this.tolist.Id = this.id
-        this.getQues()
-      }
-    },
-    getQuestionMore() {
       this.showLoading = true
-      // this.tolist.Page = 1
-      QuestionMore(qs.stringify(this.tolist)).then(res => {
+      GetQuestionsByText(qs.stringify({ UserId: this.$store.getters.user.Id, Text: this.Text })).then(res => {
         this.quesList = res.data.data
+        // this.$notify({
+        //   title: '提示',
+        //   message: '已搜索相关题目！',
+        //   type: 'success'
+        // })
         this.showLoading = false
-        if (!this.quesList[0]) {
-          this.showNone = true
-        } else {
-          this.showNone = false
-        }
-      }).catch(() => {})
+      }).catch(() => {
+        this.$notify({
+          title: '提示',
+          message: '请求错误！',
+          type: 'error'
+        })
+        this.showLoading = false
+      })
     }
     // onScroll() {
     //   var innerHeight = document.querySelector('.app-container').clientHeight
@@ -164,7 +178,6 @@ export default {
     // }
   },
   created() {
-    this.fetchDate()
   }
 }
 </script>

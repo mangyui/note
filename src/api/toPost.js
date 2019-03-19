@@ -387,3 +387,26 @@ export function GetTest(datas) {
   })
 }
 
+// 修改头像
+export function ChangeUserAvatar(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.User.ChangeUserAvatar',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 笔记相关题目
+export function GetQuestionsByText(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Question.GetQuestionsByText',
+    method: 'post',
+    data: datas
+  })
+}

@@ -37,6 +37,11 @@ const user = {
       localStorage.setItem('user', JSON.stringify(user))
       Object.assign(state, user)
     },
+    SET_AVATAR: (state, avatar) => {
+      state.Avatar = avatar
+      // localStorage.removeItem('user')
+      localStorage.setItem('user', JSON.stringify(state))
+    },
     // 登出
     OUT_USER(state) {
       localStorage.removeItem('user')
@@ -47,9 +52,6 @@ const user = {
     },
     SET_NAME: (state, name) => {
       state.Name = name
-    },
-    SET_AVATAR: (state, avatar) => {
-      state.avatar = avatar
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
@@ -126,6 +128,13 @@ const user = {
         }).catch(error => {
           reject(error)
         })
+      })
+    },
+    // 修改
+    UpdateAvatar({ commit }, userAvatar) {
+      return new Promise((resolve, reject) => {
+        // console.log(userAvatar)
+        commit('SET_AVATAR', userAvatar)
       })
     },
     // 注册

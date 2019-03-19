@@ -2,11 +2,6 @@
   .detail-top{
     height: 50px;
   }
-  .de-more{
-    position: absolute;
-    right: 20px;
-    top: 25px;
-  }
   .note_details{
     font-size: 14px;
   }
@@ -115,10 +110,6 @@
 
 @media (max-width: 768px) {
   .note_details{
-    .de-more{
-      right: 5px;
-      top: 10px;
-    }
     .sys-notes{
       line-height: 23px;
     }

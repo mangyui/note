@@ -7,7 +7,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-fromurlencodeed
 // 创建axios实例
 const service = axios.create({
   baseURL: process.env.BASE_API, // api的base_url
-  timeout: 10000 // 请求超时时间
+  timeout: 20000 // 请求超时时间
 })
 
 // request拦截器

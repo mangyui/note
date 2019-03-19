@@ -21,6 +21,20 @@
         <div ref="editor" class="divWangeditor" style="text-align:left"></div>
         <!-- <quill-editor ref="myTextEditor" v-model="note.Content" :options="editorOption"></quill-editor> -->
         <br/>
+        <div class="voice-button">
+          <div class="voice-input-button-wrapper">
+            <voice-input-button
+                server="https://www.mccyu.com:444/"
+                appId="5c52f87b"
+                APIKey="3d0fba416f2a2423e7380ea2ab397d9e"
+                @record="showResult"
+                color="#fff"
+                tipPosition="top"
+            >
+              <template slot="no-speak">没听清您说的什么</template>
+            </voice-input-button>
+          </div>
+        </div>
         <el-button type="primary" @click="dialogFormVisible = true">提交</el-button>
       </div>
       <!-- <div ref="btngroup" class="btn-wrapper" :style="{right: btnRight}">
@@ -65,6 +79,7 @@
 import E from 'wangeditor'
 var editor
 
+import VoiceInputButton from 'voice-input-button'
 import { NoteCategory } from '@/api/toget'
 import {
   UpdateNote,
@@ -92,7 +107,7 @@ export default {
     }
   },
   components: {
-
+    VoiceInputButton
   },
   methods: {
     getCategory() {
@@ -181,6 +196,10 @@ export default {
       if (this.note.Id) {
         this.getNote()
       }
+    },
+    showResult(text) {
+      editor.txt.append('<span>' + text.substr(0, text.length - 1) + '</span>')
+      // console.log(text.substr(0, text.length - 1))
     }
   },
   // 注意
@@ -205,7 +224,7 @@ export default {
       showLinkImg: false,
       uploadImgHooks: {
         customInsert: function(insertImg, result, editor) {
-          var url = Imgurl + 'upload/' + result.data.data.data
+          var url = result.data.data.data
           // console.log(result.data.data.data)
           insertImg(url)
         }

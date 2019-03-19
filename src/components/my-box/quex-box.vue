@@ -12,7 +12,7 @@
           <nx-svg-icon class-name='international-icon' icon-class="zan" /><span class="ques_footer_num">{{item.LikeNumber}}</span>
           <nx-svg-icon class-name='international-icon' icon-class="collect" /><span class="ques_footer_num">{{item.CollectNumber}}</span>
           <!-- <nx-svg-icon class-name='international-icon' icon-class="comment" /><span  class="ques_footer_num">{{66}}</span> -->
-          <el-tag>题目</el-tag>
+          <el-tag>{{item.Type||'题目'}}</el-tag>
         </div>
       </div>
     </div>

@@ -63,6 +63,10 @@
               <i class="el-icon-loading"></i>
               加载中...
             </div>
+            <div v-if="!showLoading&&!users[0]" class="loading-box">
+              <i class="el-icon-search"></i>
+              空空如也...
+            </div>
             <el-row :gutter="12">
             <el-col  :xs="24" :sm="12" :md="8" :lg="8" :xl="6" v-for="(item,index) in users" :key="index">
               <el-card class="friend-box" :body-style="{ padding: '0px' }"  shadow="hover">
@@ -188,7 +192,7 @@ export default {
       this.ScrollTop = scrollTop
       // console.log(innerHeight, outerHeight, scrollTop)
       if (innerHeight <= (outerHeight + scrollTop)) {
-        if (this.NoneMore || this.showMore || this.Sdata.Keys.trim() === '') {
+        if (this.NoneMore || this.showMore) {
           return
         }
         this.showMore = true
@@ -207,6 +211,9 @@ export default {
       }
     },
     searchuser() {
+      if (this.Sdata.Keys.trim() === '') {
+        return
+      }
       SearchUsers(qs.stringify({ name: this.Sdata.Keys })).then(res => {
         this.users = res.data.data
       }).catch(() => {})
@@ -256,13 +263,6 @@ export default {
 <style lang="scss" scoped>
 .big-box1200{
   position: relative;
-}
-.voice-input-button-wrapper{
-  width: 42px;
-  height: 42px;
-  background-color: #52bab5;
-  border-radius: 50%;
-  margin: 0 auto;
 }
 .home-top{
   display: flex;

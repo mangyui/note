@@ -230,15 +230,15 @@ export default {
   }
   .type_content {
     margin-bottom: 0;
-    line-height: 26px;
+    line-height: 22px;
     font-size: 14px;
-    padding: 10px;
-    background-color: #e1f3d8;
+    padding: 5px 10px;
+    background-color: #fde2e2;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;
-    height: 62px;
+    height: 52px;
     cursor: pointer;
   }
 }

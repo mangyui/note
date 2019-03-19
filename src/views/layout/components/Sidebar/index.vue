@@ -57,7 +57,7 @@ export default {
   data() {
     return {
       user: this.$store.getters.user,
-      avatar: this.$store.getters.user.avatar || './static/img/avatar.jpg'
+      avatar: this.$store.getters.user.Avatar || './static/img/avatar.jpg'
     }
   },
   computed: {

@@ -9,31 +9,10 @@
     <div class="big-box1200">
       <!--工具条-->
       <div class="list-gbtn">
-        <div class="gbtn-box">
-          <el-select v-model="getForm.CategoryId" placeholder="选择分类" @change="">
-              <el-option
-                v-for="item in Categorylist"
-                :key="item.Id"
-                :label="item.Subject"
-                :value="item.Id">
-                <span style="float: left">{{ item.Subject }}</span>
-                <span style="float: right; color: #8492a6; font-size: 13px">{{ item.Class }}</span>
-              </el-option>
-          </el-select>
-          <!-- <el-input-number v-model="getForm.Number" :step="2" :max="50" :min="1">数量</el-input-number> -->
-          <el-select v-model="getForm.Number" placeholder="选择数量" @change="">
-              <el-option
-                v-for="item in toNum"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-              </el-option>
-          </el-select>
-        </div>
-        <div class="gbtn-box">
-          <el-checkbox v-model="showAnalysis" label="显示答案" border></el-checkbox>
-          <el-button type="primary"  @click="getTest">生成试题</el-button>
-        </div>
+          <el-button type="primary" plain  @click="dialogFormVisible=!dialogFormVisible" size="medium">选择类型</el-button>
+        <!-- <div class="gbtn-box"> -->
+          <el-checkbox v-model="showAnalysis" label="答案" border size="medium"></el-checkbox>
+        <!-- </div> -->
       </div>
       <div class="container" id="Test">
         <div v-if="showLoading" class="loading-box">
@@ -42,24 +21,86 @@
         </div>
         <!-- <img :src="'http://127.0.0.1:9528/static/img/avatar.jpg'" alt=""> -->
         <!-- <img src="http://p0.so.qhimgs1.com/sdr/400__/t014c2f774eb0ffbd3a.jpg" alt=""> -->
-        <p>有种你就在手机端把我下载喽</p>
-        <div v-for="(item,index) in Tests" :key="index">
+        <div class="test-box" v-for="(item,index) in Tests" :key="index">
           <div class="test_title">
+            <span v-if="isDelete">
+              <el-button type="danger" icon="el-icon-delete" size="mini" circle @click="todelete(index)"></el-button>
+            </span>
+            <span v-if="isXuhao">{{index+1}}.</span>
             <div class="test_content" v-html="item.Content"></div>
           </div>
           <br/>
-          <div class="tipbox test_Correct" style="color:red" v-if="showAnalysis" v-html="item.Analysis"></div>
-          <br/>
+          <div class="tipbox test_Correct" style="color:#f95353" v-if="showAnalysis" v-html="item.Analysis"></div>
+          <br>
         </div>
       </div>
       <br/>
-      <el-button v-if="Tests[0]" type="primary"  @click="ToWord">生成Word</el-button>
-      <el-button type="primary"  @click="ToWord">生成Word</el-button>
+      <!-- <el-button v-if="Tests[0]" type="primary"  @click="ToWord">生成Word</el-button> -->
+      <!-- <el-button type="primary"  @click="ToWord">生成Word</el-button> -->
       <!-- <a href="https://www.baidu.com/">打开百度</a>-->
       <!-- <a href="https://www.baidu.com/" id="alink" download="test.doc">test</a> -->
       <!-- <a href="" id="alink" target="_blank" style="display: none">test</a> -->
       <!-- <el-button type="primary"  @click="ToMobile">下载1</el-button>
       <el-button type="primary"  @click="ToMo">下载2</el-button> -->
+    </div>
+    <el-dialog title="生成试题" :visible.sync="dialogFormVisible" center>
+      <el-form :model="getForm" ref="form">
+        <!-- <el-form-item label="关键字">
+          <el-input v-model="form.Keywords"></el-input>
+        </el-form-item> -->
+        <el-form-item label="试题分类">
+          <el-select size="small" v-model="getForm.CategoryId" placeholder="选择分类" @change="">
+            <el-option
+              v-for="item in Categorylist"
+              :key="item.Id"
+              :label="item.Subject"
+              :value="item.Id">
+              <span style="float: left">{{ item.Subject }}</span>
+              <span style="float: right; color: #8492a6; font-size: 13px">{{ item.Class }}</span>
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="最近天数">
+          <el-select size="small" v-model="getForm.Date" placeholder="选择最近天数" @change="">
+            <el-option
+              v-for="item in toDay"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="题目数量">
+          <el-select size="small" v-model="getForm.Number" placeholder="选择题目数量" @change="">
+              <el-option
+                v-for="item in toNum"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="getTest">确定</el-button>
+      </div>
+    </el-dialog>
+    <div class="note_d-edit">
+      <el-dropdown>
+        <el-button type="primary" icon="el-icon-edit" circle></el-button>
+        <el-dropdown-menu slot="dropdown">
+          <div @click="deleteAll">
+            <el-dropdown-item icon="el-icon-edit">全部清空</el-dropdown-item>
+          </div>
+          <div @click="isDelete=!isDelete">
+            <el-dropdown-item icon="el-icon-delete" divided>删除单个</el-dropdown-item>
+          </div>
+          <div @click="ToWord" v-if="Tests[0]">
+            <el-dropdown-item icon="el-icon-delete" divided>生成word</el-dropdown-item>
+          </div>
+        </el-dropdown-menu>
+      </el-dropdown>
     </div>
   </div>
 </template>
@@ -82,16 +123,35 @@ export default {
   name: 'getTest',
   data() {
     return {
+      dialogFormVisible: false,
       showLoading: false,
       showAnalysis: false,
+      isDelete: false,
+      isXuhao: false,
       Categorylist: [],
       Tests: [],
       getForm: {
         UserId: this.$store.getters.user.Id,
-        CategoryId: '',
-        Date: 30,
+        CategoryId: '10',
+        Date: '30',
         Number: '10'
       },
+      toDay: [{
+        value: '7',
+        label: '7天'
+      }, {
+        value: '15',
+        label: '15天'
+      }, {
+        value: '30',
+        label: '30天'
+      }, {
+        value: '60',
+        label: '60天'
+      }, {
+        value: '120',
+        label: '120天'
+      }],
       toNum: [{
         value: '1',
         label: '1题'
@@ -129,28 +189,27 @@ export default {
         item.Content = item.Content.substring(0, index) + i + '. ' + item.Content.substring(index++)
         // console.log(item.Content.substring(0, index))
       })
+
+      // this.isXuhao = true
     },
     getTest() {
       this.showLoading = true
       GetTest(qs.stringify(this.getForm)).then(res => {
         this.Tests = res.data.data
-        this.addOrdinal()
         this.showLoading = false
+        this.addOrdinal()
       }).catch((res) => {
         console.log(res)
       })
+      this.dialogFormVisible = false
     },
     ToWord() {
-      // this.$prompt('请输入文件名', '提示', {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消',
-      //   value: 'test',
-      //   center: true
-      // }).then(({ value }) => {
-      var blob = $('#Test').wordExport('test')
-      var filename = 'test_' + new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, '').replace(/\.[\d]{3}Z/, '')
-      window.saveAs(blob, filename + '.doc')
-
+      this.isDelete = false
+      setTimeout(function() {
+        var blob = $('#Test').wordExport('test')
+        var filename = 'test'
+        window.saveAs(blob, filename + '.doc')
+      }, 100)
       // window.navigator.msSaveBlob(blob, filename + '.doc')
       // window.open(URL.createObjectURL(blob), '_system')
       // alert(blob)
@@ -165,6 +224,17 @@ export default {
     ToMo() {
       var blob = $('#Test').wordExport('test')
       window.open(URL.createObjectURL(blob))
+    },
+    deleteAll() {
+      this.Tests = []
+    },
+    todelete(index) {
+      this.Tests.splice(index, 1)
+      this.$notify({
+        title: '提示',
+        message: '已移除该项',
+        type: 'info'
+      })
     }
   },
   created() {
@@ -175,8 +245,19 @@ export default {
 
 
 <style lang="scss" scoped>
+.test-box{
+  border-bottom: 1px solid #dedede;
+}
+.test-box:last-child{
+  border-bottom: none;
+}
 .test_title{
-  margin: 20px 0 15px;
+  display: flex;
+  margin: 5px 0 4px;
+  span{
+    line-height: 1.8em;
+    margin-right: 10px;
+  }
   .test_index{
     margin-right: 5px;
     line-height: 1.8em;
@@ -188,14 +269,18 @@ export default {
       display: inline-block;
     }
   }
-  .test_Correct{
-    line-height: 1.8em;
-    font-size: 15px;
-  }
+
 }
+  .test_Correct{
+    line-height: 27px;
+    font-size: 14px;
+  }
 .gbtn-box{
   flex-grow: 1;
   text-align: center;
   margin-bottom: 10px;
+}
+.list-gbtn{
+  justify-content: space-between;
 }
 </style>

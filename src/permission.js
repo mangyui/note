@@ -24,7 +24,6 @@ const whiteList = ['/login',
   '/merchant/index', // 商家
   '/about/index', // 关于帮助
   '/home/search', // 搜索页
-  '/todo/edit', // 笔记添加
   '/home/question_details/', // 题目详情 有id的加上/
   '/home/mistake/', // 题目详情 有id的加上/
   '/home/other_answer/' // 题友解答
