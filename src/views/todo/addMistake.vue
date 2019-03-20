@@ -171,9 +171,6 @@ export default {
       lines: '',
       result: '',
       isHand: false,
-      sliderOptions: {
-        currentPage: 0
-      },
       cropImg: '',
       imgSrc: '',
       dialogVisible: false,

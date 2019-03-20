@@ -9,11 +9,16 @@
     <div class="big-box1200">
       <!--工具条-->
       <div class="list-gbtn">
-          <el-button type="primary" plain  @click="dialogFormVisible=!dialogFormVisible" size="medium">选择类型</el-button>
+          <el-button type="primary" plain  @click="dialogFormVisible=!dialogFormVisible" size="medium">生成试题</el-button>
         <!-- <div class="gbtn-box"> -->
           <el-checkbox v-model="showAnalysis" label="答案" border size="medium"></el-checkbox>
         <!-- </div> -->
       </div>
+      <el-alert
+        class="toShow"
+        title="目前手机端暂不支持下载word,请移步pc端下载"
+        type="warning">
+      </el-alert>
       <div class="container" id="Test">
         <div v-if="showLoading" class="loading-box">
           <i class="el-icon-loading"></i>
@@ -26,7 +31,7 @@
             <span v-if="isDelete">
               <el-button type="danger" icon="el-icon-delete" size="mini" circle @click="todelete(index)"></el-button>
             </span>
-            <span v-if="isXuhao">{{index+1}}.</span>
+            <!-- <span v-if="isXuhao">{{index+1}}.</span> -->
             <div class="test_content" v-html="item.Content"></div>
           </div>
           <br/>
@@ -49,7 +54,7 @@
           <el-input v-model="form.Keywords"></el-input>
         </el-form-item> -->
         <el-form-item label="试题分类">
-          <el-select size="small" v-model="getForm.CategoryId" placeholder="选择分类" @change="">
+          <el-select size="medium" v-model="getForm.CategoryId" placeholder="选择分类" @change="">
             <el-option
               v-for="item in Categorylist"
               :key="item.Id"
@@ -61,7 +66,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="最近天数">
-          <el-select size="small" v-model="getForm.Date" placeholder="选择最近天数" @change="">
+          <el-select size="medium" v-model="getForm.Date" placeholder="选择最近天数" @change="">
             <el-option
               v-for="item in toDay"
               :key="item.value"
@@ -71,7 +76,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="题目数量">
-          <el-select size="small" v-model="getForm.Number" placeholder="选择题目数量" @change="">
+          <el-select size="medium" v-model="getForm.Number" placeholder="选择题目数量" @change="">
               <el-option
                 v-for="item in toNum"
                 :key="item.value"
@@ -86,7 +91,7 @@
         <el-button type="primary" @click="getTest">确定</el-button>
       </div>
     </el-dialog>
-    <div class="note_d-edit">
+    <div  v-if="Tests[0]" class="note_d-edit">
       <el-dropdown>
         <el-button type="primary" icon="el-icon-edit" circle></el-button>
         <el-dropdown-menu slot="dropdown">
@@ -96,7 +101,7 @@
           <div @click="isDelete=!isDelete">
             <el-dropdown-item icon="el-icon-delete" divided>删除单个</el-dropdown-item>
           </div>
-          <div @click="ToWord" v-if="Tests[0]">
+          <div @click="ToWord">
             <el-dropdown-item icon="el-icon-delete" divided>生成word</el-dropdown-item>
           </div>
         </el-dropdown-menu>
@@ -108,8 +113,8 @@
 <script>
 import qs from 'qs'
 
-import saveAs from '@/assets/js/fileexport.js'
-window.saveAs = saveAs
+// import saveAs from '@/assets/js/fileexport.js'
+// window.saveAs = saveAs
 import '@/assets/js/jquery.wordexport.js'
 import {
   questionCategory
@@ -127,9 +132,10 @@ export default {
       showLoading: false,
       showAnalysis: false,
       isDelete: false,
-      isXuhao: false,
+      // isXuhao: false,
       Categorylist: [],
       Tests: [],
+      oldTest: [],
       getForm: {
         UserId: this.$store.getters.user.Id,
         CategoryId: '10',
@@ -184,9 +190,11 @@ export default {
       var i = 0
       this.Tests.forEach(item => {
         i++
-        var index = item.Content.indexOf('>') + 1
+        var index1 = item.Content.indexOf('>') + 1
+        var index2 = item.Content.indexOf('.') + 1
+        var index = index2 - index1 < 4 ? index2 : index1
         // console.log(index)
-        item.Content = item.Content.substring(0, index) + i + '. ' + item.Content.substring(index++)
+        item.Content = item.Content.substring(0, index1) + i + '.' + item.Content.substring(index++)
         // console.log(item.Content.substring(0, index))
       })
 
@@ -207,8 +215,9 @@ export default {
       this.isDelete = false
       setTimeout(function() {
         var blob = $('#Test').wordExport('test')
-        var filename = 'test'
-        window.saveAs(blob, filename + '.doc')
+        // var filename = 'Test'
+        // var files = new window.File([blob], 'Test', { type: 'doc' })
+        window.open(window.URL.createObjectURL(blob))
       }, 100)
       // window.navigator.msSaveBlob(blob, filename + '.doc')
       // window.open(URL.createObjectURL(blob), '_system')
@@ -230,6 +239,7 @@ export default {
     },
     todelete(index) {
       this.Tests.splice(index, 1)
+      this.addOrdinal()
       this.$notify({
         title: '提示',
         message: '已移除该项',

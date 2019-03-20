@@ -238,9 +238,11 @@ import VueCropper from 'vue-cropperjs'
 import {
   getSchoolList
 } from '@/api/toget'
-import {
-  ChangeUserAvatar
-} from '@/api/toPost'
+// import {
+//   ChangeUserAvatar
+// } from '@/api/toPost'
+
+const uploadImgServer = 'http://1975386453.38haotyhn.duihuanche.com/?service=App.User.ChangeUserAvatar'
 // import qs from 'qs'
 
 export default {
@@ -370,26 +372,45 @@ export default {
       var data = new FormData()
       data.append('file', this.dataURLtoFile(this.cropImg, 'avatar.png'))
       data.append('UserId', this.user.Id)
-      // var data = {
-      //   UserId: this.user.Id,
-      //   file: this.dataURLtoFile(this.cropImg, 'avatar.png')
-      // }
-      // console.log(data)
-      ChangeUserAvatar(data).then(res => {
-        if (res.data.data.data[0]) {
-          this.$store.dispatch('UpdateAvatar', res.data.data.data[0])
-          location.reload()
-        } else {
-          this.$notify({
-            title: '提示',
-            message: '修改图片失败',
-            type: 'info'
-          })
-          this.cropImg = this.avatar
-        }
-      }).catch(() => {
 
-      })
+      var xhr = new XMLHttpRequest()
+      xhr.open('POST', uploadImgServer)
+      // 设置超时
+      xhr.timeout = 15000
+      xhr.onreadystatechange = (res) => {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          var respp = JSON.parse(xhr.response)
+          // console.log(respp.data.data.data)
+          if (respp.data.data.data) {
+            this.$store.dispatch('UpdateAvatar', respp.data.data.data[0])
+            // console.log(respp.data.data.data[0])
+            location.reload()
+          } else {
+            this.$notify({
+              title: '提示',
+              message: '修改头像失败',
+              type: 'info'
+            })
+            this.cropImg = this.avatar
+          }
+        }
+      }
+      xhr.send(data)
+      // ChangeUserAvatar(data).then(res => {
+      //   if (res.data.data.data[0]) {
+      //     this.$store.dispatch('UpdateAvatar', res.data.data.data[0])
+      //     location.reload()
+      //   } else {
+      //     this.$notify({
+      //       title: '提示',
+      //       message: '修改图片失败',
+      //       type: 'info'
+      //     })
+      //     this.cropImg = this.avatar
+      //   }
+      // }).catch(() => {
+
+      // })
     },
     dataURLtoFile(dataurl, filename) { // 将base64转换为文件
       var arr = dataurl.split(',')

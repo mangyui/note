@@ -72,8 +72,8 @@
             暂无更多题友解答...
           </div>
           <br/>
-          <div v-if="this.user.Id">
-            <div class="ques_header">
+          <div v-show="this.user.Id">
+            <div v-if="this.user.Id" class="ques_header">
               <router-link :to="'/user/others/'+ user.Id">
                 <img v-if="user" :src="user.Avatar || myavatar">
               </router-link>

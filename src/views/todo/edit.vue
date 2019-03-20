@@ -7,6 +7,14 @@
         </el-breadcrumb>
       </div>
     <div class="container big-box1200">
+      <el-card shadow="never" v-loading="showGIF">
+        <div class="upbtn-group">
+          <el-button type="primary" @click="cameraTakePicture">拍照上传</el-button>
+          <div class="crop-demo-btn">上传图片
+            <input class="crop-input" ref="referenceUpload" id='upimg' type="file" name="image" accept="image/*" multiple @change="toChoose" />
+          </div>
+        </div>
+      </el-card>
       <div class="noteEdit-title">
         <h4>笔记标题</h4>
         <el-input v-model="note.Headline" placeholder=""></el-input>
@@ -37,13 +45,19 @@
         </div>
         <el-button type="primary" @click="dialogFormVisible = true">提交</el-button>
       </div>
-      <!-- <div ref="btngroup" class="btn-wrapper" :style="{right: btnRight}">
-        <el-button-group>
-        <el-button class="btngroup_first" icon="el-icon-back" type="primary" @click="toright"></el-button>
-        <el-button icon="el-icon-d-arrow-left" @click="scrollLeft"></el-button>
-        <el-button icon="el-icon-d-arrow-right" @click="scrollRight"></el-button>
-      </el-button-group>
-      </div> -->
+      <el-dialog class="crop-pic" title="裁剪图片" :visible.sync="dialogVisible" :before-close="cancelCrop" width="70%">
+        <vue-cropper class="dgCropper" ref='cropper' :auto-crop-area="1" :src="imgSrc" :ready="cropImage" :zoom="cropImage" :cropmove="cropImage" style="width:100%;  height: 400px;"></vue-cropper>
+        <el-alert
+          title="请旋转正常角度，提高识别准确率"
+          type="warning"
+          show-icon>
+        </el-alert>
+        <span slot="footer" class="dialog-footer">
+          <el-button class="to-left" size="medium" @click="toRotate" type="primary" icon="el-icon-refresh"></el-button>
+          <el-button size="medium" @click="cancelCrop">取 消</el-button>
+          <el-button type="primary"  size="medium" @click="toCrop">确 定</el-button>
+        </span>
+      </el-dialog>
       <el-dialog title="笔记备注" :visible.sync="dialogFormVisible">
         <el-form :model="note" :rules="rules" ref="Form">
           <!-- <el-form-item label="关键字">
@@ -102,16 +116,26 @@ var editor
 import VoiceInputButton from 'voice-input-button'
 import { NoteCategory } from '@/api/toget'
 import { AddNote, AddNoteType, Imgurl } from '@/api/toPost'
+import VueCropper from 'vue-cropperjs'
+import axios from 'axios'
 import qs from 'qs'
 
 export default {
   name: 'edit',
   components: {
+    VueCropper,
     VoiceInputButton
   },
   data: function() {
     return {
       dialogFormVisible: false,
+      dialogVisible: false,
+      showGIF: false,
+      lines: '',
+      result: '',
+      isHand: false,
+      cropImg: '',
+      imgSrc: '',
       showAdd: false,
       btnRight: '-96px',
       marginL: 0,
@@ -149,6 +173,123 @@ export default {
     this.getCategory()
   },
   methods: {
+    cameraTakePicture() {
+      this.$notify({
+        title: '提示',
+        message: '网页端请选择上传图片的方式！',
+        type: 'info'
+      })
+      // navigator.camera.getPicture(this.onSuccess, this.onFail, {
+      //   quality: 50,
+      //   destinationType: Camera.DestinationType.DATA_URL,
+      //   encodingType: Camera.EncodingType.JPEG,
+      //   sourceType: Camera.PictureSourceType.Camera
+      // })
+    },
+    onSuccess(imageURI) {
+      var file = this.dataURLtoFile('data:image/jpeg;base64,' + imageURI, 'camera.jpeg')
+      this.setImage(file)
+    },
+    onFail(mess) {
+      console.log('未选择图片')
+    },
+    dataURLtoFile(dataurl, filename) {
+      var arr = dataurl.split(',')
+      var mime = arr[0].match(/:(.*?);/)[1]
+      var bstr = window.atob(arr[1])
+      var n = bstr.length
+      var u8arr = new Uint8Array(n)
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n)
+      }
+      var blob = new Blob([u8arr], { type: mime })
+      blob.lastModifiedDate = new Date()
+      blob.name = filename
+      return blob
+    },
+    toChoose(e) {
+      const file = e.target.files[0]
+      this.setImage(file)
+    },
+    setImage(file) {
+      if (!file || !file.type.includes('image/')) {
+        return
+      }
+      const reader = new FileReader()
+      reader.onload = event => {
+        this.dialogVisible = true
+        this.imgSrc = event.target.result
+        this.$refs.cropper && this.$refs.cropper.replace(event.target.result)
+      }
+      reader.readAsDataURL(file)
+      this.$refs.referenceUpload.value = null
+    },
+    cropImage() {
+      // this.cropImg = this.$refs.cropper.getCroppedCanvas().toDataURL('image/jpeg', 0.7)
+    },
+    cancelCrop() {
+      this.dialogVisible = false
+      this.cropImg = ''
+    },
+    toCrop() {
+      this.cropImg = this.$refs.cropper.getCroppedCanvas().toDataURL('image/jpeg', 0.7)
+      this.dialogVisible = false
+      this.torun()
+    },
+    // handleClose(done) {
+    //   this.cropImg = ''
+    //   done()
+    // },
+    toRotate() {
+      this.$refs.cropper.rotate(45)
+    },
+    torun() {
+      if (!this.cropImg) {
+        this.$notify({
+          title: '提示',
+          message: '请先上传图片后再操作！',
+          type: 'warning'
+        })
+        return
+      }
+      this.showGIF = true
+      var ocr_data = {
+        'image': this.cropImg.replace(/data:image\/.*;base64,/, '')
+      }
+      axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+      var url = 'https://mccyu.com:444/shouxie'
+      axios.post(url, qs.stringify(ocr_data))
+        .then(res => {
+          this.result = res.data.words_result
+          this.lines = res.data.words_result_num
+          this.formatText()
+          // console.log(res.data.words_result_num)
+        })
+        .catch(err => console.error(err))
+    },
+    formatText() {
+      if (this.lines > 0) {
+        this.result.forEach(item => {
+          this.Content = this.Content + item.words + '<br />'
+          // this.form.Text = this.form.Text + item.words
+        })
+        editor.txt.html(this.Content)
+        this.$notify({
+          title: '提示',
+          message: '已提取图中文字',
+          type: 'info'
+        })
+        // // 这里获取相关题目
+        // this.getQues()
+      } else {
+        this.$notify({
+          title: '提示',
+          message: '没有提取任何文字信息，请检查图片再操作！',
+          type: 'info'
+        })
+      }
+      this.showGIF = false
+    },
     getCategory() {
       if (!this.$store.getters.user.Id) {
         return
