@@ -1,5 +1,5 @@
 <template>
-  <section class="app-main">
+  <section :id="key=='/user/index'?'user_body':''" class="app-main">
     <transition name="fade" mode="out-in">
       <keep-alive :include="cachedViews">
         <router-view :key="key"></router-view>
@@ -11,6 +11,11 @@
 <script>
 export default {
   name: 'AppMain',
+  // data() {
+  //   return {
+  //     rou: this.$route
+  //   }
+  // },
   computed: {
     cachedViews() {
       return this.$store.state.tagsView.cachedViews
@@ -26,8 +31,9 @@ export default {
       ele.scrollTop = '0px'
       $('body>ul').remove()
       $('body>div').not('#app').remove()
+      // this.rou = to
+      // console.log(this.rou)
     }
-
   }
 }
 </script>

@@ -1,9 +1,17 @@
 @media (max-width: 768px){
-  .app-main{
-    margin-top: 50px!important;
-    height: calc(100% - 50px)!important;
-  }
+  // .app-main{
+  //   margin-top: 50px!important;
+  //   height: calc(100% - 50px)!important;
+  // }
   .scroll-container{
     display: none!important;
+  }
+  #user_body{
+    margin-top:0!important;
+    height:100%!important;
+  }
+  #user_head{
+    background-color: transparent!important;
+    border-bottom: 0;
   }
 }

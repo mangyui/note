@@ -212,17 +212,20 @@ export default {
   },
   methods: {
     cameraTakePicture() {
-      this.$notify({
-        title: '提示',
-        message: '网页端请选择上传图片的方式！',
-        type: 'info'
-      })
-      // navigator.camera.getPicture(this.onSuccess, this.onFail, {
-      //   quality: 50,
-      //   destinationType: Camera.DestinationType.DATA_URL,
-      //   encodingType: Camera.EncodingType.JPEG,
-      //   sourceType: Camera.PictureSourceType.Camera
-      // })
+      if (navigator.camera) {
+        navigator.camera.getPicture(this.onSuccess, this.onFail, {
+          quality: 50,
+          destinationType: Camera.DestinationType.DATA_URL,//eslint-disable-line
+          encodingType: Camera.EncodingType.JPEG,//eslint-disable-line
+          sourceType: Camera.PictureSourceType.Camera//eslint-disable-line
+        })
+      } else {
+        this.$notify({
+          title: '提示',
+          message: '网页端请选择上传图片的方式！',
+          type: 'info'
+        })
+      }
     },
     onSuccess(imageURI) {
       var file = this.dataURLtoFile('data:image/jpeg;base64,' + imageURI, 'camera.jpeg')
@@ -502,31 +505,6 @@ export default {
         }
       }
     }
-    HaveCorrect.customConfig.menus =
-    ShouTitle.customConfig.menus =
-    ShouCorrect.customConfig.menus = [
-      'head', // 标题
-      'bold', // 粗体
-      'fontSize', // 字号
-      'fontName', // 字体
-      'italic', // 斜体
-      'underline', // 下划线
-      'strikeThrough', // 删除线
-      'foreColor', // 文字颜色
-      'backColor', // 背景颜色
-      'link', // 插入链接
-      'list', // 列表
-      'justify', // 对齐方式
-      'quote', // 引用
-      'emoticon', // 表情
-      'image', // 插入图片
-      'table', // 表格
-      // 'video',  // 插入视频
-      'code', // 插入代码
-      'symbols',
-      'undo', // 撤销
-      'redo' // 重复
-    ]
     HaveCorrect.create()
     ShouTitle.create()
     ShouCorrect.create()

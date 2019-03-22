@@ -37,7 +37,7 @@ export default {
   components: { nxSvgIcon },
   data() {
     const validateCode = (rule, value, callback) => {
-      if (value !== this.Vcode.code) {
+      if (this.Vcode.code && value !== this.Vcode.code) {
         callback(new Error('验证码不正确'))
       } else {
         callback()
@@ -65,7 +65,7 @@ export default {
         code: [
           // { required: true, message: '请输入验证码', trigger: 'blur' },
           // { min: 4, message: '验证码长度最少为4位', trigger: 'blur' },
-          // { required: true, trigger: 'blur', validator: validateCode }
+          { required: true, trigger: 'blur', validator: validateCode }
         ]
       },
       passwordType: 'password'

@@ -214,7 +214,4 @@ export default {
 </style>
 <style lang ="scss">
     @import '../../styles/data-card.scss';
-    @import '../../styles/data-display.scss';
-    @import '../../styles/data-icons.scss';
-    @import '../../styles/data-tabs.scss';
 </style>

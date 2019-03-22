@@ -88,4 +88,10 @@ export default {
     transition: .28s;
     position: relative;
   }
+  @media (max-width: 768px){
+  .app-main{
+    margin-top: 50px;
+    height: calc(100% - 50px);
+  }
+}
 </style>

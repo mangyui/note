@@ -82,7 +82,7 @@ export default {
   top: 0;
   width: 100%;
   height: 100%;
-  background-image: url("../../assets/images/top_images/login2.png");
+  background-image: url("../../assets/images/top_images/lobg2.jpg");
   background-size: cover;
 }
 .login-info {

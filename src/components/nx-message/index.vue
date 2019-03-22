@@ -1,12 +1,10 @@
 <template>
   <div>
-    <el-tooltip effect="dark" content="消息" placement="bottom">
-      <el-button class=" btn-text can-hover" type="text" @click="dialogVisible = true">
-        <el-badge is-dot class="item">
-          <i class="header-icon el-icon-bell"></i>
-        </el-badge>
-       </el-button>
-    </el-tooltip>
+    <el-button class=" btn-text can-hover" type="text" @click="dialogVisible = true">
+      <el-badge is-dot class="item">
+        <i class="header-icon el-icon-bell"></i>
+      </el-badge>
+    </el-button>
     <el-dialog title="消息通知" width="800px" :visible.sync="dialogVisible" append-to-body>
     <div class="container mess">
             <el-tabs v-model="message">

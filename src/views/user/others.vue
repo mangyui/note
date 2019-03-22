@@ -4,8 +4,8 @@
       <i class="el-icon-loading"></i>
       加载中...
     </div>
-    <div class="profile-header">
-      <div class="bg-blur"></div>
+    <div class="profile-header" :style="{backgroundImage:'url(./static/img/main/user_bg' + Math.floor(Math.random()*6)+ '.svg)'}">
+      <!-- <div class="bg-blur"></div> -->
 
       <el-button class="toAttention"
           :type="Attention==true?'danger':''"
@@ -17,8 +17,8 @@
       <img class="header-avatar" :src="user.Avatar||'./static/img/avatar.jpg'">
       <span class="header-name">{{user.Name}}</span>
       <span class="header-bio">{{user.Intro}}</span>
-      <div class="header-info">
-      </div>
+      <!-- <div class="header-info">
+      </div> -->
     </div>
     <div id="content" class="big-box1200">
       <el-tabs v-model="activeName" class='is_stretch' @tab-click="handleClick">
@@ -175,6 +175,7 @@ export default {
     }
   },
   activated() {
+    this.fetchDate()
     document.querySelector('.app-main').scrollTop = this.homeTop || 0
     document.querySelector('.app-main').addEventListener('scroll', this.onScroll)
   },
@@ -289,7 +290,15 @@ export default {
     fetchDate() {
       this.id = this.$route.params.id
       if (this.id) {
-        this.getCustomer()
+        if (this.id === this.$store.getters.user.Id) {
+          var close = document.querySelector('.tags-view-item.active .el-icon-close')
+          close.click()
+          this.$router.push({
+            path: '/user/index'
+          })
+        } else {
+          this.getCustomer()
+        }
       }
     }
   },
@@ -324,21 +333,22 @@ export default {
 }
 .profile-header {
     width: 100%;
-    height: 350px;
-    background-position: 50%;
+    height: 200px;
+    /* background-position: 50%;
     background-size: cover;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat; */
     display: flex;
     flex-flow: column;
     z-index: 2;
     position: relative;
+    transition: 0.28s;
 }
 
 .profile-header .header-avatar {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    margin-top: 100px;
+    margin-top: 40px;
     margin-left: 50%;
     transform: translateX(-50%);
     border: 2px solid #fff;
@@ -358,8 +368,9 @@ export default {
     color: #ffffff;
     display: inline-block;
     text-align: center;
-    font-size: 15px;
-    margin-top: 10px;
+    font-size: 16px;
+    margin-top: 16px;
+    font-weight: bold;
 }
 
 .profile-header .header-bio {
@@ -386,11 +397,11 @@ export default {
 }
 @media (max-width: 768px)
 {
-  .profile-header{
+  /* .profile-header{
     height: 240px;
-  }
-  .profile-header .header-avatar{
+  } */
+  /* .profile-header .header-avatar{
     margin-top: 50px;
-  }
+  } */
 }
 </style>

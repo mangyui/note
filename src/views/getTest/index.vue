@@ -113,8 +113,8 @@
 <script>
 import qs from 'qs'
 
-// import saveAs from '@/assets/js/fileexport.js'
-// window.saveAs = saveAs
+import saveAs from '@/assets/js/fileexport.js'
+window.saveAs = saveAs
 import '@/assets/js/jquery.wordexport.js'
 import {
   questionCategory
@@ -213,11 +213,14 @@ export default {
     },
     ToWord() {
       this.isDelete = false
+      var that = this
       setTimeout(function() {
         var blob = $('#Test').wordExport('test')
-        // var filename = 'Test'
+        var fileName = 'Test'
+        var file = that.blobToFile(blob, 'test')
         // var files = new window.File([blob], 'Test', { type: 'doc' })
-        window.open(window.URL.createObjectURL(blob))
+        window.saveAs(file, fileName + '.doc')
+        // window.open(window.URL.createObjectURL(blob))
       }, 100)
       // window.navigator.msSaveBlob(blob, filename + '.doc')
       // window.open(URL.createObjectURL(blob), '_system')
@@ -226,6 +229,11 @@ export default {
       // var files = new window.File([blob], 'test', { type: 'doc' })
       // window.open(files, '_system')
       // }).catch(() => {})
+    },
+    blobToFile(theBlob, fileName) {
+      theBlob.lastModifiedDate = new Date()
+      theBlob.name = fileName
+      return theBlob
     },
     ToMobile() {
       window.open('https://coding.net/api/share/download/925b6a78-ea70-489d-826f-aa394fb0ea1d', '_system')

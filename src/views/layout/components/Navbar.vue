@@ -1,5 +1,5 @@
 <template>
-  <el-menu id="topNav" class="navbar" mode="horizontal">
+  <el-menu :id="isUsercenter==true?'user_head':''" class="navbar" mode="horizontal">
     <nx-hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></nx-hamburger>
     <nx-breadcrumb class="breadcrumb-container"></nx-breadcrumb>
     <span v-if="isBack" class="goback toShow" @click="goBack">
@@ -79,6 +79,7 @@ export default {
     return {
       user: this.$store.getters.user,
       isBack: false,
+      isUsercenter: false,
       whiteList: [
         '/home/index',
         '/SQu/index', // 拍照搜题
@@ -111,6 +112,11 @@ export default {
       } else {
         this.isBack = true
       }
+      if (this.$route.path === '/user/index') {
+        this.isUsercenter = true
+      } else {
+        this.isUsercenter = false
+      }
     },
     goBack() {
       if (this.whiteList.indexOf(this.$route.path) !== -1) {
@@ -138,7 +144,7 @@ export default {
 .goback{
   display: inline-block;
   height: 100%;
-  width: 40px;
+  width: 45px;
   text-align: center;
   line-height: 51px;
   color: #fff;

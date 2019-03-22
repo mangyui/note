@@ -1,21 +1,36 @@
 <template>
   <div class="user">
-    <div class="user_top">
-      <div class="bg-blur"></div>
-      <router-link :to="'/user/fans/'+user.Id">
+    <div class="user_top" :style="{backgroundImage:'url(./static/img/main/user_bg' + Math.floor(Math.random()*6)+ '.svg)'}">
+      <!-- <div class="bg-blur"></div> -->
+      <!-- <router-link :to="'/user/fans/'+user.Id">
         <el-button class="toAttention"
           type="danger"
           round >题友
         </el-button>
-      </router-link>
-      <div class="top_item">
+      </router-link> -->
+      <div class="toOther">
+        <div class="tiyou">
+          <router-link to="/tonote/noteList">
+            <nx-svg-icon class-name='tiyou_icon' icon-class="note" />
+            <p>笔记</p>
+          </router-link>
+        </div>
+        <div></div>
+        <div class="tiyou">
+          <router-link to="/user/fans/">
+            <nx-svg-icon class-name='tiyou_icon' icon-class="peoples" />
+            <p>题友</p>
+          </router-link>
+        </div>
+      </div>
+      <!-- <div class="top_item">
         <p style="height:80px">
           <router-link to="/tonote/noteList"></router-link>
         </p>
         <p>
           <router-link to="/toques/quesList"></router-link>
         </p>
-      </div>
+      </div> -->
     </div>
     <div class="user_center">
       <!-- <div class="div-logout toShow"><nx-svg-icon class-name='more_icon' icon-class="logout" /></div> -->
@@ -238,12 +253,13 @@ import VueCropper from 'vue-cropperjs'
 import {
   getSchoolList
 } from '@/api/toget'
-// import {
-//   ChangeUserAvatar
-// } from '@/api/toPost'
+import {
+  GetCustomer,
+  ChangeUserAvatar
+} from '@/api/toPost'
 
-const uploadImgServer = 'http://1975386453.38haotyhn.duihuanche.com/?service=App.User.ChangeUserAvatar'
-// import qs from 'qs'
+// const uploadImgServer = 'http://1975386453.38haotyhn.duihuanche.com/?service=App.User.ChangeUserAvatar'
+import qs from 'qs'
 
 export default {
   name: 'user',
@@ -300,7 +316,8 @@ export default {
         value: '1000',
         label: '1000'
       }],
-      addJinbi: '10'
+      addJinbi: '10',
+      avatarFile: ''
     }
   },
   methods: {
@@ -342,6 +359,7 @@ export default {
       if (!file || !file.type.includes('image/')) {
         return
       }
+      this.avatarFile = file
       const reader = new FileReader()
       reader.onload = event => {
         this.dialogVisible = true
@@ -369,50 +387,63 @@ export default {
     changeAvatar() {
       // var file = this.dataURLtoFile(this.cropImg, 'avatar.png')
       // console.log(file)
-      var data = new FormData()
-      data.append('file', this.dataURLtoFile(this.cropImg, 'avatar.png'))
-      data.append('UserId', this.user.Id)
 
-      var xhr = new XMLHttpRequest()
-      xhr.open('POST', uploadImgServer)
-      // 设置超时
-      xhr.timeout = 15000
-      xhr.onreadystatechange = (res) => {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          var respp = JSON.parse(xhr.response)
-          // console.log(respp.data.data.data)
-          if (respp.data.data.data) {
-            this.$store.dispatch('UpdateAvatar', respp.data.data.data[0])
-            // console.log(respp.data.data.data[0])
-            location.reload()
-          } else {
-            this.$notify({
-              title: '提示',
-              message: '修改头像失败',
-              type: 'info'
-            })
-            this.cropImg = this.avatar
-          }
-        }
-      }
-      xhr.send(data)
-      // ChangeUserAvatar(data).then(res => {
-      //   if (res.data.data.data[0]) {
-      //     this.$store.dispatch('UpdateAvatar', res.data.data.data[0])
-      //     location.reload()
+      var blob = this.dataURLtoBlob(this.cropImg, 'avatar.png')
+      var file = this.blobToFile(blob, 'avatar')
+      var data = new FormData()
+      // console.log(file)
+      data.append('file', file, 'avatar.png')
+      data.append('UserId', this.user.Id)
+      // alert(data)
+      // alert(this.dataURLtoFile(this.cropImg, 'avatar.png'))
+      // var xhr = new XMLHttpRequest()
+      // xhr.open('POST', uploadImgServer)
+      // // 设置超时
+      // xhr.timeout = 15000
+      // xhr.onreadystatechange = (res) => {
+      //   if (xhr.readyState === 4 && xhr.status === 200) {
+      //     console.log(xhr)
+      //     var respp = JSON.parse(xhr.responseText)
+      //     // console.log(respp.data.data.data)
+      //     if (respp.data.data.data && respp.data.ret !== 200) {
+      //       this.$store.dispatch('UpdateAvatar', respp.data.data.data[0])
+      //       // console.log(respp.data.data.data[0])
+      //       location.reload()
+      //     } else {
+      //       this.$notify({
+      //         title: '提示',
+      //         message: '修改头像失败',
+      //         type: 'info'
+      //       })
+      //       this.cropImg = this.avatar
+      //     }
       //   } else {
       //     this.$notify({
       //       title: '提示',
-      //       message: '修改图片失败',
+      //       message: '修改头像失败',
       //       type: 'info'
       //     })
       //     this.cropImg = this.avatar
       //   }
-      // }).catch(() => {
+      // }
+      // xhr.send(data)
+      ChangeUserAvatar(data).then(res => {
+        if (res.data.data.data[0]) {
+          this.$store.dispatch('UpdateAvatar', res.data.data.data[0])
+          location.reload()
+        } else {
+          this.$notify({
+            title: '提示',
+            message: '修改图片失败',
+            type: 'info'
+          })
+          this.cropImg = this.avatar
+        }
+      }).catch(() => {
 
-      // })
+      })
     },
-    dataURLtoFile(dataurl, filename) { // 将base64转换为文件
+    dataURLtoBlob(dataurl, filename) { // 将base64转换为文件
       var arr = dataurl.split(',')
       var mime = arr[0].match(/:(.*?);/)[1]
       var bstr = atob(arr[1])
@@ -421,7 +452,12 @@ export default {
       while (n--) {
         u8arr[n] = bstr.charCodeAt(n)
       }
-      return new File([u8arr], filename, { type: mime })
+      return new Blob([u8arr], { type: mime })
+    },
+    blobToFile(theBlob, fileName) {
+      theBlob.lastModifiedDate = new Date()
+      theBlob.name = fileName
+      return theBlob
     },
     getschool() {
       getSchoolList().then(res => {
@@ -445,9 +481,18 @@ export default {
         location.reload() // In order to re-instantiate the vue-router object to avoid bugs
       })
       location.reload()
+    },
+    isChange() {
+      GetCustomer(qs.stringify({ UserId: this.user.Id })).then(res => {
+        if (res.data.data.Avatar !== this.user.Avatar) {
+          this.$store.dispatch('UpdateAvatar', res.data.data.Avatar)
+          location.reload()
+        }
+      })
     }
   },
   created() {
+    this.isChange()
     this.cropImg = this.avatar
     this.getschool()
     var index = this.classlist.find((item) => {
@@ -470,8 +515,9 @@ export default {
  }
 .user_top {
   width: 100%;
-  height: 350px;
+  height: 180px;
   position: relative;
+  transition: 0.28s;
 }
 .bg-blur{
   width: 100%;
@@ -570,6 +616,27 @@ export default {
     color: #52bab5;
   }
 }
+.toOther{
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 40%;
+  display: flex;
+  justify-content: space-around;
+  .tiyou{
+    color: #fff;
+    text-align: center;
+    .tiyou_icon{
+      width: 2em;
+      height: 2em;
+    }
+    p{
+      margin-top: 5px;
+      font-size: 12px;
+    }
+  }
+}
+
 @media (min-width: 1600px)
 {
   .bg-blur{
@@ -578,9 +645,9 @@ export default {
 }
 @media (max-width: 768px)
 {
-  .user_top{
-    height: 200px;
-  }
+  // .user_top{
+  //   height: 200px;
+  // }
   .avatar {
     width: 100px;
     height: 100px;

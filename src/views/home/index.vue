@@ -8,11 +8,11 @@
         <el-button class="top-btn_search" round icon="el-icon-search" :size="screenWidth>770?'':'small'" :style="screenWidth>770?'':'border:0'">搜索</el-button>
       </router-link>
       <div class="top-camera toShow">
-        <router-link to="/SQu/index">
+        <router-link to="/todo/addMistake">
           <div class="icon-wrap">
             <div class="light"></div>
-            <nx-svg-icon class-name='icon-camera' icon-class="camera3" />
-            <b>拍照搜题</b>
+            <nx-svg-icon class-name='icon-camera' icon-class="add" />
+            <b>错题添加</b>
           </div>
         </router-link>
       </div>
@@ -26,13 +26,13 @@
                 <p>拍照搜题</p>
               </router-link>
             </div>
-            <!-- <div class="home_item">
-              <router-link to="/Voice/index">
-                <nx-svg-icon class-name='more_icon' style="color:#F56C6C" icon-class="voice" />
-                <p>语音识别</p>
+            <div class="home_item disNone">
+              <router-link to="/todo/addMistake">
+                <nx-svg-icon class-name='more_icon' style="color:#F56C6C" icon-class="add" />
+                <p>添加错题</p>
               </router-link>
-            </div> -->
-            <div class="home_item">
+            </div>
+            <div class="home_item toShow">
               <router-link to="/toques/quesList">
                 <nx-svg-icon class-name='more_icon' style="color:#F56C6C" icon-class="cuoti" />
                 <p>我的错题</p>
@@ -66,7 +66,7 @@
         <myquex-box :option="myques"></myquex-box> -->
         <h4 class="home-h4" v-if="notes[0]"><i class="el-icon-star-off"></i> 最近笔记 <i class="el-icon-star-off"></i></h4>
         <note-box :option="notes"></note-box>
-        <h4 class="home-h4" v-if="questions[0]"><i class="el-icon-star-off"></i> 推荐错题 <i class="el-icon-star-off"></i></h4>
+        <h4 class="home-h4" v-if="questions[0]"><i class="el-icon-star-off"></i> 推荐题目 <i class="el-icon-star-off"></i></h4>
         <quex-box :option="questions"></quex-box>
         <div v-if="showLoading" class="loading-box">
           <i class="el-icon-loading"></i>
@@ -230,7 +230,7 @@ export default {
 }
 .top-camera{
   width: 100%;
-  height: 300px;
+  height: 280px;
   text-align: center;
   margin: 0 auto;
   background: #52bab5;
@@ -241,18 +241,17 @@ export default {
     background: #fff;
     border-radius: 50%;
     padding: 15px;
-    margin-top: 70px;
+    margin-top: 50px;
     box-shadow: 0 0 1px #444;
     position: relative;
     overflow: hidden;
     .icon-camera{
-      width: 6.5em;
-      height: 6.5em;
-      margin-top: -3px;
+      width: 5.5em;
+      height: 5.5em;
       fill: #52bab5;
     }
     b{
-      margin-top: -10px;
+      margin-top: 8px;
       display: block;
       font-size: 16px;
       color: #369490;;

@@ -312,6 +312,8 @@ code {
     width: 100%;
     .ques_box{
       border: 1px solid #ebeef5;
+      border-left: 0;
+      border-right: 0;
       box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
       padding: 15px 10px 5px;
       position: relative;
@@ -443,11 +445,12 @@ code {
       }
     }
     img{
-      border: 1px solid #fff;
+      // border: 1px solid #fff;
       border-radius: 50%;
       height: 100px;
       width: 100px;
       overflow: hidden;
+      box-shadow: 0 1px 3px rgba(151,151,151,0.58);
       // position: absolute;
       // top: -50px;
       // left:  calc(50% - 50px);
@@ -685,7 +688,7 @@ code {
 /*移动端*/
 @media (max-width: 768px)
 {
-  #topNav{
+  ul.el-menu--horizontal{
     background: #52bab5;
     border: 0;
     // box-shadow: 0 0 1px 0px #52bab5;

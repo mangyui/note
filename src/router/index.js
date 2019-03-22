@@ -160,7 +160,7 @@ export const constantRouterMap = [
         meta: { title: 'user', icon: 'me' }
       },
       {
-        path: 'fans/:id',
+        path: 'fans',
         name: 'fans',
         component: () => import('@/views/user/fans'),
         meta: { title: 'Fans', icon: 'me' }
@@ -234,7 +234,7 @@ export const constantRouterMap = [
     redirect: '/tonote/notes',
     meta: {
       title: 'ToNote',
-      icon: 'form'
+      icon: 'note'
     },
     children: [
       {

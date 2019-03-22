@@ -10,17 +10,25 @@
       <el-tab-pane name="followee">
         <div slot="label"><i class="el-icon-date"></i>关注的人</div>
           <div class="">
+            <div v-if="showLoading" class="loading-box">
+              <i class="el-icon-loading"></i>
+              加载中...
+            </div>
+            <div v-if="!Followees[0] && !showLoading" class="loading-box">
+              <i class="el-icon-search"></i>
+              空空如也...
+            </div>
             <el-row :gutter="12">
               <el-col  :xs="24" :sm="12" :md="8" :lg="8" :xl="6" v-for="(item,index) in Followees" :key="index">
                 <el-card v-if="item.UserId!=0" class="friend-box" :body-style="{ padding: '0px' }"  shadow="hover">
                   <div class="people">
                     <!-- <div class="friend-top" :style="{backgroundImage:'url(' + top_bg + ')'}"><div class="top_bg"></div></div> -->
-                    <span @click="toAttention(item.UserId)" >
+                    <!-- <span @click="toAttention(item.UserId)" >
                       <nx-svg-icon
                         class-name='international-icon icon-collect'
                         style="color: #F56C6C"
                         icon-class="collect" />
-                    </span>
+                    </span> -->
                     <router-link  :to="'/user/others/'+item.User.Id">
                       <div class="friend-body">
                         <img src="#" :src="item.User.Avatar||deAvatar">
@@ -39,17 +47,25 @@
       <el-tab-pane name="fans">
         <div slot="label"><i class="el-icon-date"></i>粉丝</div>
         <div class="">
+          <div v-if="showLoading" class="loading-box">
+            <i class="el-icon-loading"></i>
+            加载中...
+          </div>
+          <div v-if="!Fans[0] && !showLoading" class="loading-box">
+            <i class="el-icon-search"></i>
+            空空如也...
+          </div>
           <el-row :gutter="12">
             <el-col  :xs="24" :sm="12" :md="8" :lg="8" :xl="6" v-for="(item,index) in Fans" :key="index">
               <el-card class="friend-box" :body-style="{ padding: '0px' }"  shadow="hover">
                 <div class="people">
                   <!-- <div class="friend-top" :style="{backgroundImage:'url(' + top_bg + ')'}"><div class="top_bg"></div></div> -->
-                  <span @click="toAttention(item.UserId)" >
+                  <!-- <span @click="toAttention(item.UserId)" >
                     <nx-svg-icon
                       class-name='international-icon icon-collect'
                       style="color: #F56C6C"
                       icon-class="collect" />
-                  </span>
+                  </span> -->
                   <router-link  :to="'/user/others/'+item.User.Id">
                     <div class="friend-body">
                       <img src="#" :src="item.User.Avatar||deAvatar">
@@ -85,6 +101,7 @@ export default {
   components: { nxSvgIcon },
   data() {
     return {
+      showLoading: false,
       id: '',
       top_bg: './static/img/box_bg.jpg',
       deAvatar: './static/img/avatar.jpg',
@@ -95,13 +112,15 @@ export default {
   },
   methods: {
     getTiyou() {
+      this.showLoading = true
       GetFans(qs.stringify({ UserId: this.id })).then(res => {
         this.Fans = res.data.data
+        this.showLoading = false
       }).catch(() => {})
       GetFollowee(qs.stringify({ UserId: this.id })).then(res => {
         this.Followees = res.data.data
+        this.showLoading = false
       }).catch(() => {})
-      this.loading = false
     },
     toAttention(index) {
       if (!this.$store.getters.user.Id) {
@@ -134,7 +153,7 @@ export default {
       })
     },
     fetchDate() {
-      this.id = this.$route.params.id
+      this.id = this.$store.getters.user.Id
       if (this.id) {
         this.getTiyou()
       }
