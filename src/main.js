@@ -20,17 +20,11 @@ import store from './store'
 // Internationalization
 import i18n from './lang'
 
-// import {            //远程获取Font Awesome图标库
-//   loadStyle
-// } from './utils/util'
-// import {
-//   iconfontUrl,
-//   iconfontVersion
-// } from '@/config/env'
+// import preview from 'vue-photo-preview'
+// import 'vue-photo-preview/dist/skin.css'
 
-// iconfontVersion.forEach(ele => {
-//   loadStyle(iconfontUrl.replace('$key', ele))
-// })
+// import { option } from '@/utils/preview.js'
+// Vue.use(preview, option)
 
 import '@/icons' // icon
 

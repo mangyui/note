@@ -26,7 +26,7 @@ export default {
     QuesList: '错题列表',
     Ques_more: '相识题目',
     Knowledge: '知识点',
-    NoteList: '笔记本',
+    NoteList: '笔记列表',
     Note_type: '笔记分类',
     Note_detail: '笔记详情',
     Note_more: '相关题目',

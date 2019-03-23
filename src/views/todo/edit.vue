@@ -16,15 +16,15 @@
         </div>
       </el-card>
       <div class="noteEdit-title">
-        <h4>笔记标题</h4>
+        <h4 class="htitle">笔记标题</h4>
         <el-input v-model="note.Headline" placeholder=""></el-input>
       </div>
       <div class="noteEdit-title">
-      <h4>笔记正文</h4>
+      <h4 class="htitle">笔记正文</h4>
         <div ref="editor" class="divWangeditor" style="text-align:left"></div>
         <!-- <br/>
         <quill-editor ref="myTextEditor" v-model="note.Content" :options="editorOption"></quill-editor> -->
-        <br/>
+        <!-- <br/> -->
         <div class="voice-button">
           <div class="voice-input-button-wrapper">
             <voice-input-button
@@ -43,7 +43,7 @@
             </voice-input-button>
           </div>
         </div>
-        <el-button type="primary" @click="dialogFormVisible = true">提交</el-button>
+        <el-button class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
       </div>
       <el-dialog class="crop-pic" title="裁剪图片" :visible.sync="dialogVisible" :before-close="cancelCrop" width="70%">
         <vue-cropper class="dgCropper" ref='cropper' :auto-crop-area="1" :src="imgSrc" :ready="cropImage" :zoom="cropImage" :cropmove="cropImage" style="width:100%;  height: 400px;"></vue-cropper>
@@ -474,24 +474,13 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.edit-container{
-  .noteEdit-title{
-    margin-bottom: 25px;
-    padding: 5px;
-  }
-  .btn-wrapper{
-    position: fixed;
-    right: -96px;
-    bottom: 200px;
-    box-shadow: 0 1px 10px rgba(64, 158, 255,.5);
-    transition: all 0.3s;
-    .el-button{
-      border-radius: 0;
-      padding: 12px 16px;
-    }
-  }
+<style lang="scss" scoped>
+
+.container{
+  border: 0;
 }
+
+
 @media (max-width: 768px)
 {
   // .edit-container{

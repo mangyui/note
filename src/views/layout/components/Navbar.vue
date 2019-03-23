@@ -1,5 +1,5 @@
 <template>
-  <el-menu :id="isUsercenter==true?'user_head':''" class="navbar" mode="horizontal">
+  <el-menu :id="isUsercenter==true&&ScrollTop<120?'user_head':''" class="navbar" mode="horizontal">
     <nx-hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></nx-hamburger>
     <nx-breadcrumb class="breadcrumb-container"></nx-breadcrumb>
     <span v-if="isBack" class="goback toShow" @click="goBack">
@@ -80,6 +80,7 @@ export default {
       user: this.$store.getters.user,
       isBack: false,
       isUsercenter: false,
+      ScrollTop: 0,
       whiteList: [
         '/home/index',
         '/SQu/index', // 拍照搜题
@@ -126,6 +127,11 @@ export default {
       } else {
         this.$router.go(-1)
       }
+    },
+    onScroll() {
+      var scrollTop = document.querySelector('.app-main').scrollTop
+      this.ScrollTop = scrollTop
+      // console.log(this.ScrollTop)
     }
   },
   watch: {
@@ -135,6 +141,7 @@ export default {
     this.fetchDate()
   },
   mounted() {
+    document.querySelector('.app-main').addEventListener('scroll', this.onScroll)
     // console.log(this.user)
   }
 }

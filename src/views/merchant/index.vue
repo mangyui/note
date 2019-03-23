@@ -147,6 +147,11 @@ export default {
     handleClick() {
 
     }
+  },
+  mounted() {
+    // this.$nextTick(() => {
+    //   this.$previewRefresh()
+    // })
   }
 }
 </script>

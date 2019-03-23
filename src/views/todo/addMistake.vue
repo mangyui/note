@@ -9,7 +9,7 @@
           type="warning">
         </el-alert> -->
         <div class="crop-demo">
-          <label ref="select_frame"  class="crop-topimg" @click="cameraTakePicture" :style="{backgroundImage:'url(' + cropImg + ')', backgroundSize:'contain'}">
+          <label ref="select_frame"  class="crop-topimg" :style="{backgroundImage:'url(' + cropImg + ')', backgroundSize:'contain'}">
             <!-- <img v-if="cropImg" :src="cropImg" class="pre-img"> -->
             <div v-if="!cropImg" class="up_inside">
               <nx-svg-icon class-name='icon-camera' icon-class="camera3" />
@@ -25,18 +25,20 @@
           </div>
         </div>
         <div class="sq-body">
-          <el-button class="sq-change" type="danger" size="medium" v-if="showBtn" @click="showShou=(showShou==false?true:false)">{{showShou==false?"手动添加":"返回相似"}}</el-button>
-          <div class="run_btn">
-            <img v-if="showGIF" class="loading-gif" src="@/assets/images/home/loading2.gif" alt="Loading">
-            <el-checkbox v-model="isHand" label="含手写" border></el-checkbox>
-            <el-button class="editor-btn" type="danger" @click="torun">提取文字</el-button>
-          </div>
+          <!-- <el-button class="sq-change" type="danger" size="medium" v-if="showBtn" @click="showShou=(showShou==false?true:false)">{{showShou==false?"手动添加":"返回相似"}}</el-button> -->
+          <el-card shadow="never" v-loading="showGIF">
+            <div class="run_btn">
+              <!-- <img v-if="showGIF" class="loading-gif" src="@/assets/images/home/loading2.gif" alt="Loading"> -->
+              <el-checkbox v-model="isHand" label="含手写" border></el-checkbox>
+              <el-button class="editor-btn" type="danger" @click="torun">提取文字</el-button>
+            </div>
+          </el-card>
           <div class="ocr-edit">
-            <h3 class="Hpipei">手动添加</h3>
-            <h4>错题题目(不含答案)</h4>
+            <!-- <h3 class="Hpipei">手动添加</h3> -->
+            <h4 class="htitle">错题题目(不含答案)</h4>
             <div ref="ShouTitle" class="divWangeditor" style="text-align:left"></div>
             <!-- <quill-editor ref="titleEditor" v-model="form.Content" :options="editorOption" ></quill-editor> -->
-            <br/>
+            <!-- <br/> -->
             <div class="voice-button">
               <div class="voice-input-button-wrapper">
                 <voice-input-button
@@ -51,10 +53,10 @@
                 </voice-input-button>
               </div>
             </div>
-            <h4>错题解答(可选)</h4>
+            <h4 class="htitle">错题解答(可选)</h4>
             <div ref="ShouCorrect" class="divWangeditor" style="text-align:left"></div>
             <!-- <quill-editor ref="AnalysisEditor" v-model="form.Analysis" :options="editorOption" ></quill-editor> -->
-            <br/>
+            <!-- <br/> -->
             <div class="voice-button">
               <div class="voice-input-button-wrapper">
                 <voice-input-button
@@ -69,7 +71,7 @@
                 </voice-input-button>
               </div>
             </div>
-            <el-button class="editor-btn pull-right" type="primary" @click="dialogFormVisible = true">提交</el-button>
+            <el-button class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
           </div>
         </div>
       </div>
@@ -526,7 +528,7 @@ export default {
   border: 0;
 }
 .ocr-edit{
-  margin-top: 20px;
+  margin-top: 10px;
 }
 .el-dialog{
   margin-top: 7vh!important;

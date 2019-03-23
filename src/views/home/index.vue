@@ -188,7 +188,6 @@ export default {
   left: 0;
   animation: upAndDownFast 2s ease-in-out infinite alternate;
 }
-@keyframes upAndDownFast{0%{top:5%}to{top:2%}}
 .home_item{
   color: #444;
   height: 60px;
@@ -242,16 +241,20 @@ export default {
     border-radius: 50%;
     padding: 15px;
     margin-top: 50px;
-    box-shadow: 0 0 1px #444;
+    box-shadow: 0 1px 3px rgba(151, 151, 151, 0.58);
     position: relative;
     overflow: hidden;
     .icon-camera{
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
       width: 5.5em;
       height: 5.5em;
       fill: #52bab5;
+      // animation: upAndDownFast 1s ease-in-out infinite alternate;
     }
     b{
-      margin-top: 8px;
+      margin-top: 105px;
       display: block;
       font-size: 16px;
       color: #369490;;
@@ -344,4 +347,5 @@ export default {
     line-height: 2.0em;
   }
 }
+@keyframes upAndDownFast{0%{top:6%}to{top:4%}}
 </style>

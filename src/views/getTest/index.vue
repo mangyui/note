@@ -92,7 +92,7 @@
       </div>
     </el-dialog>
     <div  v-if="Tests[0]" class="note_d-edit">
-      <el-dropdown>
+      <el-dropdown trigger="click">
         <el-button type="primary" icon="el-icon-edit" circle></el-button>
         <el-dropdown-menu slot="dropdown">
           <div @click="deleteAll">

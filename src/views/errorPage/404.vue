@@ -12,11 +12,11 @@
         </el-col>
         <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12">
           <div class="bullshit">
-            <div class="bullshit__oops">OOPS!</div>
+            <div class="bullshit__oops">404!</div>
             <div class="bullshit__info">为什么会看到这个页面，你心里没点数吗？</div>
-            <div class="bullshit__headline">{{ message }}</div>
-            <div class="bullshit__info">请检查您输入的网址是否正确，请点击以下按钮返回主页</div>
-            <a href="" class="bullshit__return-home">返回首页</a>
+            <!-- <div class="bullshit__headline">{{ message }}</div> -->
+            <div class="bullshit__info">请检查位置是否正确，或点击以下按钮返回主页</div>
+            <a href="" class="bullshit__return-home">返回主页</a>
           </div>
         </el-col>
       </el-row>

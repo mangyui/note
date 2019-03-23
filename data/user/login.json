@@ -1,9 +1,0 @@
-{
-  "ret": 200,
-  "code": 0,
-  "roles": ["admin"],
-  "token": "mangyu",
-  "introduction": "MANGYU",
-  "avatar": "http://blog.mccyu.com/img/avatar.gif",
-  "name": "mangyu"
-}

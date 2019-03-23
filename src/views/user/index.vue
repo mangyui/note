@@ -671,5 +671,8 @@ export default {
       width: 100%;
     }
   }
+  .contariner-wraper{
+    margin-bottom: 10px;
+  }
 }
 </style>

@@ -36,9 +36,9 @@
           </div>
           <!-- <quill-editor v-if="isUpdae" ref="myTextEditor" v-model="content" :options="editorOption"></quill-editor> -->
           <br/>
-          <el-button v-if="!isUpdae" class="editor-btn" type="primary" @click="handleChange">修改解答</el-button>
-          <el-button v-if="isUpdae" class="editor-btn" @click="isUpdae=false">返回</el-button>
-          <el-button v-if="isUpdae" class="editor-btn" type="danger" @click="submit">确定修改</el-button>
+          <el-button v-if="!isUpdae" class="editor-btn" type="primary" size="medium" @click="handleChange">修改解答</el-button>
+          <el-button v-if="isUpdae" class="editor-btn" size="medium" @click="isUpdae=false">返回</el-button>
+          <el-button v-if="isUpdae" class="editor-btn" size="medium" type="danger" @click="submit">确定修改</el-button>
         </div>
         <div class="sys-section" v-if="!isMe">
           <div class="title">

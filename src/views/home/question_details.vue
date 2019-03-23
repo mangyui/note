@@ -14,7 +14,7 @@
     <div v-show="question" class="note_details">
       <div class="page-content">
         <div class="detail-top">
-          <el-tag v-if="question.Category">{{question.Category.Subject}}</el-tag>
+          <el-tag size="medium" v-if="question.Category">{{question.Category.Subject}}</el-tag>
           <router-link :to="'/home/ques_more/'+ this.id">
             <el-button class="de-more" size="small" >相似题型</el-button>
           </router-link>
@@ -83,7 +83,7 @@
             </div>
             <div ref="HaveCorrect" class="divWangeditor" style="text-align:left"></div>
             <br/>
-            <el-button class="editor-btn pull-right" type="primary" @click="dialogFormVisible = true">提交</el-button>
+            <el-button size="medium" type="primary" @click="dialogFormVisible = true">提交</el-button>
            </div>
         </div>
       </div>

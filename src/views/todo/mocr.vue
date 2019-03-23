@@ -40,27 +40,26 @@
                     </router-link>
                   </div>
                 </div>
-                <br/>
-                <h4>添加解答</h4>
               </div>
               </slideritem>
               <div slot="loading">loading...</div>
             </slider>
+            <h4 class="htitle">添加解答</h4>
             <div ref="HaveCorrect" class="divWangeditor" style="text-align:left"></div>
             <br/>
-            <el-button class="editor-btn pull-right" type="primary" @click="dialogFormVisible = true">提交</el-button>
+            <el-button class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
           </div>
           <div v-show="showShou" class="ocr-edit">
             <h3 class="Hpipei">手动添加</h3>
-            <h4>错题题目(不含答案)</h4>
+            <h4 class="htitle">错题题目(不含答案)</h4>
             <div ref="ShouTitle" class="divWangeditor" style="text-align:left"></div>
             <!-- <quill-editor ref="titleEditor" v-model="form.Content" :options="editorOption" ></quill-editor> -->
             <br/>
-            <h4>错题解答(可选)</h4>
+            <h4 class="htitle">错题解答(可选)</h4>
             <div ref="ShouCorrect" class="divWangeditor" style="text-align:left"></div>
             <!-- <quill-editor ref="AnalysisEditor" v-model="form.Analysis" :options="editorOption" ></quill-editor> -->
             <br/>
-            <el-button class="editor-btn pull-right" type="primary" @click="dialogFormVisible = true">提交</el-button>
+            <el-button class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
           </div>
         </div>
       </div>
@@ -582,12 +581,12 @@ export default {
   margin-top: 10px;
   .sq-change{
     position: absolute;
-    right: 5px;
+    right: 0px;
     top: 0;
   }
 }
 .heightAuto{
-  max-height: 400px!important;
+  height: 400px!important;
 }
 @media (max-width: 768px) {
 

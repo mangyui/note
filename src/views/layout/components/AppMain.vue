@@ -11,11 +11,12 @@
 <script>
 export default {
   name: 'AppMain',
-  // data() {
-  //   return {
-  //     rou: this.$route
-  //   }
-  // },
+  data() {
+    return {
+      rou: this.$route,
+      ScrollTop: 0
+    }
+  },
   computed: {
     cachedViews() {
       return this.$store.state.tagsView.cachedViews
@@ -31,6 +32,7 @@ export default {
       ele.scrollTop = '0px'
       $('body>ul').remove()
       $('body>div').not('#app').remove()
+      // this.$previewRefresh()
       // this.rou = to
       // console.log(this.rou)
     }
