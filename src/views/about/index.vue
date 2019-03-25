@@ -7,7 +7,7 @@
       </el-breadcrumb>
     </div>
     <div class="about-top">
-      <img src="../../assets/images/home/logo.png" width="100px" height="100px" alt="logo" style="vertical-align: middle;" />
+      <img preview src="../../assets/images/home/logo.png" width="100px" height="100px" alt="logo" style="vertical-align: middle;" />
       <b>vNote</b>
       <i>V {{version}}</i>
     </div>

@@ -31,7 +31,7 @@ export default {
       var ele = document.querySelector('.app-main')
       ele.scrollTop = '0px'
       $('body>ul').remove()
-      $('body>div').not('#app').remove()
+      $('body>div').not('#app,.pswp').remove()
       // this.$previewRefresh()
       // this.rou = to
       // console.log(this.rou)

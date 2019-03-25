@@ -19,7 +19,7 @@
         </div> -->
         <div class="sys-notes" v-html="question.Title"></div>
         <div class="sys-section" v-if="isMe">
-          <div class="title">
+          <div class="title" style="border:0">
             <strong>我的解答</strong>
               <div class="ques_header">
                 <router-link to="/user/index">
@@ -308,6 +308,7 @@ export default {
         this.user = res.data.data.User
         this.isLike = res.data.data.Like
         this.isCollect = res.data.data.Collection
+        this.Magnify()
         if (this.$store.getters.user && this.$store.getters.user.Id === this.user.Id) {
           this.isMe = true
           this.content = this.question.Correct
@@ -322,6 +323,16 @@ export default {
         // var close = document.querySelector('.tags-view-item.active .el-icon-close')
         // close.click()
       })
+    },
+    Magnify() {
+      var value = '<img'
+      // 匹配图片标签正则
+      var replaceReg = new RegExp(value, 'g')
+      // 加上放大组件属性
+      var replaceString = value + ' preview '
+      // 开始替换
+      this.question.Title = this.question.Title.replace(replaceReg, replaceString)
+      this.question.Correct = this.question.Correct.replace(replaceReg, replaceString)
     },
     submit() {
       this.$confirm('确定修改错题整理?', '提示', {

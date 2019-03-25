@@ -544,7 +544,7 @@ code {
   bottom: 10%;
   .el-button{
     font-size: 25px;
-    box-shadow: 0 1px 3px rgba(151, 151, 151, 0.98);
+    box-shadow: 0 1px 3px rgba(151, 151, 151, 0.58);
   }
   .tototop i{
     transform: rotate(90deg);
@@ -679,6 +679,7 @@ code {
   border-left: 4px solid #52bab5;
   padding-left: 8px;
   margin-bottom: 10px;
+  margin-top: 30px;
 }
 
 @media (min-width: 769px)

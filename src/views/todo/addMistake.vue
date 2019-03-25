@@ -208,14 +208,14 @@ export default {
       }
     }
   },
-  beforeRouteEnter(to, from, next) {
-    // 这里的vm指的就是vue实例，可以用来当做this使用
-    next(vm => {
-      if (from.path === '/home/index') {
-        vm.cameraTakePicture()
-      }
-    })
-  },
+  // beforeRouteEnter(to, from, next) {
+  //   // 这里的vm指的就是vue实例，可以用来当做this使用
+  //   next(vm => {
+  //     if (from.path === '/home/index') {
+  //       vm.cameraTakePicture()
+  //     }
+  //   })
+  // },
   methods: {
     cameraTakePicture() {
       if (navigator.camera) {

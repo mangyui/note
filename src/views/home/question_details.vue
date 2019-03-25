@@ -22,7 +22,7 @@
         <!-- <h2>题目</h2> -->
         <div class="sys-notes" v-html="question.Content"></div>
         <div class="sys-section">
-          <div class="title">
+          <div class="title" style="border:0">
             <i class="el-icon-success"></i> <strong>官方解答</strong>
           </div>
           <div class="sys-article" v-html="question.Analysis"></div>
@@ -48,7 +48,7 @@
           <div class="answer_item" v-for="(item,index) in friendCorrect" :key="index">
             <div class="answer_item_top">
               <div class="ques_header">
-                <router-link :to="'/user/others/'+item.User.UserId">
+                <router-link :to="'/user/others/'+item.UserId">
                   <img :src="item.User.Avatar||'./static/img/avatar.jpg'">
                 </router-link>
                 <div class="header_right">
@@ -321,6 +321,7 @@ export default {
         this.isLike = res.data.data.Like || false
         this.isCollect = res.data.data.Collection || false
         this.showLoading = false
+        this.Magnify()
         this.getFriendCorrect()
       }).catch((res) => {
         this.$message.warning('没有找到...')
@@ -328,6 +329,16 @@ export default {
         // var close = document.querySelector('.tags-view-item.active .el-icon-close')
         // close.click()
       })
+    },
+    Magnify() {
+      var value = '<img'
+      // 匹配图片标签正则
+      var replaceReg = new RegExp(value, 'g')
+      // 加上放大组件属性
+      var replaceString = value + ' preview '
+      // 开始替换
+      this.question.Content = this.question.Content.replace(replaceReg, replaceString)
+      this.question.Analysis = this.question.Analysis.replace(replaceReg, replaceString)
     },
     submit() {
       if (!this.$store.getters.user.Id) {

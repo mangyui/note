@@ -20,11 +20,11 @@ import store from './store'
 // Internationalization
 import i18n from './lang'
 
-// import preview from 'vue-photo-preview'
-// import 'vue-photo-preview/dist/skin.css'
+import preview from 'vue-photo-preview'
+import 'vue-photo-preview/dist/skin.css'
 
-// import { option } from '@/utils/preview.js'
-// Vue.use(preview, option)
+import { option } from '@/utils/preview.js'
+Vue.use(preview, option)
 
 import '@/icons' // icon
 

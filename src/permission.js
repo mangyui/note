@@ -42,6 +42,10 @@ router.beforeEach((to, from, next) => {
     if (to.path === '/login') {
       next({ path: '/' })
     } else {
+      if (to.path.replace(/\d+/g, '') === '/user/others/' && to.params.id === store.getters.user.Id) {
+        next({ path: '/user/index' })
+      }
+      // console.log(to)
       next()
     }
   }

@@ -14,7 +14,7 @@
           round >{{Attention==true?'已关注':'关注'}}
       </el-button>
 
-      <img class="header-avatar" :src="user.Avatar||'./static/img/avatar.jpg'">
+      <img class="header-avatar" preview :src="user.Avatar||'./static/img/avatar.jpg'">
       <span class="header-name">{{user.Name}}</span>
       <span class="header-bio">{{user.Intro}}</span>
       <!-- <div class="header-info">

@@ -9,7 +9,7 @@
             <div class="more_item">
               <router-link to="">
                 <el-card :body-style="{ padding: '0px' }">
-                  <img :src="item1.img" class="image">
+                  <img preview :src="item1.img" class="image">
                   <div style="padding: 10px;">
                     <b>{{item1.content}}</b>
                   </div>

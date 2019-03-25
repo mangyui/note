@@ -39,7 +39,7 @@ export default {
     OcrSQu: '拍照搜题',
     addMistake: '添加题目',
     Mistake_type: '错题分类',
-    Fans: '粉丝',
+    Fans: '题友',
     Search: '搜索',
     form: '表单',
     Tabs: '选项卡',
