@@ -125,7 +125,7 @@ import {
 } from '@/api/toPost'
 
 export default {
-  name: 'getTest',
+  name: 'test_detail',
   data() {
     return {
       dialogFormVisible: false,

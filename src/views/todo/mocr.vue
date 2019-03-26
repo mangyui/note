@@ -590,7 +590,7 @@ export default {
 }
 @media (max-width: 768px) {
 
-  .crop-topimg[data-v-29742ae3] {
+  .crop-topimg {
       padding-bottom: 60%;
   }
 }

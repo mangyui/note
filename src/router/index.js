@@ -85,6 +85,36 @@ export const constantRouterMap = [
       }
     ]
   },
+  // 切题
+  {
+    path: '/carveup',
+    component: Layout,
+    redirect: '/carveup/index',
+    meta: {
+      title: 'Test',
+      icon: 'cutup'
+    },
+    children: [
+      {
+        path: 'index',
+        name: 'carveup',
+        component: () => import('@/views/carveup/index'),
+        meta: { title: 'carveup' }
+      },
+      {
+        path: 'testList',
+        name: 'testList',
+        component: () => import('@/views/carveup/testList'),
+        meta: { title: 'testList' }
+      },
+      {
+        path: 'test_detail/:id',
+        name: 'test_detail',
+        component: () => import('@/views/carveup/test_detail'),
+        meta: { title: 'test_detail' }
+      }
+    ]
+  },
   // todo
   {
     path: '/SQu',

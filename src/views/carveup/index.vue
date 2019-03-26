@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <span class="header-title">添加错题</span>
+    <span class="header-title">试卷切题</span>
     <div class="container">
       <div class="inside-box">
         <!-- <el-alert
@@ -10,9 +10,10 @@
         </el-alert> -->
         <div class="crop-demo">
           <label ref="select_frame"  class="crop-topimg" :style="{backgroundImage:'url(' + cropImg + ')', backgroundSize:'contain'}">
-            <!-- <img v-if="cropImg" :src="cropImg" class="pre-img"> -->
+            <img v-show="cropImg" preview :src="cropImg" class="up_img" >
             <div v-if="!cropImg" class="up_inside">
-              <nx-svg-icon class-name='icon-camera' icon-class="camera3" />
+              <nx-svg-icon class-name='icon-camera' icon-class="cutup" />
+              <p>请选择图像上传方式，或将图像拖到此处</p>
             </div>
             <!-- <div class="tuoUp"></div> -->
             <img v-if="showGIF" class="loading-gif" src="@/assets/images/home/loading2.gif" alt="Loading">
@@ -24,60 +25,22 @@
             </div>
           </div>
         </div>
-        <div class="sq-body">
-          <!-- <el-button class="sq-change" type="danger" size="medium" v-if="showBtn" @click="showShou=(showShou==false?true:false)">{{showShou==false?"手动添加":"返回相似"}}</el-button> -->
-          <el-card shadow="never" v-loading="showGIF">
-            <div class="run_btn">
-              <!-- <img v-if="showGIF" class="loading-gif" src="@/assets/images/home/loading2.gif" alt="Loading"> -->
-              <el-checkbox v-model="isHand" label="含手写" border></el-checkbox>
-              <el-button class="editor-btn" type="danger" @click="torun">提取文字</el-button>
-            </div>
+        <div>
+          <el-card shadow="hover" class="cut_item" v-for="(item,index) in 3" :key="index" >
+            <b>{{index+1}}.</b>
+            <img :src="'./static/img/mock/testQuestion.png'" alt="没找到" :title="'第'+index+'题'">
+            <div class="cut_item_content">2.甲、乙两物体均做直线运动,甲物体速度随时间变化的图象如图甲所示,乙物体位置随
+              时间变化的图象如图乙所示,则这两个物体的运动情况是。
+              <p>A.甲在04s内运动方向改变,通过的路程为12m</p>
+              <p>B.甲在04s内运动方向不变,通过的位移大小为6m</p>
+              <p>C.乙在0-4s内运动方向改变,通过的路程为12m</p>
+              <p>D.乙在04s内运动方向不变,通过的位移大小为6m</p></div>
           </el-card>
-          <div class="ocr-edit">
-            <!-- <h3 class="Hpipei">手动添加</h3> -->
-            <h4 class="htitle">错题题目(不含答案)</h4>
-            <div ref="ShouTitle" class="divWangeditor" style="text-align:left"></div>
-            <!-- <quill-editor ref="titleEditor" v-model="form.Content" :options="editorOption" ></quill-editor> -->
-            <!-- <br/> -->
-            <div class="voice-button">
-              <div class="voice-input-button-wrapper">
-                <voice-input-button
-                    server="https://www.mccyu.com:444/"
-                    appId="5c52f87b"
-                    APIKey="3d0fba416f2a2423e7380ea2ab397d9e"
-                    @record="showResult1"
-                    color="#fff"
-                    tipPosition="top"
-                >
-                  <template slot="no-speak">没听清您说的什么</template>
-                </voice-input-button>
-              </div>
-            </div>
-            <h4 class="htitle">错题解答(可选)</h4>
-            <div ref="ShouCorrect" class="divWangeditor" style="text-align:left"></div>
-            <!-- <quill-editor ref="AnalysisEditor" v-model="form.Analysis" :options="editorOption" ></quill-editor> -->
-            <!-- <br/> -->
-            <div class="voice-button">
-              <div class="voice-input-button-wrapper">
-                <voice-input-button
-                    server="https://www.mccyu.com:444/"
-                    appId="5c52f87b"
-                    APIKey="3d0fba416f2a2423e7380ea2ab397d9e"
-                    @record="showResult2"
-                    color="#fff"
-                    tipPosition="top"
-                >
-                  <template slot="no-speak">没听清您说的什么</template>
-                </voice-input-button>
-              </div>
-            </div>
-            <el-button class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
-          </div>
         </div>
       </div>
     </div>
-    <el-dialog class="crop-pic" title="裁剪图片" :visible.sync="dialogVisible" :before-close="cancelCrop" width="70%">
-      <vue-cropper class="dgCropper" ref='cropper' :auto-crop-area="1" :src="imgSrc" :ready="cropImage" :zoom="cropImage" :cropmove="cropImage" style="width:100%;  height: 400px;"></vue-cropper>
+    <el-dialog class="crop-pic" title="裁剪图片" :visible.sync="dialogVisible" :before-close="cancelCrop" width="80%">
+      <vue-cropper class="dgCropper" ref='cropper' :auto-crop-area="0.98" :src="imgSrc" :ready="cropImage" :zoom="cropImage" :cropmove="cropImage" style="width:100%;  height: 400px;"></vue-cropper>
       <el-alert
         title="请旋转正常角度，提高识别准确率"
         type="warning"
@@ -109,31 +72,13 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submit">确 定</el-button>
-      </div>
-    </el-dialog>
-    <el-dialog title="添加错题分类" :visible.sync="showAdd">
-      <el-form :model="toadd" :rules="addrules" ref="addForm" label-width="100px">
-        <el-form-item label="错题分类名" prop="Name">
-          <el-input v-model="toadd.Name"></el-input>
-        </el-form-item>
-        <el-form-item label="分类说明" prop="Intro">
-          <el-input type="textarea" v-model="toadd.Intro"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="showAdd = false">取 消</el-button>
-        <el-button type="primary" @click="addMistakeType">确 定</el-button>
+        <el-button type="primary" @click="">确 定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-
-// wangeditor 富文本
-import E from 'wangeditor'
-var ShouTitle, ShouCorrect
 
 import VoiceInputButton from 'voice-input-button'
 import nxSvgIcon from '@/components/nx-svg-icon/index'
@@ -148,15 +93,11 @@ import qs from 'qs'
 // } from '@/api/toget'
 
 import {
-  Imgurl,
-  addMistake,
-  // ocrQues,
-  mistakeCate,
-  AddMistakeCate
+  mistakeCate
 } from '@/api/toPost'
 
 export default {
-  name: 'addMistake',
+  name: 'carveup',
   components: {
     VueCropper,
     quexBox,
@@ -191,31 +132,9 @@ export default {
         CategoryId: [
           { required: true, message: '请选择题目类型', trigger: 'change' }
         ]
-      },
-      toadd: {
-        UserId: this.$store.getters.user.Id,
-        Name: '',
-        Intro: ''
-      },
-      addrules: {
-        Name: [
-          { required: true, message: '请输入分类名', trigger: 'blur' },
-          { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
-        ],
-        Intro: [
-          { min: 0, max: 30, message: '长度在 0 到 30 个字符', trigger: 'blur' }
-        ]
       }
     }
   },
-  // beforeRouteEnter(to, from, next) {
-  //   // 这里的vm指的就是vue实例，可以用来当做this使用
-  //   next(vm => {
-  //     if (from.path === '/home/index') {
-  //       vm.cameraTakePicture()
-  //     }
-  //   })
-  // },
   methods: {
     cameraTakePicture() {
       if (navigator.camera) {
@@ -283,10 +202,6 @@ export default {
       this.dialogVisible = false
       // this.torun()
     },
-    // handleClose(done) {
-    //   this.cropImg = ''
-    //   done()
-    // },
     toRotate() {
       this.$refs.cropper.rotate(45)
     },
@@ -323,7 +238,6 @@ export default {
           this.form.Content = this.form.Content + item.words + '<br />'
           this.form.Text = this.form.Text + item.words
         })
-        ShouTitle.txt.html(this.form.Content)
         this.$notify({
           title: '提示',
           message: '已提取图中文字',
@@ -340,72 +254,6 @@ export default {
       }
       this.showGIF = false
     },
-    addMistakeType() {
-      if (!this.$store.getters.user.Id) {
-        this.$confirm('你这个操作，登录就能解决', '提示', {
-          confirmButtonText: '立即登录',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$router.push({
-            path: '/login'
-          })
-        }).catch(() => {})
-        return
-      }
-      this.$refs.addForm.validate(valid => {
-        if (valid) {
-          AddMistakeCate(qs.stringify(this.toadd)).then(res => {
-            if (res.data.code === 0) {
-              this.$notify({
-                title: '提示',
-                message: '添加分类成功！',
-                type: 'success'
-              })
-            } else {
-              this.$message.warning('操作失败...')
-            }
-            this.showAdd = false
-            this.GetCategory()
-          }).catch(() => {})
-        }
-      })
-    },
-    submit() {
-      if (!this.$store.getters.user.Id) {
-        this.$confirm('你还没有登录，不能进行该操作！前往登录', '提示', {
-          confirmButtonText: '立即登录',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$router.push({
-            path: '/login'
-          })
-        }).catch(() => {})
-        return
-      }
-      this.$refs.Form.validate(valid => {
-        if (valid) {
-          // this.form.Text = this.$refs.titleEditor.quill.getText().trim()
-          var datas = {
-            'UserId': this.$store.getters.user.Id,
-            'QuestionContent': this.form.Content,
-            'MistakeCateId': this.form.CategoryId,
-            'Correct': this.form.Analysis
-          }
-          addMistake(qs.stringify(datas)).then(res => {
-            this.dialogFormVisible = false
-            this.$message.success('提交成功！')
-            this.$router.push({
-              path: '/toques/quesList/'
-            })
-          }).catch((msg) => {
-            this.$message.warning('响应错误！')
-          })
-        }
-      })
-    },
-
     // 获取题目分类
     GetCategory() {
       // 未登录 不请求
@@ -417,57 +265,9 @@ export default {
       }).catch(() => {
         console.log('获取题目分类数据失败！')
       })
-    },
-    showResult1(text) {
-      ShouTitle.txt.append('<span>' + text.substr(0, text.length - 1) + '</span>')
-      // console.log(text.substr(0, text.length - 1))
-    },
-    showResult2(text) {
-      ShouCorrect.txt.append('<span>' + text.substr(0, text.length - 1) + '</span>')
-      // console.log(text.substr(0, text.length - 1))
     }
   },
   mounted() {
-    // 富文本配置
-    var That = this
-    // var Imgurl = 'http://192.168.1.105/'
-    ShouTitle = new E(this.$refs.ShouTitle)
-    ShouCorrect = new E(this.$refs.ShouCorrect)
-    ShouTitle.customConfig = {
-      onchange: function(html) {
-        That.form.Content = html
-      },
-      uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
-      uploadFileName: 'file', // 后端使用这个字段获取图片信息
-      uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
-      showLinkImg: false,
-      uploadImgHooks: {
-        customInsert: function(insertImg, result, editor) {
-          var url = result.data.data.data
-          // console.log(result.data.data.data)
-          insertImg(url)
-        }
-      }
-    }
-    ShouCorrect.customConfig = {
-      onchange: function(html) {
-        That.form.Analysis = html
-      },
-      uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
-      uploadFileName: 'file', // 后端使用这个字段获取图片信息
-      uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
-      showLinkImg: false,
-      uploadImgHooks: {
-        customInsert: function(insertImg, result, editor) {
-          var url = result.data.data.data
-          // console.log(result.data.data.data)
-          insertImg(url)
-        }
-      }
-    }
-    ShouTitle.create()
-    ShouCorrect.create()
-
     this.$refs.select_frame.ondragleave = (e) => {
       // 阻止离开时的浏览器默认行为
       e.preventDefault()
@@ -504,19 +304,13 @@ export default {
 
 <style scoped lang="scss">
     @import '../../styles/ocr.scss';
-.top-warn{
-  margin-bottom: 10px;
-}
 .up_inside
 {
   top: calc(50% - 61px);
   .icon-camera{
     margin-bottom: 0;
-    font-size: 122px;
-    border: 6px solid #edf8f7;
-    border-radius: 50%;
+    font-size: 80px;
     fill: #52bab5;
-    padding: 11px;
   }
 }
 .slider-ques{
@@ -527,18 +321,6 @@ export default {
 .container{
   border: 0;
 }
-.ocr-edit{
-  margin-top: 10px;
-}
-.el-dialog{
-  margin-top: 7vh!important;
-}
-.ques_body{
-  line-height: 28px;
-  b{
-    white-space: initial;
-  }
-}
 .sq-body{
   position: relative;
   margin-top: 10px;
@@ -548,12 +330,28 @@ export default {
     top: 0;
   }
 }
+.crop-topimg {
+    padding-bottom: 40%;
+}
 @media (max-width: 768px) {
   .crop-topimg {
-      padding-bottom: 60%;
+      padding-bottom: 50%;
   }
 }
-.ocr-content{
-  white-space:initial!important;
+.up_img{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  opacity: 0;
+}
+.cut_item{
+  margin-top: 20px;
+  .cut_item_content{
+    background: #eef1f6;
+    padding: 15px 16px;
+    line-height: 28px;
+    font-size: 15px;
+    margin-bottom: 5px;
+  }
 }
 </style>

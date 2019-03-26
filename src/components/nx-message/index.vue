@@ -17,7 +17,7 @@
                             </template>
                         </el-table-column>
                         <el-table-column prop="date" width="100"></el-table-column>
-                        <el-table-column fixed="right" width="90">
+                        <el-table-column fixed="right" width="95">
                             <template slot-scope="scope">
                                 <el-button size="small" @click="handleRead(scope.$index)">标为已读</el-button>
                             </template>

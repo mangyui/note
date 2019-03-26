@@ -305,6 +305,22 @@ code {
   }
 }
 
+.cut_item{
+  position: relative;
+  .el-card__body>b{
+    position: absolute;
+    left: -1px;
+    top: -1px;
+    display: inline-block;
+    background: #52bab5;
+    width: 30px;
+    height: 27px;
+    text-align: center;
+    line-height: 27px;
+    color: #fff;
+    border-radius: 0 0 10px 0;
+  }
+}
 .ques-list{
   margin-bottom: 20px;
   .ques-list_item{
@@ -329,7 +345,7 @@ code {
         margin-bottom: 10px;
         padding: 5px 10px;
         line-height: 28px;
-        b{
+        &>b{
           position: absolute;
           left: -1px;
           top: -1px;
