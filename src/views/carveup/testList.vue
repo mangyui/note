@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="app-container test_list">
     <span class="header-title">学生测试</span>
     <div class="big-box1200">
       <div class="top-search">
@@ -13,30 +13,105 @@
       <div class="block">
         <el-timeline>
             <el-timeline-item v-for="(item,index) in 3" :key="index" timestamp="2019/3/12 12:12:12" placement="top">
-              <router-link to="/carveup/test_detail/1">
-                <el-card shadow="hover">
-                  <h4>测试标题</h4>
-                  <p>测试备注</p>
-                  <h5>共24人参加测试</h5>
+                <el-card class="test-card" shadow="hover" :style="{backgroundColor: '#F2F6FC'}">
+                  <router-link class="test_box" to="/carveup/test_detail/1">
+                    <div>
+                      <h4>三月小测试</h4>
+                      <p>测试备注</p>
+                      <h5>共 <span style="color: #F56C6C">24</span> 人参加测试</h5>
+                    </div>
+                    <div>
+                      <p class="test_state">2019/03/27 19:56:33 ~ 2019/04/07 19:56:33 <el-tag size="small" type="success">在测</el-tag></p>
+                    </div>
+                  </router-link>
+                  <el-button type="primary" icon="el-icon-edit" size="medium" @click="toEdit"></el-button>
                 </el-card>
-              </router-link>
             </el-timeline-item>
         </el-timeline>
       </div>
     </div>
+    <el-dialog title="测试编辑" :visible.sync="dialogFormVisible">
+      <el-form :model="form">
+        <el-form-item label="测试名称">
+          <el-input v-model="form.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="开始时间">
+           <el-date-picker
+            v-model="form.startdate"
+            type="datetime"
+            placeholder="选择日期时间">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="截止时间">
+           <el-date-picker
+            v-model="form.enddate"
+            type="datetime"
+            placeholder="选择日期时间">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="测试状态">
+          <el-select v-model="form.region" placeholder="请选择测试状态">
+            <el-option label="测试" value="start"></el-option>
+            <el-option label="暂停" value="pause"></el-option>
+            <el-option label="结束" value="end"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 export default {
-  name: '',
+  name: 'testList',
   data() {
     return {
       search: {
         keys: '',
         UserId: this.$store.getters.user.Id
+      },
+      dialogFormVisible: false,
+      form: {
+        name: '',
+        region: '',
+        date: ''
       }
+    }
+  },
+  methods: {
+    toEdit() {
+      this.dialogFormVisible = true
+      return false
     }
   }
 }
 </script>
+
+<style lang="scss">
+.test_list{
+  .test-card{
+    position: relative;
+    .el-button{
+      border: 0;
+      padding: 10px 15px;
+      position: absolute;
+      right: 10px;
+      top: 10px;
+    }
+    .test_state{
+      font-size: 13px;
+      color: #666;
+    }
+  }
+  .test_box{
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    align-items: flex-end;
+  }
+}
+</style>

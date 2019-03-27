@@ -304,15 +304,7 @@ export default {
 
 <style scoped lang="scss">
     @import '../../styles/ocr.scss';
-.up_inside
-{
-  top: calc(50% - 61px);
-  .icon-camera{
-    margin-bottom: 0;
-    font-size: 80px;
-    fill: #52bab5;
-  }
-}
+
 .slider-ques{
   font-size: unset;
   text-align: left;
@@ -337,12 +329,6 @@ export default {
   .crop-topimg {
       padding-bottom: 50%;
   }
-}
-.up_img{
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  opacity: 0;
 }
 .cut_item{
   margin-top: 20px;

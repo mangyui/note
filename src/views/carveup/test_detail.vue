@@ -5,8 +5,13 @@
       <!--工具条-->
       <div class="list-gbtn">
         <!-- <div class="gbtn-box"> -->
-          <el-checkbox v-model="showAnalysis" label="答案" border size="medium"></el-checkbox>
-          <el-button type="primary" plain  @click="dialogFormVisible=!dialogFormVisible" size="medium">学生完成情况</el-button>
+          <router-link to="/carveup/test_student/1">
+            <el-button type="primary" plain  @click="" size="small">学生完成情况</el-button>
+          </router-link>
+          <div>
+            <el-button type="primary"  @click="ToWord" size="small">下载word</el-button>
+            <el-checkbox v-model="showAnalysis" label="答案" border size="small"></el-checkbox>
+          </div>
         <!-- </div> -->
       </div>
       <div class="container" id="Test">
@@ -14,20 +19,20 @@
           <i class="el-icon-loading"></i>
           加载中...
         </div>
-        <div class="test-box" v-for="(item,index) in 10" :key="index">
+        <div v-if="Tests[0]" class="test_top">
+          <h3>三月小测试</h3>
+          <p>2019/03/27 19:56:33 ~ 2019/04/07 19:56:33 <el-tag size="small" type="success">在测</el-tag></p>
+        </div>
+        <div class="test-box" v-for="(item,index) in Tests" :key="index">
+          <br>
           <div class="test_title">
             <!-- <span v-if="isDelete">
               <el-button type="danger" icon="el-icon-delete" size="mini" circle @click="todelete(index)"></el-button>
             </span> -->
-            <div class="test_content">
-              <p>水的密度是1.0×10<sup>3</sup>千克/米<sup>3</sup>，它表示<u></u></p>
-            </div>
+             <div class="test_content" v-html="item.Content"></div>
           </div>
           <br/>
-          <div class="tipbox test_Correct" style="color:#f95353" v-if="showAnalysis">
-            正确答案:&nbsp;体积是1米&sup3;水的质量为1.0×10&sup3;㎏ <br/>试题分析：密度表示的是某种物质单位体积的质量，水的密度是1.0×10<sup>3</sup>千克/米<sup>3</sup>，所以1米&sup3;水的质量为1.0×10&sup3;㎏。<br>考点：密度的物理意义
-          </div>
-          <br>
+          <div class="tipbox test_Correct" style="color:#f95353" v-if="showAnalysis" v-html="item.Analysis"></div>
         </div>
       </div>
       <br/>
@@ -56,13 +61,13 @@ import saveAs from '@/assets/js/fileexport.js'
 window.saveAs = saveAs
 import '@/assets/js/jquery.wordexport.js'
 
-// import {
-//   GetTest
-// } from '@/api/toPost'
-// import qs from 'qs'
+import {
+  GetTest
+} from '@/api/toPost'
+import qs from 'qs'
 
 export default {
-  name: 'getTest',
+  name: 'test_detail',
   data() {
     return {
       dialogFormVisible: false,
@@ -72,20 +77,37 @@ export default {
       // isXuhao: false,
       Categorylist: [],
       Tests: [],
-      oldTest: []
+      oldTest: [],
+      getForm: {
+        UserId: this.$store.getters.user.Id,
+        CategoryId: '10',
+        Date: '30',
+        Number: '10'
+      }
     }
   },
   methods: {
-    // 获取题目分类
     addOrdinal() {
       var i = 0
       this.Tests.forEach(item => {
         i++
         var index1 = item.Content.indexOf('>') + 1
         var index2 = item.Content.indexOf('.') + 1
-        var index = index2 - index1 < 4 ? index2 : index1
+        var index = (index2 > index1) && (index2 - index1 < 4) ? index2 : index1
+        // console.log(index1, index2, index)
         item.Content = item.Content.substring(0, index1) + i + '.' + item.Content.substring(index++)
       })
+    },
+    getTest() {
+      this.showLoading = true
+      GetTest(qs.stringify(this.getForm)).then(res => {
+        this.Tests = res.data.data
+        this.showLoading = false
+        this.addOrdinal()
+      }).catch((res) => {
+        console.log(res)
+      })
+      this.dialogFormVisible = false
     },
     ToWord() {
       this.isDelete = false
@@ -109,12 +131,21 @@ export default {
     }
   },
   created() {
+    this.getTest()
   }
 }
 </script>
 
 
 <style lang="scss" scoped>
+.test_top{
+  text-align: center;
+  margin-bottom: 20px;
+  p{
+    font-size: 13px;
+    color: #666;
+  }
+}
 .test-box{
   border-bottom: 1px solid #dedede;
 }
@@ -141,10 +172,10 @@ export default {
   }
 
 }
-  .test_Correct{
-    line-height: 27px;
-    font-size: 14px;
-  }
+.test_Correct{
+  line-height: 27px;
+  font-size: 14px;
+}
 .gbtn-box{
   flex-grow: 1;
   text-align: center;

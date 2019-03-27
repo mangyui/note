@@ -27,16 +27,16 @@
         <!-- <img :src="'http://127.0.0.1:9528/static/img/avatar.jpg'" alt=""> -->
         <!-- <img src="http://p0.so.qhimgs1.com/sdr/400__/t014c2f774eb0ffbd3a.jpg" alt=""> -->
         <div class="test-box" v-for="(item,index) in Tests" :key="index">
+          <br>
           <div class="test_title">
             <span v-if="isDelete">
-              <el-button type="danger" icon="el-icon-delete" size="mini" circle @click="todelete(index)"></el-button>
+              <el-button type="text" icon="el-icon-close" circle @click="todelete(index)"></el-button>
             </span>
             <!-- <span v-if="isXuhao">{{index+1}}.</span> -->
             <div class="test_content" v-html="item.Content"></div>
           </div>
           <br/>
           <div class="tipbox test_Correct" style="color:#f95353" v-if="showAnalysis" v-html="item.Analysis"></div>
-          <br>
         </div>
       </div>
       <br/>
@@ -94,15 +94,15 @@
     <div  v-if="Tests[0]" class="note_d-edit">
       <el-dropdown trigger="click">
         <el-button type="primary" icon="el-icon-edit" circle></el-button>
-        <el-dropdown-menu slot="dropdown">
+        <el-dropdown-menu style="overflow: hidden;" slot="dropdown">
           <div @click="deleteAll">
-            <el-dropdown-item icon="el-icon-edit">全部清空</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-delete">全部清空</el-dropdown-item>
           </div>
           <div @click="isDelete=!isDelete">
-            <el-dropdown-item icon="el-icon-delete" divided>删除单个</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-close" divided>删除单个</el-dropdown-item>
           </div>
           <div @click="ToWord">
-            <el-dropdown-item icon="el-icon-delete" divided>生成word</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-download" divided>生成word</el-dropdown-item>
           </div>
         </el-dropdown-menu>
       </el-dropdown>
@@ -192,7 +192,7 @@ export default {
         i++
         var index1 = item.Content.indexOf('>') + 1
         var index2 = item.Content.indexOf('.') + 1
-        var index = index2 - index1 < 4 ? index2 : index1
+        var index = (index2 > index1) && (index2 - index1 < 4) ? index2 : index1
         // console.log(index)
         item.Content = item.Content.substring(0, index1) + i + '.' + item.Content.substring(index++)
         // console.log(item.Content.substring(0, index))

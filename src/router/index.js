@@ -110,8 +110,16 @@ export const constantRouterMap = [
       {
         path: 'test_detail/:id',
         name: 'test_detail',
+        hidden: true,
         component: () => import('@/views/carveup/test_detail'),
         meta: { title: 'test_detail' }
+      },
+      {
+        path: 'test_student/:id',
+        name: 'test_student',
+        hidden: true,
+        component: () => import('@/views/carveup/test_student'),
+        meta: { title: 'test_student' }
       }
     ]
   },
@@ -420,40 +428,40 @@ export const constantRouterMap = [
   //   ]
   // },
   // 更多
-  {
-    path: '/more',
-    component: Layout,
-    meta: { title: 'More', icon: 'component' },
-    children: [
-      {
-        path: 'index',
-        name: 'more',
-        component: () => import('@/views/more/index'),
-        meta: { title: 'More', icon: 'component' }
-      },
-      {
-        path: 'dataNum',
-        name: 'dashboard',
-        hidden: true,
-        component: () => import('@/views/dashboard/dashboard'),
-        meta: { title: 'dashboard', icon: 'dashboard' }
-      },
-      {
-        path: 'webs',
-        name: 'webs',
-        hidden: true,
-        component: () => import('@/views/other/index'),
-        meta: { title: 'Other', icon: 'baidumap' }
-      },
-      {
-        path: 'charts',
-        name: 'Charts',
-        hidden: true,
-        component: () => import('@/views/Charts/index'),
-        meta: { title: 'Charts', icon: 'heatmapChart' }
-      }
-    ]
-  },
+  // {
+  //   path: '/more',
+  //   component: Layout,
+  //   meta: { title: 'More', icon: 'component' },
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'more',
+  //       component: () => import('@/views/more/index'),
+  //       meta: { title: 'More', icon: 'component' }
+  //     },
+  //     {
+  //       path: 'dataNum',
+  //       name: 'dashboard',
+  //       hidden: true,
+  //       component: () => import('@/views/dashboard/dashboard'),
+  //       meta: { title: 'dashboard', icon: 'dashboard' }
+  //     },
+  //     {
+  //       path: 'webs',
+  //       name: 'webs',
+  //       hidden: true,
+  //       component: () => import('@/views/other/index'),
+  //       meta: { title: 'Other', icon: 'baidumap' }
+  //     },
+  //     {
+  //       path: 'charts',
+  //       name: 'Charts',
+  //       hidden: true,
+  //       component: () => import('@/views/Charts/index'),
+  //       meta: { title: 'Charts', icon: 'heatmapChart' }
+  //     }
+  //   ]
+  // },
   // 商家
   {
     path: '/merchant',

@@ -51,3 +51,11 @@
 .el-dialog__body .el-alert{
   margin-top: 5px;
 }
+
+
+.el-dialog__body {
+  .el-input,.el-select{
+    width: 300px;
+    max-width: 100%;
+  }
+}

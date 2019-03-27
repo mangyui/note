@@ -74,8 +74,8 @@
           <br/>
           <div v-show="this.user.Id">
             <div v-if="this.user.Id" class="ques_header">
-              <router-link :to="'/user/others/'+ user.Id">
-                <img v-if="user" :src="user.Avatar || myavatar">
+              <router-link to="/user/index">
+                <img v-if="user" :src="user.Avatar || './static/img/avatar.jpg'">
               </router-link>
               <div class="header_right">
                 <b>{{user.Name}}</b>

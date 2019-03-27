@@ -10,9 +10,10 @@
         </el-alert> -->
         <div class="crop-demo">
           <label ref="select_frame"  class="crop-topimg" :style="{backgroundImage:'url(' + cropImg + ')', backgroundSize:'contain'}">
-            <!-- <img v-if="cropImg" :src="cropImg" class="pre-img"> -->
+            <img v-show="cropImg" preview :src="cropImg" class="up_img" >
             <div v-if="!cropImg" class="up_inside">
-              <nx-svg-icon class-name='icon-camera' icon-class="camera3" />
+              <nx-svg-icon class-name='icon-camera' icon-class="add" />
+              <p>请选择图像上传方式，或将图像拖到此处</p>
             </div>
             <!-- <div class="tuoUp"></div> -->
             <img v-if="showGIF" class="loading-gif" src="@/assets/images/home/loading2.gif" alt="Loading">
@@ -506,18 +507,6 @@ export default {
     @import '../../styles/ocr.scss';
 .top-warn{
   margin-bottom: 10px;
-}
-.up_inside
-{
-  top: calc(50% - 61px);
-  .icon-camera{
-    margin-bottom: 0;
-    font-size: 122px;
-    border: 6px solid #edf8f7;
-    border-radius: 50%;
-    fill: #52bab5;
-    padding: 11px;
-  }
 }
 .slider-ques{
   font-size: unset;

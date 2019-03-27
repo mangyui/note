@@ -28,7 +28,7 @@
       <div class="note_d-edit">
         <el-dropdown trigger="click">
           <el-button type="primary" icon="el-icon-edit" circle></el-button>
-          <el-dropdown-menu slot="dropdown">
+          <el-dropdown-menu style="overflow: hidden;" slot="dropdown">
             <router-link :to="'/tonote/note_edit/'+ id">
               <el-dropdown-item icon="el-icon-edit">修改</el-dropdown-item>
             </router-link>
