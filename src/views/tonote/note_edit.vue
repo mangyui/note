@@ -75,8 +75,8 @@
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="submit">确定修改</el-button>
+          <el-button size="small" @click="dialogFormVisible = false">取 消</el-button>
+          <el-button size="small" type="primary" @click="submit">确定修改</el-button>
         </div>
       </el-dialog>
     </div>

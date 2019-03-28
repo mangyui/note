@@ -54,8 +54,16 @@
 
 
 .el-dialog__body {
+  padding: 20px 20px;
   .el-input,.el-select{
     width: 300px;
     max-width: 100%;
   }
+}
+.el-checkbox.is-bordered{
+  margin-right: 0px;
+  line-height: 1.5em;
+}
+.el-button+.el-button{
+  margin-left: 0px;
 }

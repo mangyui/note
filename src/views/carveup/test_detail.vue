@@ -19,7 +19,7 @@
           <i class="el-icon-loading"></i>
           加载中...
         </div>
-        <div v-if="Tests[0]" class="test_top">
+        <div v-if="Tests[0]" class="test_top"  style="text-align: center;">
           <h3>三月小测试</h3>
           <p>2019/03/27 19:56:33 ~ 2019/04/07 19:56:33 <el-tag size="small" type="success">在测</el-tag></p>
         </div>

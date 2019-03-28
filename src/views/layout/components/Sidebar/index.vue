@@ -94,7 +94,7 @@ export default {
 }
 #app .el-menu{
   height: auto;
-  margin-bottom: 50px;
+  margin-bottom: 75px;
 }
 .user_center {
   text-align: center;

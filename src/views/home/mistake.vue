@@ -41,7 +41,7 @@
           <el-button v-if="isUpdae" class="editor-btn" size="medium" type="danger" @click="submit">确定修改</el-button>
         </div>
         <div class="sys-section" v-if="!isMe">
-          <div class="title">
+          <div class="title" style="border:0">
             <strong>题主解答</strong>
             <div class="answer_item_top">
               <div class="ques_header">

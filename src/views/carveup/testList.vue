@@ -10,6 +10,12 @@
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
       </div>
+      <div class="list-gbtn">
+        <p class="list_p">在测<span>3</span> 结束<span>0</span></p>
+        <div>
+          <el-button type="primary" icon="el-icon-plus" size="small">添加测试</el-button>
+        </div>
+      </div>
       <div class="block">
         <el-timeline>
             <el-timeline-item v-for="(item,index) in 3" :key="index" timestamp="2019/3/12 12:12:12" placement="top">
@@ -21,10 +27,10 @@
                       <h5>共 <span style="color: #F56C6C">24</span> 人参加测试</h5>
                     </div>
                     <div>
-                      <p class="test_state">2019/03/27 19:56:33 ~ 2019/04/07 19:56:33 <el-tag size="small" type="success">在测</el-tag></p>
+                      <p class="test_state"><span class="test_time">2019/03/27 19:56:33</span><span class="test_time">2019/04/07 19:56:33</span><el-tag size="small" type="success">在测</el-tag></p>
                     </div>
                   </router-link>
-                  <el-button type="primary" icon="el-icon-edit" size="medium" @click="toEdit"></el-button>
+                  <el-button type="primary" icon="el-icon-edit" size="mini" @click="toEdit"></el-button>
                 </el-card>
             </el-timeline-item>
         </el-timeline>
@@ -93,18 +99,34 @@ export default {
 
 <style lang="scss">
 .test_list{
+  .list-gbtn{
+    .list_p{
+      font-size: 12px;
+      span{
+        font-size: 16px;
+        margin-right: 5px;
+        margin-left: 2px;
+        color: rgb(245, 108, 108);
+      }
+    }
+  }
   .test-card{
     position: relative;
     .el-button{
       border: 0;
-      padding: 10px 15px;
+      padding: 8px 12px;
       position: absolute;
       right: 10px;
       top: 10px;
     }
     .test_state{
-      font-size: 13px;
+      font-size: 12px;
       color: #666;
+      text-align: right;
+      .test_time {
+        display: block;
+        margin-bottom: 2px;
+      }
     }
   }
   .test_box{
@@ -112,6 +134,13 @@ export default {
     justify-content: space-between;
     position: relative;
     align-items: flex-end;
+    &>div{
+      width: 50%;
+      h4{
+        margin: 10px 0;
+        font-size: 15px;
+      }
+    }
   }
 }
 </style>

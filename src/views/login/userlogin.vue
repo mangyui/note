@@ -4,7 +4,7 @@
       <div class="svgIcon">
         <nx-svg-icon class-name='international-icon' icon-class="me" />
       </div>
-      <el-input size="small" @keyup.enter.native="handleLogin" v-model="loginForm.username" auto-complete="off" placeholder="用户名/手机号">
+      <el-input size="small" @keyup.enter.native="handleLogin" v-model="loginForm.username" auto-complete="off" placeholder="用户号/手机号">
       </el-input>
     </el-form-item>
     <el-form-item prop="password">

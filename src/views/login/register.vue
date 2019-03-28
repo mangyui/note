@@ -11,7 +11,7 @@
       <div class="svgIcon">
         <nx-svg-icon class-name='international-icon' icon-class="me" />
       </div>
-      <el-input size="small" @focus="nameFocus"  @keyup.enter.native="handleRegister" v-model="loginForm.username" auto-complete="off" placeholder="请输入用户号">
+      <el-input size="small" @focus="nameFocus"  @keyup.enter.native="handleRegister" v-model="loginForm.username" auto-complete="off" placeholder="填用户号">
       </el-input>
     </el-form-item>
     <el-form-item prop="password">
@@ -30,7 +30,7 @@
         placeholder="请正确选择您的年级"
         :options="classlist"
       ></el-cascader> -->
-      <el-select style="width: 100%;" @keyup.enter.native="handleRegister" v-model="loginForm.class" placeholder="请正确选择您的年级">
+      <el-select style="width: 100%;" size="large" @keyup.enter.native="handleRegister" v-model="loginForm.class" placeholder="请正确选择您的年级">
         <el-option
           v-for="item in classlist"
           :key="item.value"

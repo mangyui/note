@@ -108,6 +108,12 @@ export const constantRouterMap = [
         meta: { title: 'testList' }
       },
       {
+        path: 'studentList',
+        name: 'studentList',
+        component: () => import('@/views/carveup/studentList'),
+        meta: { title: 'studentList' }
+      },
+      {
         path: 'test_detail/:id',
         name: 'test_detail',
         hidden: true,

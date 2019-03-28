@@ -11,6 +11,7 @@ body {
   text-rendering: optimizeLegibility;
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
   letter-spacing: 0.6px;
+  font-size: 14px;
 }
 
 p{
@@ -235,6 +236,8 @@ code {
 .list-gbtn{
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  align-content: flex-end;
   justify-content: space-between;
   margin-bottom: 10px;
   .el-select{
@@ -647,6 +650,7 @@ code {
     .w-e-text{
       padding: 10px;
       overflow-y: auto;
+      position: absolute;
     }
   }
 }
@@ -654,8 +658,8 @@ code {
   display: inline-block;
   position: relative;
   width: 100px;
-  height: 40px;
-  line-height: 40px;
+  height: 36px;
+  line-height: 36px;
   padding: 0 20px;
   margin-left: 30px;
   background-color: #409eff;
@@ -669,7 +673,7 @@ code {
 .crop-input {
   position: absolute;
   width: 100px;
-  height: 40px;
+  height: 36px;
   left: 0;
   top: 0;
   opacity: 0;
@@ -819,7 +823,11 @@ code {
     justify-content: space-around;
     text-align: center;
     color: #fff;
-    margin-bottom: 30px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #2e323f;
+    padding: 8px 0 5px;
     svg{
       width: 17px!important;
       height: 17px!important;

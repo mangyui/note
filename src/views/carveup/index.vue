@@ -28,21 +28,39 @@
         <div>
           <el-card shadow="hover" class="cut_item" v-for="(item,index) in 3" :key="index" >
             <b>{{index+1}}.</b>
-            <img :src="'./static/img/mock/testQuestion.png'" alt="没找到" :title="'第'+index+'题'">
+            <br/>
+            <el-button class="cut_item-detele" type="text" icon="el-icon-close" size="large" @click="Detele(index)"></el-button>
+            <img preview='1' :src="'./static/img/mock/testQuestion.png'" alt="没找到" :title="'第'+ (index+1) +'题'">
             <div class="cut_item_content">2.甲、乙两物体均做直线运动,甲物体速度随时间变化的图象如图甲所示,乙物体位置随
               时间变化的图象如图乙所示,则这两个物体的运动情况是。
               <p>A.甲在04s内运动方向改变,通过的路程为12m</p>
               <p>B.甲在04s内运动方向不变,通过的位移大小为6m</p>
               <p>C.乙在0-4s内运动方向改变,通过的路程为12m</p>
               <p>D.乙在04s内运动方向不变,通过的位移大小为6m</p></div>
+              <div style="text-align: right;">
+                <!-- <el-button type="primary" icon="el-icon-plus" size="small" @click="">加入测试集</el-button> -->
+                <el-button type="primary" icon="el-icon-edit" size="small" @click="adddialog=true">修改</el-button>
+              </div>
           </el-card>
         </div>
+        <div class="cut-footer">
+          <el-button size="medium" @click="adddialog=!adddialog">添加题目</el-button>
+          <el-button type="danger" size="medium" @click="">生成测试</el-button>
+        </div>
+        <!-- <div class="ocr-edit" v-show="adddialog">
+          <h4>题目(不含答案)</h4>
+          <div ref="ShouTitle" class="divWangeditor" style="text-align:left"></div>
+          <h4>解答(可选)</h4>
+          <div ref="ShouCorrect" class="divWangeditor" style="text-align:left"></div>
+          <br/>
+          <el-button class="editor-btn pull-right" type="primary" @click="dialogFormVisible = true">提交</el-button>
+        </div> -->
       </div>
     </div>
-    <el-dialog class="crop-pic" title="裁剪图片" :visible.sync="dialogVisible" :before-close="cancelCrop" width="80%">
-      <vue-cropper class="dgCropper" ref='cropper' :auto-crop-area="0.98" :src="imgSrc" :ready="cropImage" :zoom="cropImage" :cropmove="cropImage" style="width:100%;  height: 400px;"></vue-cropper>
+    <el-dialog class="crop-pic" title="裁剪图片" :visible.sync="dialogVisible" :before-close="cancelCrop" width="75%">
+      <vue-cropper class="dgCropper" ref='cropper' :auto-crop-area="0.98" :src="imgSrc" :ready="cropImage" :zoom="cropImage" :cropmove="cropImage" :style="'width:100%;  height: '+ 0.7*documentWidth + 'px'"></vue-cropper>
       <el-alert
-        title="请旋转正常角度，提高识别准确率"
+        title="请旋转正常角度"
         type="warning"
         show-icon>
       </el-alert>
@@ -53,47 +71,75 @@
       </span>
     </el-dialog>
     <!-- Form -->
-    <el-dialog title="错题备注" :visible.sync="dialogFormVisible">
+    <el-dialog title="题目备注" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="Form">
-        <!-- <el-form-item label="关键字">
+        <el-form-item label="关键字(以逗号分隔)">
           <el-input v-model="form.Keywords"></el-input>
-        </el-form-item> -->
+        </el-form-item>
         <el-form-item label="题目分类" prop="CategoryId">
           <el-select v-model="form.CategoryId" placeholder="请选择题目分类">
             <el-option
-              v-for="item in typelist"
+              v-for="item in Categorylist"
               :key="item.Id"
-              :label="item.Name"
+              :label="item.Subject"
               :value="item.Id">
+              <span style="float: left">{{ item.Subject }}</span>
+              <span style="float: right; color: #8492a6; font-size: 13px">{{ item.Class }}</span>
             </el-option>
           </el-select>
-          <el-button type="primary" icon="el-icon-plus" @click="showAdd=!showAdd" circle></el-button>
+          <!-- <el-button type="primary" icon="el-icon-plus" @click="showAdd=!showAdd" circle></el-button> -->
+        </el-form-item>
+        <el-form-item label="* 题目类型">
+          <el-select v-model="form.Type" placeholder="请选择题目分类">
+            <el-option
+              v-for="item in typelist"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          <!-- <el-button type="primary" icon="el-icon-plus" @click="showAdd=!showAdd" circle></el-button> -->
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="">确 定</el-button>
+        <el-button type="primary" @click="submit">确 定</el-button>
       </div>
     </el-dialog>
+    <el-dialog title="添加题目" :visible.sync="adddialog" @opened="openAdd" width="80%">
+      <div class="ocr-edit">
+        <h4 style="margin-top:0">题目(不含答案)</h4>
+        <div ref="ShouTitle" class="divWangeditor" style="text-align:left"></div>
+        <h4>解答(可选)</h4>
+        <div ref="ShouCorrect" class="divWangeditor" style="text-align:left"></div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button size="small" @click="adddialog = false">取 消</el-button>
+        <el-button size="small" type="primary" @click="dialogFormVisible = true">添 加</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
+import E from 'wangeditor'
+var ShouTitle, ShouCorrect
 
 import VoiceInputButton from 'voice-input-button'
 import nxSvgIcon from '@/components/nx-svg-icon/index'
 import quexBox from '@/components/my-box/quex-box'
 import VueCropper from 'vue-cropperjs'
-import axios from 'axios'
 import qs from 'qs'
 // import { slider, slideritem } from 'vue-concise-slider'
 
-// import {
-//   questionCategory
-// } from '@/api/toget'
+import {
+  questionCategory
+} from '@/api/toget'
 
 import {
-  mistakeCate
+  Imgurl,
+  upQuestion
 } from '@/api/toPost'
 
 export default {
@@ -108,6 +154,8 @@ export default {
   },
   data: function() {
     return {
+      documentWidth: document.body.clientHeight,
+      openNum: false,
       showGIF: false,
       // showShou: true,
       showBtn: false,
@@ -117,22 +165,58 @@ export default {
       cropImg: '',
       imgSrc: '',
       dialogVisible: false,
+      adddialog: false,
       dialogFormVisible: false,
       showAdd: false,
       questions: [],
-      typelist: [],
+      Categorylist: [],
       form: {
         Content: '',
         Text: '',
         Analysis: '',
         Keywords: '',
-        CategoryId: ''
+        CategoryId: '',
+        Type: ''
       },
       rules: {
         CategoryId: [
           { required: true, message: '请选择题目类型', trigger: 'change' }
         ]
-      }
+      },
+      typelist: [{
+        value: '选择题',
+        label: '选择题'
+      }, {
+        value: '填空题',
+        label: '填空题'
+      }, {
+        value: '判断题',
+        label: '判断题'
+      }, {
+        value: '作图题',
+        label: '作图题'
+      }, {
+        value: '实验题',
+        label: '实验题'
+      }, {
+        value: '综合题',
+        label: '综合题'
+      }, {
+        value: '计算题',
+        label: '计算题'
+      }, {
+        value: '完形填空',
+        label: '完形填空'
+      }, {
+        value: '阅读题',
+        label: '阅读题'
+      }, {
+        value: '作文题',
+        label: '作文题'
+      }, {
+        value: '',
+        label: '自己看什么题'
+      }]
     }
   },
   methods: {
@@ -205,69 +289,101 @@ export default {
     toRotate() {
       this.$refs.cropper.rotate(45)
     },
-    torun() {
-      if (!this.cropImg) {
-        this.$notify({
-          title: '提示',
-          message: '请先上传图片后再操作！',
-          type: 'warning'
-        })
-        return
-      }
-      this.showGIF = true
-      var ocr_data = {
-        'image': this.cropImg.replace(/data:image\/.*;base64,/, '')
-      }
-      axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
-      var url = 'https://mccyu.com:444/ocr'
-      if (this.isHand === true) {
-        url = 'https://mccyu.com:444/shouxie'
-      }
-      axios.post(url, qs.stringify(ocr_data))
-        .then(res => {
-          this.result = res.data.words_result
-          this.lines = res.data.words_result_num
-          this.formatText()
-          // console.log(res.data.words_result_num)
-        })
-        .catch(err => console.error(err))
+    Detele(index) {
+      this.$confirm('确定删除该题？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+
+      }).catch(() => {})
     },
-    formatText() {
-      if (this.lines > 0) {
-        this.result.forEach(item => {
-          this.form.Content = this.form.Content + item.words + '<br />'
-          this.form.Text = this.form.Text + item.words
-        })
-        this.$notify({
-          title: '提示',
-          message: '已提取图中文字',
-          type: 'info'
-        })
-        // // 这里获取相关题目
-        // this.getQues()
-      } else {
-        this.$notify({
-          title: '提示',
-          message: '没有提取任何文字信息，请检查图片再操作！',
-          type: 'info'
-        })
-      }
-      this.showGIF = false
+    submit() {
+      this.$refs.Form.validate(valid => {
+        if (valid) {
+          // this.form.Text = this.$refs.titleEditor.quill.getText().trim()
+          var datas = {
+            'Content': this.form.Content,
+            'Text': ShouTitle.txt.text(),
+            'CategoryId': this.form.CategoryId,
+            'Analysis': this.form.Analysis,
+            'KeyWords': this.form.Keywords,
+            'Type': this.form.Type
+          }
+          upQuestion(qs.stringify(datas)).then(res => {
+            this.dialogFormVisible = false
+            this.$notify({
+              title: '提示',
+              message: '添加成功！',
+              type: 'success'
+            })
+          }).catch((msg) => {
+            this.$message.warning('响应错误！')
+          })
+        }
+      })
     },
     // 获取题目分类
     GetCategory() {
       // 未登录 不请求
-      if (!this.$store.getters.user.Id) {
-        return
-      }
-      mistakeCate(qs.stringify({ UserId: this.$store.getters.user.Id })).then(res => {
-        this.typelist = res.data.data
+      // if (!this.$store.getters.user.Id) {
+      //   return
+      // }
+      questionCategory(qs.stringify()).then(res => {
+        this.Categorylist = res.data.data
       }).catch(() => {
         console.log('获取题目分类数据失败！')
       })
+    },
+    openAdd() {
+      if (this.openNum) {
+        return
+      }
+      this.openNum = true
+      // 富文本配置
+      var That = this
+      // var Imgurl = 'http://192.168.1.105/'
+      ShouTitle = new E(this.$refs.ShouTitle)
+      ShouCorrect = new E(this.$refs.ShouCorrect)
+      ShouTitle.customConfig = {
+        onchange: function(html) {
+          That.form.Content = html
+        },
+        uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
+        uploadFileName: 'file', // 后端使用这个字段获取图片信息
+        uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
+        showLinkImg: false,
+        uploadImgHooks: {
+          customInsert: function(insertImg, result, editor) {
+            var url = result.data.data.data
+            // console.log(result.data.data.data)
+            insertImg(url)
+          }
+        }
+      }
+      ShouCorrect.customConfig = {
+        onchange: function(html) {
+          That.form.Analysis = html
+        },
+        uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
+        uploadFileName: 'file', // 后端使用这个字段获取图片信息
+        uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
+        showLinkImg: false,
+        uploadImgHooks: {
+          customInsert: function(insertImg, result, editor) {
+            var url = result.data.data.data
+            // console.log(result.data.data.data)
+            insertImg(url)
+          }
+        }
+      }
+      ShouTitle.create()
+      ShouCorrect.create()
     }
   },
   mounted() {
+    // this.openAdd()
+
     this.$refs.select_frame.ondragleave = (e) => {
       // 阻止离开时的浏览器默认行为
       e.preventDefault()
@@ -297,7 +413,6 @@ export default {
     this.GetCategory()
   },
   activated() {
-    this.GetCategory()
   }
 }
 </script>
@@ -339,5 +454,18 @@ export default {
     font-size: 15px;
     margin-bottom: 5px;
   }
+  .cut_item-detele{
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    color: #F56C6C;
+    font-size: 19px;
+    font-weight: bold;
+    padding: 0;
+  }
+}
+.cut-footer{
+  text-align: center;
+  margin: 20px 0;
 }
 </style>

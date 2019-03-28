@@ -342,6 +342,7 @@ export default {
     z-index: 2;
     position: relative;
     transition: 0.28s;
+    background-size: 8%;
 }
 
 .profile-header .header-avatar {

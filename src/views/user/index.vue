@@ -229,8 +229,8 @@
         </el-select>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="chongzhiBox = false">取 消</el-button>
-        <el-button type="primary" @click="chongZhi">确定充值</el-button>
+        <el-button  size="small" @click="chongzhiBox = false">取 消</el-button>
+        <el-button  size="small" type="primary" @click="chongZhi">确定充值</el-button>
       </span>
     </el-dialog>
     <el-dialog title="裁剪图片" :visible.sync="dialogVisible" :before-close="cancelCrop" width="30%">
@@ -518,6 +518,7 @@ export default {
   height: 180px;
   position: relative;
   transition: 0.28s;
+  background-size: 8%;
 }
 .bg-blur{
   width: 100%;

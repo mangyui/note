@@ -52,8 +52,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="showAdd = false">取 消</el-button>
-        <el-button type="primary" @click="addNoteType">确 定</el-button>
+        <el-button size="small" @click="showAdd = false">取 消</el-button>
+        <el-button size="small" type="primary" @click="addNoteType">确 定</el-button>
       </div>
     </el-dialog>
     <el-dialog title="修改笔记分类" :visible.sync="showUpdate">
@@ -66,8 +66,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="showUpdate = false">取 消</el-button>
-        <el-button type="primary" @click="updateNoteType">确 定</el-button>
+        <el-button  size="small" @click="showUpdate = false">取 消</el-button>
+        <el-button  size="small"type="primary" @click="updateNoteType">确 定</el-button>
       </div>
     </el-dialog>
   </div>

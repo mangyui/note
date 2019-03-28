@@ -66,7 +66,7 @@
       </div>
     </div>
     <el-dialog class="crop-pic" title="裁剪图片" :visible.sync="dialogVisible" :before-close="cancelCrop" width="70%">
-      <vue-cropper class="dgCropper" ref='cropper' :auto-crop-area="1" :src="imgSrc" :ready="cropImage" :zoom="cropImage" :cropmove="cropImage" style="width:100%;  height: 400px;"></vue-cropper>
+      <vue-cropper class="dgCropper" ref='cropper' :auto-crop-area="1" :src="imgSrc" :ready="cropImage" :zoom="cropImage" :cropmove="cropImage" :style="'width:100%;  height: '+ 0.7*documentWidth + 'px'"></vue-cropper>
       <el-alert
         title="请旋转正常角度，提高识别准确率"
         type="warning"
@@ -151,6 +151,7 @@ export default {
   },
   data: function() {
     return {
+      documentWidth: document.body.clientHeight,
       showGIF: false,
       showShou: false,
       showBtn: false,

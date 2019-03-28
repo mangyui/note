@@ -103,8 +103,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submit">确 定</el-button>
+        <el-button size="small" @click="dialogFormVisible = false">取 消</el-button>
+        <el-button size="small" type="primary" @click="submit">确 定</el-button>
       </div>
     </el-dialog>
     <el-dialog title="添加错题分类" :visible.sync="showAdd">
@@ -117,8 +117,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="showAdd = false">取 消</el-button>
-        <el-button type="primary" @click="addMistakeType">确 定</el-button>
+        <el-button  size="small" @click="showAdd = false">取 消</el-button>
+        <el-button size="small" type="primary" @click="addMistakeType">确 定</el-button>
       </div>
     </el-dialog>
   </div>
