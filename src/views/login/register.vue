@@ -108,7 +108,7 @@ export default {
           { required: true, validator: validatePhone, trigger: 'blur' }
         ],
         class: [
-          { required: true, message: '请正确选择你的年级', trigger: 'change' }
+          { required: true, message: '请正确选择你的年级', trigger: 'blur' }
         ]
       },
       passwordType: 'password'

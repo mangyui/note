@@ -26,11 +26,11 @@
           </div>
         </div>
         <div>
-          <el-card shadow="hover" class="cut_item" v-for="(item,index) in 3" :key="index" >
+          <el-card shadow="hover" class="cut_item" v-for="(item,index) in 4" :key="index" >
             <b>{{index+1}}.</b>
             <br/>
             <el-button class="cut_item-detele" type="text" icon="el-icon-close" size="large" @click="Detele(index)"></el-button>
-            <img preview='1' :src="'./static/img/mock/testQuestion.png'" alt="没找到" :title="'第'+ (index+1) +'题'">
+            <img preview='1' :src="Quesimgs[index]" alt="没找到" :title="'第'+ (index+1) +'题'">
             <div class="cut_item_content">2.甲、乙两物体均做直线运动,甲物体速度随时间变化的图象如图甲所示,乙物体位置随
               时间变化的图象如图乙所示,则这两个物体的运动情况是。
               <p>A.甲在04s内运动方向改变,通过的路程为12m</p>
@@ -162,7 +162,7 @@ export default {
       lines: '',
       result: '',
       isHand: false,
-      cropImg: '',
+      cropImg: './static/img/mock/test.png',
       imgSrc: '',
       dialogVisible: false,
       adddialog: false,
@@ -216,10 +216,65 @@ export default {
       }, {
         value: '',
         label: '自己看什么题'
-      }]
+      }],
+      resultImg: './static/img/mock/test.png',
+      Locations: [{
+        location: {
+          width: 182,
+          top: 46,
+          left: 40,
+          height: 47
+        }
+      }, {
+        location: {
+          width: 1714,
+          top: 157,
+          left: 42,
+          height: 38
+        }
+      }, {
+        location: {
+          width: 1719,
+          top: 200,
+          left: 42,
+          height: 35
+        }
+      }, {
+        location: {
+          width: 581,
+          top: 241,
+          left: 41,
+          height: 38
+        }
+      }],
+      Quesimgs: []
     }
   },
   methods: {
+    toCutup() {
+      // this.Quesimgs = new Array(this.Locations.length)
+
+      for (var i = 0; i < this.Locations.length; i++) {
+        var imgs = new Image('./static/img/mock/test.png')
+        imgs.setAttribute('src', './static/img/mock/test.png')
+        imgs.setAttribute('index', i)
+        var That = this
+        imgs.onload = function() {
+          var j = this.getAttribute('index')
+          var w = That.Locations[j].location.width
+          var h = That.Locations[j].location.height
+          var sx = That.Locations[j].location.left
+          var sy = That.Locations[j].location.top
+          var canvas = document.createElement('CANVAS')
+          canvas.width = w
+          canvas.height = h
+          var context = canvas.getContext('2d')
+          context.drawImage(this, sx, sy, w, h, 0, 0, w, h)
+          // $('body').append(canvas)
+          That.Quesimgs[parseInt(j)] = canvas.toDataURL('image/png')
+        }
+      }
+    },
     cameraTakePicture() {
       if (navigator.camera) {
         navigator.camera.getPicture(this.onSuccess, this.onFail, {
@@ -411,6 +466,7 @@ export default {
   },
   created() {
     this.GetCategory()
+    this.toCutup()
   },
   activated() {
   }

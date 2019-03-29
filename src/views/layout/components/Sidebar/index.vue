@@ -39,13 +39,15 @@
 </template>
 
 <script>
+// import router from '@/router'
 import { mapGetters } from 'vuex'
 import SidebarItem from './SidebarItem'
 import logo from './logo'
-import store from '@/store'
+// import store from '@/store'
 import nxFullScreen from '@/components/nx-full-screen/index'
 import nxLangSelect from '@/components/nx-lang-select/index'
 import nxSvgIcon from '@/components/nx-svg-icon/index'
+
 export default {
   components: {
     SidebarItem,
@@ -82,8 +84,28 @@ export default {
     }
   },
   created() {
-    store.dispatch('GenerateRoutes').then(() => {
-    })
+    // if (!store.getters.addRouters[0]) {
+    //   var roles = ['']
+    //   if (this.$store.getters.user.Id) {
+    //     if (this.$store.getters.user.Occupation === 1) {
+    //       roles = ['teacher']
+    //     } else {
+    //       roles = ['student']
+    //     }
+    //     if (this.$store.getters.user.Name === 'ming') {
+    //       roles = ['admin']
+    //     }
+    //   } else {
+    //     roles = ['']
+    //   }
+    //   store.dispatch('GenerateRoutes', roles).then(() => {
+    //     router.addRoutes(store.getters.addRouters)
+    //   })
+    // }
+  },
+  beforeDestroy() {
+    // 目前根据该钩子来刷新从而初始化路由
+    location.reload()
   }
 }
 </script>

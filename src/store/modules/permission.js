@@ -5,28 +5,28 @@ import { asyncRouterMap, constantRouterMap } from '@/router'
  * @param roles
  * @param route
  */
-// function hasPermission(roles, route) {
-//   if (route.meta && route.meta.roles) {
-//     return roles.some(role => route.meta.roles.indexOf(role) >= 0)
-//   } else {
-//     return true
-//   }
-// }
+function hasPermission(roles, route) {
+  if (route.meta && route.meta.roles) {
+    return roles.some(role => route.meta.roles.indexOf(role) >= 0)
+  } else {
+    return true
+  }
+}
 
 /**
  * 递归过滤异步路由表，返回符合用户角色权限的路由表
  * @param asyncRouterMap
  * @param roles
  */
-function filterAsyncRouter(asyncRouterMap) {
+function filterAsyncRouter(asyncRouterMap, roles) {
   const accessedRouters = asyncRouterMap.filter(route => {
-    // if (hasPermission(roles, route)) {
-    //   if (route.children && route.children.length) {
-    //     route.children = filterAsyncRouter(route.children, roles)
-    //   }
-    return true
-    // }
-    // return false
+    if (hasPermission(roles, route)) {
+      if (route.children && route.children.length) {
+        route.children = filterAsyncRouter(route.children, roles)
+      }
+      return true
+    }
+    return false
   })
   return accessedRouters
 }
@@ -38,25 +38,29 @@ const permission = {
   },
   mutations: {
     SET_ROUTERS: (state, routers) => {
+      // console.log(state.addRouters)
       state.addRouters = routers
+      // sessionStorage.setItem('addRouters', JSON.stringify(routers))
       state.routers = constantRouterMap.concat(routers)
+      // console.log(sessionStorage)
       // console.log('state.routers', state.routers)
     }
   },
   actions: {
-    GenerateRoutes({ commit }) {
+    GenerateRoutes({ commit }, data) {
       return new Promise(resolve => {
-        // const { roles } = data
-        const accessedRouters = filterAsyncRouter(asyncRouterMap)
-        // if (roles.indexOf('admin') >= 0) {
-        //   // console.log('admin>=0')
-        //   accessedRouters = asyncRouterMap
-        // } else {
-        //   // console.log('admin<0')
-        //   accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
-        //   // accessedRouters = ''
-        //   // accessedRouters = asyncRouterMap
-        // }
+        var roles = data
+        // console.log(roles)
+        var accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
+        if (roles.indexOf('admin') >= 0) {
+          // console.log('admin>=0')
+          accessedRouters = asyncRouterMap
+        } else {
+          // console.log('admin<0')
+          accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
+          // accessedRouters = ''
+          // accessedRouters = asyncRouterMap
+        }
         // console.log('accessedRouters', accessedRouters)
         commit('SET_ROUTERS', accessedRouters)
         resolve()

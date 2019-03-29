@@ -2,7 +2,7 @@ import router from './router'
 import store from './store'
 import NProgress from 'nprogress' // Progress 进度条
 import 'nprogress/nprogress.css'// Progress 进度条样式
-// import { Message } from 'element-ui'
+import { Notification } from 'element-ui'
 // import { getToken } from '@/utils/auth' // 验权
 import {
   setTitle
@@ -30,13 +30,35 @@ const whiteList = ['/login',
 ] // 不重定向白名单
 router.beforeEach((to, from, next) => {
   NProgress.start()
-  // store.dispatch('LogOut')
-  // console.log(store.getters.user.Id)
+  // console.log(store.getters.addRouters[0])
+  if (!store.getters.addRouters[0] && to.path !== '/login') {
+    var roles = ['']
+    if (store.getters.user.Id) {
+      if (store.getters.user.Occupation === 1) {
+        roles = ['teacher']
+      } else {
+        roles = ['student']
+      }
+      if (store.getters.user.Name === 'ming') {
+        roles = ['admin']
+      }
+    } else {
+      roles = ['']
+    }
+    store.dispatch('GenerateRoutes', roles).then(() => {
+      router.addRoutes(store.getters.addRouters)
+      router.addRoutes([{ path: '*', redirect: '/', hidden: true }])
+      next({ ...to, replace: true })
+      // console.log(router)
+    })
+  }
   if (!store.getters.user.Id) {
     if (whiteList.indexOf(to.path.replace(/\d+/g, '')) !== -1) {
       next()
     } else {
       next('/login')
+      // location.reload()
+      Notification.info('请先登录！')
     }
   } else {
     if (to.path === '/login') {
@@ -49,6 +71,10 @@ router.beforeEach((to, from, next) => {
       next()
     }
   }
+  // }).catch(() => {
+  //   next({ path: '/' })
+  // })
+
   NProgress.done()
   // next() !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   // next()
