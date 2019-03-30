@@ -14,6 +14,8 @@
     <div class="right-menu disNone">
       <nx-mobile class="nx-help right-menu-item disNone"></nx-mobile>
 
+      <actor-select v-if="isTeacher" class="nx-help right-menu-item disNone" />
+
       <nx-message class="nx-help right-menu-item disNone" />
 
       <nx-lang-select class="international right-menu-item"></nx-lang-select>
@@ -64,6 +66,7 @@ import nxMessage from '@/components/nx-message/index'
 import nxFullScreen from '@/components/nx-full-screen/index'
 import nxLangSelect from '@/components/nx-lang-select/index'
 import nxMobile from '@/components/nx-mobile'
+import actorSelect from '@/components/comps/actor-select'
 
 export default {
   name: 'navBar',
@@ -73,11 +76,13 @@ export default {
     nxMessage,
     nxLangSelect,
     nxFullScreen,
-    nxMobile
+    nxMobile,
+    actorSelect
   },
   data() {
     return {
       user: this.$store.getters.user,
+      isTeacher: this.$store.getters.user.Occupation === 1 || this.$store.getters.user.Name === 'ming',
       isBack: false,
       isUsercenter: false,
       ScrollTop: 0,
@@ -102,9 +107,7 @@ export default {
       this.$store.dispatch('ToggleSideBar')
     },
     logout() {
-      this.$store.dispatch('LogOut').then(() => {
-        location.reload() // In order to re-instantiate the vue-router object to avoid bugs
-      })
+      this.$store.dispatch('LogOut')
       location.reload()
     },
     fetchDate() {

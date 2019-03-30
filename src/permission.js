@@ -30,18 +30,20 @@ const whiteList = ['/login',
 ] // 不重定向白名单
 router.beforeEach((to, from, next) => {
   NProgress.start()
+  // console.log(store.getters.user)
   // console.log(store.getters.addRouters[0])
   if (!store.getters.addRouters[0] && to.path !== '/login') {
     var roles = ['']
-    if (store.getters.user.Id) {
-      if (store.getters.user.Occupation === 1) {
-        roles = ['teacher']
-      } else {
-        roles = ['student']
-      }
-      if (store.getters.user.Name === 'ming') {
-        roles = ['admin']
-      }
+    if (store.getters.user.roles) {
+      // if (store.getters.user.Occupation === 1) {
+      //   roles = ['teacher']
+      // } else {
+      //   roles = ['student']
+      // }
+      // if (store.getters.user.Name === 'ming') {
+      //   roles = ['admin']
+      // }
+      roles = store.getters.user.roles
     } else {
       roles = ['']
     }

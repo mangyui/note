@@ -76,12 +76,6 @@ a:hover {
   }
 }
 
-//main-container全局样式
-// .app-main {
-//   min-height: 100%;
-//   overflow: auto;
-// }
-
 code {
   background: #eef1f6;
   padding: 15px 16px;
@@ -650,7 +644,7 @@ code {
     .w-e-text{
       padding: 10px;
       overflow-y: auto;
-      position: absolute;
+      min-height: 150px;
     }
   }
 }
@@ -678,6 +672,7 @@ code {
   top: 0;
   opacity: 0;
   cursor: pointer;
+  // display: none;
 }
 .upbtn-group{
   text-align: center;
@@ -701,7 +696,9 @@ code {
   margin-bottom: 10px;
   margin-top: 30px;
 }
-
+.actor-down .el-dropdown-menu__item.is-disabled{
+  color: #f56c6c;
+}
 @media (min-width: 769px)
 {
   .toShow{
@@ -710,6 +707,11 @@ code {
   .header-title{
     display: none!important;
   }
+  .app-main::-webkit-scrollbar{width:6px;}
+  .app-main::-webkit-scrollbar-track{background-color:#fff;border-radius: 10px;}
+  .app-main::-webkit-scrollbar-thumb{background-color:rgba(144,147,153,.5);border-radius: 10px;}
+  .app-main::-webkit-scrollbar-thumb:hover {background-color: rgba(144,147,153,.7)}
+  .app-main::-webkit-scrollbar-thumb:active {background-color:#F56C6C}
 }
 /*移动端*/
 @media (max-width: 768px)

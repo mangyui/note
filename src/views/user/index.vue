@@ -322,13 +322,6 @@ export default {
   },
   methods: {
     toSave() {
-      // this.$prompt('请输入密码', '修改资料输入密码', {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消'
-      //   // inputPattern: /[\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?/,
-      //   // inputErrorMessage: '邮箱格式不正确'
-      // }).then(({ value }) => {
-      // this.form.password = value
       this.$store.dispatch('UpdateMe', this.form).then(res => {
         if (res.data.code === 0) {
           this.isUpdate = false

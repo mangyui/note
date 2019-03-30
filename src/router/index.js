@@ -204,33 +204,33 @@ export const asyncRouterMap = [
         path: 'index',
         name: 'carveup',
         component: () => import('@/views/carveup/index'),
-        meta: { title: 'carveup', roles: ['admin', 'teacher', 'student'] }
+        meta: { title: 'carveup', roles: ['teacher', 'student'] }
       },
       {
         path: 'testList',
         name: 'testList',
         component: () => import('@/views/carveup/testList'),
-        meta: { title: 'testList', roles: ['admin', 'teacher'] }
+        meta: { title: 'testList', roles: ['teacher', 'student'] }
       },
       {
         path: 'studentList',
         name: 'studentList',
         component: () => import('@/views/carveup/studentList'),
-        meta: { title: 'studentList', roles: ['admin', 'student'] }
+        meta: { title: 'studentList', roles: ['teacher'] }
       },
       {
         path: 'test_detail/:id',
         name: 'test_detail',
         hidden: true,
         component: () => import('@/views/carveup/test_detail'),
-        meta: { title: 'test_detail', roles: ['admin', 'teacher'] }
+        meta: { title: 'test_detail', roles: ['teacher', 'student'] }
       },
       {
         path: 'test_student/:id',
         name: 'test_student',
         hidden: true,
         component: () => import('@/views/carveup/test_student'),
-        meta: { title: 'test_student', roles: ['admin', 'teacher'] }
+        meta: { title: 'test_student', roles: ['teacher'] }
       }
     ]
   },

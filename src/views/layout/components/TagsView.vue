@@ -126,8 +126,8 @@ export default {
     .tags-view-item {
     display: inline-block;
     position: relative;
-    height: 35px;
-    line-height: 35px;
+    height: 31px;
+    line-height: 29px;
     padding: 0 10px;
     margin-right: 10px;
     border: 1px solid rgba(82,186,181,.2);

@@ -21,7 +21,7 @@
       </div> -->
     </div>
     <div id="content" class="big-box1200">
-      <el-tabs v-model="activeName" class='is_stretch' @tab-click="handleClick">
+      <el-tabs v-model="activeName" :stretch="true" @tab-click="handleClick">
         <el-tab-pane name="info">
           <div slot="label"><i class="el-icon-date"></i>基本资料</div>
           <div class="contariner-wraper">

@@ -30,6 +30,10 @@
         <nx-lang-select class="" style="height:27px"></nx-lang-select>
         <p>语言</p>
       </div>
+      <div v-if="isTeacher">
+        <actor-select style="height:27px" />
+        <p>身份</p>
+      </div>
       <div>
         <nx-full-screen class="" style="height:27px"></nx-full-screen>
         <p>全屏</p>
@@ -47,6 +51,7 @@ import logo from './logo'
 import nxFullScreen from '@/components/nx-full-screen/index'
 import nxLangSelect from '@/components/nx-lang-select/index'
 import nxSvgIcon from '@/components/nx-svg-icon/index'
+import actorSelect from '@/components/comps/actor-select'
 
 export default {
   components: {
@@ -54,12 +59,14 @@ export default {
     logo,
     nxLangSelect,
     nxFullScreen,
-    nxSvgIcon
+    nxSvgIcon,
+    actorSelect
   },
   data() {
     return {
       user: this.$store.getters.user,
-      avatar: this.$store.getters.user.Avatar || './static/img/avatar.jpg'
+      avatar: this.$store.getters.user.Avatar || './static/img/avatar.jpg',
+      isTeacher: this.$store.getters.user.Occupation === 1 || this.$store.getters.user.Name === 'ming'
     }
   },
   computed: {

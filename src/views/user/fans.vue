@@ -1,11 +1,11 @@
 <template>
   <div class="app-container">
     <span class="header-title">题友</span>
-    <div class="crumbs disNone">
+    <!-- <div class="crumbs disNone">
       <el-breadcrumb separator="/">
           <el-breadcrumb-item><i class="el-icon-date"></i> 题友</el-breadcrumb-item>
       </el-breadcrumb>
-    </div>
+    </div> -->
     <el-tabs v-model="activeName" class='is_stretch' >
       <el-tab-pane name="followee">
         <div slot="label"><i class="el-icon-date"></i>关注的人</div>

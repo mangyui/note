@@ -1,9 +1,12 @@
 @import './variables.scss';
 
 @mixin colorBtn($color) {
-  background: $color;
+  background: $color!important;
+  border-color: $color !important;
+  color: #fff!important;
   &:hover {
-    color: $color;
+    // color: $color;
+    opacity: 0.85;
     &:before,
     &:after {
       background: $color;

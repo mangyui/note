@@ -34,12 +34,24 @@ const user = {
   mutations: {
     // 登录/更新
     SET_USER: (state, user) => {
-      localStorage.setItem('user', JSON.stringify(user))
       Object.assign(state, user)
+      if (user.Occupation === 1) {
+        state.roles = ['teacher']
+      } else if (user.Name === 'ming') {
+        state.roles = ['admin']
+      } else {
+        state.roles = ['student']
+      }
+      localStorage.setItem('user', JSON.stringify(state))
     },
     SET_AVATAR: (state, avatar) => {
       state.Avatar = avatar
       // localStorage.removeItem('user')
+      localStorage.setItem('user', JSON.stringify(state))
+    },
+    // 修改角色
+    SET_ROSE: (state, roles) => {
+      state.roles = roles
       localStorage.setItem('user', JSON.stringify(state))
     },
     // 登出
@@ -52,9 +64,6 @@ const user = {
     },
     SET_NAME: (state, name) => {
       state.Name = name
-    },
-    SET_ROLES: (state, roles) => {
-      state.roles = roles
     }
   },
   // computed: mapState({
@@ -95,13 +104,8 @@ const user = {
         })
       })
     },
-    // 修改
+    // 修改资料
     UpdateMe({ commit }, userInfo) {
-      // var datas1 = {
-      //   username: userInfo.username.trim(),
-      //   password: userInfo.password
-      // }
-      // var s = objKeySort(datas1)
       var datas2 = {
         username: userInfo.username.trim(),
         userid: userInfo.userid,
@@ -130,11 +134,17 @@ const user = {
         })
       })
     },
-    // 修改
+    // 修改头像
     UpdateAvatar({ commit }, userAvatar) {
       return new Promise((resolve, reject) => {
         // console.log(userAvatar)
         commit('SET_AVATAR', userAvatar)
+      })
+    },
+    // 修改角色身份
+    UpdateRoles({ commit }, roles) {
+      return new Promise((resolve, reject) => {
+        commit('SET_ROSE', roles)
       })
     },
     // 注册
@@ -150,9 +160,7 @@ const user = {
           if (response.data.code === 0) {
             // *************************************************
             const data = response.data.data
-            // setToken(data.token)
             commit('SET_USER', data)
-            // commit('SET_NAME', data.Name)
           }
           resolve(response)
         }).catch(error => {
@@ -163,39 +171,9 @@ const user = {
     // 登出
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {
-        // logout().then(() => {
         commit('OUT_USER')
-        // commit('SET_ROLES', [])
-        // removeToken()
-        //   resolve()
-        // }).catch(error => {
-        //   reject(error)
-        // })
       })
     }
-
-    // 前端 登出
-    // FedLogOut({ commit }) {
-    //   return new Promise(resolve => {
-    //     commit('SET_TOKEN', '')
-    //     // removeToken()
-    //     resolve()
-    //   })
-    // },
-    // // 动态修改权限
-    // ChangeRoles({ commit }, role) {
-    //   return new Promise(resolve => {
-    //     commit('SET_TOKEN', role)
-    //     // setToken(role)
-    //     getInfo(role).then(response => {
-    //       const data = response
-    //       commit('SET_ROLES', data.roles)
-    //       commit('SET_NAME', data.name)
-    //       commit('SET_AVATAR', data.avatar)
-    //       resolve()
-    //     })
-    //   })
-    // }
   }
 }
 

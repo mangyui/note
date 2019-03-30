@@ -199,8 +199,7 @@ export default {
     height: 2em;
   }
   p{
-    font-size: 14px;
-    line-height: 1.8em
+    line-height: 3em
   }
 }
 .big-box1200{
@@ -332,7 +331,6 @@ export default {
       }
       p{
         font-size: 15px;
-        line-height: 2.2em
       }
     }
   }
@@ -344,7 +342,6 @@ export default {
   }
   .home_item p{
     font-size: 12px;
-    line-height: 2.0em;
   }
 }
 @keyframes upAndDownFast{0%{top:6%}to{top:4%}}

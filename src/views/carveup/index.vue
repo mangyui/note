@@ -20,7 +20,7 @@
           </label>
           <div class="upbtn-group">
             <el-button type="primary" @click="cameraTakePicture">拍照上传</el-button>
-            <div class="crop-demo-btn">上传图片
+            <div class="crop-demo-btn tiffany-btn">上传图片
               <input class="crop-input" ref="referenceUpload" id='upimg' type="file" name="image" accept="image/*" multiple @change="toChoose" />
             </div>
           </div>
@@ -39,12 +39,12 @@
               <p>D.乙在04s内运动方向不变,通过的位移大小为6m</p></div>
               <div style="text-align: right;">
                 <!-- <el-button type="primary" icon="el-icon-plus" size="small" @click="">加入测试集</el-button> -->
-                <el-button type="primary" icon="el-icon-edit" size="small" @click="adddialog=true">修改</el-button>
+                <el-button  class="yellow-btn" icon="el-icon-edit" size="small" @click="adddialog=true">修改</el-button>
               </div>
           </el-card>
         </div>
         <div class="cut-footer">
-          <el-button size="medium" @click="adddialog=!adddialog">添加题目</el-button>
+          <el-button type="primary" size="medium" @click="adddialog=!adddialog">添加题目</el-button>
           <el-button type="danger" size="medium" @click="">生成测试</el-button>
         </div>
         <!-- <div class="ocr-edit" v-show="adddialog">
