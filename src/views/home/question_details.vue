@@ -5,12 +5,12 @@
       <i class="el-icon-loading"></i>
       加载中...
     </div>
-    <div class="crumbs disNone">
+    <!-- <div class="crumbs disNone">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item>
           <i class="el-icon-date"></i> 题目详情</el-breadcrumb-item>
       </el-breadcrumb>
-    </div>
+    </div> -->
     <div v-show="question" class="note_details">
       <div class="page-content">
         <div class="detail-top">

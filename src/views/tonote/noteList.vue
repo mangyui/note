@@ -1,12 +1,12 @@
 <template>
   <div class="app-container notes">
     <span class="header-title">笔记本</span>
-    <div class="crumbs disNone">
+    <!-- <div class="crumbs disNone">
       <el-breadcrumb separator="/">
           <el-breadcrumb-item><i class="el-icon-date"></i> 笔记本</el-breadcrumb-item>
           <el-breadcrumb-item>笔记列表</el-breadcrumb-item>
       </el-breadcrumb>
-    </div>
+    </div> -->
     <div class="big-box1200">
       <!--工具条-->
       <div class="top-search">
@@ -16,17 +16,7 @@
           v-model="search.keys">
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
-          <!-- <el-input placeholder="笔记关键字" @keyup.enter.native="toSearch" v-model="search.keys"></el-input>
-          <el-button type="primary" icon="el-icon-search" v-on:click="toSearch"></el-button> -->
       </div>
-      <!-- <el-form :inline="true" class="form-search">
-        <el-form-item>
-          <el-input placeholder="笔记关键字" v-model="search.keys"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" icon="el-icon-search" v-on:click="toSearch"></el-button>
-        </el-form-item>
-      </el-form> -->
       <div class="list-gbtn">
         <el-select v-model="tolist.NoteCategoryId" placeholder="笔记分类" @change="getNotes">
           <el-option

@@ -1,27 +1,13 @@
 <template>
   <div class="app-container">
     <span class="header-title">我的收藏</span>
-    <div class="crumbs disNone">
+    <!-- <div class="crumbs disNone">
       <el-breadcrumb separator="/">
           <el-breadcrumb-item><i class="el-icon-date"></i> 错题本</el-breadcrumb-item>
           <el-breadcrumb-item>我的收藏</el-breadcrumb-item>
       </el-breadcrumb>
-    </div>
+    </div> -->
     <div class="big-box1200">
-      <!-- <el-form :inline="true">
-        <el-form-item>
-          <el-input placeholder="错题关键字" v-model="search.keys"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" icon="el-icon-search" v-on:click="toSearch"></el-button>
-        </el-form-item>
-      </el-form> -->
-      <!-- <div class="list-gbtn">
-        <div></div>
-        <div>
-          <el-button type="primary" icon="el-icon-refresh" circle @click="getCollects"></el-button>
-        </div>
-      </div> -->
       <div class="container">
         <div v-if="showLoading" class="loading-box">
           <i class="el-icon-loading"></i>

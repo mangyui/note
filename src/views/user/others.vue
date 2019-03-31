@@ -16,7 +16,7 @@
 
       <img class="header-avatar" preview :src="user.Avatar||'./static/img/avatar.jpg'">
       <span class="header-name">{{user.Name}}</span>
-      <span class="header-bio">{{user.Intro}}</span>
+      <span class="header-bio">{{Class==null?'':Class+' |'}}  {{user.Name=='ming'?'管理员':(user.Occupation==2?'教师':'学生')}}</span>
       <!-- <div class="header-info">
       </div> -->
     </div>
@@ -33,12 +33,12 @@
                 <div class="table-wrap">
                   <table class="datum-table">
                     <tr>
-                      <th>用户名</th>
+                      <th>用户号</th>
                       <td>{{user.Name}}</td>
                     </tr>
                     <tr>
                       <th>性别</th>
-                      <td>{{user.Sex}}</td>
+                      <td>{{user.Sex || '未知'}}</td>
                     </tr>
                     <tr>
                       <th>地址</th>
@@ -214,7 +214,11 @@ export default {
         var index = this.schoolList.find((item) => {
           return item.Id === this.user.SchoolId
         })
-        this.School = index.Name
+        if (index) {
+          this.School = index.Name
+        } else {
+          this.School = '未知'
+        }
       }).catch((res) => {
         console.log(res)
       })
@@ -349,7 +353,7 @@ export default {
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    margin-top: 40px;
+    margin-top: 33px;
     margin-left: 50%;
     transform: translateX(-50%);
     border: 2px solid #fff;
@@ -370,12 +374,14 @@ export default {
     display: inline-block;
     text-align: center;
     font-size: 16px;
-    margin-top: 16px;
+    margin-top: 10px;
     font-weight: bold;
 }
 
 .profile-header .header-bio {
-    font-size: 14px;
+    font-size: 13px;
+    color: #ccc;
+    margin-top: 5px;
 }
 
 .info-tab {

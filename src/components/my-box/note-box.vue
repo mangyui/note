@@ -9,7 +9,7 @@
               <b class="big-title">{{item.Headline}}</b>
               <div><p class="tipbox big-content" v-html="item.Content"></p></div>
               <div class="big-time"><i class="el-icon-time"> {{item.DateTime}}</i></div>
-              <div><el-tag>笔记</el-tag></div>
+              <div><el-tag size="small">笔记</el-tag></div>
             </div>
           </div>
         </el-card>

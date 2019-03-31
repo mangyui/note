@@ -1,31 +1,21 @@
 <template>
   <div class="app-container">
     <span class="header-title">错题本</span>
-    <div class="crumbs disNone">
+    <!-- <div class="crumbs disNone">
       <el-breadcrumb separator="/">
           <el-breadcrumb-item><i class="el-icon-date"></i> 错题本</el-breadcrumb-item>
           <el-breadcrumb-item>我的错题</el-breadcrumb-item>
       </el-breadcrumb>
-    </div>
+    </div> -->
     <div class="big-box1200">
       <div class="top-search">
         <el-input
-          placeholder="请输入内容"
+          placeholder="搜索题目"
           @keyup.enter.native="toSearch"
           v-model="search.keys">
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
-        <!-- <el-input placeholder="错题关键字" @keyup.enter.native="toSearch" v-model="tolist.keys"></el-input>
-        <el-button type="primary" icon="el-icon-search" v-on:click="toSearch"></el-button> -->
       </div>
-      <!-- <el-form :inline="true">
-        <el-form-item>
-          <el-input placeholder="错题关键字" v-model="tolist.keys"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" icon="el-icon-search" v-on:click="toSearch"></el-button>
-        </el-form-item>
-      </el-form> -->
       <div class="list-gbtn">
         <el-select v-model="tolist.MistakeCateId" placeholder="错题分类" @change="toSearch">
           <el-option

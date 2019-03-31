@@ -47,7 +47,7 @@
             <div class="home_item">
               <!-- <div @click="toQidai"> -->
               <router-link to="/getTest/index">
-                <nx-svg-icon class-name='more_icon' style="color:#E6A23C" icon-class="shijuan" />
+                <nx-svg-icon class-name='more_icon' style="color:#fdb75b" icon-class="shijuan" />
                 <p>生成试题</p>
               </router-link>
             </div>
@@ -244,16 +244,16 @@ export default {
     position: relative;
     overflow: hidden;
     .icon-camera{
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
+      // position: absolute;
+      // left: 50%;
+      // transform: translateX(-50%);
       width: 5.5em;
       height: 5.5em;
       fill: #52bab5;
       // animation: upAndDownFast 1s ease-in-out infinite alternate;
     }
     b{
-      margin-top: 105px;
+      margin-top: 7px;
       display: block;
       font-size: 16px;
       color: #369490;;

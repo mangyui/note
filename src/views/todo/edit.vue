@@ -1,11 +1,11 @@
 <template>
   <div class="app-container">
     <span class="header-title">添加笔记</span>
-      <div class="crumbs disNone">
+      <!-- <div class="crumbs disNone">
         <el-breadcrumb separator="/">
             <el-breadcrumb-item><i class="el-icon-date"></i> 添加笔记</el-breadcrumb-item>
         </el-breadcrumb>
-      </div>
+      </div> -->
     <div class="container big-box1200">
       <el-card shadow="never" v-loading="showGIF">
         <div class="upbtn-group">

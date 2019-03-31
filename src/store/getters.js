@@ -3,19 +3,19 @@ const getters = {
   sidebar: state => state.app.sidebar,
   device: state => state.app.device,
   user: state => state.user,
-  token: state => state.user.token,
-  avatar: state => state.user.avatar,
-  name: state => state.user.name,
+  // token: state => state.user.token,
+  avatar: state => state.user.Avatar,
+  name: state => state.user.Name,
   roles: state => state.user.roles,
   permission_routers: state => state.permission.routers,
   addRouters: state => state.permission.addRouters,
   website: state => state.common.website,
-  isLock: state => state.user.isLock,
-  lockPasswd: state => state.user.lockPasswd,
+  // isLock: state => state.user.isLock,
+  // lockPasswd: state => state.user.lockPasswd,
   isFullScren: state => state.common.isFullScren,
   visitedViews: state => state.tagsView.visitedViews,
-  cachedViews: state => state.tagsView.cachedViews,
-  browserHeaderTitle: state => state.user.browserHeaderTitle
+  cachedViews: state => state.tagsView.cachedViews
+  // browserHeaderTitle: state => state.user.browserHeaderTitle
 
 }
 export default getters

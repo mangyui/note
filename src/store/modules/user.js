@@ -35,7 +35,7 @@ const user = {
     // 登录/更新
     SET_USER: (state, user) => {
       Object.assign(state, user)
-      if (user.Occupation === 1) {
+      if (user.Occupation === 2) {
         state.roles = ['teacher']
       } else if (user.Name === 'ming') {
         state.roles = ['admin']
@@ -104,6 +104,13 @@ const user = {
         })
       })
     },
+    // 刷新资料
+    RefreshUser({ commit }, data) {
+      return new Promise((resolve, reject) => {
+        // console.log(userAvatar)
+        commit('SET_USER', data)
+      })
+    },
     // 修改资料
     UpdateMe({ commit }, userInfo) {
       var datas2 = {
@@ -154,6 +161,7 @@ const user = {
         password: md5(userInfo.password),
         phone: userInfo.phone,
         class: userInfo.class
+        // occupation: userInfo.occupation
       }
       return new Promise((resolve, reject) => {
         register(qs.stringify(datas1)).then(response => {

@@ -39,7 +39,6 @@
       <el-tabs v-model="activeName" class='is_stretch'>
         <el-tab-pane name="ques">
           <div slot="label">题目</div>
-            <quex-box :option="questions"></quex-box>
             <div v-if="showLoading" class="loading-box">
               <i class="el-icon-loading"></i>
               加载中...
@@ -48,6 +47,9 @@
               <i class="el-icon-search"></i>
               空空如也...
             </div>
+
+            <quex-box :option="questions"></quex-box>
+
             <div v-if="showMore" class="loading-box">
               <i class="el-icon-loading"></i>
               加载更多中...
@@ -68,7 +70,7 @@
               空空如也...
             </div>
             <el-row :gutter="12">
-            <el-col  :xs="24" :sm="12" :md="8" :lg="8" :xl="6" v-for="(item,index) in users" :key="index">
+            <el-col  :xs="24" :sm="12" :md="8" :lg="8" :xl="8" v-for="(item,index) in users" :key="index">
               <el-card class="friend-box" :body-style="{ padding: '0px' }"  shadow="hover">
                 <div class="people">
                     <router-link  :to="'/user/others/'+item.Id">
@@ -215,7 +217,11 @@ export default {
         return
       }
       SearchUsers(qs.stringify({ name: this.Sdata.Keys })).then(res => {
-        this.users = res.data.data
+        if (res.data.data.Name) {
+          this.users[0] = res.data.data
+        } else {
+          this.users = res.data.data
+        }
       }).catch(() => {})
     },
     showResult(text) {
@@ -235,12 +241,6 @@ export default {
     recordFailed(error) {
       console.info('识别失败，错误栈：', error)
     }
-    // handleClick(tab) {
-    //   if (tab.name === 'user' && !this.users[0]) {
-    //     // console.log(tab.name)
-    //     this.searchuser()
-    //   }
-    // }
   },
   mounted() {
     const that = this

@@ -39,6 +39,7 @@
         </el-option>
       </el-select>
     </el-form-item>
+    <!-- <el-checkbox v-model="isTeacher">我是教师</el-checkbox> -->
     <el-form-item>
       <el-button type="primary" size="medium" @click.native.prevent="handleRegister" class="login-submit" v-loading.fullscreen.lock="fullscreenLoading">注册</el-button>
     </el-form-item>
@@ -90,11 +91,13 @@ export default {
     }
     return {
       fullscreenLoading: false,
+      isTeacher: false,
       loginForm: {
         username: '',
         password: '',
         phone: '',
-        class: []
+        class: ''
+        // occupation: 1
       },
       classlist: classList,
       loginRules: {
@@ -137,6 +140,9 @@ export default {
     handleRegister() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
+          // if (this.isTeacher) {
+          //   this.loginForm.occupation = 2
+          // }
           this.fullscreenLoading = true
           this.$store.dispatch('Register', this.loginForm).then(res => {
             this.fullscreenLoading = false

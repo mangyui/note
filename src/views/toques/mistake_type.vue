@@ -1,12 +1,12 @@
 <template>
   <div class="app-container">
     <span class="header-title">错题分类</span>
-    <div class="crumbs disNone">
+    <!-- <div class="crumbs disNone">
       <el-breadcrumb separator="/">
           <el-breadcrumb-item><i class="el-icon-date"></i> 错题本</el-breadcrumb-item>
           <el-breadcrumb-item>错题分类</el-breadcrumb-item>
       </el-breadcrumb>
-    </div>
+    </div> -->
     <div class="big-box1200">
       <div class="list-gbtn">
         <div></div>

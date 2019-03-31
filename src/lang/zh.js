@@ -15,6 +15,7 @@ export default {
   },
   route: {
     home: '主页',
+    Login: '登录',
     contextmenu: '右键菜单',
     Friends: '题友',
     Schoolfellow: '校友',
@@ -30,7 +31,7 @@ export default {
     studentList: '学生列表',
     Collect: '我的收藏',
     QuesList: '错题列表',
-    Ques_more: '相识题目',
+    Ques_more: '相似题目',
     Knowledge: '知识点',
     NoteList: '笔记列表',
     Note_type: '笔记分类',
@@ -74,9 +75,6 @@ export default {
     Open: '网站',
     about: '关于',
     Components: '组件',
-    dragKanban: '可拖拽看板',
-    componentMixin: 'componentMixin',
-    markdown: 'Markdown',
     treeMen: '树形菜单',
     backToTop: '返回顶部',
     dashboard: '数据汇总',
@@ -89,34 +87,14 @@ export default {
     page401: '401',
     page404: '404',
     thirdPartyWebsite: '第三方网站',
-    charts: 'Charts',
-    emoji: 'emoji',
-    test: 'test',
-    excel: 'Excel',
-    exportExcel: 'Export Excel',
-    selectExcel: 'Export Selected',
-    uploadExcel: 'Upload Excel',
-    zip: 'Zip',
-    exportZip: 'Export Zip',
     i18n: '国际化',
-    PDF: 'PDF',
-    HightLightinViewer: '代码高亮显示',
-    Rollingpositioning: '滚动定位',
-    Digitalanimation: '数字动画',
-    list: 'list'
+    Rollingpositioning: '滚动定位'
   },
   permission: {
     roles: '你的权限',
     switchRoles: '切换权限'
   },
   componentss: {
-    documentation: '组件1',
-    tinymceTips: '组件1',
-    dropzoneTips: '组件1',
-    stickyTips: '组件1',
-    backToTopTips1: '组件1',
-    backToTopTips2: '组件1',
-    imageUploadTips: '组件1'
   },
   tagsView: {
     close: '关闭',

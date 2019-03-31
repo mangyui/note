@@ -39,7 +39,7 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/home/index'
   },
-  { path: '/login', component: () => import('@/views/login'), name: 'login', hidden: true },
+  { path: '/login', component: () => import('@/views/login'), meta: { title: 'Login' }, name: 'login', hidden: true },
   { path: '/404', component: () => import('@/views/errorPage/404'), hidden: true },
   { path: '/401', component: () => import('@/views/errorPage/401'), hidden: true },
   // 主页

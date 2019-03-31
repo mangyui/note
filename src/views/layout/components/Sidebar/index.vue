@@ -5,7 +5,7 @@
       <router-link  :to="user.Id?'/user/index':'/login'" class="avatar"><img :src="avatar"></router-link>
       <div>
         <p class="user_name">{{user.Name||'未登录'}}</p>
-        <p  v-if="user.Id" class="user_address">学生</p>
+        <p  v-if="user.Id" class="user_address">{{user.Name=='ming'?'管理员':(user.Occupation==2?'教师':'学生')}}</p>
       </div>
     </div>
     <el-menu

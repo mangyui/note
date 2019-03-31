@@ -1,12 +1,12 @@
 <template>
   <div class="app-container">
     <span class="header-title">笔记分类</span>
-    <div class="crumbs disNone">
+    <!-- <div class="crumbs disNone">
       <el-breadcrumb separator="/">
           <el-breadcrumb-item><i class="el-icon-date"></i> 笔记本</el-breadcrumb-item>
           <el-breadcrumb-item>笔记分类</el-breadcrumb-item>
       </el-breadcrumb>
-    </div>
+    </div> -->
     <div class="big-box1200">
       <div class="list-gbtn">
         <div></div>

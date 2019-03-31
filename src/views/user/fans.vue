@@ -1,87 +1,38 @@
 <template>
   <div class="app-container">
     <span class="header-title">题友</span>
-    <!-- <div class="crumbs disNone">
-      <el-breadcrumb separator="/">
-          <el-breadcrumb-item><i class="el-icon-date"></i> 题友</el-breadcrumb-item>
-      </el-breadcrumb>
-    </div> -->
-    <el-tabs v-model="activeName" class='is_stretch' >
-      <el-tab-pane name="followee">
-        <div slot="label"><i class="el-icon-date"></i>关注的人</div>
+    <div class="big-box1200">
+      <el-tabs v-model="activeName" class='is_stretch' >
+        <el-tab-pane name="followee">
+          <div slot="label"><i class="el-icon-date"></i>关注的人</div>
+            <div class="">
+              <div v-if="showLoading" class="loading-box">
+                <i class="el-icon-loading"></i>
+                加载中...
+              </div>
+              <div v-if="!Followees[0] && !showLoading" class="loading-box">
+                <i class="el-icon-search"></i>
+                空空如也...
+              </div>
+              <customer-box :option="Followees"></customer-box>
+            </div>
+        </el-tab-pane>
+        <el-tab-pane name="fans">
+          <div slot="label"><i class="el-icon-date"></i>粉丝</div>
           <div class="">
             <div v-if="showLoading" class="loading-box">
               <i class="el-icon-loading"></i>
               加载中...
             </div>
-            <div v-if="!Followees[0] && !showLoading" class="loading-box">
+            <div v-if="!Fans[0] && !showLoading" class="loading-box">
               <i class="el-icon-search"></i>
               空空如也...
             </div>
-            <el-row :gutter="12">
-              <el-col  :xs="24" :sm="12" :md="8" :lg="8" :xl="6" v-for="(item,index) in Followees" :key="index">
-                <el-card v-if="item.UserId!=0" class="friend-box" :body-style="{ padding: '0px' }"  shadow="hover">
-                  <div class="people">
-                    <!-- <div class="friend-top" :style="{backgroundImage:'url(' + top_bg + ')'}"><div class="top_bg"></div></div> -->
-                    <!-- <span @click="toAttention(item.UserId)" >
-                      <nx-svg-icon
-                        class-name='international-icon icon-collect'
-                        style="color: #F56C6C"
-                        icon-class="collect" />
-                    </span> -->
-                    <router-link  :to="'/user/others/'+item.User.Id">
-                      <div class="friend-body">
-                        <img src="#" :src="item.User.Avatar||deAvatar">
-                        <div class="peo-right">
-                          <b>{{item.User.Name|| '匿名'}}</b>
-                          <p>{{item.User.Intro||'这个家伙很懒，什么都没留下'}}</p>
-                        </div>
-                      </div>
-                    </router-link>
-                  </div>
-                </el-card>
-              </el-col>
-            </el-row>
+            <customer-box :option="Fans"></customer-box>
           </div>
-      </el-tab-pane>
-      <el-tab-pane name="fans">
-        <div slot="label"><i class="el-icon-date"></i>粉丝</div>
-        <div class="">
-          <div v-if="showLoading" class="loading-box">
-            <i class="el-icon-loading"></i>
-            加载中...
-          </div>
-          <div v-if="!Fans[0] && !showLoading" class="loading-box">
-            <i class="el-icon-search"></i>
-            空空如也...
-          </div>
-          <el-row :gutter="12">
-            <el-col  :xs="24" :sm="12" :md="8" :lg="8" :xl="6" v-for="(item,index) in Fans" :key="index">
-              <el-card class="friend-box" :body-style="{ padding: '0px' }"  shadow="hover">
-                <div class="people">
-                  <!-- <div class="friend-top" :style="{backgroundImage:'url(' + top_bg + ')'}"><div class="top_bg"></div></div> -->
-                  <!-- <span @click="toAttention(item.UserId)" >
-                    <nx-svg-icon
-                      class-name='international-icon icon-collect'
-                      style="color: #F56C6C"
-                      icon-class="collect" />
-                  </span> -->
-                  <router-link  :to="'/user/others/'+item.User.Id">
-                    <div class="friend-body">
-                      <img src="#" :src="item.User.Avatar||deAvatar">
-                      <div class="peo-right">
-                        <b>{{item.User.Name|| '匿名'}}</b>
-                        <p>{{item.User.Intro||'这个家伙很懒，什么都没留下'}}</p>
-                      </div>
-                    </div>
-                  </router-link>
-                </div>
-              </el-card>
-            </el-col>
-          </el-row>
-        </div>
-      </el-tab-pane>
-    </el-tabs>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
   </div>
 </template>
 
@@ -95,16 +46,18 @@ import {
 import qs from 'qs'
 
 import nxSvgIcon from '@/components/nx-svg-icon/index'
+import customerBox from '@/components/my-box/customer-box'
 
 export default {
   name: 'fans',
-  components: { nxSvgIcon },
+  components: {
+    nxSvgIcon,
+    customerBox
+  },
   data() {
     return {
       showLoading: false,
       id: '',
-      top_bg: './static/img/box_bg.jpg',
-      deAvatar: './static/img/avatar.jpg',
       activeName: 'followee',
       Fans: [],
       Followees: []

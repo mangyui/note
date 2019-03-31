@@ -1,29 +1,31 @@
 <template>
   <div class="app-container">
     <span class="header-title">商城</span>
-    <h2 class="top-title disNone">商城</h2>
-    <el-tabs @tab-click="handleClick">
-      <el-tab-pane :label="'商家'+(index1+1)" v-for="(item1,index1) in moreList" :key="index1">
-        <el-row :gutter="10">
-          <el-col v-for="(item2,index2) in 10" :key="index2" :xs="12" :sm="8" :md="8" :lg="6" :xl="4">
-            <div class="more_item">
-              <router-link to="">
-                <el-card :body-style="{ padding: '0px' }">
-                  <img preview :src="item1.img" class="image">
-                  <div style="padding: 10px;">
-                    <b>{{item1.content}}</b>
-                  </div>
-                  <div class="sale-bottom">
-                    <span class="price">￥{{item1.price}}</span>
-                    <span class="sale">已售{{item1.sale}}</span>
-                  </div>
-                </el-card>
-              </router-link>
-            </div>
-          </el-col>
-        </el-row>
-      </el-tab-pane>
-    </el-tabs>
+    <div class="big-box1200">
+    <!-- <h2 class="top-title disNone">商城</h2> -->
+      <el-tabs @tab-click="handleClick">
+        <el-tab-pane :label="'商家'+(index1+1)" v-for="(item1,index1) in moreList" :key="index1">
+          <el-row :gutter="10">
+            <el-col v-for="(item2,index2) in 10" :key="index2" :xs="12" :sm="6" :md="6" :lg="4" :xl="4">
+              <div class="more_item">
+                <router-link to="">
+                  <el-card :body-style="{ padding: '0px' }">
+                    <img preview :src="item1.img" class="image">
+                    <div style="padding: 10px;">
+                      <b>{{item1.content}}</b>
+                    </div>
+                    <div class="sale-bottom">
+                      <span class="price">￥{{item1.price}}</span>
+                      <span class="sale">已售{{item1.sale}}</span>
+                    </div>
+                  </el-card>
+                </router-link>
+              </div>
+            </el-col>
+          </el-row>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
   </div>
 </template>
 

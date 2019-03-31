@@ -7,13 +7,13 @@
     </div>
     <div v-show="note.Id">
       <div class="app-container">
-        <div class="crumbs disNone">
+        <!-- <div class="crumbs disNone">
           <el-breadcrumb separator="/">
               <el-breadcrumb-item :to="{ path: '/tonote/noteList' }"><i class="el-icon-date"></i> 笔记列表</el-breadcrumb-item>
               <el-breadcrumb-item>笔记详情</el-breadcrumb-item>
           </el-breadcrumb>
-        </div>
-        <div class="big-box1200">
+        </div> -->
+        <div class="container big-box1200">
           <!-- <router-link :to="'/tonote/note_more/'+ this.id"> -->
             <el-button class="de-more" size="small" @click="to_more">相关题目</el-button>
           <!-- </router-link> -->
@@ -148,6 +148,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.container {
+    border: 0;
+}
 .note_d-title{
   text-align: center;
 }
@@ -160,6 +163,7 @@ export default {
 }
 .note_d-content{
   padding: 10px 3px 3px 3px;
+  min-height: 400px;
 }
 
 </style>

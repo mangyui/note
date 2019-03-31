@@ -41,7 +41,7 @@
       <input id="Choose_Avatar" ref="referenceUpload" style="display: none" type="file" name="image" accept="image/*" multiple @change="toChoose"/>
       <div>
         <h2>{{user.Name}}</h2>
-        <p class="user_address">{{Class==null?'':Class+' |'}}  学生</p>
+        <p class="user_address">{{Class==null?'':Class+' |'}}  {{user.Name=='ming'?'管理员':(user.Occupation==2?'教师':'学生')}}</p>
         <!-- <p class="user_mess">{{user.Intro}}</p> -->
         <p class="user_money">金币：<span>{{user.Coin||0}}</span> <el-button size="mini" round @click="chongzhiBox = true">充值</el-button></p>
       </div>
@@ -55,7 +55,7 @@
           <div class="table-wrap">
             <table class="datum-table">
               <tr>
-                <th>用户名</th>
+                <th>用户号</th>
                 <td>{{user.Name}}</td>
               </tr>
               <tr>
@@ -108,7 +108,8 @@
           </div>
         </div>
         <div class="save-me">
-          <el-button v-if="!isUpdate" @click="isUpdate=!isUpdate">修改资料</el-button>
+          <el-button size="small" v-if="!isUpdate" @click="isChange">刷新资料</el-button>
+          <el-button size="small" type="primary" v-if="!isUpdate" @click="isUpdate=!isUpdate">修改资料</el-button>
       </div>
       <div class="div-logout toShow" @click="logout"><el-button type="danger">退出登录</el-button></div>
       </div>
@@ -208,8 +209,8 @@
         </el-alert>
       </div>
       <div class="save-me">
-        <el-button v-if="isUpdate" @click="isUpdate=false">返回</el-button>
-        <el-button @click="toSave">保存修改</el-button>
+        <el-button size="small" v-if="isUpdate" @click="isUpdate=false">返回</el-button>
+        <el-button size="small" type="primary" @click="toSave">保存修改</el-button>
       </div>
     </div>
     <el-dialog
@@ -477,15 +478,15 @@ export default {
     },
     isChange() {
       GetCustomer(qs.stringify({ UserId: this.user.Id })).then(res => {
-        if (res.data.data.Avatar !== this.user.Avatar) {
-          this.$store.dispatch('UpdateAvatar', res.data.data.Avatar)
+        if (res.data.data.Id === this.user.Id) {
+          this.$store.dispatch('RefreshUser', res.data.data)
           location.reload()
         }
       })
     }
   },
   created() {
-    this.isChange()
+    // this.isChange()
     this.cropImg = this.avatar
     this.getschool()
     var index = this.classlist.find((item) => {
@@ -625,7 +626,7 @@ export default {
       height: 2em;
     }
     p{
-      margin-top: 5px;
+      margin-top: 8px;
       font-size: 12px;
     }
   }

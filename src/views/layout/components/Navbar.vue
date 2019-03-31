@@ -16,7 +16,7 @@
 
       <actor-select v-if="isTeacher" class="nx-help right-menu-item disNone" />
 
-      <nx-message class="nx-help right-menu-item disNone" />
+      <nx-message v-if="user.Id" class="nx-help right-menu-item disNone" />
 
       <nx-lang-select class="international right-menu-item"></nx-lang-select>
 
@@ -36,11 +36,6 @@
               我的主页
             </el-dropdown-item>
           </router-link>
-          <!-- <a target='_blank' href="https://github.com/mangyui">
-            <el-dropdown-item>
-              github地址
-            </el-dropdown-item>
-          </a> -->
           <span @click="logout">
             <el-dropdown-item v-if="user.Name" divided>
               <span style="display:block;">登出</span>

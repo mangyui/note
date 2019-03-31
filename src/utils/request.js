@@ -31,7 +31,7 @@ service.interceptors.response.use(
     const res = response.data
     if (res.ret !== 200) {
       Message({
-        message: '请求错误',
+        message: res.msg,
         type: 'error',
         duration: 5 * 1000
       })

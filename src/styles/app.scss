@@ -1,3 +1,23 @@
+@media (min-width: 769px)
+{
+  .toShow{
+    display: none!important;
+  }
+  .header-title{
+    display: none!important;
+  }
+
+  .app-main::-webkit-scrollbar{width:6px;}
+  .scroll-container::-webkit-scrollbar{height:6px;}
+  .app-main,.scroll-container{
+    &::-webkit-scrollbar-track{background-color:#fff;border-radius: 10px;}
+    &::-webkit-scrollbar-thumb{background-color:rgba(144,147,153,.5);border-radius: 10px;}
+    &::-webkit-scrollbar-thumb:hover {background-color: rgba(144,147,153,.7)}
+    &::-webkit-scrollbar-thumb:active {background-color:#F56C6C}
+  }
+
+}
+
 @media (max-width: 768px){
   // .app-main{
   //   margin-top: 50px!important;
@@ -23,5 +43,132 @@
   }
   .el-menu.el-menu--horizontal{
     border-bottom: 0;
+  }
+
+  ul.el-menu--horizontal{
+    background: #52bab5;
+    border: 0;
+    // box-shadow: 0 0 1px 0px #52bab5;
+  }
+  .hamburger-container{
+    float: right!important;
+    fill: #fff;
+  }
+  .header-title{
+    display: inline-block!important;
+    position: fixed;
+    top: 0px;
+    left: 50%;
+    z-index: 99;
+    line-height: 50px;
+    transform: translateX(-50%);
+    color: #fff;
+    font-weight: 500;
+    font-size: 17px;
+    height: 50px;
+  }
+  .navbar .app-breadcrumb.el-breadcrumb,.login-info-title,.login-info-list{
+    display: none!important;
+  }
+  .login-info{
+    margin-top: 0!important;
+  }
+  .tipbox ul{
+    padding-left: 24px;
+  }
+
+  .el-form-item__label
+  {
+    text-align: left;
+    width: 100%!important;
+  }
+  .el-form-item__content{
+    margin-left: 0px!important;
+  }
+  .el-form-item{
+    margin-bottom: 20px
+  }
+  .el-dialog{
+    margin-top: 7vh!important;
+  }
+  .el-dialog__body{
+    padding: 0px 20px 10px;
+  }
+  .app-container{
+    padding: 10px 6px 20px;
+  }
+  .container{
+    padding: 5px 0 10px;
+    border: 0;
+  }
+  .el-message{
+    min-width: 350px;
+  }
+  .tip-warning{
+    line-height: 24px;
+    padding: 5px 8px;
+  }
+  .disNone{
+    display: none!important;
+  }
+  .friend-box{
+    .friend-top{
+      height: 100px;
+    }
+    .friend-body{
+      padding: 5px 5px 5px;
+      img{
+        height: 80px;
+        width: 80px;
+        top: -40px;
+        left:  calc(50% - 40px);
+      }
+      b{
+        font-size: 15px;
+      }
+      p{
+        font-size: 12px;
+      }
+   }
+  }
+  .el-card__body{
+    padding: 10px;
+  }
+  .ques-list {
+    .ques-list_item {
+     .ques_box{
+      .ques_body,.ques_body p{
+        line-height: 26px;
+        font-size: 14px;
+        }
+      }
+    }
+  }
+  .de-more{
+    right: 5px;
+    top: 10px;
+  }
+  .systom-group{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    text-align: center;
+    color: #fff;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #2e323f;
+    padding: 8px 0 5px;
+    svg{
+      width: 17px!important;
+      height: 17px!important;
+      font-size: 17px!important;
+      margin: 0 0 8px!important;
+      fill: #fff!important;
+      color: #fff;
+    }
+    p{
+      font-size: 10px;
+    }
   }
 }
