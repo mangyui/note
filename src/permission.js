@@ -1,7 +1,7 @@
 import router from './router'
 import store from './store'
-import NProgress from 'nprogress' // Progress 进度条
-import 'nprogress/nprogress.css'// Progress 进度条样式
+// import NProgress from 'nprogress' // Progress 进度条
+// import 'nprogress/nprogress.css'// Progress 进度条样式
 import { Notification } from 'element-ui'
 // import { getToken } from '@/utils/auth' // 验权
 
@@ -19,7 +19,8 @@ const whiteList = ['/login',
   '/home/other_answer/' // 题友解答
 ] // 不重定向白名单
 router.beforeEach((to, from, next) => {
-  NProgress.start()
+  // NProgress.start()
+
   // console.log(store.getters.user)
   // console.log(store.getters.addRouters[0])
   if (!store.getters.addRouters[0] && to.path !== '/login') {
@@ -36,30 +37,40 @@ router.beforeEach((to, from, next) => {
       next({ ...to, replace: true })
       // console.log(router)
     })
-  }
-  if (!store.getters.user.Id) {
-    if (whiteList.indexOf(to.path.replace(/\d+/g, '')) !== -1) {
-      next()
-    } else {
-      next('/login')
-      // location.reload()
-      Notification.closeAll()
-      Notification.info('请先登录！')
-    }
   } else {
-    if (to.path === '/login') {
-      next({ path: '/' })
-    } else {
-      if (to.path.replace(/\d+/g, '') === '/user/others/' && to.params.id === store.getters.user.Id) {
-        next({ path: '/user/index' })
+    if (!store.getters.user.Id) {
+      if (whiteList.indexOf(to.path.replace(/\d+/g, '')) !== -1) {
+        next()
+      } else {
+        next('/login')
+        // location.reload()
+        Notification.closeAll()
+        Notification.info('请先登录！')
       }
-      // console.log(to)
-      next()
+    } else {
+      if (to.path === '/login') {
+        next({ path: '/' })
+      } else {
+        if (to.path.replace(/\d+/g, '') === '/user/others/' && to.params.id === store.getters.user.Id) {
+          next({ path: '/user/index' })
+        }
+        // console.log(to)
+        next()
+      }
     }
   }
-
-  NProgress.done()
+  // NProgress.done()
   // next() !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   // next()
 })
 
+router.afterEach((to, from, next) => {
+  var ele = document.querySelector('.app-main')
+  $('body>ul').remove()
+  $('body>div').not('#app,.pswp').remove()
+  if (ele) {
+    setTimeout(() => {
+      ele.scrollTop = '0px'
+    }, 0)
+  }
+})

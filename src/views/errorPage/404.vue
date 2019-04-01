@@ -16,7 +16,7 @@
             <div class="bullshit__info">为什么会看到这个页面，你心里没点数吗？</div>
             <!-- <div class="bullshit__headline">{{ message }}</div> -->
             <div class="bullshit__info">请检查位置是否正确，或点击以下按钮返回主页</div>
-            <a href="" class="bullshit__return-home">返回主页</a>
+            <a href="/" class="bullshit__return-home">返回主页</a>
           </div>
         </el-col>
       </el-row>

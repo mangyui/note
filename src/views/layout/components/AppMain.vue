@@ -1,12 +1,12 @@
 <template>
   <section :id="key=='/user/index'?'user_body':''" class="app-main">
-    <div class="bg-warp">
+    <!-- <div class="bg-warp">
       <span class="bg_item bg_item1"></span>
       <span class="bg_item bg_item2"></span>
       <span class="bg_item bg_item3"></span>
       <span class="bg_item bg_item4"></span>
       <span class="bg_item bg_item5"></span>
-    </div>
+    </div> -->
     <transition name="fade" mode="out-in">
       <keep-alive :include="cachedViews">
         <router-view :key="key"></router-view>
@@ -31,21 +31,19 @@ export default {
     key() {
       return this.$route.fullPath
     }
-  },
-  // 监听路由，使每次更换页面都滚动到顶部
-  watch: {
-    $route(to, from) {
-      setTimeout(() => {
-        var ele = document.querySelector('.app-main')
-        ele.scrollTop = '0px'
-      }, 0)
-      $('body>ul').remove()
-      $('body>div').not('#app,.pswp').remove()
-      // this.$previewRefresh()
-      // this.rou = to
-      // console.log(this.rou)
-    }
   }
+  // 监听路由，使每次更换页面都滚动到顶部
+  // watch: {
+  //   $route(to, from) {
+  //     // var ele = document.querySelector('.app-main')
+  //     // ele.scrollTop = '0px'
+  //     $('body>ul').remove()
+  //     $('body>div').not('#app,.pswp').remove()
+  //     // this.$previewRefresh()
+  //     // this.rou = to
+  //     // console.log(this.rou)
+  //   }
+  // }
 }
 </script>
 

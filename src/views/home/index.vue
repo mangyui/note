@@ -1,9 +1,6 @@
 <template>
-  <div ref="scollWhere" class="">
+  <div class="home-container">
     <div class="big-box1200">
-      <!-- <router-link to="/todo/edit/1">
-        <el-button class="top-btn_edit" round icon="el-icon-edit" :size="screenWidth>770?'':'small'" :style="screenWidth>770?'':'border:0'">写笔记</el-button>
-      </router-link> -->
       <router-link to="/home/search" class="disNone">
         <el-button class="top-btn_search" round icon="el-icon-search" :size="screenWidth>770?'':'small'" :style="screenWidth>770?'':'border:0'">搜索</el-button>
       </router-link>
@@ -85,13 +82,11 @@ import {
 } from '@/api/toget'
 import quexBox from '@/components/my-box/quex-box'
 import noteBox from '@/components/my-box/note-box'
-import myquexBox from '@/components/my-box/myquex-box'
 export default {
   name: 'home',
   components: {
     nxSvgIcon,
     quexBox,
-    myquexBox,
     noteBox
   },
   data() {
@@ -102,14 +97,13 @@ export default {
       notes: [],
       myques: [],
       type: '',
-      showLoading: true,
-      bg1: './static/img/bg_1.png',
-      bg2: './static/img/bg_2.png'
+      showLoading: true
     }
   },
   activated() {
     document.querySelector('.app-main').scrollTop = this.homeTop || 0
-    this.getNotes()
+    // console.log(this.homeTop)
+    // this.getNotes()
   },
   beforeRouteLeave(to, from, next) {
     this.homeTop = document.querySelector('.app-main').scrollTop || 0
@@ -180,169 +174,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.bg_updown{
-  position: absolute;
-  width: 100%;
-  top: 0%;
-  left: 0;
-  animation: upAndDownFast 2s ease-in-out infinite alternate;
-}
-.home_item{
-  color: #444;
-  height: 60px;
-  width: 80px;
-  text-align: center;
-  padding-top: 10px;
-  .more_icon{
-    width: 2em;
-    height: 2em;
-  }
-  p{
-    line-height: 3em
-  }
-}
-.big-box1200{
-  position: relative;
-}
-.top-btn_edit{
-  position: absolute;
-  left: 5px;
-  top: 8px;
-}
-.top-btn_search{
-  position: absolute;
-  right: 5px;
-  top: 8px;
-}
-.home-top{
-  border: 1px solid #ebeef5;
-  box-shadow: 0 1px 0px #dfdfdf;
-  border-radius: 3px;
-  background: #fff;
-  display: flex;
-  max-width: 100%;
-  justify-content: space-around;;
-  margin: 0 10px 15px;
-  padding: 10px 5px 24px;
-}
-.top-camera{
-  width: 100%;
-  height: 280px;
-  text-align: center;
-  margin: 0 auto;
-  background: #52bab5;
-  .icon-wrap{
-    display: inline-block;
-    height: 160px;
-    width: 160px;
-    background: #fff;
-    border-radius: 50%;
-    padding: 15px;
-    margin-top: 50px;
-    box-shadow: 0 1px 3px rgba(151, 151, 151, 0.58);
-    position: relative;
-    overflow: hidden;
-    .icon-camera{
-      // position: absolute;
-      // left: 50%;
-      // transform: translateX(-50%);
-      width: 5.5em;
-      height: 5.5em;
-      fill: #52bab5;
-      // animation: upAndDownFast 1s ease-in-out infinite alternate;
-    }
-    b{
-      margin-top: 7px;
-      display: block;
-      font-size: 16px;
-      color: #369490;;
-    }
-    .light{
-      width: 30px;
-      height: 200px;
-      background: #fff;
-      position: absolute;
-      left: -50px;
-      top: -80px;
-      transform: rotate(30deg);
-      animation-name: down;
-      animation-duration: 4000ms;
-      animation-timing-function: ease-in-out;
-      animation-iteration-count:infinite;
-      filter: blur(12px);
-    }
-  }
 
-}
-@keyframes down {
-    0% {
-      left: -50px;
-      top: -80px;
-    }
-    40%{
-      left: -50px;
-      top: -80px;
-    }
-    80%{
-      left: 200px;
-      top: 120px;
-    }
-    90%{
-      left: 200px;
-      top: 120px;
-    }
-    100%{
-      left: 200px;
-      top: 120px;
-    }
-}
-.top-search{
-  display: flex;
-  width: 450px;
-
-  .el-input__inner{
-    border-radius: 4px 0 0 4px;
-    border-right: 0;
-  }
-  .el-button{
-    border-radius: 0 4px 4px 0;
-    height: 40px;
-  }
-}
-@media (min-width: 769px){
-  .big-box1200{
-    margin-top: 10px;
-    padding-top: 5px;
-  }
-  .top-btn_search{
-    right: 10px;
-  }
-  .home-top {
-    margin: 20px 0px 40px;
-    padding: 28px 0px;
-    .home_item{
-      height: 120px;
-      width: 100px;
-      padding-top: 20px;
-      .more_icon{
-        width: 3.5em;
-        height: 3.5em;
-      }
-      p{
-        font-size: 15px;
-      }
-    }
-  }
-}
-@media (max-width: 768px)
-{
-  .home-box{
-    background: linear-gradient(to bottom, #52bab5, #ffffff);
-  }
-  .home_item p{
-    font-size: 12px;
-  }
-}
-@keyframes upAndDownFast{0%{top:6%}to{top:4%}}
-</style>

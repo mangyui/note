@@ -91,28 +91,8 @@ export default {
     }
   },
   created() {
-    // if (!store.getters.addRouters[0]) {
-    //   var roles = ['']
-    //   if (this.$store.getters.user.Id) {
-    //     if (this.$store.getters.user.Occupation === 1) {
-    //       roles = ['teacher']
-    //     } else {
-    //       roles = ['student']
-    //     }
-    //     if (this.$store.getters.user.Name === 'ming') {
-    //       roles = ['admin']
-    //     }
-    //   } else {
-    //     roles = ['']
-    //   }
-    //   store.dispatch('GenerateRoutes', roles).then(() => {
-    //     router.addRoutes(store.getters.addRouters)
-    //   })
-    // }
   },
   beforeDestroy() {
-    // 目前根据该钩子来刷新从而初始化路由
-    location.reload()
   }
 }
 </script>

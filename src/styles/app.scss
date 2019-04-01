@@ -16,13 +16,43 @@
     &::-webkit-scrollbar-thumb:active {background-color:#F56C6C}
   }
 
+  .home-container {
+    .big-box1200{
+      margin-top: 10px;
+      padding-top: 5px;
+    }
+    .top-btn_search{
+      right: 10px;
+    }
+    .home-top {
+      margin: 20px 0px 40px;
+      padding: 28px 0px;
+      .home_item{
+        height: 120px;
+        width: 100px;
+        padding-top: 20px;
+        .more_icon{
+          width: 3.5em;
+          height: 3.5em;
+        }
+        p{
+          font-size: 15px;
+        }
+      }
+    }
+  }
 }
 
 @media (max-width: 768px){
-  // .app-main{
-  //   margin-top: 50px!important;
-  //   height: calc(100% - 50px)!important;
-  // }
+
+  .home-container {
+    .home-box{
+      background: linear-gradient(to bottom, #52bab5, #ffffff);
+    }
+    .home_item p{
+      font-size: 12px;
+    }
+  }
   .scroll-container{
     display: none!important;
   }

@@ -231,6 +231,11 @@ export default {
 
 @media (max-width: 768px)
 {
+  .login-container{
+    flex-direction: column-reverse;
+    justify-content: space-between;
+    padding: 10px 0;
+  }
   .logo img{
     width: 160px;
     height: 160px;

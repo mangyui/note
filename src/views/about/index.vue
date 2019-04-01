@@ -1,18 +1,18 @@
 <template>
   <div class="app-container">
     <span class="header-title">关于vNote</span>
-    <div class="crumbs">
+    <!-- <div class="crumbs">
       <el-breadcrumb separator="/">
           <el-breadcrumb-item><i class="el-icon-date"></i> 关于vNote</el-breadcrumb-item>
       </el-breadcrumb>
-    </div>
+    </div> -->
     <div class="about-top">
       <img preview src="../../assets/images/home/logo.png" width="100px" height="100px" alt="logo" style="vertical-align: middle;" />
       <b>vNote</b>
       <i>V {{version}}</i>
     </div>
     <div>
-      <div class="el-collapse-item__header" @click="toUp">
+      <div style="justify-content: space-between;" class="el-collapse-item__header" @click="toUp">
         版本更新<span v-if="isup" class="el-badge__content">new</span><span class="spanText">{{text}}</span>
       </div>
       <el-collapse>
@@ -46,7 +46,7 @@ export default {
   name: 'about',
   data() {
     return {
-      version: '1.0.6',
+      version: '1.0.7',
       isup: false,
       text: '已是最新版本',
       upUrl: 'https://dn-coding-net-production-file.codehub.cn/e415d970-4725-11e9-8fcf-a1ca3c5c1ac9.vnd.android.package-archive?attname=vNote_1.0.6.apk&e=1552659982&token=goE9CtaiT5YaIP6ZQ1nAafd_C1Z_H2gVP8AwuC-5:Xe6-aiKxTGH9Z5TNnazoCjh46og='

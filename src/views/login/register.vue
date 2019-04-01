@@ -148,6 +148,8 @@ export default {
             this.fullscreenLoading = false
             if (res.data.code === 0) {
               this.$router.push({ path: '/user/index' })
+              // 为了重置路由
+              location.reload()
             } else {
               this.$message.warning(res.data.msg)
             }

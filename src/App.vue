@@ -27,7 +27,3 @@ export default {
 }
 
 </script>
-<style lang="scss">
-  // 手机端
-  @import "src/styles/app.scss";
-</style>
