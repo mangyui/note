@@ -1,76 +1,79 @@
 <template>
   <div>
-    <el-button class=" btn-text can-hover" type="text" @click="dialogVisible = true">
-      <el-badge is-dot class="item">
-        <i class="header-icon el-icon-bell"></i>
+    <el-button class="btn-text can-hover" type="text" @click="dialogVisible = true">
+      <nx-svg-icon class-name='naver-icon' icon-class="bell" />
+      <el-badge is-dot class="item"  style="margin-top: -3px;">
+        <span class="naver-text disNone">通知</span>
       </el-badge>
     </el-button>
     <el-dialog title="消息通知" width="800px" :visible.sync="dialogVisible" append-to-body>
-    <div class="container mess">
-            <el-tabs v-model="message">
-                <el-tab-pane name="first">
-                  <span slot="label"><el-badge :value="unread.length" class="item"> 未读消息</el-badge></span>
-                    <el-table :data="unread" :show-header="false" style="width: 100%">
+      <div class="container mess">
+        <el-tabs v-model="message">
+            <el-tab-pane name="first">
+              <span slot="label"><el-badge :value="unread.length" class="item"> 未读消息</el-badge></span>
+                <el-table :data="unread" :show-header="false" style="width: 100%" empty-text="暂无消息">
+                    <el-table-column>
+                        <template slot-scope="scope">
+                            <span class="message-title">{{scope.row.title}}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="date" width="100"></el-table-column>
+                    <el-table-column fixed="right" width="95">
+                        <template slot-scope="scope">
+                            <el-button size="mini" @click="handleRead(scope.$index)">标为已读</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <div class="handle-row">
+                  <el-button style="float:right" type="text" @click="toMore">更多</el-button>
+                  <el-button size="small" type="primary" @click="allToDu">全部标为已读</el-button>
+                </div>
+            </el-tab-pane>
+            <!-- <el-tab-pane name="second">
+              <span slot="label"><el-badge :value="read.length" class="item"> 已读消息</el-badge></span>
+                <template v-if="message === 'second'">
+                    <el-table :data="read" :show-header="false" style="width: 100%" empty-text="暂无消息">
                         <el-table-column>
                             <template slot-scope="scope">
                                 <span class="message-title">{{scope.row.title}}</span>
                             </template>
                         </el-table-column>
                         <el-table-column prop="date" width="100"></el-table-column>
-                        <el-table-column fixed="right" width="95">
+                        <el-table-column fixed="right" width="70">
                             <template slot-scope="scope">
-                                <el-button size="small" @click="handleRead(scope.$index)">标为已读</el-button>
+                                <el-button size="mini" type="danger" @click="handleDel(scope.$index)">删除</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
                     <div class="handle-row">
-                        <el-button type="primary">全部标为已读</el-button>
+                      <el-button style="float:right" type="text" @click="toMore">更多</el-button>
+                      <el-button size="small" type="danger">删除全部</el-button>
                     </div>
-                </el-tab-pane>
-                <el-tab-pane name="second">
-                  <span slot="label"><el-badge :value="read.length" class="item"> 已读消息</el-badge></span>
-                    <template v-if="message === 'second'">
-                        <el-table :data="read" :show-header="false" style="width: 100%">
-                            <el-table-column>
-                                <template slot-scope="scope">
-                                    <span class="message-title">{{scope.row.title}}</span>
-                                </template>
-                            </el-table-column>
-                            <el-table-column prop="date" width="100"></el-table-column>
-                            <el-table-column fixed="right" width="70">
-                                <template slot-scope="scope">
-                                    <el-button size="small" type="danger" @click="handleDel(scope.$index)">删除</el-button>
-                                </template>
-                            </el-table-column>
-                        </el-table>
-                        <div class="handle-row">
-                            <el-button type="danger">删除全部</el-button>
-                        </div>
-                    </template>
-                </el-tab-pane>
-                <el-tab-pane name="third">
-                  <span slot="label"><el-badge :value="recycle.length" class="item"> 回收站</el-badge></span>
-                    <template v-if="message === 'third'">
-                        <el-table :data="recycle" :show-header="false" style="width: 100%">
-                            <el-table-column>
-                                <template slot-scope="scope">
-                                    <span class="message-title">{{scope.row.title}}</span>
-                                </template>
-                            </el-table-column>
-                            <el-table-column prop="date" width="100"></el-table-column>
-                            <el-table-column fixed="right" width="70">
-                                <template slot-scope="scope">
-                                    <el-button size="small" @click="handleRestore(scope.$index)">还原</el-button>
-                                </template>
-                            </el-table-column>
-                        </el-table>
-                        <div class="handle-row">
-                            <el-button type="danger">清空回收站</el-button>
-                        </div>
-                    </template>
-                </el-tab-pane>
-            </el-tabs>
-        </div>
+                </template>
+            </el-tab-pane> -->
+            <!-- <el-tab-pane name="third">
+              <span slot="label"><el-badge :value="recycle.length" class="item"> 回收站</el-badge></span>
+                <template v-if="message === 'third'">
+                    <el-table :data="recycle" :show-header="false" style="width: 100%" empty-text="暂无消息">
+                        <el-table-column>
+                            <template slot-scope="scope">
+                                <span class="message-title">{{scope.row.title}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="date" width="100"></el-table-column>
+                        <el-table-column fixed="right" width="70">
+                            <template slot-scope="scope">
+                                <el-button size="mini" @click="handleRestore(scope.$index)">还原</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <div class="handle-row">
+                        <el-button size="small" type="danger">清空回收站</el-button>
+                    </div>
+                </template>
+            </el-tab-pane> -->
+        </el-tabs>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -124,6 +127,16 @@ export default {
     handleRestore(index) {
       const item = this.recycle.splice(index, 1)
       this.read = item.concat(this.read)
+    },
+    allToDu() {
+      this.read = this.read.concat(this.unread)
+      this.unread = []
+    },
+    toMore() {
+      this.dialogVisible = false
+      this.$router.push({
+        path: '/user/message'
+      })
     }
   },
   computed: {
@@ -136,7 +149,7 @@ export default {
 
 <style lang="scss" scoped>
 .message-title{
-    cursor: pointer;
+  cursor: pointer;
 }
 .handle-row{
     margin-top: 30px;
@@ -149,8 +162,7 @@ export default {
     }
   }
 }
-.el-icon-bell{
-  font-size: 20px;
-  margin-top: -5px;
+.el-dropdown{
+  color:#5a5e66;
 }
 </style>

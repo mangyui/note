@@ -30,7 +30,8 @@
                       <p class="test_state"><span class="test_time">2019/03/27 19:56:33</span><span class="test_time">2019/04/07 19:56:33</span><el-tag size="small" type="success">在测</el-tag></p>
                     </div>
                   </router-link>
-                  <el-button type="primary" icon="el-icon-edit" size="mini" @click="toEdit"></el-button>
+                  <el-button v-if="user.roles.toString()!=['student']" type="primary" icon="el-icon-edit" size="mini" @click="toEdit"></el-button>
+                  <el-button v-if="user.roles.toString()==['student']" type="danger" icon="el-icon-close" size="mini" @click="toExit"></el-button>
                 </el-card>
             </el-timeline-item>
         </el-timeline>
@@ -76,6 +77,7 @@ export default {
   name: 'testList',
   data() {
     return {
+      user: this.$store.getters.user,
       search: {
         keys: '',
         UserId: this.$store.getters.user.Id
@@ -92,7 +94,19 @@ export default {
     toEdit() {
       this.dialogFormVisible = true
       return false
+    },
+    toExit() {
+      this.$confirm('退出测试?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+
+      }).catch(() => {})
     }
+  },
+  created() {
+    // console.log(this.user.roles)
   }
 }
 </script>

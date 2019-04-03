@@ -150,6 +150,12 @@ export const constantRouterMap = [
         name: 'others',
         component: () => import('@/views/user/others'),
         meta: { title: 'Others' }
+      },
+      {
+        path: 'message',
+        name: 'message',
+        component: () => import('@/views/user/message'),
+        meta: { title: 'Message' }
       }
     ]
   },
@@ -224,6 +230,13 @@ export const asyncRouterMap = [
         hidden: true,
         component: () => import('@/views/carveup/test_detail'),
         meta: { title: 'test_detail', roles: ['teacher', 'student'] }
+      },
+      {
+        path: 'test_todo/:id',
+        name: 'test_todo',
+        hidden: true,
+        component: () => import('@/views/carveup/test_todo'),
+        meta: { title: 'test_todo', roles: ['student'] }
       },
       {
         path: 'test_student/:id',

@@ -32,9 +32,9 @@
         <div class="voice-button">
           <div class="voice-input-button-wrapper">
             <voice-input-button
-                server="https://www.mccyu.com:444/"
-                appId="5c52f87b"
-                APIKey="3d0fba416f2a2423e7380ea2ab397d9e"
+                :server="voice.serverurl"
+                :appId="voice.appId"
+                :APIKey="voice.APIKey"
                 @record="showResult"
                 color="#fff"
                 tipPosition="top"
@@ -84,10 +84,6 @@
 </template>
 
 <script>
-// import 'quill/dist/quill.core.css'
-// import 'quill/dist/quill.snow.css'
-// import 'quill/dist/quill.bubble.css'
-// import { quillEditor } from 'vue-quill-editor'
 
 // wangeditor 富文本
 import E from 'wangeditor'
@@ -103,6 +99,8 @@ import {
 import VueCropper from 'vue-cropperjs'
 import axios from 'axios'
 import qs from 'qs'
+import { dataURLtoFile } from '@/utils/index.js'
+import { voice, ocr } from '@/utils/private.js'
 
 export default {
   name: 'note_edit',
@@ -111,6 +109,7 @@ export default {
       dialogFormVisible: false,
       dialogVisible: false,
       showGIF: false,
+      voice: voice,
       lines: '',
       result: '',
       isHand: false,
@@ -151,25 +150,11 @@ export default {
       }
     },
     onSuccess(imageURI) {
-      var file = this.dataURLtoFile('data:image/jpeg;base64,' + imageURI, 'camera.jpeg')
+      var file = dataURLtoFile('data:image/jpeg;base64,' + imageURI, 'camera.jpeg')
       this.setImage(file)
     },
     onFail(mess) {
       console.log('未选择图片')
-    },
-    dataURLtoFile(dataurl, filename) {
-      var arr = dataurl.split(',')
-      var mime = arr[0].match(/:(.*?);/)[1]
-      var bstr = window.atob(arr[1])
-      var n = bstr.length
-      var u8arr = new Uint8Array(n)
-      while (n--) {
-        u8arr[n] = bstr.charCodeAt(n)
-      }
-      var blob = new Blob([u8arr], { type: mime })
-      blob.lastModifiedDate = new Date()
-      blob.name = filename
-      return blob
     },
     toChoose(e) {
       const file = e.target.files[0]
@@ -200,10 +185,6 @@ export default {
       this.dialogVisible = false
       this.torun()
     },
-    // handleClose(done) {
-    //   this.cropImg = ''
-    //   done()
-    // },
     toRotate() {
       this.$refs.cropper.rotate(45)
     },
@@ -221,7 +202,7 @@ export default {
         'image': this.cropImg.replace(/data:image\/.*;base64,/, '')
       }
       axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
-      var url = 'https://mccyu.com:444/shouxie'
+      var url = ocr.shouxie
       axios.post(url, qs.stringify(ocr_data))
         .then(res => {
           this.result = res.data.words_result
@@ -284,43 +265,6 @@ export default {
         }
       }).catch(() => {})
     },
-    toright() {
-      this.btnRight = this.btnRight === '0' ? '-96px' : '0'
-      var btnF = document.querySelector('.btngroup_first .el-icon-back')
-      btnF.style.transform = this.btnRight === '0' ? 'rotate(180deg)' : ''
-    },
-    scrollRight() {
-      this.scroll(-2)
-    },
-    scrollLeft() {
-      this.scroll(
-        2)
-    },
-    scroll(nn) {
-      // var toolbar = document.getElementsByClassName('ql-toolbar')[0]
-      // toolbar.style.left = toolbar.offsetLeft + nn + 'px'
-      // console.log(toolbar.offsetLeft)
-      var toolbar = document.querySelector('.ql-toolbar')
-      var toobarWidth = toolbar.offsetWidth - 1430
-
-      var firstchild = document.querySelector('.ql-formats')
-      var ov = setInterval(() => {
-        // toolbar.scrollBy(nn, 0)
-        if (this.marginL <= 0 && this.marginL >= toobarWidth) {
-          this.marginL = this.marginL + nn
-          if (this.marginL > 0) {
-            this.marginL = 0
-          }
-          if (this.marginL < toobarWidth) {
-            this.marginL = toobarWidth
-          }
-        }
-        firstchild.style.marginLeft = this.marginL + 'px'
-      }, 2)
-      setTimeout(function() {
-        clearInterval(ov)
-      }, 500)
-    },
     getNote() {
       NoteDetails(qs.stringify({ Id: this.note.Id })).then(res => {
         this.note = res.data.data
@@ -357,7 +301,6 @@ export default {
   },
   mounted() {
     var That = this
-    // var Imgurl = 'http://192.168.1.105/'
     editor = new E(this.$refs.editor)
     editor.customConfig = {
       onchange: function(html) {

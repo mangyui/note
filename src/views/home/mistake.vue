@@ -71,34 +71,6 @@
           <div class="sys-article" v-html="question.Guangfang"></div>
         </div>
         <div class="sys-section">
-          <!-- <div class="title">
-            <strong>暂无题友解答</strong>
-          </div> -->
-          <!-- <div class="answer_item" v-for="(item,index) in 1" :key="index">
-            <div class="answer_item_top">
-              <div class="ques_header">
-                <router-link to="/user/others/1">
-                  <img :src="myavatar">
-                </router-link>
-                <div class="header_right">
-                  <b>{{user.Name}}</b>
-                </div>
-              </div>
-            </div>
-            <router-link to="/home/other_answer/2">
-              <div class="sys-article item-article">
-                <p>系统组件主要分为三大类</p>
-                <p>功能类：以实现具体功能为主，包括对第三方组件的二次封装类，尽量不要修改。</p>
-                <p>布局类：以常用布局为主，包括标题、间距、搜索之类的纯布局组件，可按实际项目要求修改</p>
-                <p>辅助类：文档辅助说明及其他组件部分，可能不会应用在正式产品中，该类别可以不引入到正式产品中</p>
-              </div>
-            </router-link>
-            <div class="sys_footer">
-              <span>
-                <nx-svg-icon class-name='sys_footer_icon' icon-class="zan" /><span class="ques_footer_num">66</span>
-              </span>
-            </div>
-          </div> -->
         </div>
       </div>
     </div>
@@ -106,10 +78,6 @@
 </template>
 
 <script>
-// import 'quill/dist/quill.core.css'
-// import 'quill/dist/quill.snow.css'
-// import 'quill/dist/quill.bubble.css'
-// import { quillEditor } from 'vue-quill-editor'
 
 // wangeditor 富文本
 import E from 'wangeditor'
@@ -149,21 +117,6 @@ export default {
         CollectNumber: ''
       },
       content: '',
-      // editorOption: {
-      //   placeholder: '等待提取中...',
-      //   modules: {
-      //     toolbar: [
-      //       ['bold', 'italic', 'underline', 'strike'],
-      //       [{ 'script': 'sub' }, { 'script': 'super' }],
-      //       [{ 'header': 1 }, { 'header': 2 }],
-      //       [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-      //       [{ 'align': [] }],
-      //       [{ 'color': [] }, { 'background': [] }],
-      //       [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      //       ['code-block', 'link', 'image']
-      //     ]
-      //   }
-      // },
       isMe: true,
       haveGuanfang: true,
       isLike: false,
@@ -172,24 +125,6 @@ export default {
   },
   methods: {
     handleChange() {
-      // var That = this
-      // var Imgurl = 'http://192.168.1.105/'
-      // editor.customConfig = {
-      //   onchange: function(html) {
-      //     That.content = html
-      //   },
-      //   uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
-      //   uploadFileName: 'file', // 后端使用这个字段获取图片信息
-      //   uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
-      //   showLinkImg: false,
-      //   uploadImgHooks: {
-      //     customInsert: function(insertImg, result, editor) {
-      //       var url = Imgurl + 'upload/' + result.data.data.data
-      //       // console.log(result.data.data.data)
-      //       insertImg(url)
-      //     }
-      //   }
-      // }
       this.isUpdae = true
     },
     dianZan() {
@@ -319,9 +254,6 @@ export default {
         this.showLoading = false
       }).catch((res) => {
         console.log(res)
-        // this.$message.warning('没有找到...')
-        // var close = document.querySelector('.tags-view-item.active .el-icon-close')
-        // close.click()
       })
     },
     Magnify() {

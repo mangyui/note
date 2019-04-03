@@ -43,9 +43,9 @@
             <div class="voice-button">
               <div class="voice-input-button-wrapper">
                 <voice-input-button
-                    server="https://www.mccyu.com:444/"
-                    appId="5c52f87b"
-                    APIKey="3d0fba416f2a2423e7380ea2ab397d9e"
+                    :server="voice.serverurl"
+                    :appId="voice.appId"
+                    :APIKey="voice.APIKey"
                     @record="showResult1"
                     color="#fff"
                     tipPosition="top"
@@ -61,9 +61,9 @@
             <div class="voice-button">
               <div class="voice-input-button-wrapper">
                 <voice-input-button
-                    server="https://www.mccyu.com:444/"
-                    appId="5c52f87b"
-                    APIKey="3d0fba416f2a2423e7380ea2ab397d9e"
+                    :server="voice.serverurl"
+                    :appId="voice.appId"
+                    :APIKey="voice.APIKey"
                     @record="showResult2"
                     color="#fff"
                     tipPosition="top"
@@ -142,8 +142,9 @@ import quexBox from '@/components/my-box/quex-box'
 import VueCropper from 'vue-cropperjs'
 import axios from 'axios'
 import qs from 'qs'
-// import { slider, slideritem } from 'vue-concise-slider'
+import { dataURLtoFile } from '@/utils/index.js'
 
+import { voice, ocr } from '@/utils/private.js'
 // import {
 //   questionCategory
 // } from '@/api/toget'
@@ -169,6 +170,7 @@ export default {
   data: function() {
     return {
       documentWidth: document.body.clientHeight,
+      voice: voice,
       showGIF: false,
       // showShou: true,
       showBtn: false,
@@ -210,14 +212,6 @@ export default {
       }
     }
   },
-  // beforeRouteEnter(to, from, next) {
-  //   // 这里的vm指的就是vue实例，可以用来当做this使用
-  //   next(vm => {
-  //     if (from.path === '/home/index') {
-  //       vm.cameraTakePicture()
-  //     }
-  //   })
-  // },
   methods: {
     cameraTakePicture() {
       if (navigator.camera) {
@@ -236,25 +230,11 @@ export default {
       }
     },
     onSuccess(imageURI) {
-      var file = this.dataURLtoFile('data:image/jpeg;base64,' + imageURI, 'camera.jpeg')
+      var file = dataURLtoFile('data:image/jpeg;base64,' + imageURI, 'camera.jpeg')
       this.setImage(file)
     },
     onFail(mess) {
       console.log('未选择图片')
-    },
-    dataURLtoFile(dataurl, filename) {
-      var arr = dataurl.split(',')
-      var mime = arr[0].match(/:(.*?);/)[1]
-      var bstr = window.atob(arr[1])
-      var n = bstr.length
-      var u8arr = new Uint8Array(n)
-      while (n--) {
-        u8arr[n] = bstr.charCodeAt(n)
-      }
-      var blob = new Blob([u8arr], { type: mime })
-      blob.lastModifiedDate = new Date()
-      blob.name = filename
-      return blob
     },
     toChoose(e) {
       const file = e.target.files[0]
@@ -306,9 +286,9 @@ export default {
         'image': this.cropImg.replace(/data:image\/.*;base64,/, '')
       }
       axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
-      var url = 'https://mccyu.com:444/ocr'
+      var url = ocr.baseurl
       if (this.isHand === true) {
-        url = 'https://mccyu.com:444/shouxie'
+        url = ocr.shouxie
       }
       axios.post(url, qs.stringify(ocr_data))
         .then(res => {
@@ -324,8 +304,10 @@ export default {
         this.result.forEach(item => {
           this.form.Content = this.form.Content + item.words + '<br />'
           this.form.Text = this.form.Text + item.words
+          ShouTitle.txt.append('<p>' + item.words + '<p>' + '<br />')
         })
-        ShouTitle.txt.html(this.form.Content)
+        // ShouTitle.txt.append('<p>' + this.form.Content + '</p>')
+        // ShouTitle.txt.html(this.form.Content)
         this.$notify({
           title: '提示',
           message: '已提取图中文字',
@@ -432,7 +414,6 @@ export default {
   mounted() {
     // 富文本配置
     var That = this
-    // var Imgurl = 'http://192.168.1.105/'
     ShouTitle = new E(this.$refs.ShouTitle)
     ShouCorrect = new E(this.$refs.ShouCorrect)
     ShouTitle.customConfig = {

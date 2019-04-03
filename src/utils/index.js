@@ -61,3 +61,35 @@ export function param2Obj(url) {
   return JSON.parse('{"' + decodeURIComponent(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}')
 }
 
+export function dataURLtoBlob(dataurl) { // 将base64转换为文件
+  var arr = dataurl.split(',')
+  var mime = arr[0].match(/:(.*?);/)[1]
+  var bstr = atob(arr[1])
+  var n = bstr.length
+  var u8arr = new Uint8Array(n)
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n)
+  }
+  return new Blob([u8arr], { type: mime })
+}
+
+export function blobToFile(theBlob, fileName) {
+  theBlob.lastModifiedDate = new Date()
+  theBlob.name = fileName
+  return theBlob
+}
+
+export function dataURLtoFile(dataurl, filename) {
+  var arr = dataurl.split(',')
+  var mime = arr[0].match(/:(.*?);/)[1]
+  var bstr = window.atob(arr[1])
+  var n = bstr.length
+  var u8arr = new Uint8Array(n)
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n)
+  }
+  var blob = new Blob([u8arr], { type: mime })
+  blob.lastModifiedDate = new Date()
+  blob.name = filename
+  return blob
+}

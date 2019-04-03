@@ -99,7 +99,7 @@ export default {
           this.$store.dispatch('Login', this.loginForm).then(res => {
             this.fullscreenLoading = false
             if (res.data.code === 0) {
-              this.$router.push({ path: '/' })
+              // this.$router.push({ path: '/' })
               // 为了重置路由
               location.reload()
             } else {

@@ -12,30 +12,27 @@
       <el-button class="top-btn_search" round icon="el-icon-search" size="small" style=" margin-left:10px;border:0; position: relative;top: -3px;">搜索</el-button>
     </router-link>
     <div class="right-menu disNone">
-      <nx-mobile class="nx-help right-menu-item disNone"></nx-mobile>
-
       <actor-select v-if="isTeacher" class="nx-help right-menu-item disNone" />
 
       <nx-message v-if="user.Id" class="nx-help right-menu-item disNone" />
-
-      <nx-lang-select class="international right-menu-item"></nx-lang-select>
-
-      <nx-full-screen class="screenfull right-menu-item"></nx-full-screen>
-
+      <nx-mobile class="nx-help right-menu-item disNone"></nx-mobile>
       <el-dropdown class="avatar-container right-menu-item" trigger="click">
         <div class="avatar-wrapper">
         <!-- <img class="user-avatar" :src="user.avatar"> -->
           <i class="el-icon-more"></i>
         </div>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>
-
-          </el-dropdown-item>
           <router-link v-if="user.Name" to="/user/index">
             <el-dropdown-item>
               我的主页
             </el-dropdown-item>
           </router-link>
+          <el-dropdown-item divided>
+            <nx-full-screen class="screenfull right-menu-item"></nx-full-screen>
+          </el-dropdown-item>
+          <el-dropdown-item>
+            <nx-lang-select class="international right-menu-item"></nx-lang-select>
+          </el-dropdown-item>
           <span @click="logout">
             <el-dropdown-item v-if="user.Name" divided>
               <span style="display:block;">登出</span>
@@ -191,7 +188,6 @@ export default {
     .screenfull {
       height: 50px;
       vertical-align: top;
-      line-height: 77px;
       &:hover .screenfull-svg{
         fill: #52bab5;
       }

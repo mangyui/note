@@ -26,17 +26,23 @@
           </div>
         </div>
         <div>
-          <el-card shadow="hover" class="cut_item" v-for="(item,index) in 4" :key="index" >
+          <div v-if="showLoading" class="loading-box">
+            <i class="el-icon-loading"></i>
+            加载中...
+          </div>
+          <el-card shadow="hover" class="cut_item" v-for="(item,index) in Locations" :key="index" >
             <b>{{index+1}}.</b>
             <br/>
             <el-button class="cut_item-detele" type="text" icon="el-icon-close" size="large" @click="Detele(index)"></el-button>
-            <img preview='1' :src="Quesimgs[index]" alt="没找到" :title="'第'+ (index+1) +'题'">
-            <div class="cut_item_content">2.甲、乙两物体均做直线运动,甲物体速度随时间变化的图象如图甲所示,乙物体位置随
+            <img v-show="Quesimgs[index]" preview='1' :src="Quesimgs[index]" alt="加载中" :title="'第'+ (index+1) +'题'">
+            <div class="cut_item_content" v-html="item.words">
+              <!-- 2.甲、乙两物体均做直线运动,甲物体速度随时间变化的图象如图甲所示,乙物体位置随
               时间变化的图象如图乙所示,则这两个物体的运动情况是。
               <p>A.甲在04s内运动方向改变,通过的路程为12m</p>
               <p>B.甲在04s内运动方向不变,通过的位移大小为6m</p>
               <p>C.乙在0-4s内运动方向改变,通过的路程为12m</p>
-              <p>D.乙在04s内运动方向不变,通过的位移大小为6m</p></div>
+              <p>D.乙在04s内运动方向不变,通过的位移大小为6m</p> -->
+              </div>
               <div style="text-align: right;">
                 <!-- <el-button type="primary" icon="el-icon-plus" size="small" @click="">加入测试集</el-button> -->
                 <el-button  class="yellow-btn" icon="el-icon-edit" size="small" @click="adddialog=true">修改</el-button>
@@ -131,15 +137,16 @@ import nxSvgIcon from '@/components/nx-svg-icon/index'
 import quexBox from '@/components/my-box/quex-box'
 import VueCropper from 'vue-cropperjs'
 import qs from 'qs'
-// import { slider, slideritem } from 'vue-concise-slider'
-
+import { typeList } from '@/assets/js/question_type.js'
+import { dataURLtoBlob, blobToFile, dataURLtoFile } from '@/utils/index.js'
 import {
   questionCategory
 } from '@/api/toget'
 
 import {
   Imgurl,
-  upQuestion
+  upQuestion,
+  CutQuestion
 } from '@/api/toPost'
 
 export default {
@@ -157,12 +164,12 @@ export default {
       documentWidth: document.body.clientHeight,
       openNum: false,
       showGIF: false,
-      // showShou: true,
+      showLoading: false,
       showBtn: false,
       lines: '',
       result: '',
       isHand: false,
-      cropImg: './static/img/mock/test.png',
+      cropImg: '',
       imgSrc: '',
       dialogVisible: false,
       adddialog: false,
@@ -183,88 +190,57 @@ export default {
           { required: true, message: '请选择题目类型', trigger: 'change' }
         ]
       },
-      typelist: [{
-        value: '选择题',
-        label: '选择题'
-      }, {
-        value: '填空题',
-        label: '填空题'
-      }, {
-        value: '判断题',
-        label: '判断题'
-      }, {
-        value: '作图题',
-        label: '作图题'
-      }, {
-        value: '实验题',
-        label: '实验题'
-      }, {
-        value: '综合题',
-        label: '综合题'
-      }, {
-        value: '计算题',
-        label: '计算题'
-      }, {
-        value: '完形填空',
-        label: '完形填空'
-      }, {
-        value: '阅读题',
-        label: '阅读题'
-      }, {
-        value: '作文题',
-        label: '作文题'
-      }, {
-        value: '',
-        label: '自己看什么题'
-      }],
+      typelist: typeList,
       resultImg: './static/img/mock/test.png',
-      Locations: [{
-        location: {
-          width: 182,
-          top: 46,
-          left: 40,
-          height: 47
-        }
-      }, {
-        location: {
-          width: 1714,
-          top: 157,
-          left: 42,
-          height: 38
-        }
-      }, {
-        location: {
-          width: 1719,
-          top: 200,
-          left: 42,
-          height: 35
-        }
-      }, {
-        location: {
-          width: 581,
-          top: 241,
-          left: 41,
-          height: 38
-        }
-      }],
-      Quesimgs: []
+      Locations: [
+      //   {
+      //   location: {
+      //     width: 182,
+      //     top: 46,
+      //     left: 40,
+      //     height: 47
+      //   }
+      // }, {
+      //   location: {
+      //     width: 1714,
+      //     top: 157,
+      //     left: 42,
+      //     height: 38
+      //   }
+      // }, {
+      //   location: {
+      //     width: 1719,
+      //     top: 200,
+      //     left: 42,
+      //     height: 35
+      //   }
+      // }, {
+      //   location: {
+      //     width: 581,
+      //     top: 241,
+      //     left: 41,
+      //     height: 38
+      //   }
+      // }
+      ],
+      Quesimgs: [],
+      defaultImg: require('@/assets/images/home/loading2.gif')
     }
   },
   methods: {
     toCutup() {
       // this.Quesimgs = new Array(this.Locations.length)
-
       for (var i = 0; i < this.Locations.length; i++) {
-        var imgs = new Image('./static/img/mock/test.png')
-        imgs.setAttribute('src', './static/img/mock/test.png')
+        var imgs = new Image()
+        imgs.setAttribute('src', this.cropImg)
         imgs.setAttribute('index', i)
         var That = this
         imgs.onload = function() {
           var j = this.getAttribute('index')
-          var w = That.Locations[j].location.width
-          var h = That.Locations[j].location.height
-          var sx = That.Locations[j].location.left
-          var sy = That.Locations[j].location.top
+          var w = That.Locations[j].width
+          var h = That.Locations[j].height
+          var sx = That.Locations[j].left
+          var sy = That.Locations[j].top
           var canvas = document.createElement('CANVAS')
           canvas.width = w
           canvas.height = h
@@ -272,6 +248,7 @@ export default {
           context.drawImage(this, sx, sy, w, h, 0, 0, w, h)
           // $('body').append(canvas)
           That.Quesimgs[parseInt(j)] = canvas.toDataURL('image/png')
+          // console.log(That.Quesimgs)
         }
       }
     },
@@ -292,25 +269,11 @@ export default {
       }
     },
     onSuccess(imageURI) {
-      var file = this.dataURLtoFile('data:image/jpeg;base64,' + imageURI, 'camera.jpeg')
+      var file = dataURLtoFile('data:image/jpeg;base64,' + imageURI, 'camera.jpeg')
       this.setImage(file)
     },
     onFail(mess) {
       console.log('未选择图片')
-    },
-    dataURLtoFile(dataurl, filename) {
-      var arr = dataurl.split(',')
-      var mime = arr[0].match(/:(.*?);/)[1]
-      var bstr = window.atob(arr[1])
-      var n = bstr.length
-      var u8arr = new Uint8Array(n)
-      while (n--) {
-        u8arr[n] = bstr.charCodeAt(n)
-      }
-      var blob = new Blob([u8arr], { type: mime })
-      blob.lastModifiedDate = new Date()
-      blob.name = filename
-      return blob
     },
     toChoose(e) {
       const file = e.target.files[0]
@@ -339,7 +302,7 @@ export default {
     toCrop() {
       this.cropImg = this.$refs.cropper.getCroppedCanvas().toDataURL('image/jpeg', 0.7)
       this.dialogVisible = false
-      // this.torun()
+      this.cutQuestion()
     },
     toRotate() {
       this.$refs.cropper.rotate(45)
@@ -379,15 +342,36 @@ export default {
       })
     },
     // 获取题目分类
-    GetCategory() {
-      // 未登录 不请求
-      // if (!this.$store.getters.user.Id) {
-      //   return
-      // }
+    async GetCategory() {
       questionCategory(qs.stringify()).then(res => {
         this.Categorylist = res.data.data
       }).catch(() => {
         console.log('获取题目分类数据失败！')
+      })
+    },
+    cutQuestion() {
+      this.showLoading = true
+      var blob = dataURLtoBlob(this.cropImg)
+      var file = blobToFile(blob, 'cutpicture')
+      var data = new FormData()
+      data.append('file', file, 'cutpicture.png')
+      CutQuestion(data).then(res => {
+        if (res.data.code === 0) {
+          this.Locations = res.data.data
+          if (res.data.data[0]) {
+            this.toCutup()
+          } else {
+            this.$notify({
+              title: '提示',
+              message: '未识别到相应题目！',
+              type: 'info'
+            })
+          }
+        }
+        this.showLoading = false
+      }).catch((error) => {
+        console.log(error)
+        this.showLoading = false
       })
     },
     openAdd() {
@@ -466,7 +450,7 @@ export default {
   },
   created() {
     this.GetCategory()
-    this.toCutup()
+    // this.toCutup()
   },
   activated() {
   }

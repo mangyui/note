@@ -1,7 +1,8 @@
 <template>
   <el-dropdown class='international' @command="handleSetRole">
-    <div>
-      <nx-svg-icon class-name='international-icon' icon-class="actor" />
+    <div >
+      <nx-svg-icon class-name='naver-icon' icon-class="actor" />
+      <span class="naver-text disNone">身份</span>
     </div>
     <el-dropdown-menu class="actor-down" slot="dropdown">
       <el-dropdown-item v-if="isAdmin" command="admin" :disabled="roles==['admin']">管理员</el-dropdown-item>
@@ -48,13 +49,9 @@ export default {
 </script>
 
 <style scoped>
-.international-icon {
-  font-size: 22px;
-  cursor: pointer;
-  vertical-align: -5px!important;
-}
 .el-dropdown{
   color:#5a5e66;
+  cursor: pointer;
 }
 @media (min-width: 769px) {
   .el-dropdown:hover{

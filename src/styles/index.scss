@@ -82,7 +82,7 @@ code {
   margin-bottom: 20px;
   display: block;
   line-height: 36px;
-  font-size: 15px;
+  // font-size: 15px;
   font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
   a {
     color: #337ab7;
@@ -586,7 +586,7 @@ code {
     p{
     margin: 5px 0 !important;
     line-height: 1.4em !important;
-    font-size: 15px;
+    // font-size: 15px;
   }
 }
 // .ques_body{
@@ -609,7 +609,7 @@ code {
   p{
     margin: 20px 0!important;
     line-height: 1.5em!important;
-    font-size: 15px;
+    // font-size: 15px;
   }
 }
 
@@ -692,6 +692,8 @@ code {
   background-color: $menuBg;
   border-radius: 50%;
   margin: 5px auto 0;
+  position: relative;
+  z-index: 99;
 }
 .htitle{
   border-left: 4px solid $menuBg;
@@ -827,6 +829,43 @@ code {
     }
   }
 }
+.right-menu{
+  .naver-text{
+    margin-left:0;
+    font-size:12px;
+  }
+  .naver-icon{
+    font-size: 16px;
+    cursor: pointer;
+  }
+}
+
+.test_title{
+  display: flex;
+  margin: 5px 0 4px;
+  span{
+    line-height: 1.8em;
+    margin-right: 10px;
+  }
+  .test_index{
+    margin-right: 5px;
+    line-height: 1.8em;
+  }
+  .test_content{
+    display: inline-block;
+    line-height: 1.8em;
+  }
+
+}
+.test_Correct{
+  line-height: 27px;
+  font-size: 14px;
+}
+
+.test_todo .el-carousel__item{
+  overflow-y: auto;
+}
+
 /*移动端*/
 // app.scss
 // 手机端

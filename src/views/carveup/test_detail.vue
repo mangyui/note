@@ -5,9 +5,14 @@
       <!--工具条-->
       <div class="list-gbtn">
         <!-- <div class="gbtn-box"> -->
-          <router-link to="/carveup/test_student/1">
-            <el-button type="primary" plain  @click="" size="small">学生完成情况</el-button>
-          </router-link>
+          <div>
+            <router-link to="/carveup/test_student/1">
+              <el-button v-if="user.roles.toString()!=['student']" type="primary" plain size="small">学生完成情况</el-button>
+            </router-link>
+            <router-link to="/carveup/test_todo/1">
+              <el-button v-if="user.roles.toString()==['student']" type="primary" plain size="small">开始测试</el-button>
+            </router-link>
+          </div>
           <div>
             <el-button type="primary"  @click="ToWord" size="small">下载word</el-button>
             <el-checkbox v-model="showAnalysis" label="答案" border size="small"></el-checkbox>
@@ -70,6 +75,8 @@ export default {
   name: 'test_detail',
   data() {
     return {
+      test_id: '',
+      user: this.$store.getters.user,
       dialogFormVisible: false,
       showLoading: false,
       showAnalysis: false,
@@ -77,7 +84,6 @@ export default {
       // isXuhao: false,
       Categorylist: [],
       Tests: [],
-      oldTest: [],
       getForm: {
         UserId: this.$store.getters.user.Id,
         CategoryId: '10',
@@ -107,7 +113,6 @@ export default {
       }).catch((res) => {
         console.log(res)
       })
-      this.dialogFormVisible = false
     },
     ToWord() {
       this.isDelete = false
@@ -151,37 +156,5 @@ export default {
 }
 .test-box:last-child{
   border-bottom: none;
-}
-.test_title{
-  display: flex;
-  margin: 5px 0 4px;
-  span{
-    line-height: 1.8em;
-    margin-right: 10px;
-  }
-  .test_index{
-    margin-right: 5px;
-    line-height: 1.8em;
-  }
-  .test_content{
-    display: inline-block;
-    line-height: 1.8em;
-    p{
-      display: inline-block;
-    }
-  }
-
-}
-.test_Correct{
-  line-height: 27px;
-  font-size: 14px;
-}
-.gbtn-box{
-  flex-grow: 1;
-  text-align: center;
-  margin-bottom: 10px;
-}
-.list-gbtn{
-  justify-content: space-between;
 }
 </style>

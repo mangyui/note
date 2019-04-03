@@ -127,10 +127,8 @@ import VueCropper from 'vue-cropperjs'
 import axios from 'axios'
 import qs from 'qs'
 import { slider, slideritem } from 'vue-concise-slider'
-
-// import {
-//   questionCategory
-// } from '@/api/toget'
+import { dataURLtoFile } from '@/utils/index.js'
+import { ocr } from '@/utils/private.js'
 
 import {
   Imgurl,
@@ -229,25 +227,11 @@ export default {
       }
     },
     onSuccess(imageURI) {
-      var file = this.dataURLtoFile('data:image/jpeg;base64,' + imageURI, 'camera.jpeg')
+      var file = dataURLtoFile('data:image/jpeg;base64,' + imageURI, 'camera.jpeg')
       this.setImage(file)
     },
     onFail(mess) {
       console.log('未选择图片')
-    },
-    dataURLtoFile(dataurl, filename) {
-      var arr = dataurl.split(',')
-      var mime = arr[0].match(/:(.*?);/)[1]
-      var bstr = window.atob(arr[1])
-      var n = bstr.length
-      var u8arr = new Uint8Array(n)
-      while (n--) {
-        u8arr[n] = bstr.charCodeAt(n)
-      }
-      var blob = new Blob([u8arr], { type: mime })
-      blob.lastModifiedDate = new Date()
-      blob.name = filename
-      return blob
     },
     toChoose(e) {
       const file = e.target.files[0]
@@ -299,9 +283,9 @@ export default {
         'image': this.cropImg.replace(/data:image\/.*;base64,/, '')
       }
       axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
-      var url = 'https://mccyu.com:444/acc'
+      var url = ocr.accurate
       if (this.isHand === true) {
-        url = 'https://mccyu.com:444/shouxie'
+        url = ocr.shouxie
       }
       axios.post(url, qs.stringify(ocr_data))
         .then(res => {
@@ -454,7 +438,6 @@ export default {
   mounted() {
     // 富文本配置
     var That = this
-    // var Imgurl = 'http://192.168.1.105/'
     ShouTitle = new E(this.$refs.ShouTitle)
     ShouCorrect = new E(this.$refs.ShouCorrect)
     HaveCorrect = new E(this.$refs.HaveCorrect)

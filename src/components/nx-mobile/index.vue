@@ -1,13 +1,9 @@
 <template>
   <div>
-    <el-tooltip effect="dark" placement="bottom">
-      <div slot="content">
-        <a class="link" :href="url" target="_blank">下载Android手机端</a>
-      </div>
-      <el-button class="btn-text can-hover" type="text" @click="handleClick">
-        <nx-svg-icon class-name='international-icon' icon-class="mobile" />
-      </el-button>
-    </el-tooltip>
+    <el-button class="btn-text can-hover" type="text" @click="handleClick">
+      <nx-svg-icon class-name='naver-icon' icon-class="mobile" />
+      <span class="naver-text" style="">手机端</span>
+    </el-button>
   </div>
 </template>
 

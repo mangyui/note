@@ -316,7 +316,7 @@ export default {
 <style scoped>
  @import '../../styles/consumer.scss';
  .datum-table td{
-   padding: 20px 0;
+   padding: 13px 0;
  }
  #content{
    margin-top: 20px;
@@ -346,7 +346,7 @@ export default {
     z-index: 2;
     position: relative;
     transition: 0.28s;
-    background-size: 8%;
+    /* background-size: 8%; */
 }
 
 .profile-header .header-avatar {

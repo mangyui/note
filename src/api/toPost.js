@@ -410,3 +410,15 @@ export function GetQuestionsByText(datas) {
     data: datas
   })
 }
+
+// 切题
+export function CutQuestion(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.CutQuestion.Cut',
+    method: 'post',
+    data: datas
+  })
+}

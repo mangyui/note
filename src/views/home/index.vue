@@ -119,7 +119,7 @@ export default {
     //   console.log('11')
     //   this.getNotes()
     // },
-    getNotes() {
+    async getNotes() {
       if (this.$store.getters.user.Id) {
         getRecommend(this.$store.getters.user.Id).then(res => {
           this.questions = res.data.data.Questions

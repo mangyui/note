@@ -16,9 +16,9 @@
       <div class="voice-button">
         <div class="voice-input-button-wrapper">
           <voice-input-button
-              server="https://www.mccyu.com:444/"
-              appId="5c52f87b"
-              APIKey="3d0fba416f2a2423e7380ea2ab397d9e"
+              :server="voice.serverurl"
+              :appId="voice.appId"
+              :APIKey="voice.APIKey"
               @record="showResult"
               @record-start="recordStart"
               @record-stop="recordStop"
@@ -106,6 +106,7 @@ import {
 
 import quexBox from '@/components/my-box/quex-box'
 import qs from 'qs'
+import { voice } from '@/utils/private.js'
 
 export default {
   name: 'search',
@@ -117,6 +118,7 @@ export default {
   data() {
     return {
       homeTop: 0,
+      voice: voice,
       ScrollTop: 0,
       screenWidth: document.body.clientWidth,
       activeName: 'ques',
@@ -168,9 +170,13 @@ export default {
         } else {
           this.showNone = false
         }
-      }).catch(() => {})
+      }).catch((res) => {
+        console.log(res)
+        this.showLoading = false
+      })
     },
     Gaoliang() {
+      this.oldQuetions.pop()
       var value = this.Sdata.Keys
       this.oldQuetions.forEach(item => {
         for (var i = 0; i < value.length; i++) {
@@ -182,6 +188,7 @@ export default {
             var replaceString = '<span style="background:#ff0;font-weight: bold;">' + value[i] + '</span>'
             // 开始替换
             item.Content = item.Content.replace(replaceReg, replaceString)
+            // console.log(item.Content)
             // item.Content = item.Content.split(value[i]).join('<span style="background:#ff0;font-weight: bold;">' + value + '</span>')
           }
         }

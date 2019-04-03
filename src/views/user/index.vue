@@ -129,7 +129,7 @@
               <tr>
                 <th>性别</th>
                 <td>
-                  <el-select v-model="form.Sex" placeholder="请设置你的性别">
+                  <el-select size="mini" v-model="form.Sex" placeholder="请设置你的性别">
                     <el-option
                       v-for="item in sex"
                       :key="item.value"
@@ -142,13 +142,13 @@
               <tr>
                 <th>位置</th>
                 <td>
-                  <el-input v-model="form.Address" placeholder="请设置你的地址"></el-input>
+                  <el-input size="mini" v-model="form.Address" placeholder="请设置你的地址"></el-input>
                 </td>
               </tr>
               <tr>
                 <th>简介</th>
                 <td class="brief-introduction">
-                  <el-input type="textarea" v-model="form.Intro"></el-input>
+                  <el-input size="mini" type="textarea" v-model="form.Intro"></el-input>
                 </td>
               </tr>
             </table>
@@ -163,7 +163,7 @@
               <tr>
                 <th>院校</th>
                 <td>
-                  <el-select v-model="form.SchoolId" placeholder="请选择您的学校">
+                  <el-select size="mini" v-model="form.SchoolId" placeholder="请选择您的学校">
                     <el-option
                       v-for="item in schoolList"
                       :key="item.Id"
@@ -176,7 +176,7 @@
               <tr>
                 <th>年级</th>
                 <td>
-                  <el-select v-model="form.Class" placeholder="请正确选择您的年级">
+                  <el-select size="mini" v-model="form.Class" placeholder="请正确选择您的年级">
                     <el-option
                       v-for="item in classlist"
                       :key="item.value"
@@ -248,7 +248,7 @@
 <script>
 import nxCountUp from '@/components/nx-count-up/index.vue'
 import nxSvgIcon from '@/components/nx-svg-icon/index'
-import { areajson } from '@/assets/js/city.js'
+// import { areajson } from '@/assets/js/city.js'
 import { classList } from '@/assets/js/class.js'
 import VueCropper from 'vue-cropperjs'
 import {
@@ -259,7 +259,7 @@ import {
   ChangeUserAvatar
 } from '@/api/toPost'
 
-// const uploadImgServer = 'http://1975386453.38haotyhn.duihuanche.com/?service=App.User.ChangeUserAvatar'
+import { dataURLtoBlob, blobToFile } from '@/utils/index.js'
 import qs from 'qs'
 
 export default {
@@ -286,7 +286,7 @@ export default {
         value: '女',
         label: '女'
       }],
-      city: areajson,
+      // city: areajson,
       classlist: classList,
       Class: '',
       schoolList: [],
@@ -379,11 +379,8 @@ export default {
       this.$refs.cropper.rotate(10)
     },
     changeAvatar() {
-      // var file = this.dataURLtoFile(this.cropImg, 'avatar.png')
-      // console.log(file)
-
-      var blob = this.dataURLtoBlob(this.cropImg, 'avatar.png')
-      var file = this.blobToFile(blob, 'avatar')
+      var blob = dataURLtoBlob(this.cropImg)
+      var file = blobToFile(blob, 'avatar')
       var data = new FormData()
       // console.log(file)
       data.append('file', file, 'avatar.png')
@@ -437,22 +434,6 @@ export default {
 
       })
     },
-    dataURLtoBlob(dataurl, filename) { // 将base64转换为文件
-      var arr = dataurl.split(',')
-      var mime = arr[0].match(/:(.*?);/)[1]
-      var bstr = atob(arr[1])
-      var n = bstr.length
-      var u8arr = new Uint8Array(n)
-      while (n--) {
-        u8arr[n] = bstr.charCodeAt(n)
-      }
-      return new Blob([u8arr], { type: mime })
-    },
-    blobToFile(theBlob, fileName) {
-      theBlob.lastModifiedDate = new Date()
-      theBlob.name = fileName
-      return theBlob
-    },
     getschool() {
       getSchoolList().then(res => {
         this.schoolList = res.data.data
@@ -486,7 +467,6 @@ export default {
     }
   },
   created() {
-    // this.isChange()
     this.cropImg = this.avatar
     this.getschool()
     var index = this.classlist.find((item) => {
@@ -501,10 +481,10 @@ export default {
  @import '../../styles/consumer.scss';
  .UserInfo{
    .datum-table td{
-      padding: 12px 0;
+      padding: 10px 0;
    }
    .datum-table th{
-     padding: 12px 30px 12px 0px;
+     padding: 10px 30px 10px 0px;
    }
  }
 .user_top {
@@ -512,7 +492,7 @@ export default {
   height: 180px;
   position: relative;
   transition: 0.28s;
-  background-size: 8%;
+  // background-size: 8%;
 }
 .bg-blur{
   width: 100%;

@@ -40,13 +40,6 @@
         </div>
       </div>
       <br/>
-      <!-- <el-button v-if="Tests[0]" type="primary"  @click="ToWord">生成Word</el-button> -->
-      <!-- <el-button type="primary"  @click="ToWord">生成Word</el-button> -->
-      <!-- <a href="https://www.baidu.com/">打开百度</a>-->
-      <!-- <a href="https://www.baidu.com/" id="alink" download="test.doc">test</a> -->
-      <!-- <a href="" id="alink" target="_blank" style="display: none">test</a> -->
-      <!-- <el-button type="primary"  @click="ToMobile">下载1</el-button>
-      <el-button type="primary"  @click="ToMo">下载2</el-button> -->
     </div>
     <el-dialog title="生成试题" :visible.sync="dialogFormVisible" center>
       <el-form :model="getForm" ref="form">
@@ -268,37 +261,5 @@ export default {
 }
 .test-box:last-child{
   border-bottom: none;
-}
-.test_title{
-  display: flex;
-  margin: 5px 0 4px;
-  span{
-    line-height: 1.8em;
-    margin-right: 10px;
-  }
-  .test_index{
-    margin-right: 5px;
-    line-height: 1.8em;
-  }
-  .test_content{
-    display: inline-block;
-    line-height: 1.8em;
-    p{
-      display: inline-block;
-    }
-  }
-
-}
-  .test_Correct{
-    line-height: 27px;
-    font-size: 14px;
-  }
-.gbtn-box{
-  flex-grow: 1;
-  text-align: center;
-  margin-bottom: 10px;
-}
-.list-gbtn{
-  justify-content: space-between;
 }
 </style>
