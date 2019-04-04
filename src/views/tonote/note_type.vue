@@ -9,28 +9,29 @@
     </div> -->
     <div class="big-box1200">
       <div class="list-gbtn">
-        <div></div>
+        <div>
+          <el-button type="primary" icon="el-icon-plus" @click="showAdd=!showAdd" circle></el-button>
+        </div>
         <div>
           <el-button icon="el-icon-refresh" circle @click="getCategory"></el-button>
           <el-button type="info" icon="el-icon-edit" @click="showEdit=!showEdit" circle></el-button>
-          <el-button type="primary" icon="el-icon-plus" @click="showAdd=!showAdd" circle></el-button>
           <el-button type="danger" icon="el-icon-delete" circle @click="showDelete=!showDelete"></el-button>
         </div>
       </div>
       <div class="container">
-        <div v-if="showLoading" class="loading-box">
+        <div v-show="showLoading" class="loading-box">
           <i class="el-icon-loading"></i>
           加载中...
         </div>
-        <div v-if="!types[0] && !showLoading" class="loading-box">
+        <div v-show="!types[0] && !showLoading" class="loading-box">
           <i class="el-icon-search"></i>
           空空如也...
         </div>
         <el-row :gutter="15">
           <el-col  :xs="12" :sm="12" :md="8" :lg="8" :xl="8" v-for="(item,index) in types" :key="index">
               <el-card>
-                <i v-if="showEdit" class="el-icon-edit icon-update" @click="showEditBox(index)"></i>
-                <i v-if="showDelete" class="el-icon-close icon-delete" @click="toDetele(item.Id)"></i>
+                <i v-show="showEdit" class="el-icon-edit icon-update" @click="showEditBox(index)"></i>
+                <i v-show="showDelete" class="el-icon-close icon-delete" @click="toDetele(item.Id)"></i>
                 <div class="big-box">
                   <div class="big-body">
                     <b class="type_title">{{item.Name}}</b>
@@ -82,7 +83,6 @@ import {
 } from '@/api/toPost'
 
 import { NoteCategory } from '@/api/toget'
-import qs from 'qs'
 
 export default {
   name: 'note_type',
@@ -139,7 +139,7 @@ export default {
     addNoteType() {
       this.$refs.Form.validate(valid => {
         if (valid) {
-          AddNoteType(qs.stringify(this.toadd)).then(res => {
+          AddNoteType(this.$qs.stringify(this.toadd)).then(res => {
             if (res.data.code === 0) {
               this.$notify({
                 title: '提示',
@@ -164,7 +164,7 @@ export default {
     updateNoteType() {
       this.$refs.updateForm.validate(valid => {
         if (valid) {
-          UpdateNoteType(qs.stringify(this.toupdate)).then(res => {
+          UpdateNoteType(this.$qs.stringify(this.toupdate)).then(res => {
             if (res.data.code === 0) {
               this.$notify({
                 title: '提示',
@@ -186,7 +186,7 @@ export default {
         cancelButtonText: '先留着吧',
         type: 'error'
       }).then(() => {
-        DeteleNoteType(qs.stringify({ UserId: this.$store.getters.user.Id, NoteCategoryId: index })).then(res => {
+        DeteleNoteType(this.$qs.stringify({ UserId: this.$store.getters.user.Id, NoteCategoryId: index })).then(res => {
           if (res.data.code === 0) {
             this.$notify({
               title: '提示',

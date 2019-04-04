@@ -34,18 +34,18 @@
         </div>
       </div>
       <div class="container">
-        <div v-if="showLoading" class="loading-box">
+        <div v-show="showLoading" class="loading-box">
           <i class="el-icon-loading"></i>
           加载中...
         </div>
-        <div v-if="!questions[0] && !showLoading" class="loading-box">
+        <div v-show="!questions[0] && !showLoading" class="loading-box">
           <i class="el-icon-search"></i>
           空空如也...
         </div>
         <div class="ques-list">
           <div class="ques-list_item" v-for="(item,index) in questions" :key="index">
             <div class="ques_box">
-              <i v-if="showDelete" class="el-icon-close icon-delete" @click="toDetele(item.Id)"></i>
+              <i v-show="showDelete" class="el-icon-close icon-delete" @click="toDetele(item.Id)"></i>
               <router-link :to="'/home/mistake/'+item.Id">
                 <div class="ques_body tipbox">
                   <b>{{index+1}}.</b><div v-html="item.QuestionContent||item.Question.Content"></div>
@@ -61,11 +61,11 @@
             </div>
           </div>
         </div>
-        <div v-if="showMore" class="loading-box">
+        <div v-show="showMore" class="loading-box">
           <i class="el-icon-loading"></i>
           加载更多中...
         </div>
-        <div v-if="!showMore && NoneMore" class="loading-box">
+        <div v-show="!showMore && NoneMore" class="loading-box">
           <i class="el-icon-search"></i>
           没有更多了...
         </div>
@@ -86,8 +86,6 @@ import {
   SearchMistake,
   mistakeCate
 } from '@/api/toPost'
-
-import qs from 'qs'
 
 export default {
   name: 'quesList',
@@ -155,7 +153,7 @@ export default {
       this.getQues()
     },
     getCategory() {
-      mistakeCate(qs.stringify({ UserId: this.$store.getters.user.Id })).then(res => {
+      mistakeCate(this.$qs.stringify({ UserId: this.$store.getters.user.Id })).then(res => {
         this.typelist = this.typelist.concat(res.data.data)
       }).catch(() => {
         console.log('获取数据失败！')
@@ -165,7 +163,7 @@ export default {
       this.NoneMore = false
       this.showLoading = true
       this.tolist.Page = 1
-      QuesList(qs.stringify(this.tolist)).then(res => {
+      QuesList(this.$qs.stringify(this.tolist)).then(res => {
         this.questions = res.data.data
         this.showLoading = false
       }).catch(() => {})
@@ -176,7 +174,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        DeleteMistake(qs.stringify({ Id: index, UserId: this.$store.getters.user.Id })).then(res => {
+        DeleteMistake(this.$qs.stringify({ Id: index, UserId: this.$store.getters.user.Id })).then(res => {
           if (res.data.code === 0) {
             this.$notify({
               title: '提示',
@@ -197,7 +195,7 @@ export default {
         return
       }
       this.showLoading = true
-      SearchMistake(qs.stringify(this.search)).then(res => {
+      SearchMistake(this.$qs.stringify(this.search)).then(res => {
         this.questions = res.data.data
         this.showLoading = false
       }).catch(() => {})
@@ -223,7 +221,7 @@ export default {
         }
         this.showMore = true
         this.tolist.Page++
-        QuesList(qs.stringify(this.tolist)).then(res => {
+        QuesList(this.$qs.stringify(this.tolist)).then(res => {
           this.questions = this.questions.concat(res.data.data)
           this.showMore = false
           if (res.data.data.length < this.tolist.Number) {

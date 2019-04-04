@@ -1,6 +1,6 @@
 <template>
   <div class="user">
-    <div class="user_top" :style="{backgroundImage:'url(./static/img/main/user_bg' + Math.floor(Math.random()*6)+ '.svg)'}">
+    <div class="user_top" :style="{backgroundImage:'url(./static/img/main/user_bg' + bgindex+ '.svg)'}">
       <!-- <div class="bg-blur"></div> -->
       <!-- <router-link :to="'/user/fans/'+user.Id">
         <el-button class="toAttention"
@@ -260,7 +260,6 @@ import {
 } from '@/api/toPost'
 
 import { dataURLtoBlob, blobToFile } from '@/utils/index.js'
-import qs from 'qs'
 
 export default {
   name: 'user',
@@ -272,6 +271,7 @@ export default {
   data() {
     return {
       user: this.$store.getters.user,
+      bgindex: Math.floor(Math.random() * 6),
       avatar: this.$store.getters.user.Avatar || './static/img/avatar.jpg',
       defaultSrc: '',
       cropImg: '',
@@ -458,7 +458,7 @@ export default {
       location.reload()
     },
     isChange() {
-      GetCustomer(qs.stringify({ UserId: this.user.Id })).then(res => {
+      GetCustomer(this.$qs.stringify({ UserId: this.user.Id })).then(res => {
         if (res.data.data.Id === this.user.Id) {
           this.$store.dispatch('RefreshUser', res.data.data)
           location.reload()

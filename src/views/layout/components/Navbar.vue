@@ -27,6 +27,11 @@
               我的主页
             </el-dropdown-item>
           </router-link>
+          <router-link to="/login">
+            <el-dropdown-item v-if="!user.Name">
+                <span style="display:block;">登录</span>
+            </el-dropdown-item>
+          </router-link>
           <el-dropdown-item divided>
             <nx-full-screen class="screenfull right-menu-item"></nx-full-screen>
           </el-dropdown-item>
@@ -38,11 +43,6 @@
               <span style="display:block;">登出</span>
             </el-dropdown-item>
           </span>
-          <router-link to="/login">
-            <el-dropdown-item v-if="!user.Name">
-                <span style="display:block;">登录</span>
-            </el-dropdown-item>
-          </router-link>
         </el-dropdown-menu>
       </el-dropdown>
     </div>

@@ -104,8 +104,6 @@
 </template>
 
 <script>
-import qs from 'qs'
-
 import saveAs from '@/assets/js/fileexport.js'
 window.saveAs = saveAs
 import '@/assets/js/jquery.wordexport.js'
@@ -195,7 +193,7 @@ export default {
     },
     getTest() {
       this.showLoading = true
-      GetTest(qs.stringify(this.getForm)).then(res => {
+      GetTest(this.$qs.stringify(this.getForm)).then(res => {
         this.Tests = res.data.data
         this.showLoading = false
         this.addOrdinal()

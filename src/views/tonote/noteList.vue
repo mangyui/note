@@ -35,18 +35,18 @@
         </div>
       </div>
       <div class="container">
-        <div v-if="showLoading" class="loading-box">
+        <div v-show="showLoading" class="loading-box">
           <i class="el-icon-loading"></i>
           加载中...
         </div>
-        <div v-if="!notes[0] && !showLoading" class="loading-box">
+        <div v-show="!notes[0] && !showLoading" class="loading-box">
           <i class="el-icon-search"></i>
           空空如也...
         </div>
         <el-row :gutter="15">
           <el-col  :xs="24" :sm="24" :md="12" :lg="12" :xl="12" v-for="(item,index) in notes" :key="index">
               <el-card shadow="hover">
-                <i v-if="showDelete" class="el-icon-close icon-delete" @click="toDetele(item.Id)"></i>
+                <i v-show="showDelete" class="el-icon-close icon-delete" @click="toDetele(item.Id)"></i>
                 <div class="big-box">
                   <i class="header-icon el-icon-star-on"></i>
                   <div class="big-body">
@@ -61,11 +61,11 @@
               </el-card>
           </el-col>
         </el-row>
-        <div v-if="showMore" class="loading-box">
+        <div v-show="showMore" class="loading-box">
           <i class="el-icon-loading"></i>
           加载更多中...
         </div>
-        <div v-if="!showMore && NoneMore" class="loading-box">
+        <div v-show="!showMore && NoneMore" class="loading-box">
           <i class="el-icon-search"></i>
           没有更多了...
         </div>
@@ -86,7 +86,6 @@ import {
 } from '@/api/toPost'
 
 import { NoteCategory } from '@/api/toget'
-import qs from 'qs'
 
 export default {
   name: 'noteList',
@@ -164,7 +163,7 @@ export default {
       this.NoneMore = false
       this.showLoading = true
       this.tolist.Page = 1
-      NoteList(qs.stringify(this.tolist)).then(res => {
+      NoteList(this.$qs.stringify(this.tolist)).then(res => {
         this.notes = res.data.data
         this.showLoading = false
       }).catch(() => {})
@@ -175,7 +174,7 @@ export default {
         cancelButtonText: '先留着吧',
         type: 'warning'
       }).then(() => {
-        DeteleNote(qs.stringify({ Id: index })).then(res => {
+        DeteleNote(this.$qs.stringify({ Id: index })).then(res => {
           if (res.data.code === 0) {
             this.$notify({
               title: '提示',
@@ -196,7 +195,7 @@ export default {
         return
       }
       this.showLoading = true
-      SearchNote(qs.stringify(this.search)).then(res => {
+      SearchNote(this.$qs.stringify(this.search)).then(res => {
         this.notes = res.data.data
         this.showLoading = false
       }).catch(() => {})
@@ -212,7 +211,7 @@ export default {
         }
         this.showMore = true
         this.tolist.Page++
-        NoteList(qs.stringify(this.tolist)).then(res => {
+        NoteList(this.$qs.stringify(this.tolist)).then(res => {
           this.notes = this.notes.concat(res.data.data)
           this.showMore = false
           if (res.data.data.length < this.tolist.Number) {

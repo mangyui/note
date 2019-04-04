@@ -23,11 +23,11 @@
             <i class="el-icon-share"></i> <strong>相似题目</strong>
           </div>
           <quex-box :option="quesList"></quex-box>
-          <div v-if="showLoading" class="loading-box">
+          <div v-show="showLoading" class="loading-box">
             <i class="el-icon-loading"></i>
             加载中...
           </div>
-          <div v-if="showNone" class="loading-box">
+          <div v-show="showNone" class="loading-box">
             <i class="el-icon-search"></i>
             空空如也...
           </div>
@@ -55,8 +55,6 @@ import {
 import {
   QuestionMore
 } from '@/api/toPost'
-
-import qs from 'qs'
 
 export default {
   name: 'ques_more',
@@ -130,7 +128,7 @@ export default {
     getQuestionMore() {
       this.showLoading = true
       // this.tolist.Page = 1
-      QuestionMore(qs.stringify(this.tolist)).then(res => {
+      QuestionMore(this.$qs.stringify(this.tolist)).then(res => {
         this.quesList = res.data.data
         this.showLoading = false
         if (!this.quesList[0]) {
@@ -140,28 +138,6 @@ export default {
         }
       }).catch(() => {})
     }
-    // onScroll() {
-    //   var innerHeight = document.querySelector('.app-container').clientHeight
-    //   var outerHeight = document.querySelector('.app-main').clientHeight
-    //   var scrollTop = document.querySelector('.app-main').scrollTop
-    //   this.ScrollTop = scrollTop
-    //   if (innerHeight <= (outerHeight + scrollTop)) {
-    //     if (this.NoneMore || this.showMore) {
-    //       return
-    //     }
-    //     this.showMore = true
-    //     this.tolist.Page++
-    //     QuestionMore(qs.stringify(this.tolist)).then(res => {
-    //       this.quesList = this.quesList.concat(res.data.data)
-    //       this.showMore = false
-    //       if (res.data.data.length < this.tolist.Number) {
-    //         this.NoneMore = true
-    //       } else {
-    //         this.NoneMore = false
-    //       }
-    //     }).catch(() => {})
-    //   }
-    // }
   },
   created() {
     this.fetchDate()

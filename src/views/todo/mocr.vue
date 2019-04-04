@@ -118,14 +118,11 @@
 <script>
 
 // 编辑器
-import E from 'wangeditor'
 var ShouTitle, ShouCorrect, HaveCorrect
 
 import nxSvgIcon from '@/components/nx-svg-icon/index'
 import quexBox from '@/components/my-box/quex-box'
 import VueCropper from 'vue-cropperjs'
-import axios from 'axios'
-import qs from 'qs'
 import { slider, slideritem } from 'vue-concise-slider'
 import { dataURLtoFile } from '@/utils/index.js'
 import { ocr } from '@/utils/private.js'
@@ -282,12 +279,12 @@ export default {
       var ocr_data = {
         'image': this.cropImg.replace(/data:image\/.*;base64,/, '')
       }
-      axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+      this.$axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
       var url = ocr.accurate
       if (this.isHand === true) {
         url = ocr.shouxie
       }
-      axios.post(url, qs.stringify(ocr_data))
+      this.$axios.post(url, this.$qs.stringify(ocr_data))
         .then(res => {
           this.result = res.data.words_result
           this.lines = res.data.words_result_num
@@ -351,7 +348,7 @@ export default {
               'Correct': this.haveF.Correct
             }
           }
-          addMistake(qs.stringify(datas)).then(res => {
+          addMistake(this.$qs.stringify(datas)).then(res => {
             this.dialogFormVisible = false
             this.$message.success('提交成功！')
             this.$router.push({
@@ -364,7 +361,7 @@ export default {
       })
     },
     getQues() {
-      ocrQues(qs.stringify({ Text: this.form.Text })).then(res => {
+      ocrQues(this.$qs.stringify({ Text: this.form.Text })).then(res => {
         this.questions = res.data.data
         this.showShou = false
         this.showBtn = true
@@ -398,7 +395,7 @@ export default {
       }
       this.$refs.addForm.validate(valid => {
         if (valid) {
-          AddMistakeCate(qs.stringify(this.toadd)).then(res => {
+          AddMistakeCate(this.$qs.stringify(this.toadd)).then(res => {
             if (res.data.code === 0) {
               this.$notify({
                 title: '提示',
@@ -420,7 +417,7 @@ export default {
       if (!this.$store.getters.user.Id) {
         return
       }
-      mistakeCate(qs.stringify({ UserId: this.$store.getters.user.Id })).then(res => {
+      mistakeCate(this.$qs.stringify({ UserId: this.$store.getters.user.Id })).then(res => {
         this.typelist = res.data.data
       }).catch(() => {
         console.log('获取题目分类数据失败！')
@@ -438,9 +435,9 @@ export default {
   mounted() {
     // 富文本配置
     var That = this
-    ShouTitle = new E(this.$refs.ShouTitle)
-    ShouCorrect = new E(this.$refs.ShouCorrect)
-    HaveCorrect = new E(this.$refs.HaveCorrect)
+    ShouTitle = new this.$E(this.$refs.ShouTitle)
+    ShouCorrect = new this.$E(this.$refs.ShouCorrect)
+    HaveCorrect = new this.$E(this.$refs.HaveCorrect)
     ShouTitle.customConfig = {
       onchange: function(html) {
         That.form.Content = html

@@ -129,14 +129,11 @@
 </template>
 
 <script>
-import E from 'wangeditor'
 var ShouTitle, ShouCorrect
 
-import VoiceInputButton from 'voice-input-button'
 import nxSvgIcon from '@/components/nx-svg-icon/index'
 import quexBox from '@/components/my-box/quex-box'
 import VueCropper from 'vue-cropperjs'
-import qs from 'qs'
 import { typeList } from '@/assets/js/question_type.js'
 import { dataURLtoBlob, blobToFile, dataURLtoFile } from '@/utils/index.js'
 import {
@@ -154,8 +151,7 @@ export default {
   components: {
     VueCropper,
     quexBox,
-    nxSvgIcon,
-    VoiceInputButton
+    nxSvgIcon
     // slider,
     // slideritem
   },
@@ -328,7 +324,7 @@ export default {
             'KeyWords': this.form.Keywords,
             'Type': this.form.Type
           }
-          upQuestion(qs.stringify(datas)).then(res => {
+          upQuestion(this.$qs.stringify(datas)).then(res => {
             this.dialogFormVisible = false
             this.$notify({
               title: '提示',
@@ -343,7 +339,7 @@ export default {
     },
     // 获取题目分类
     async GetCategory() {
-      questionCategory(qs.stringify()).then(res => {
+      questionCategory(this.$qs.stringify()).then(res => {
         this.Categorylist = res.data.data
       }).catch(() => {
         console.log('获取题目分类数据失败！')
@@ -382,8 +378,8 @@ export default {
       // 富文本配置
       var That = this
       // var Imgurl = 'http://192.168.1.105/'
-      ShouTitle = new E(this.$refs.ShouTitle)
-      ShouCorrect = new E(this.$refs.ShouCorrect)
+      ShouTitle = new this.$E(this.$refs.ShouTitle)
+      ShouCorrect = new this.$E(this.$refs.ShouCorrect)
       ShouTitle.customConfig = {
         onchange: function(html) {
           That.form.Content = html

@@ -86,10 +86,8 @@
 <script>
 
 // wangeditor 富文本
-import E from 'wangeditor'
 var editor
 
-import VoiceInputButton from 'voice-input-button'
 import { NoteCategory } from '@/api/toget'
 import {
   UpdateNote,
@@ -97,8 +95,6 @@ import {
   Imgurl
 } from '@/api/toPost'
 import VueCropper from 'vue-cropperjs'
-import axios from 'axios'
-import qs from 'qs'
 import { dataURLtoFile } from '@/utils/index.js'
 import { voice, ocr } from '@/utils/private.js'
 
@@ -129,8 +125,7 @@ export default {
     }
   },
   components: {
-    VueCropper,
-    VoiceInputButton
+    VueCropper
   },
   methods: {
     cameraTakePicture() {
@@ -201,9 +196,9 @@ export default {
       var ocr_data = {
         'image': this.cropImg.replace(/data:image\/.*;base64,/, '')
       }
-      axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+      this.$axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
       var url = ocr.shouxie
-      axios.post(url, qs.stringify(ocr_data))
+      this.$axios.post(url, this.$qs.stringify(ocr_data))
         .then(res => {
           this.result = res.data.words_result
           this.lines = res.data.words_result_num
@@ -216,7 +211,7 @@ export default {
       if (this.lines > 0) {
         this.result.forEach(item => {
           this.Content = this.Content + item.words + '<br />'
-          editor.txt.append('<p>' + item.words + '<p>' + '<br />')
+          editor.txt.append('<p>' + item.words + '<p>')
           // this.form.Text = this.form.Text + item.words
         })
         // editor.txt.html(this.Content)
@@ -254,7 +249,7 @@ export default {
         })
         return
       }
-      UpdateNote(qs.stringify(this.note)).then(res => {
+      UpdateNote(this.$qs.stringify(this.note)).then(res => {
         if (res.data.code === 0) {
           this.$router.push({
             path: '/tonote/note_detail/' + this.note.Id
@@ -266,7 +261,7 @@ export default {
       }).catch(() => {})
     },
     getNote() {
-      NoteDetails(qs.stringify({ Id: this.note.Id })).then(res => {
+      NoteDetails(this.$qs.stringify({ Id: this.note.Id })).then(res => {
         this.note = res.data.data
         if (!this.note.UserId || this.note.UserId !== this.$store.getters.user.Id) {
           this.$message.warning('没有找到...')
@@ -301,7 +296,7 @@ export default {
   },
   mounted() {
     var That = this
-    editor = new E(this.$refs.editor)
+    editor = new this.$E(this.$refs.editor)
     editor.customConfig = {
       onchange: function(html) {
         That.note.Content = html

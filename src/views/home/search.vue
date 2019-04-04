@@ -39,33 +39,33 @@
       <el-tabs v-model="activeName" class='is_stretch'>
         <el-tab-pane name="ques">
           <div slot="label">题目</div>
-            <div v-if="showLoading" class="loading-box">
+            <div v-show="showLoading" class="loading-box">
               <i class="el-icon-loading"></i>
               加载中...
             </div>
-            <div v-if="showNone" class="loading-box">
+            <div v-show="showNone" class="loading-box">
               <i class="el-icon-search"></i>
               空空如也...
             </div>
 
             <quex-box :option="questions"></quex-box>
 
-            <div v-if="showMore" class="loading-box">
+            <div v-show="showMore" class="loading-box">
               <i class="el-icon-loading"></i>
               加载更多中...
             </div>
-            <div v-if="!showMore && NoneMore" class="loading-box">
+            <div v-show="!showMore && NoneMore" class="loading-box">
               <i class="el-icon-search"></i>
               没有更多了...
             </div>
           </el-tab-pane>
         <el-tab-pane name="user">
           <div slot="label">用户</div>
-            <div v-if="showLoading" class="loading-box">
+            <div v-show="showLoading" class="loading-box">
               <i class="el-icon-loading"></i>
               加载中...
             </div>
-            <div v-if="!showLoading&&!users[0]" class="loading-box">
+            <div v-show="!showLoading&&!users[0]" class="loading-box">
               <i class="el-icon-search"></i>
               空空如也...
             </div>
@@ -98,22 +98,19 @@
 
 <script>
 import nxSvgIcon from '@/components/nx-svg-icon/index'
-import VoiceInputButton from 'voice-input-button'
 import {
   SearchQues,
   SearchUsers
 } from '@/api/toPost'
 
 import quexBox from '@/components/my-box/quex-box'
-import qs from 'qs'
 import { voice } from '@/utils/private.js'
 
 export default {
   name: 'search',
   components: {
     nxSvgIcon,
-    quexBox,
-    VoiceInputButton
+    quexBox
   },
   data() {
     return {
@@ -160,7 +157,7 @@ export default {
       this.NoneMore = false
       this.showLoading = true
       this.Sdata.Keys = this.Sdata.Keys.substring(0, 50)
-      SearchQues(qs.stringify(this.Sdata)).then(res => {
+      SearchQues(this.$qs.stringify(this.Sdata)).then(res => {
         this.oldQuetions = res.data.data
         this.Gaoliang()
         this.questions = this.oldQuetions
@@ -206,7 +203,7 @@ export default {
         }
         this.showMore = true
         this.Sdata.Page++
-        SearchQues(qs.stringify(this.Sdata)).then(res => {
+        SearchQues(this.$qs.stringify(this.Sdata)).then(res => {
           this.oldQuetions = res.data.data
           this.Gaoliang()
           this.questions = this.questions.concat(this.oldQuetions)
@@ -223,7 +220,7 @@ export default {
       if (this.Sdata.Keys.trim() === '') {
         return
       }
-      SearchUsers(qs.stringify({ name: this.Sdata.Keys })).then(res => {
+      SearchUsers(this.$qs.stringify({ name: this.Sdata.Keys })).then(res => {
         if (res.data.data.Name) {
           this.users[0] = res.data.data
         } else {

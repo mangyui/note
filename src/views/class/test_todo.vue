@@ -45,7 +45,6 @@
 import {
   GetTest
 } from '@/api/toPost'
-import qs from 'qs'
 
 export default {
   name: 'test_todo',
@@ -79,7 +78,7 @@ export default {
     },
     getTest() {
       this.showLoading = true
-      GetTest(qs.stringify(this.getForm)).then(res => {
+      GetTest(this.$qs.stringify(this.getForm)).then(res => {
         this.Tests = res.data.data
         this.addIsAnalysis()
         this.showLoading = false

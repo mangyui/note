@@ -4,7 +4,7 @@
       <i class="el-icon-loading"></i>
       加载中...
     </div>
-    <div class="profile-header" :style="{backgroundImage:'url(./static/img/main/user_bg' + Math.floor(Math.random()*6)+ '.svg)'}">
+    <div class="profile-header" :style="{backgroundImage:'url(./static/img/main/user_bg' + bgindex + '.svg)'}">
       <!-- <div class="bg-blur"></div> -->
 
       <el-button class="toAttention"
@@ -89,7 +89,7 @@
           </div>
         </el-tab-pane>
         <el-tab-pane label="TA的错题" name="ques">
-          <div v-if="showLoading" class="loading-box">
+          <div v-show="showLoading" class="loading-box">
             <i class="el-icon-loading"></i>
             加载中...
           </div>
@@ -111,15 +111,15 @@
               </div>
             </div>
           </div>
-          <div v-if="!questions[0]" class="loading-box">
+          <div v-show="!questions[0]" class="loading-box">
             <i class="el-icon-search"></i>
             空空如也...
           </div>
-          <div v-if="showMore" class="loading-box">
+          <div v-show="showMore" class="loading-box">
             <i class="el-icon-loading"></i>
             加载更多中...
           </div>
-          <div v-if="questions[0]&&!showMore && NoneMore" class="loading-box">
+          <div v-show="questions[0]&&!showMore && NoneMore" class="loading-box">
             <i class="el-icon-search"></i>
             没有更多了...
           </div>
@@ -145,14 +145,13 @@ import {
   getSchoolList
 } from '@/api/toget'
 
-import qs from 'qs'
-
 export default {
   name: 'others',
   components: { nxSvgIcon },
   data() {
     return {
       Loadingtop: true,
+      bgindex: Math.floor(Math.random() * 6),
       showLoading: false,
       showNone: false,
       showMore: false,
@@ -189,7 +188,7 @@ export default {
   },
   methods: {
     getCustomer() {
-      GetCustomer(qs.stringify({ UserId: this.id, RequesterId: this.$store.getters.user.Id })).then(res => {
+      GetCustomer(this.$qs.stringify({ UserId: this.id, RequesterId: this.$store.getters.user.Id })).then(res => {
         this.user = res.data.data
         if (!this.user.Id) {
           this.$message.warning('没有找到...')
@@ -227,7 +226,7 @@ export default {
       this.NoneMore = false
       this.showLoading = true
       this.tolist.Page = 1
-      QuesList(qs.stringify(this.tolist)).then(res => {
+      QuesList(this.$qs.stringify(this.tolist)).then(res => {
         this.questions = res.data.data
         this.showLoading = false
       }).catch(() => {})
@@ -243,7 +242,7 @@ export default {
         }
         this.showMore = true
         this.tolist.Page++
-        QuesList(qs.stringify(this.tolist)).then(res => {
+        QuesList(this.$qs.stringify(this.tolist)).then(res => {
           this.questions = this.questions.concat(res.data.data)
           this.showMore = false
           if (res.data.data.length < this.tolist.Number) {
@@ -277,7 +276,7 @@ export default {
         FolloweeId: this.user.Id,
         UserId: this.$store.getters.user.Id
       }
-      P_toFollowee(qs.stringify(data)).then(res => {
+      P_toFollowee(this.$qs.stringify(data)).then(res => {
         if (res.data.data === -1) {
           this.$notify({
             title: '提示',
@@ -369,7 +368,7 @@ export default {
     background: linear-gradient( to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.4) 100% )
 }
 
-.profile-header .header-name,.profile-header .header-bio {
+.profile-header .header-name {
     color: #ffffff;
     display: inline-block;
     text-align: center;
@@ -382,6 +381,8 @@ export default {
     font-size: 13px;
     color: #ccc;
     margin-top: 5px;
+    display: inline-block;
+    text-align: center;
 }
 
 .info-tab {

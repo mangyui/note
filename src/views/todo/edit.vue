@@ -100,23 +100,18 @@
 
 <script>
 // wangeditor 富文本
-import E from 'wangeditor'
 var editor
 
-import VoiceInputButton from 'voice-input-button'
 import { NoteCategory } from '@/api/toget'
 import { AddNote, AddNoteType, Imgurl } from '@/api/toPost'
 import VueCropper from 'vue-cropperjs'
-import axios from 'axios'
-import qs from 'qs'
 import { dataURLtoFile } from '@/utils/index.js'
 import { voice, ocr } from '@/utils/private.js'
 
 export default {
   name: 'edit',
   components: {
-    VueCropper,
-    VoiceInputButton
+    VueCropper
   },
   data: function() {
     return {
@@ -238,9 +233,9 @@ export default {
       var ocr_data = {
         'image': this.cropImg.replace(/data:image\/.*;base64,/, '')
       }
-      axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+      this.$axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
       var url = ocr.shouxie
-      axios.post(url, qs.stringify(ocr_data))
+      this.$axios.post(url, this.$qs.stringify(ocr_data))
         .then(res => {
           this.result = res.data.words_result
           this.lines = res.data.words_result_num
@@ -253,7 +248,7 @@ export default {
       if (this.lines > 0) {
         this.result.forEach(item => {
           this.Content = this.Content + item.words + '<br />'
-          editor.txt.append('<p>' + item.words + '<p>' + '<br />')
+          editor.txt.append('<p>' + item.words + '<p>')
           // this.form.Text = this.form.Text + item.words
         })
         // editor.txt.append('<p>' + this.Content + '</p>')
@@ -301,7 +296,7 @@ export default {
       }
       this.$refs.addForm.validate(valid => {
         if (valid) {
-          AddNoteType(qs.stringify(this.toadd)).then(res => {
+          AddNoteType(this.$qs.stringify(this.toadd)).then(res => {
             if (res.data.code === 0) {
               this.$notify({
                 title: '提示',
@@ -343,7 +338,7 @@ export default {
       }
       this.$refs.Form.validate(valid => {
         if (valid) {
-          AddNote(qs.stringify(this.note)).then(res => {
+          AddNote(this.$qs.stringify(this.note)).then(res => {
             if (res.data.code === 0) {
               this.$router.push({
                 path: '/tonote/note_detail/' + res.data.data
@@ -405,7 +400,7 @@ export default {
   },
   mounted() {
     var That = this
-    editor = new E(this.$refs.editor)
+    editor = new this.$E(this.$refs.editor)
     console.log(editor.customConfig)
     editor.customConfig = {
       onchange: function(html) {

@@ -203,46 +203,61 @@ export const asyncRouterMap = [
     redirect: '/carveup/index',
     meta: {
       title: 'Test',
-      icon: 'cutup'
+      icon: 'cutup',
+      roles: ['teacher', 'student']
     },
     children: [
       {
         path: 'index',
         name: 'carveup',
         component: () => import('@/views/carveup/index'),
-        meta: { title: 'carveup', roles: ['teacher', 'student'] }
+        meta: { title: 'carveup', icon: 'cutup', roles: ['teacher', 'student'] }
+      }
+    ]
+  },
+  // 班级测试
+  {
+    path: '/class',
+    component: Layout,
+    redirect: '/class/index',
+    meta: {
+      title: 'Class',
+      icon: 'peoples',
+      roles: ['teacher', 'student']
+    },
+    children: [
+      {
+        path: 'index',
+        name: 'class',
+        component: () => import('@/views/class/index'),
+        meta: { title: 'Class', icon: 'peoples', roles: ['teacher', 'student'] }
       },
       {
-        path: 'testList',
-        name: 'testList',
-        component: () => import('@/views/carveup/testList'),
-        meta: { title: 'testList', roles: ['teacher', 'student'] }
-      },
-      {
-        path: 'studentList',
-        name: 'studentList',
-        component: () => import('@/views/carveup/studentList'),
-        meta: { title: 'studentList', roles: ['teacher'] }
+        path: 'class_detail/:id',
+        name: 'class_detail',
+        hidden: true,
+        component: () => import('@/views/class/class_detail'),
+        meta: { title: 'class_detail', roles: ['teacher', 'student'] }
       },
       {
         path: 'test_detail/:id',
         name: 'test_detail',
         hidden: true,
-        component: () => import('@/views/carveup/test_detail'),
+        component: () => import('@/views/class/test_detail'),
         meta: { title: 'test_detail', roles: ['teacher', 'student'] }
       },
       {
         path: 'test_todo/:id',
         name: 'test_todo',
         hidden: true,
-        component: () => import('@/views/carveup/test_todo'),
+        component: () => import('@/views/class/test_todo'),
         meta: { title: 'test_todo', roles: ['student'] }
       },
       {
         path: 'test_student/:id',
         name: 'test_student',
         hidden: true,
-        component: () => import('@/views/carveup/test_student'),
+        component: () => import('@/views/class/test_student'),
         meta: { title: 'test_student', roles: ['teacher'] }
       }
     ]
@@ -322,55 +337,6 @@ export const asyncRouterMap = [
       }
     ]
   },
-
-  // 题友
-  // {
-  //   path: '/friends',
-  //   component: Layout,
-  //   redirect: '/friends/schoolfellow',
-  //   meta: { title: 'Friends', icon: 'peoples' },
-  //   children: [
-  //     {
-  //       path: 'schoolfellow',
-  //       name: 'schoolfellow',
-  //       component: () => import('@/views/friends/schoolfellow'),
-  //       meta: { title: 'Schoolfellow' }
-  //     },
-  //     {
-  //       path: 'followee',
-  //       name: 'followee',
-  //       component: () => import('@/views/friends/followee'),
-  //       meta: { title: 'Followee' }
-  //     }
-  //   ]
-  // },
-
-  // 表格
-  // {
-  //   path: '/table',
-  //   component: Layout,
-  //   redirect: '/table/complex-table',
-  //   name: 'table',
-  //   meta: {
-  //     title: 'Table',
-  //     icon: 'component'
-  //   },
-  //   children: [
-  //     {
-  //       path: 'complex-table',
-  //       name: 'complex-table',
-  //       component: () => import('@/views/table/complex-table'),
-  //       meta: { title: 'complexTable', icon: 'component' }
-  //     },
-  //     {
-  //       path: 'Tabs',
-  //       name: 'Tabs',
-  //       component: () => import('@/views/table/Tabs'),
-  //       meta: { title: 'Tabs' }
-  //     }
-
-  //   ]
-  // },
   // 更多
   // {
   //   path: '/more',

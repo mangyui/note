@@ -1,18 +1,18 @@
 <template>
   <div class="app-container test_student">
-    <span class="header-title">学生完成情况</span>
+    <!-- <span class="header-title">学生列表</span> -->
     <div class="big-box1200">
-      <div class="top-search">
+      <!-- <div class="top-search">
         <el-input
           placeholder="查询学生"
           @keyup.enter.native=""
           v-model="search.keys">
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
-      </div>
+      </div> -->
       <div class="list-gbtn">
         <div>共 <b style="color: #F56C6C">24</b> 名学生</div>
-        <div>
+        <div v-if="user.roles.toString()!=['student']">
           <el-button type="primary" icon="el-icon-plus" size="small" @click="addStudent">添加学生</el-button>
           <el-button type="danger" icon="el-icon-delete" @click="showDelete=!showDelete" size="small">移除学生</el-button>
         </div>
@@ -79,6 +79,9 @@ export default {
         keys: ''
       }
     }
+  },
+  props: {
+    classId: [String, Number]
   },
   methods: {
     getNotes() {

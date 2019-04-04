@@ -9,11 +9,11 @@
     </div> -->
     <div class="big-box1200">
       <div class="container">
-        <div v-if="showLoading" class="loading-box">
+        <div v-show="showLoading" class="loading-box">
           <i class="el-icon-loading"></i>
           加载中...
         </div>
-        <div v-if="!collects[0] && !showLoading" class="loading-box">
+        <div v-show="!collects[0] && !showLoading" class="loading-box">
           <i class="el-icon-search"></i>
           空空如也...
         </div>
@@ -42,11 +42,11 @@
             </div>
           </div>
         </div>
-        <div v-if="showMore" class="loading-box">
+        <div v-show="showMore" class="loading-box">
           <i class="el-icon-loading"></i>
           加载更多中...
         </div>
-        <div v-if="!showMore && NoneMore" class="loading-box">
+        <div v-show="!showMore && NoneMore" class="loading-box">
           <i class="el-icon-search"></i>
           没有更多了...
         </div>
@@ -65,8 +65,6 @@ import {
   CollectList,
   P_toCollect
 } from '@/api/toPost'
-
-import qs from 'qs'
 
 export default {
   name: 'collect',
@@ -116,7 +114,7 @@ export default {
     getCollects() {
       this.showLoading = true
       this.tolist.Page = 1
-      CollectList(qs.stringify(this.tolist)).then(res => {
+      CollectList(this.$qs.stringify(this.tolist)).then(res => {
         this.collects = res.data.data
         this.showLoading = false
       }).catch(() => {})
@@ -131,7 +129,7 @@ export default {
           QuestionId: this.collects[index].QuestionId,
           UserId: this.$store.getters.user.Id
         }
-        P_toCollect(qs.stringify(data)).then(res => {
+        P_toCollect(this.$qs.stringify(data)).then(res => {
           if (res.data.data === -1) {
             this.$notify({
               title: '提示',
@@ -151,17 +149,6 @@ export default {
         })
       }).catch(() => {})
     },
-    // toSearch() {
-    //   if (this.search.keys === '') {
-    //     this.getNotes()
-    //     return
-    //   }
-    //   this.showLoading = true
-    //   SearchNote(qs.stringify(this.search)).then(res => {
-    //     this.notes = res.data.data
-    //     this.showLoading = false
-    //   }).catch(() => {})
-    // },
     clickfun(e) {
       var p = e.currentTarget.previousElementSibling.firstElementChild
       if (p.style.maxHeight === '1000px') {
@@ -183,7 +170,7 @@ export default {
         }
         this.showMore = true
         this.tolist.Page++
-        CollectList(qs.stringify(this.tolist)).then(res => {
+        CollectList(this.$qs.stringify(this.tolist)).then(res => {
           this.collects = this.collects.concat(res.data.data)
           this.showMore = false
           if (res.data.data.length < this.tolist.Number) {

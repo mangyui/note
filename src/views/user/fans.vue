@@ -43,8 +43,6 @@ import {
   P_toFollowee
 } from '@/api/toPost'
 
-import qs from 'qs'
-
 import nxSvgIcon from '@/components/nx-svg-icon/index'
 import customerBox from '@/components/my-box/customer-box'
 
@@ -66,11 +64,11 @@ export default {
   methods: {
     getTiyou() {
       this.showLoading = true
-      GetFans(qs.stringify({ UserId: this.id })).then(res => {
+      GetFans(this.$qs.stringify({ UserId: this.id })).then(res => {
         this.Fans = res.data.data
         this.showLoading = false
       }).catch(() => {})
-      GetFollowee(qs.stringify({ UserId: this.id })).then(res => {
+      GetFollowee(this.$qs.stringify({ UserId: this.id })).then(res => {
         this.Followees = res.data.data
         this.showLoading = false
       }).catch(() => {})
@@ -92,7 +90,7 @@ export default {
         FolloweeId: index,
         UserId: this.$store.getters.user.Id
       }
-      P_toFollowee(qs.stringify(data)).then(res => {
+      P_toFollowee(this.$qs.stringify(data)).then(res => {
         if (res.data.data === -1) {
           this.$notify({
             title: '提示',

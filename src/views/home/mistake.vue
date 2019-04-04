@@ -14,8 +14,7 @@
     <div v-show="question" class="note_details">
       <div class="page-content">
         <!-- <div class="detail-top">
-          <el-tag v-if="question.Category">{{question.Category.Subject}}</el-tag>
-          <el-button class="de-more" size="medium">相似错题</el-button>
+          <el-tag size="large">{{question.Type}}</el-tag>
         </div> -->
         <div class="sys-notes" v-html="question.Title"></div>
         <div class="sys-section" v-if="isMe">
@@ -80,7 +79,6 @@
 <script>
 
 // wangeditor 富文本
-import E from 'wangeditor'
 var editor
 
 import nxSvgIcon from '@/components/nx-svg-icon/index'
@@ -94,7 +92,6 @@ import {
   UpdateMistake,
   Imgurl
 } from '@/api/toPost'
-import qs from 'qs'
 
 export default {
   name: 'other_answer',
@@ -151,7 +148,7 @@ export default {
         MistakeId: this.id,
         UserId: this.$store.getters.user.Id
       }
-      P_dianZan(qs.stringify(data)).then(res => {
+      P_dianZan(this.$qs.stringify(data)).then(res => {
         if (res.data.code !== 0) {
           this.$notify({
             title: '提示',
@@ -194,7 +191,7 @@ export default {
         MistakeId: this.id,
         UserId: this.$store.getters.user.Id
       }
-      P_toCollect(qs.stringify(data)).then(res => {
+      P_toCollect(this.$qs.stringify(data)).then(res => {
         if (res.data.code !== 0) {
           this.$notify({
             title: '提示',
@@ -272,7 +269,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        UpdateMistake(qs.stringify({
+        UpdateMistake(this.$qs.stringify({
           Id: this.id,
           UserId: this.$store.getters.user.Id,
           Correct: this.content })).then(res => {
@@ -306,7 +303,7 @@ export default {
   mounted() {
     var That = this
     // var Imgurl = 'http://192.168.1.105/'
-    editor = new E(this.$refs.editor)
+    editor = new this.$E(this.$refs.editor)
     editor.customConfig = {
       onchange: function(html) {
         That.content = html

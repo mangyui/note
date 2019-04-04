@@ -47,7 +47,6 @@ import {
   NoteDetails,
   DeteleNote
 } from '@/api/toPost'
-import qs from 'qs'
 
 export default {
   name: 'note_detail',
@@ -73,7 +72,7 @@ export default {
   },
   methods: {
     getNote() {
-      NoteDetails(qs.stringify({ Id: this.id })).then(res => {
+      NoteDetails(this.$qs.stringify({ Id: this.id })).then(res => {
         this.note = res.data.data
         if (!this.note.UserId || this.note.UserId !== this.$store.getters.user.Id) {
           this.$message.warning('没有找到...')
@@ -105,7 +104,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        DeteleNote(qs.stringify({ Id: this.id })).then(res => {
+        DeteleNote(this.$qs.stringify({ Id: this.id })).then(res => {
           if (res.data.code === 0) {
             this.$notify({
               title: '提示',

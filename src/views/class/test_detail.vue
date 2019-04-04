@@ -1,15 +1,22 @@
 <template>
   <div class="app-container">
     <span class="header-title">测试详情</span>
+    <div class="crumbs disNone">
+      <el-breadcrumb separator="/">
+          <el-breadcrumb-item :to="{ path: '/class/index' }"><i class="el-icon-date"></i> 我的班级</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: '/class/class_detail/1' }"> 初二物理班</el-breadcrumb-item>
+          <el-breadcrumb-item>测试详情</el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
     <div class="big-box1200">
       <!--工具条-->
       <div class="list-gbtn">
         <!-- <div class="gbtn-box"> -->
           <div>
-            <router-link to="/carveup/test_student/1">
+            <router-link to="/class/test_student/1">
               <el-button v-if="user.roles.toString()!=['student']" type="primary" plain size="small">学生完成情况</el-button>
             </router-link>
-            <router-link to="/carveup/test_todo/1">
+            <router-link to="/class/test_todo/1">
               <el-button v-if="user.roles.toString()==['student']" type="primary" plain size="small">开始测试</el-button>
             </router-link>
           </div>
@@ -69,7 +76,6 @@ import '@/assets/js/jquery.wordexport.js'
 import {
   GetTest
 } from '@/api/toPost'
-import qs from 'qs'
 
 export default {
   name: 'test_detail',
@@ -106,7 +112,7 @@ export default {
     },
     getTest() {
       this.showLoading = true
-      GetTest(qs.stringify(this.getForm)).then(res => {
+      GetTest(this.$qs.stringify(this.getForm)).then(res => {
         this.Tests = res.data.data
         this.showLoading = false
         this.addOrdinal()

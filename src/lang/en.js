@@ -23,6 +23,8 @@ export default {
     More: 'More',
     ToQues: 'ToQues',
     Test: 'Test',
+    Class: 'Class',
+    class_detail: 'class_detail',
     getTest: 'getTest',
     carveup: 'carveup',
     test_todo: 'test_todo',

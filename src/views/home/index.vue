@@ -29,12 +29,6 @@
                 <p>添加错题</p>
               </router-link>
             </div>
-            <div class="home_item toShow">
-              <router-link to="/toques/quesList">
-                <nx-svg-icon class-name='more_icon' style="color:#F56C6C" icon-class="cuoti" />
-                <p>我的错题</p>
-              </router-link>
-            </div>
             <div class="home_item">
               <router-link to="/todo/edit">
                 <nx-svg-icon class-name='more_icon' style="color:#409EFF" icon-class="form" />
@@ -42,10 +36,16 @@
               </router-link>
             </div>
             <div class="home_item">
+              <router-link to="/class/index">
+                <nx-svg-icon class-name='more_icon' style="color:#8371f3" icon-class="peoples" />
+                <p>我的班级</p>
+              </router-link>
+            </div>
+            <div class="home_item">
               <!-- <div @click="toQidai"> -->
               <router-link to="/getTest/index">
                 <nx-svg-icon class-name='more_icon' style="color:#fdb75b" icon-class="shijuan" />
-                <p>生成试题</p>
+                <p>下载试题</p>
               </router-link>
             </div>
           <!-- <div class="top-search">
@@ -55,7 +55,7 @@
         </div>
       </div>
       <div>
-        <div v-if="!showLoading && !questions[0]" class="loading-box">
+        <div v-show="!showLoading && !questions[0]" class="loading-box">
           <i class="el-icon-search"></i>
           空空如也...
         </div>
@@ -63,9 +63,9 @@
         <myquex-box :option="myques"></myquex-box> -->
         <h4 class="home-h4" v-if="notes[0]"><i class="el-icon-star-off"></i> 最近笔记 <i class="el-icon-star-off"></i></h4>
         <note-box :option="notes"></note-box>
-        <h4 class="home-h4" v-if="questions[0]"><i class="el-icon-star-off"></i> 推荐题目 <i class="el-icon-star-off"></i></h4>
+        <h4 class="home-h4" v-show="questions[0]"><i class="el-icon-star-off"></i> 推荐题目 <i class="el-icon-star-off"></i></h4>
         <quex-box :option="questions"></quex-box>
-        <div v-if="showLoading" class="loading-box">
+        <div v-show="showLoading" class="loading-box">
           <i class="el-icon-loading"></i>
           加载中...
         </div>

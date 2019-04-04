@@ -1,26 +1,26 @@
 <template>
   <div class="app-container test_list">
-    <span class="header-title">学生测试</span>
+    <!-- <span class="header-title">学生测试</span> -->
     <div class="big-box1200">
-      <div class="top-search">
+      <!-- <div class="top-search">
         <el-input
           placeholder="请输入内容"
           @keyup.enter.native=""
           v-model="search.keys">
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
         </el-input>
-      </div>
+      </div> -->
       <div class="list-gbtn">
         <p class="list_p">在测<span>3</span> 结束<span>0</span></p>
-        <div>
+        <div v-if="user.roles.toString()!=['student']">
           <el-button type="primary" icon="el-icon-plus" size="small">添加测试</el-button>
         </div>
       </div>
       <div class="block">
         <el-timeline>
             <el-timeline-item v-for="(item,index) in 3" :key="index" timestamp="2019/3/12 12:12:12" placement="top">
-                <el-card class="test-card" shadow="hover" :style="{backgroundColor: '#F2F6FC'}">
-                  <router-link class="test_box" to="/carveup/test_detail/1">
+                <el-card class="test-card" shadow="hover" :style="{backgroundColor: '#ecf5ff'}">
+                  <router-link class="test_box" to="/class/test_detail/1">
                     <div>
                       <h4>三月小测试</h4>
                       <p>测试备注</p>
@@ -31,7 +31,7 @@
                     </div>
                   </router-link>
                   <el-button v-if="user.roles.toString()!=['student']" type="primary" icon="el-icon-edit" size="mini" @click="toEdit"></el-button>
-                  <el-button v-if="user.roles.toString()==['student']" type="danger" icon="el-icon-close" size="mini" @click="toExit"></el-button>
+                  <!-- <el-button v-if="user.roles.toString()==['student']" type="danger" icon="el-icon-close" size="mini" @click="toExit"></el-button> -->
                 </el-card>
             </el-timeline-item>
         </el-timeline>
@@ -90,20 +90,23 @@ export default {
       }
     }
   },
+  props: {
+    classId: [String, Number]
+  },
   methods: {
     toEdit() {
       this.dialogFormVisible = true
       return false
-    },
-    toExit() {
-      this.$confirm('退出测试?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-
-      }).catch(() => {})
     }
+    // toExit() {
+    //   this.$confirm('退出测试?', '提示', {
+    //     confirmButtonText: '确定',
+    //     cancelButtonText: '取消',
+    //     type: 'warning'
+    //   }).then(() => {
+
+    //   }).catch(() => {})
+    // }
   },
   created() {
     // console.log(this.user.roles)

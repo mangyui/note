@@ -24,11 +24,11 @@
             <i class="el-icon-share"></i> <strong>相关题目</strong>
           </div>
           <quex-box :option="quesList"></quex-box>
-          <div v-if="showLoading" class="loading-box">
+          <div v-show="showLoading" class="loading-box">
             <i class="el-icon-loading"></i>
             加载中...
           </div>
-          <div v-if="showNone" class="loading-box">
+          <div v-show="showNone" class="loading-box">
             <i class="el-icon-search"></i>
             空空如也...
           </div>
@@ -54,8 +54,6 @@ import {
   // NoteDetails,
   GetQuestionsByText
 } from '@/api/toPost'
-
-import qs from 'qs'
 
 export default {
   name: 'note_more',
@@ -107,24 +105,6 @@ export default {
     })
   },
   methods: {
-    // getNote() {
-    //   NoteDetails(qs.stringify({ Id: this.id })).then(res => {
-    //     this.note = res.data.data
-    //     if (!this.note.UserId || this.note.UserId !== this.$store.getters.user.Id) {
-    //       this.$message.warning('没有找到...')
-    //       var close = document.querySelector('.tags-view-item.active .el-icon-close')
-    //       close.click()
-    //     } else {
-    //       this.getQues()
-    //     }
-    //     this.topLoading = false
-    //   }).catch((res) => {
-    //     console.log(res)
-    //     this.$message.warning('系统错误...')
-    //     // var close = document.querySelector('.tags-view-item.active .el-icon-close')
-    //     // close.click()
-    //   })
-    // },
     getQues() {
       if (!this.id) {
         this.$notify({
@@ -137,7 +117,7 @@ export default {
         return
       }
       this.showLoading = true
-      GetQuestionsByText(qs.stringify({ UserId: this.$store.getters.user.Id, Text: this.Text })).then(res => {
+      GetQuestionsByText(this.$qs.stringify({ UserId: this.$store.getters.user.Id, Text: this.Text })).then(res => {
         this.quesList = res.data.data
         // this.$notify({
         //   title: '提示',

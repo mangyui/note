@@ -14,7 +14,8 @@
     <div v-show="question" class="note_details">
       <div class="page-content">
         <div class="detail-top">
-          <el-tag size="medium" v-if="question.Category">{{question.Category.Subject}}</el-tag>
+          <el-tag size="large" type="danger" v-if="question.Category">{{question.Category.Class}} ‧ {{question.Category.Subject}}</el-tag>
+          <el-tag size="large">{{question.Type}}</el-tag>
           <router-link :to="'/home/ques_more/'+ this.id">
             <el-button class="de-more" size="small" >相似题型</el-button>
           </router-link>
@@ -126,7 +127,6 @@
 
 <script>
 // 编辑器
-import E from 'wangeditor'
 var HaveCorrect
 
 import nxSvgIcon from '@/components/nx-svg-icon/index'
@@ -144,8 +144,6 @@ import {
   mistakeCate,
   AddMistakeCate
 } from '@/api/toPost'
-
-import qs from 'qs'
 
 export default {
   name: 'question_details',
@@ -223,7 +221,7 @@ export default {
         QuestionId: this.id,
         UserId: this.user.Id
       }
-      P_dianZan(qs.stringify(data)).then(res => {
+      P_dianZan(this.$qs.stringify(data)).then(res => {
         if (res.data.code !== 0) {
           this.$notify({
             title: '提示',
@@ -266,7 +264,7 @@ export default {
         QuestionId: this.id,
         UserId: this.user.Id
       }
-      P_toCollect(qs.stringify(data)).then(res => {
+      P_toCollect(this.$qs.stringify(data)).then(res => {
         if (res.data.code !== 0) {
           this.$notify({
             title: '提示',
@@ -300,7 +298,7 @@ export default {
       })
     },
     getFriendCorrect() {
-      QFriendCorrect(qs.stringify({ QuestionId: this.id })).then(res => {
+      QFriendCorrect(this.$qs.stringify({ QuestionId: this.id })).then(res => {
         this.friendCorrect = res.data.data
       }).catch((res) => {
         console.log(res)
@@ -361,7 +359,7 @@ export default {
             'MistakeCateId': this.form.CategoryId,
             'Correct': this.haveF.Correct
           }
-          addMistake(qs.stringify(datas)).then(res => {
+          addMistake(this.$qs.stringify(datas)).then(res => {
             this.dialogFormVisible = false
             this.$notify({
               title: '提示',
@@ -390,7 +388,7 @@ export default {
       }
       this.$refs.addForm.validate(valid => {
         if (valid) {
-          AddMistakeCate(qs.stringify(this.toadd)).then(res => {
+          AddMistakeCate(this.$qs.stringify(this.toadd)).then(res => {
             if (res.data.code === 0) {
               this.$notify({
                 title: '提示',
@@ -412,7 +410,7 @@ export default {
       if (!this.$store.getters.user.Id) {
         return
       }
-      mistakeCate(qs.stringify({ UserId: this.$store.getters.user.Id })).then(res => {
+      mistakeCate(this.$qs.stringify({ UserId: this.$store.getters.user.Id })).then(res => {
         this.typelist = res.data.data
       }).catch(() => {
         console.log('获取题目分类数据失败！')
@@ -428,7 +426,7 @@ export default {
   },
   mounted() {
     var That = this
-    HaveCorrect = new E(this.$refs.HaveCorrect)
+    HaveCorrect = new this.$E(this.$refs.HaveCorrect)
     HaveCorrect.customConfig = {
       onchange: function(html) {
         That.haveF.Correct = html

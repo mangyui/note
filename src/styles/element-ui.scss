@@ -11,7 +11,7 @@
 
 //暂时性解决diolag 问题 https://github.com/ElemeFE/element/issues/2461
 .el-dialog {
-  transform: none;
+  // transform: none;
   left: 0;
   position: relative;
   margin: 0 auto 10px;
@@ -19,7 +19,7 @@
   max-width: 100%;
   top: 50%;
   margin-top: 0!important;
-  transform: translateY(-55%);
+  transform: translateY(-50%);
 }
 .el-message-box{
   max-width: 85%;
