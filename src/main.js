@@ -46,8 +46,8 @@ Vue.use(ElementUI, {
 Vue.config.productionTip = false
 
 // 全局引入voice组件
-import VoiceInputButton from 'voice-input-button'
-Vue.use(VoiceInputButton)
+// import VoiceInputButton from 'voice-input-button'
+// Vue.use(VoiceInputButton)
 
 // 全局引入wangedit
 import E from 'wangeditor'
@@ -61,7 +61,7 @@ Vue.prototype.$axios = Axios
 import qs from 'qs'
 Vue.prototype.$qs = qs
 
-// 监听手机设备加载，以实现打开相机功能
+// 监听设备加载，以实现打开相机功能
 // document.addEventListener('deviceready', function() {
 new Vue({
   el: '#app',

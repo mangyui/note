@@ -131,7 +131,7 @@ export default {
     padding: 0 10px;
     margin-right: 10px;
     border: 1px solid rgba(82,186,181,.2);
-    border-radius: 3px;
+    // border-radius: 3px;
     background-color: rgba(82,186,181,.1);
     text-decoration: none;
     font-size: 14px;

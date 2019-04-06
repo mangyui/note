@@ -31,16 +31,7 @@
         <br/>
         <div class="voice-button">
           <div class="voice-input-button-wrapper">
-            <voice-input-button
-                :server="voice.serverurl"
-                :appId="voice.appId"
-                :APIKey="voice.APIKey"
-                @record="showResult"
-                color="#fff"
-                tipPosition="top"
-            >
-              <template slot="no-speak">没听清您说的什么</template>
-            </voice-input-button>
+            <voiceBtn @record="showResult"></voiceBtn>
           </div>
         </div>
         <el-button type="primary" class="mobile_bbtn" @click="dialogFormVisible = true">提交</el-button>
@@ -97,6 +88,7 @@ import {
 import VueCropper from 'vue-cropperjs'
 import { dataURLtoFile } from '@/utils/index.js'
 import { voice, ocr } from '@/utils/private.js'
+import voiceBtn from '@/components/voice/index'
 
 export default {
   name: 'note_edit',
@@ -125,7 +117,8 @@ export default {
     }
   },
   components: {
-    VueCropper
+    VueCropper,
+    voiceBtn
   },
   methods: {
     cameraTakePicture() {
@@ -282,8 +275,11 @@ export default {
       }
     },
     showResult(text) {
-      editor.txt.append('<span>' + text.substr(0, text.length - 1) + '</span>')
-      // console.log(text.substr(0, text.length - 1))
+      if (this.note.Content === '') {
+        editor.txt.html('<span>' + text.substr(0, text.length - 1) + '</span>')
+      } else {
+        editor.txt.append('<span>' + text.substr(0, text.length - 1) + '</span>')
+      }
     }
   },
   // 注意

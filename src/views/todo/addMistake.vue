@@ -42,16 +42,7 @@
             <!-- <br/> -->
             <div class="voice-button">
               <div class="voice-input-button-wrapper">
-                <voice-input-button
-                    :server="voice.serverurl"
-                    :appId="voice.appId"
-                    :APIKey="voice.APIKey"
-                    @record="showResult1"
-                    color="#fff"
-                    tipPosition="top"
-                >
-                  <template slot="no-speak">没听清您说的什么</template>
-                </voice-input-button>
+                <voiceBtn @record="showResult1"></voiceBtn>
               </div>
             </div>
             <h4 class="htitle">错题解答(可选)</h4>
@@ -60,16 +51,7 @@
             <!-- <br/> -->
             <div class="voice-button">
               <div class="voice-input-button-wrapper">
-                <voice-input-button
-                    :server="voice.serverurl"
-                    :appId="voice.appId"
-                    :APIKey="voice.APIKey"
-                    @record="showResult2"
-                    color="#fff"
-                    tipPosition="top"
-                >
-                  <template slot="no-speak">没听清您说的什么</template>
-                </voice-input-button>
+                <voiceBtn @record="showResult2"></voiceBtn>
               </div>
             </div>
             <el-button class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
@@ -144,6 +126,7 @@ import { voice, ocr } from '@/utils/private.js'
 // import {
 //   questionCategory
 // } from '@/api/toget'
+import voiceBtn from '@/components/voice/index'
 
 import {
   Imgurl,
@@ -158,7 +141,8 @@ export default {
   components: {
     VueCropper,
     quexBox,
-    nxSvgIcon
+    nxSvgIcon,
+    voiceBtn
     // slider,
     // slideritem
   },
@@ -398,11 +382,20 @@ export default {
       })
     },
     showResult1(text) {
-      ShouTitle.txt.append('<span>' + text.substr(0, text.length - 1) + '</span>')
-      // console.log(text.substr(0, text.length - 1))
+      if (this.form.Content === '') {
+        ShouTitle.txt.html('<span>' + text.substr(0, text.length - 1) + '</span>')
+      } else {
+        ShouTitle.txt.append('<span>' + text.substr(0, text.length - 1) + '</span>')
+      }
+      // ShouTitle.txt.append('<span>' + text.substr(0, text.length - 1) + '</span>')
     },
     showResult2(text) {
-      ShouCorrect.txt.append('<span>' + text.substr(0, text.length - 1) + '</span>')
+      if (this.form.Analysis === '') {
+        ShouCorrect.txt.html('<span>' + text.substr(0, text.length - 1) + '</span>')
+      } else {
+        ShouCorrect.txt.append('<span>' + text.substr(0, text.length - 1) + '</span>')
+      }
+      // ShouCorrect.txt.append('<span>' + text.substr(0, text.length - 1) + '</span>')
       // console.log(text.substr(0, text.length - 1))
     }
   },

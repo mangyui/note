@@ -187,6 +187,23 @@ export const constantRouterMap = [
       }
     ]
   }
+  // {
+  //   path: '/voice',
+  //   component: Layout,
+  //   redirect: '/voice/index',
+  //   meta: {
+  //     title: 'Voice',
+  //     icon: 'cutup'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'voice',
+  //       component: () => import('@/views/voice/index'),
+  //       meta: { title: 'Voice', icon: 'cutup' }
+  //     }
+  //   ]
+  // }
   // { path: '*', redirect: '/', hidden: true }
 ]
 

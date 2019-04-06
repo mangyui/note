@@ -27,20 +27,7 @@
         <!-- <br/> -->
         <div class="voice-button">
           <div class="voice-input-button-wrapper">
-            <voice-input-button
-                :server="voice.serverurl"
-                :appId="voice.appId"
-                :APIKey="voice.APIKey"
-                @record="showResult"
-                @record-start="recordStart"
-                @record-stop="recordStop"
-                @record-blank="recordNoResult"
-                @record-failed="recordFailed"
-                color="#fff"
-                tipPosition="top"
-            >
-              <template slot="no-speak">没听清您说的什么</template>
-            </voice-input-button>
+            <voiceBtn @record="showResult"></voiceBtn>
           </div>
         </div>
         <el-button class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
@@ -107,11 +94,13 @@ import { AddNote, AddNoteType, Imgurl } from '@/api/toPost'
 import VueCropper from 'vue-cropperjs'
 import { dataURLtoFile } from '@/utils/index.js'
 import { voice, ocr } from '@/utils/private.js'
+import voiceBtn from '@/components/voice/index'
 
 export default {
   name: 'edit',
   components: {
-    VueCropper
+    VueCropper,
+    voiceBtn
   },
   data: function() {
     return {
@@ -385,17 +374,12 @@ export default {
       }, 500)
     },
     showResult(text) {
-      editor.txt.append('<span>' + text.substr(0, text.length - 1) + '</span>')
+      if (this.note.Content === '') {
+        editor.txt.html('<span>' + text.substr(0, text.length - 1) + '</span>')
+      } else {
+        editor.txt.append('<span>' + text.substr(0, text.length - 1) + '</span>')
+      }
       // console.log(text.substr(0, text.length - 1))
-    },
-    recordStart() {
-    },
-    recordStop() {
-    },
-    recordNoResult() {
-    },
-    recordFailed(error) {
-      console.info('识别失败，错误栈：', error)
     }
   },
   mounted() {

@@ -15,20 +15,7 @@
       </div>
       <div class="voice-button">
         <div class="voice-input-button-wrapper">
-          <voice-input-button
-              :server="voice.serverurl"
-              :appId="voice.appId"
-              :APIKey="voice.APIKey"
-              @record="showResult"
-              @record-start="recordStart"
-              @record-stop="recordStop"
-              @record-blank="recordNoResult"
-              @record-failed="recordFailed"
-              color="#fff"
-              tipPosition="top"
-          >
-            <template slot="no-speak">没听清您说的什么</template>
-          </voice-input-button>
+          <voiceBtn @record="showResult"></voiceBtn>
         </div>
       </div>
       <!-- <el-select  v-model="type" placeholder="选择类型">
@@ -103,6 +90,7 @@ import {
   SearchUsers
 } from '@/api/toPost'
 
+import voiceBtn from '@/components/voice/index'
 import quexBox from '@/components/my-box/quex-box'
 import { voice } from '@/utils/private.js'
 
@@ -110,7 +98,8 @@ export default {
   name: 'search',
   components: {
     nxSvgIcon,
-    quexBox
+    quexBox,
+    voiceBtn
   },
   data() {
     return {
@@ -235,15 +224,6 @@ export default {
       }
       // console.log(this.Sdata.keys)
       // this.SearchQuestion()
-    },
-    recordStart() {
-    },
-    recordStop() {
-    },
-    recordNoResult() {
-    },
-    recordFailed(error) {
-      console.info('识别失败，错误栈：', error)
     }
   },
   mounted() {
