@@ -34,14 +34,14 @@
         <actor-select style="height:27px" />
         <p>身份</p>
       </div>
-      <div @click="toMess">
+      <div v-if="user.Id" @click="toMess">
         <nx-svg-icon style="height:27px" icon-class="bell" />
         <p>消息</p>
       </div>
-      <!-- <div>
+      <div v-if="!user.Id">
         <nx-full-screen class="" style="height:27px"></nx-full-screen>
         <p>全屏</p>
-      </div> -->
+      </div>
     </div>
   </el-scrollbar>
 </template>

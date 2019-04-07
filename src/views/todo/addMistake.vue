@@ -3,37 +3,17 @@
     <span class="header-title">添加错题</span>
     <div class="container">
       <div class="inside-box">
-        <!-- <el-alert
-          class="top-warn"
-          title="图片文件过大会影响识别速度"
-          type="warning">
-        </el-alert> -->
-        <div class="crop-demo">
-          <label ref="select_frame"  class="crop-topimg" :style="{backgroundImage:'url(' + cropImg + ')', backgroundSize:'contain'}">
-            <img v-show="cropImg" preview :src="cropImg" class="up_img" >
-            <div v-if="!cropImg" class="up_inside">
-              <nx-svg-icon class-name='icon-camera' icon-class="add" />
-              <p>请选择图像上传方式，或将图像拖到此处</p>
-            </div>
-            <!-- <div class="tuoUp"></div> -->
-            <img v-if="showGIF" class="loading-gif" src="@/assets/images/home/loading2.gif" alt="Loading">
-          </label>
-          <div class="upbtn-group">
-            <el-button type="primary" @click="cameraTakePicture">拍照上传</el-button>
-            <div class="crop-demo-btn tiffany-btn">上传图片
-              <input class="crop-input" ref="referenceUpload" id='upimg' type="file" name="image" accept="image/*" multiple @change="toChoose" />
-            </div>
-          </div>
-        </div>
+
+        <pictureOcr v-show="isOcr" ocrIcon="add" @Oresult="Getresult"></pictureOcr>
+        <el-button class="de-more" type="danger" size="small" @click="isOcr=!isOcr">{{isOcr?"关闭":"开启"}}文字识别</el-button>
         <div class="sq-body">
           <!-- <el-button class="sq-change" type="danger" size="medium" v-if="showBtn" @click="showShou=(showShou==false?true:false)">{{showShou==false?"手动添加":"返回相似"}}</el-button> -->
-          <el-card shadow="never" v-loading="showGIF">
+          <!-- <el-card shadow="never" v-loading="showGIF">
             <div class="run_btn">
-              <!-- <img v-if="showGIF" class="loading-gif" src="@/assets/images/home/loading2.gif" alt="Loading"> -->
               <el-checkbox v-model="isHand" label="含手写" border></el-checkbox>
               <el-button class="editor-btn" type="danger" @click="torun">提取文字</el-button>
             </div>
-          </el-card>
+          </el-card> -->
           <div class="ocr-edit">
             <!-- <h3 class="Hpipei">手动添加</h3> -->
             <h4 class="htitle">错题题目(不含答案)</h4>
@@ -59,19 +39,6 @@
         </div>
       </div>
     </div>
-    <el-dialog class="crop-pic" title="裁剪图片" :visible.sync="dialogVisible" :before-close="cancelCrop" width="70%">
-      <vue-cropper class="dgCropper" ref='cropper' :auto-crop-area="1" :src="imgSrc" :ready="cropImage" :zoom="cropImage" :cropmove="cropImage" :style="'width:100%;  height: '+ 0.7*documentWidth + 'px'"></vue-cropper>
-      <el-alert
-        title="请旋转正常角度，提高识别准确率"
-        type="warning"
-        show-icon>
-      </el-alert>
-      <span slot="footer" class="dialog-footer">
-        <el-button class="to-left" size="medium" @click="toRotate" type="primary" icon="el-icon-refresh"></el-button>
-        <el-button size="medium" @click="cancelCrop">取 消</el-button>
-        <el-button type="primary"  size="medium" @click="toCrop">确 定</el-button>
-      </span>
-    </el-dialog>
     <!-- Form -->
     <el-dialog title="错题备注" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="Form">
@@ -91,8 +58,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submit">确 定</el-button>
+        <el-button size="small" @click="dialogFormVisible = false">取 消</el-button>
+        <el-button size="small" type="primary" @click="submit">确 定</el-button>
       </div>
     </el-dialog>
     <el-dialog title="添加错题分类" :visible.sync="showAdd">
@@ -105,8 +72,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="showAdd = false">取 消</el-button>
-        <el-button type="primary" @click="addMistakeType">确 定</el-button>
+        <el-button size="small" @click="showAdd = false">取 消</el-button>
+        <el-button size="small" type="primary" @click="addMistakeType">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -119,14 +86,12 @@ var ShouTitle, ShouCorrect
 
 import nxSvgIcon from '@/components/nx-svg-icon/index'
 import quexBox from '@/components/my-box/quex-box'
-import VueCropper from 'vue-cropperjs'
-import { dataURLtoFile } from '@/utils/index.js'
 
-import { voice, ocr } from '@/utils/private.js'
 // import {
 //   questionCategory
 // } from '@/api/toget'
 import voiceBtn from '@/components/voice/index'
+import pictureOcr from '@/components/picture-ocr/index'
 
 import {
   Imgurl,
@@ -139,26 +104,20 @@ import {
 export default {
   name: 'addMistake',
   components: {
-    VueCropper,
     quexBox,
     nxSvgIcon,
-    voiceBtn
+    voiceBtn,
+    pictureOcr
     // slider,
     // slideritem
   },
   data: function() {
     return {
-      documentWidth: document.body.clientHeight,
-      voice: voice,
-      showGIF: false,
-      // showShou: true,
+      isOcr: true,
       showBtn: false,
       lines: '',
       result: '',
       isHand: false,
-      cropImg: '',
-      imgSrc: '',
-      dialogVisible: false,
       dialogFormVisible: false,
       showAdd: false,
       questions: [],
@@ -192,99 +151,21 @@ export default {
     }
   },
   methods: {
-    cameraTakePicture() {
-      if (navigator.camera) {
-        navigator.camera.getPicture(this.onSuccess, this.onFail, {
-          quality: 50,
-          destinationType: Camera.DestinationType.DATA_URL,//eslint-disable-line
-          encodingType: Camera.EncodingType.JPEG,//eslint-disable-line
-          sourceType: Camera.PictureSourceType.Camera//eslint-disable-line
-        })
-      } else {
-        this.$notify({
-          title: '提示',
-          message: '网页端请选择上传图片的方式！',
-          type: 'info'
-        })
-      }
-    },
-    onSuccess(imageURI) {
-      var file = dataURLtoFile('data:image/jpeg;base64,' + imageURI, 'camera.jpeg')
-      this.setImage(file)
-    },
-    onFail(mess) {
-      console.log('未选择图片')
-    },
-    toChoose(e) {
-      const file = e.target.files[0]
-      this.setImage(file)
-    },
-    setImage(file) {
-      if (!file || !file.type.includes('image/')) {
-        return
-      }
-      const reader = new FileReader()
-      reader.onload = event => {
-        this.dialogVisible = true
-        this.imgSrc = event.target.result
-        this.$refs.cropper && this.$refs.cropper.replace(event.target.result)
-      }
-      reader.readAsDataURL(file)
-      this.$refs.referenceUpload.value = null
-    },
-    cropImage() {
-      // this.cropImg = this.$refs.cropper.getCroppedCanvas().toDataURL('image/jpeg', 0.7)
-    },
-    cancelCrop() {
-      this.dialogVisible = false
-      this.cropImg = ''
-    },
-    toCrop() {
-      this.cropImg = this.$refs.cropper.getCroppedCanvas().toDataURL('image/jpeg', 0.7)
-      this.dialogVisible = false
-      // this.torun()
-    },
-    // handleClose(done) {
-    //   this.cropImg = ''
-    //   done()
-    // },
-    toRotate() {
-      this.$refs.cropper.rotate(45)
-    },
-    torun() {
-      if (!this.cropImg) {
-        this.$notify({
-          title: '提示',
-          message: '请先上传图片后再操作！',
-          type: 'warning'
-        })
-        return
-      }
-      this.showGIF = true
-      var ocr_data = {
-        'image': this.cropImg.replace(/data:image\/.*;base64,/, '')
-      }
-      // 注意之后不同是得改变 ！！！！！！！！！！！！！！！
-      this.$axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
-      var url = ocr.baseurl
-      if (this.isHand === true) {
-        url = ocr.shouxie
-      }
-      this.$axios.post(url, this.$qs.stringify(ocr_data))
-        .then(res => {
-          this.result = res.data.words_result
-          this.lines = res.data.words_result_num
-          this.formatText()
-          // console.log(res.data.words_result_num)
-        })
-        .catch(err => console.error(err))
+    Getresult(value) {
+      this.lines = value.lines
+      this.result = value.result
+      this.formatText()
     },
     formatText() {
       if (this.lines > 0) {
         this.result.forEach(item => {
+          if (this.form.Content === '') {
+            ShouTitle.txt.html('<span>' + item.words + '</span>')
+          } else {
+            ShouTitle.txt.append('<span>' + item.words + '</span>')
+          }
           this.form.Content = this.form.Content + item.words + '<br />'
           this.form.Text = this.form.Text + item.words
-          ShouTitle.txt.append('<p>' + item.words + '<p>')
         })
         // ShouTitle.txt.append('<p>' + this.form.Content + '</p>')
         // ShouTitle.txt.html(this.form.Content)
@@ -302,7 +183,6 @@ export default {
           type: 'info'
         })
       }
-      this.showGIF = false
     },
     addMistakeType() {
       if (!this.$store.getters.user.Id) {
@@ -438,31 +318,6 @@ export default {
     }
     ShouTitle.create()
     ShouCorrect.create()
-
-    this.$refs.select_frame.ondragleave = (e) => {
-      // 阻止离开时的浏览器默认行为
-      e.preventDefault()
-      this.$refs.select_frame.style.backgroundColor = '#fff'
-      this.$refs.select_frame.style.border = '0.11em dashed #d9d9d9'
-    }
-    this.$refs.select_frame.ondrop = (e) => {
-      e.preventDefault()
-      const data = e.dataTransfer.files[0]
-      if (data.length < 1) {
-        return
-      }
-      this.setImage(data)
-      this.$refs.select_frame.style.backgroundColor = '#fff'
-      this.$refs.select_frame.style.border = '0.11em dashed #d9d9d9'
-    }
-    this.$refs.select_frame.ondragenter = (e) => {
-      e.preventDefault()
-      this.$refs.select_frame.style.backgroundColor = '#edf8f7'
-      this.$refs.select_frame.style.border = '0.11em dashed #52bab5'
-    }
-    this.$refs.select_frame.ondragover = (e) => {
-      e.preventDefault()
-    }
   },
   created() {
     this.GetCategory()
@@ -474,7 +329,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-    @import '../../styles/ocr.scss';
 .top-warn{
   margin-bottom: 10px;
 }

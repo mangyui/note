@@ -11,7 +11,7 @@
           <i class="el-icon-date"></i> 相似题目</el-breadcrumb-item>
       </el-breadcrumb>
     </div> -->
-    <div class="note_details">
+    <div class="note_details big-box1200">
       <div class="page-content">
         <div class="detail-top">
           <el-tag v-if="question.Category">{{question.Category.Subject}}</el-tag>

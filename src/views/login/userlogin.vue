@@ -37,8 +37,8 @@ export default {
   components: { nxSvgIcon },
   data() {
     const validateCode = (rule, value, callback) => {
-      if (this.Vcode.code && value !== this.Vcode.code) {
-        callback(new Error('验证码不正确'))
+      if (this.Vcode.code && value.toLowerCase() !== this.Vcode.code.toLowerCase()) {
+        callback(new Error('请输入正确的验证码'))
       } else {
         callback()
       }
@@ -52,7 +52,7 @@ export default {
       },
       checked: false,
       Vcode: {
-        code: '12345'
+        code: ''
       },
       loginRules: {
         username: [

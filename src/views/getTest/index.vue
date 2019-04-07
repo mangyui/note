@@ -1,11 +1,11 @@
 <template>
   <div class="app-container">
     <span class="header-title">生成试题</span>
-    <div class="crumbs disNone">
+    <!-- <div class="crumbs disNone">
       <el-breadcrumb separator="/">
           <el-breadcrumb-item><i class="el-icon-date"></i> 生成试题</el-breadcrumb-item>
       </el-breadcrumb>
-    </div>
+    </div> -->
     <div class="big-box1200">
       <!--工具条-->
       <div class="list-gbtn">
@@ -80,8 +80,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="getTest">确定</el-button>
+        <el-button size="small" @click="dialogFormVisible = false">取 消</el-button>
+        <el-button size="small" type="primary" @click="getTest">确定</el-button>
       </div>
     </el-dialog>
     <div  v-if="Tests[0]" class="note_d-edit">

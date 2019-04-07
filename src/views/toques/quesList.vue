@@ -1,12 +1,6 @@
 <template>
   <div class="app-container">
     <span class="header-title">错题本</span>
-    <!-- <div class="crumbs disNone">
-      <el-breadcrumb separator="/">
-          <el-breadcrumb-item><i class="el-icon-date"></i> 错题本</el-breadcrumb-item>
-          <el-breadcrumb-item>我的错题</el-breadcrumb-item>
-      </el-breadcrumb>
-    </div> -->
     <div class="big-box1200">
       <div class="top-search">
         <el-input

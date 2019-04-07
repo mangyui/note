@@ -5,13 +5,7 @@
       <i class="el-icon-loading"></i>
       加载中...
     </div> -->
-    <!-- <div class="crumbs disNone">
-      <el-breadcrumb separator="/">
-        <el-breadcrumb-item>
-          <i class="el-icon-date"></i> 相关题目</el-breadcrumb-item>
-      </el-breadcrumb>
-    </div> -->
-    <div class="note_details">
+    <div class="note_details big-box1200">
       <div class="page-content">
         <div class="detail-top">
           <el-tag size="small" v-if="note">{{note.Category}}</el-tag>
@@ -95,7 +89,6 @@ export default {
   beforeRouteEnter(to, from, next) {
     next(vm => {
       // 这里的vm指的就是vue实例，可以用来当做this使用
-      // console.log(to, from, vm.$route)
       vm.id = vm.$route.query.id
       vm.Text = vm.$route.query.content
       vm.note.Headline = vm.$route.query.Headline

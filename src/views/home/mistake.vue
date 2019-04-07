@@ -11,7 +11,7 @@
           <i class="el-icon-date"></i> 错题详情</el-breadcrumb-item>
       </el-breadcrumb>
     </div> -->
-    <div v-show="question" class="note_details">
+    <div v-show="question" class="note_details big-box1200">
       <div class="page-content">
         <!-- <div class="detail-top">
           <el-tag size="large">{{question.Type}}</el-tag>
@@ -94,7 +94,7 @@ import {
 } from '@/api/toPost'
 
 export default {
-  name: 'other_answer',
+  name: 'mistake',
   components: {
     nxSvgIcon
   },
@@ -332,7 +332,8 @@ export default {
 }
 .note_details{
   .sys-notes {
-    background: #ffe9e9
+    background: rgb(254, 240, 240);
+    border-color: #F56C6C;
   }
 }
 </style>

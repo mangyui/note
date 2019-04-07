@@ -51,3 +51,11 @@
   line-height: 28px;
   word-break: break-all;
 }
+
+@media (max-width: 768px)
+{
+  .contariner-wraper{
+    margin-bottom: 20px;
+    padding: 0 5px;
+  }
+}

@@ -4,7 +4,7 @@
     <div class="big-box1200">
       <el-tabs v-model="activeName" class='is_stretch' >
         <el-tab-pane name="followee">
-          <div slot="label"><i class="el-icon-date"></i>关注的人</div>
+          <div slot="label">我的关注</div>
             <div class="">
               <div v-if="showLoading" class="loading-box">
                 <i class="el-icon-loading"></i>
@@ -18,7 +18,7 @@
             </div>
         </el-tab-pane>
         <el-tab-pane name="fans">
-          <div slot="label"><i class="el-icon-date"></i>粉丝</div>
+          <div slot="label">我的粉丝</div>
           <div class="">
             <div v-if="showLoading" class="loading-box">
               <i class="el-icon-loading"></i>

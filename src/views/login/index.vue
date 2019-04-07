@@ -2,7 +2,9 @@
   <div class="login-container pull-height" @keyup.enter.native="handleLogin">
     <div class="login-info text-white animated fadeInLeft">
       <div class="logo">
+        <router-link to="/home/index">
           <img src="../../assets/images/home/logo.png" width="200px" height="200px" alt="logo" style="vertical-align: middle;" />
+        </router-link>
       </div>
       <h2 class="login-info-title">{{website.info.title}}</h2>
       <ul class="login-info-list">
@@ -13,7 +15,7 @@
     </div>
     <div class="login-border  animated fadeInRight">
       <div class="login-main">
-        <h4 class="login-title disNone">登录{{website.title}}
+        <h4 class="login-title disNone">登录 {{website.title}}
         </h4>
         <el-tabs v-model="activeName" class='is_stretch'>
           <el-tab-pane label="用户登录" name="user">
@@ -25,9 +27,9 @@
         </el-tabs>
       </div>
     </div>
-    <router-link to="/home/index" class="btn-tohome">
+    <!-- <router-link to="/home/index" class="btn-tohome">
       <el-button round>首页<i class="el-icon-d-arrow-right el-icon--right"></i></el-button>
-    </router-link>
+    </router-link> -->
   </div>
 </template>
 <script>
@@ -58,7 +60,7 @@ export default {
 <style lang="scss">
 .btn-tohome{
   position: absolute;
-  top: 10px;
+  bottom: 10px;
   right: 10px;
   .el-button{
     border: 0;
@@ -68,7 +70,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.3);
   position: relative;
   height: 100%;
   flex-wrap: wrap;
@@ -96,13 +98,13 @@ export default {
   margin-top: 5px;
 }
 .login-border {
+  width: 370px;
   display: flex;
   justify-content: center;
   flex-direction: column;
   padding: 30px 50px 25px 50px;
   background-color: #fff;
   border-radius: 6px;
-  box-shadow: 1px 1px 2px #eee;
 }
 .login-main {
   border-radius: 3px;
@@ -119,7 +121,7 @@ export default {
   margin: 0 0 20px;
   text-align: center;
   color: #52bab5;
-  letter-spacing: 3px;
+  letter-spacing: 1px;
   font-size: 18px;
 }
 .login-submit {
@@ -135,7 +137,8 @@ export default {
 .login-form {
   margin: 10px 0;
   .el-form-item__content {
-    width: 270px;
+    // width: 270px;
+    width: 100%;
     display: flex;
 
     .svgIcon{
@@ -234,13 +237,15 @@ export default {
     flex-direction: column-reverse;
     justify-content: space-between;
     padding: 10px 0;
+    background-color: #fff
   }
   .logo img{
     width: 160px;
     height: 160px;
   }
   .login-border{
-    padding: 20px 28px 10px;
+    width: 95%;
+    padding: 0px 15px 10px;
     position: absolute;
     top: 10px;
     z-index: 0;

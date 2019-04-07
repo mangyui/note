@@ -1,3 +1,5 @@
+@import './variables.scss';
+
 @media (min-width: 769px)
 {
   .toShow{
@@ -26,7 +28,7 @@
     }
     .home-top {
       margin: 20px 0px 40px;
-      padding: 28px 0px;
+      padding: 24px 0px;
       .home_item{
         height: 120px;
         width: 100px;
@@ -44,7 +46,7 @@
 
   .home-container {
     .home-box{
-      background: linear-gradient(to bottom, #52bab5, #ffffff);
+      background: linear-gradient(to bottom, $menuBg, #ffffff);
     }
     .home_item p{
       font-size: 12px;
@@ -73,9 +75,9 @@
   }
 
   ul.el-menu--horizontal{
-    background: #52bab5;
+    background: $menuBg;
     border: 0;
-    // box-shadow: 0 0 1px 0px #52bab5;
+    // box-shadow: 0 0 1px 0px $menuBg;
   }
   .hamburger-container{
     float: right!important;
@@ -171,10 +173,10 @@
       }
     }
   }
-  .de-more{
-    right: 5px;
-    top: 10px;
-  }
+  // .de-more{
+  //   right: 5px;
+  //   top: 10px;
+  // }
   .systom-group{
     display: flex;
     align-items: center;

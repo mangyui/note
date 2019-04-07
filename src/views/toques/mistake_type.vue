@@ -53,8 +53,8 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="showAdd = false">取 消</el-button>
-        <el-button type="primary" @click="addMistakeType">确 定</el-button>
+        <el-button size="small" @click="showAdd = false">取 消</el-button>
+        <el-button size="small" type="primary" @click="addMistakeType">确 定</el-button>
       </div>
     </el-dialog>
     <el-dialog title="修改错题分类" :visible.sync="showUpdate">

@@ -350,9 +350,9 @@ code {
           display: inline-block;
           background: $menuBg;
           width: 30px;
-          height: 27px;
+          height: 24px;
           text-align: center;
-          line-height: 27px;
+          line-height: 24px;
           color: #fff;
           border-radius: 0 0 10px 0;
         }
@@ -399,7 +399,7 @@ code {
 }
 
 .ques-list .ques-list_item .ques_box{
-  padding-top: 26px;
+  padding-top: 24px;
   .ques_body{
     max-height: 200px;
     overflow: hidden;
@@ -435,7 +435,7 @@ code {
 }
 
 .friend-box{
-  margin-bottom: 15px;
+  margin-bottom: 12px;
   position: relative;
 
   .friend-top{
@@ -481,11 +481,16 @@ code {
   }
 }
 
-.big-box1200{
+.big-box1200,.inside-box{
   width: 1200px;
   margin: 0 auto;
   max-width: 100%;
+  position: relative;
 }
+.inside-box {
+  padding: 0 5px;
+}
+
 .Hpipei{
   border-bottom: 1px solid #5cc1c0;
   padding: 10px 0;
@@ -683,8 +688,8 @@ code {
 // 系统管理
 .de-more{
   position: absolute;
-  right: 20px;
-  top: 25px;
+  right: 0;
+  top: 0;
 }
 .voice-input-button-wrapper{
   width: 42px;
@@ -704,7 +709,9 @@ code {
 .actor-down .el-dropdown-menu__item.is-disabled{
   color: #f56c6c;
 }
-
+.el-form-item__content .is-circle{
+  margin-top: 10px;
+}
 
 .home-container {
   .home_item{

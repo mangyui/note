@@ -16,7 +16,7 @@
 
       <nx-message v-if="user.Id" class="nx-help right-menu-item disNone" />
       <nx-mobile class="nx-help right-menu-item disNone"></nx-mobile>
-      <el-dropdown class="avatar-container right-menu-item" trigger="click">
+      <el-dropdown class="avatar-container right-menu-item" trigger="click" size="small">
         <div class="avatar-wrapper">
         <!-- <img class="user-avatar" :src="user.avatar"> -->
           <i class="el-icon-more"></i>

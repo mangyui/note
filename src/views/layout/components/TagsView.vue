@@ -60,7 +60,7 @@ export default {
       return false
     },
     isActive(route) {
-      return route.path === this.$route.path
+      return route.path === this.$route.fullPath
     },
     addViewTags() {
       const route = this.generateRoute()
@@ -116,6 +116,7 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+
 .tags-view-container {
   .tags-view-wrapper {
     background: #fff;

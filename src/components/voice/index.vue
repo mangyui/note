@@ -27,6 +27,7 @@
         <recording-icon v-else color="#eee"></recording-icon>
         <recording-tip v-if="recording" :position="tipPosition"><slot name="recording">录音中…</slot></recording-tip>
         <recording-tip v-if="blank" :position="tipPosition"><slot name="no-speak">没听见，大点声</slot></recording-tip>
+        <recording-tip v-if="uperror" :position="tipPosition"><slot name="uperror">网络错误</slot></recording-tip>
       </div>
       <loading v-else color="#fff"></loading>
       <audio v-show="false" id="audios"  controls autoplay></audio>
@@ -61,7 +62,8 @@ export default {
       inputTarget: null,
       isAudioAvailable: true,
       blank: false,
-      tipPosition: 'top'
+      tipPosition: 'top',
+      uperror: false
     }
   },
   methods: {
@@ -82,6 +84,10 @@ export default {
     },
     stop(e) {
       e.preventDefault()
+      if (!recorder) {
+        this.recording = false
+        return
+      }
       if (!this.recording || (e.which !== 1 && e.which !== 0)) return
       this.recording = false
       // console.log(2)
@@ -127,6 +133,10 @@ export default {
             // window.location.href='VideoSearchServlet.do'
             break
           case 'error':
+            this.uperror = true
+            setTimeout(() => {
+              this.uperror = false
+            }, 2000)
             console.log('上传失败:' + e.data.desc)
             break
           case 'cancel':
@@ -140,6 +150,9 @@ export default {
   mounted() {
     this.audio = document.querySelector('#audios')
     // console.log(document.querySelector('#audios'))
+  },
+  created() {
+    // alert(HZRecorder.canRecording)
   }
 }
 </script>

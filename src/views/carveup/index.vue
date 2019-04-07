@@ -474,7 +474,7 @@ export default {
   }
 }
 .crop-topimg {
-    padding-bottom: 40%;
+    padding-bottom: 30%;
 }
 @media (max-width: 768px) {
   .crop-topimg {

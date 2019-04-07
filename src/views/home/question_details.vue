@@ -5,13 +5,7 @@
       <i class="el-icon-loading"></i>
       加载中...
     </div>
-    <!-- <div class="crumbs disNone">
-      <el-breadcrumb separator="/">
-        <el-breadcrumb-item>
-          <i class="el-icon-date"></i> 题目详情</el-breadcrumb-item>
-      </el-breadcrumb>
-    </div> -->
-    <div v-show="question" class="note_details">
+    <div v-show="question" class="note_details big-box1200">
       <div class="page-content">
         <div class="detail-top">
           <el-tag size="large" type="danger" v-if="question.Category">{{question.Category.Class}} ‧ {{question.Category.Subject}}</el-tag>

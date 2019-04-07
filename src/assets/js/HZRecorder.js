@@ -229,6 +229,8 @@
       }
       //是否支持录音
       HZRecorder.canRecording = (navigator.getUserMedia != null);
+      //录音是否正常工作
+      HZRecorder.canWork = false;
       //获取录音机
       HZRecorder.get = function (callback, config) {
           if (callback) {
@@ -237,13 +239,15 @@
                       { audio: true } //只启用音频
                       , function (stream) {
                           var rec = new HZRecorder(stream, config);
+                          HZRecorder.canWork = true
                           callback(rec);
                       }
                       , function (error) {
+                          HZRecorder.canWork = false;
                           switch (error.code || error.name) {
                               case 'PERMISSION_DENIED':
                               case 'PermissionDeniedError':
-                                  HZRecorder.throwError('用户拒绝提供信息。');
+                                  HZRecorder.throwError('当前设备拒绝提供麦克风功能。');
                                   break;
                               case 'NOT_SUPPORTED_ERROR':
                               case 'NotSupportedError':

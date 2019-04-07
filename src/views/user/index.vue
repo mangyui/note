@@ -35,12 +35,12 @@
     <div class="user_center">
       <!-- <div class="div-logout toShow"><nx-svg-icon class-name='more_icon' icon-class="logout" /></div> -->
       <div class="avatar">
-        <img :src="cropImg" />
-        <label for="Choose_Avatar">更换头像</label>
+        <img preview :src="cropImg" />
+        <label v-show="isUpdate" for="Choose_Avatar">更换头像</label>
       </div>
       <input id="Choose_Avatar" ref="referenceUpload" style="display: none" type="file" name="image" accept="image/*" multiple @change="toChoose"/>
       <div>
-        <h2>{{user.Name}}</h2>
+        <h2 style="margin: 5px 0;">{{user.Name}}</h2>
         <p class="user_address">{{Class==null?'':Class+' |'}}  {{user.Name=='ming'?'管理员':(user.Occupation==2?'教师':'学生')}}</p>
         <!-- <p class="user_mess">{{user.Intro}}</p> -->
         <p class="user_money">金币：<span>{{user.Coin||0}}</span> <el-button size="mini" round @click="chongzhiBox = true">充值</el-button></p>
@@ -107,7 +107,7 @@
             </table>
           </div>
         </div>
-        <div class="save-me">
+        <div class="save-me" style="text-align: right">
           <el-button size="small" v-if="!isUpdate" @click="isChange">刷新资料</el-button>
           <el-button size="small" type="primary" v-if="!isUpdate" @click="isUpdate=!isUpdate">修改资料</el-button>
       </div>
@@ -207,11 +207,12 @@
           title="修改了信息，别忘了保存哦！"
           type="warning">
         </el-alert>
-      </div>
-      <div class="save-me">
+        <div class="save-me" style="text-align: right">
         <el-button size="small" v-if="isUpdate" @click="isUpdate=false">返回</el-button>
         <el-button size="small" type="primary" @click="toSave">保存修改</el-button>
+        </div>
       </div>
+
     </div>
     <el-dialog
       title="金币"
@@ -534,11 +535,11 @@ export default {
   width: 100%;
 }
 .avatar {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   position: absolute;
-  left: calc(50% - 60px);
-  top: -60px;
+  left: calc(50% - 50px);
+  top: -50px;
   border-radius: 50%;
   border: 3px solid #fff;
   overflow: hidden;
@@ -562,7 +563,7 @@ export default {
   left: 0;
 }
 .user_address {
-  font-size: 13px;
+  font-size: 12px;
   color: #ccc;
     margin: 10px 0
 }
@@ -580,8 +581,9 @@ export default {
   }
 }
 .save-me{
-  text-align: center;
-  margin-top: 20px;
+  text-align: right;
+  max-width: 95%;
+  margin: 20px auto 0;
 }
 .jinbi {
   text-align: center;
@@ -641,13 +643,10 @@ export default {
   .div-logout{
     width: 400px;
     max-width: 95%;
-    margin: 50px auto 0;
+    margin: 40px auto 0;
     button{
       width: 100%;
     }
-  }
-  .contariner-wraper{
-    margin-bottom: 10px;
   }
 }
 </style>
