@@ -10,8 +10,9 @@
   }
 
   .app-main::-webkit-scrollbar{width:6px;}
+  .searchBox::-webkit-scrollbar{width:6px;}
   .scroll-container::-webkit-scrollbar{height:6px;}
-  .app-main,.scroll-container{
+  .app-main,.scroll-container,.searchBox{
     &::-webkit-scrollbar-track{background-color:#fff;border-radius: 10px;}
     &::-webkit-scrollbar-thumb{background-color:rgba(144,147,153,.5);border-radius: 10px;}
     &::-webkit-scrollbar-thumb:hover {background-color: rgba(144,147,153,.7)}
@@ -201,6 +202,15 @@
     }
   }
 
+  .el-form-item__content .is-circle{
+    margin-top: 10px;
+  }
+  .search-dialog{
+    .el-dialog__body{
+      padding: 0 4px 1px;
+      height: 86%;
+    }
+  }
   // .naver-text{
   //   display: none;
   // }

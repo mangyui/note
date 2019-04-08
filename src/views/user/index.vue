@@ -40,7 +40,7 @@
       </div>
       <input id="Choose_Avatar" ref="referenceUpload" style="display: none" type="file" name="image" accept="image/*" multiple @change="toChoose"/>
       <div>
-        <h2 style="margin: 5px 0;">{{user.Name}}</h2>
+        <h2 style="margin: 10px 0 5px;">{{user.Name}}</h2>
         <p class="user_address">{{Class==null?'':Class+' |'}}  {{user.Name=='ming'?'管理员':(user.Occupation==2?'教师':'学生')}}</p>
         <!-- <p class="user_mess">{{user.Intro}}</p> -->
         <p class="user_money">金币：<span>{{user.Coin||0}}</span> <el-button size="mini" round @click="chongzhiBox = true">充值</el-button></p>

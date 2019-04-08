@@ -22,8 +22,9 @@
     </div>
     <div id="content" class="big-box1200">
       <el-tabs v-model="activeName" :stretch="true" @tab-click="handleClick">
+        <el-tab-pane name="left" disabled></el-tab-pane>
         <el-tab-pane name="info">
-          <div slot="label"><i class="el-icon-date"></i>基本资料</div>
+          <div slot="label">基本资料</div>
           <div class="contariner-wraper">
             <div class="center-section-wrap">
               <div class="datum-item-box">
@@ -88,6 +89,7 @@
             </div>
           </div>
         </el-tab-pane>
+        <el-tab-pane name="center" disabled></el-tab-pane>
         <el-tab-pane label="TA的错题" name="ques">
           <div v-show="showLoading" class="loading-box">
             <i class="el-icon-loading"></i>
@@ -124,6 +126,7 @@
             没有更多了...
           </div>
         </el-tab-pane>
+        <el-tab-pane name="right" disabled></el-tab-pane>
       </el-tabs>
     </div>
   </div>

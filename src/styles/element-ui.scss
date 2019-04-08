@@ -86,3 +86,15 @@
   height: 48px;
   line-height: 48px;
 }
+
+.el-tabs__active-bar{
+  height: 3px;
+  border-radius: 50px;
+}
+// .el-tabs__nav-wrap{
+//   box-shadow: 0px 11px 10px -11px rgba(0, 0, 0, 0.12);
+// }
+.el-tabs__nav-wrap::after{
+  background-color: rgba(113, 113, 113, 0.12);
+  height: 1px;
+}

@@ -709,9 +709,6 @@ code {
 .actor-down .el-dropdown-menu__item.is-disabled{
   color: #f56c6c;
 }
-.el-form-item__content .is-circle{
-  margin-top: 10px;
-}
 
 .home-container {
   .home_item{
@@ -873,6 +870,15 @@ code {
   overflow-y: auto;
 }
 
+.search-dialog{
+  .el-dialog{
+    height: 88%;
+  }
+  .el-dialog__body{
+    position: relative;
+    height: 93%;
+  }
+}
 /*移动端*/
 // app.scss
 // 手机端

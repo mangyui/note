@@ -28,7 +28,7 @@
             <voiceBtn @record="showResult"></voiceBtn>
           </div>
         </div>
-        <el-button type="primary" class="mobile_bbtn" @click="dialogFormVisible = true">提交</el-button>
+        <el-button size="large" type="primary" class="mobile_bbtn" @click="dialogFormVisible = true">提交</el-button>
       </div>
       <el-dialog title="笔记备注" :visible.sync="dialogFormVisible">
         <el-form :model="note" ref="form">
@@ -41,6 +41,7 @@
                 :value="item.Id">
               </el-option>
             </el-select>
+            <el-button type="primary" icon="el-icon-plus" @click="$refs.addType.showAdd = true" circle></el-button>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -49,6 +50,8 @@
         </div>
       </el-dialog>
     </div>
+
+    <addType ref="addType" MistakeOrNote="note" @addBack="addBack"></addType>
   </div>
 </template>
 
@@ -65,6 +68,7 @@ import {
 } from '@/api/toPost'
 import voiceBtn from '@/components/voice/index'
 import pictureOcr from '@/components/picture-ocr/index'
+import addType from '@/views/common/addType'
 
 export default {
   name: 'note_edit',
@@ -75,11 +79,7 @@ export default {
       showGIF: false,
       lines: '',
       result: '',
-      isHand: false,
       showLoading: true,
-      btnRight: '-96px',
-      marginL: 0,
-      totalwidth: 1430,
       typelist: [],
       note: {
         Id: '',
@@ -91,7 +91,8 @@ export default {
   },
   components: {
     pictureOcr,
-    voiceBtn
+    voiceBtn,
+    addType
   },
   methods: {
     Getresult(value) {
@@ -121,6 +122,9 @@ export default {
           type: 'info'
         })
       }
+    },
+    addBack() {
+      this.getCategory()
     },
     getCategory() {
       NoteCategory(this.$store.getters.user.Id).then(res => {
@@ -180,10 +184,6 @@ export default {
       }
     }
   },
-  // 注意
-  // watch: {
-  //   $route: 'fetchDate'
-  // },
   created() {
     this.fetchDate()
     this.getCategory()

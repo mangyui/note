@@ -26,7 +26,7 @@ export default {
     getTest: '生成试题',
     carveup: '试卷切题',
     test_todo: '测试',
-    Class: '我的班级',
+    Class: '我的班课',
     class_detail: '班级测试',
     testList: '测试列表',
     test_detail: '测试详情',

@@ -7,19 +7,9 @@
         <pictureOcr v-show="isOcr" ocrIcon="add" @Oresult="Getresult"></pictureOcr>
         <el-button class="de-more" type="danger" size="small" @click="isOcr=!isOcr">{{isOcr?"关闭":"开启"}}文字识别</el-button>
         <div class="sq-body">
-          <!-- <el-button class="sq-change" type="danger" size="medium" v-if="showBtn" @click="showShou=(showShou==false?true:false)">{{showShou==false?"手动添加":"返回相似"}}</el-button> -->
-          <!-- <el-card shadow="never" v-loading="showGIF">
-            <div class="run_btn">
-              <el-checkbox v-model="isHand" label="含手写" border></el-checkbox>
-              <el-button class="editor-btn" type="danger" @click="torun">提取文字</el-button>
-            </div>
-          </el-card> -->
           <div class="ocr-edit">
-            <!-- <h3 class="Hpipei">手动添加</h3> -->
             <h4 class="htitle">错题题目(不含答案)</h4>
             <div ref="ShouTitle" class="divWangeditor" style="text-align:left"></div>
-            <!-- <quill-editor ref="titleEditor" v-model="form.Content" :options="editorOption" ></quill-editor> -->
-            <!-- <br/> -->
             <div class="voice-button">
               <div class="voice-input-button-wrapper">
                 <voiceBtn @record="showResult1"></voiceBtn>
@@ -27,14 +17,12 @@
             </div>
             <h4 class="htitle">错题解答(可选)</h4>
             <div ref="ShouCorrect" class="divWangeditor" style="text-align:left"></div>
-            <!-- <quill-editor ref="AnalysisEditor" v-model="form.Analysis" :options="editorOption" ></quill-editor> -->
-            <!-- <br/> -->
             <div class="voice-button">
               <div class="voice-input-button-wrapper">
                 <voiceBtn @record="showResult2"></voiceBtn>
               </div>
             </div>
-            <el-button class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
+            <el-button size="large" class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
           </div>
         </div>
       </div>
@@ -42,10 +30,7 @@
     <!-- Form -->
     <el-dialog title="错题备注" :visible.sync="dialogFormVisible">
       <el-form :model="form" :rules="rules" ref="Form">
-        <!-- <el-form-item label="关键字">
-          <el-input v-model="form.Keywords"></el-input>
-        </el-form-item> -->
-        <el-form-item label="题目分类" prop="CategoryId">
+        <el-form-item label="题目分类" prop="CategoryId" label-width="100px">
           <el-select v-model="form.CategoryId" placeholder="请选择题目分类">
             <el-option
               v-for="item in typelist"
@@ -54,7 +39,7 @@
               :value="item.Id">
             </el-option>
           </el-select>
-          <el-button type="primary" icon="el-icon-plus" @click="showAdd=!showAdd" circle></el-button>
+          <el-button type="primary" icon="el-icon-plus" @click="$refs.addType.showAdd = true" circle></el-button>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -62,20 +47,9 @@
         <el-button size="small" type="primary" @click="submit">确 定</el-button>
       </div>
     </el-dialog>
-    <el-dialog title="添加错题分类" :visible.sync="showAdd">
-      <el-form :model="toadd" :rules="addrules" ref="addForm" label-width="100px">
-        <el-form-item label="错题分类名" prop="Name">
-          <el-input v-model="toadd.Name"></el-input>
-        </el-form-item>
-        <el-form-item label="分类说明" prop="Intro">
-          <el-input type="textarea" v-model="toadd.Intro"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="small" @click="showAdd = false">取 消</el-button>
-        <el-button size="small" type="primary" @click="addMistakeType">确 定</el-button>
-      </div>
-    </el-dialog>
+
+    <addType ref="addType" MistakeOrNote="Mistake" @addBack="addBack"></addType>
+
   </div>
 </template>
 
@@ -86,19 +60,13 @@ var ShouTitle, ShouCorrect
 
 import nxSvgIcon from '@/components/nx-svg-icon/index'
 import quexBox from '@/components/my-box/quex-box'
-
-// import {
-//   questionCategory
-// } from '@/api/toget'
 import voiceBtn from '@/components/voice/index'
 import pictureOcr from '@/components/picture-ocr/index'
-
+import addType from '@/views/common/addType'
 import {
   Imgurl,
   addMistake,
-  // ocrQues,
-  mistakeCate,
-  AddMistakeCate
+  mistakeCate
 } from '@/api/toPost'
 
 export default {
@@ -107,9 +75,8 @@ export default {
     quexBox,
     nxSvgIcon,
     voiceBtn,
-    pictureOcr
-    // slider,
-    // slideritem
+    pictureOcr,
+    addType
   },
   data: function() {
     return {
@@ -119,7 +86,6 @@ export default {
       result: '',
       isHand: false,
       dialogFormVisible: false,
-      showAdd: false,
       questions: [],
       typelist: [],
       form: {
@@ -132,20 +98,6 @@ export default {
       rules: {
         CategoryId: [
           { required: true, message: '请选择题目类型', trigger: 'change' }
-        ]
-      },
-      toadd: {
-        UserId: this.$store.getters.user.Id,
-        Name: '',
-        Intro: ''
-      },
-      addrules: {
-        Name: [
-          { required: true, message: '请输入分类名', trigger: 'blur' },
-          { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
-        ],
-        Intro: [
-          { min: 0, max: 30, message: '长度在 0 到 30 个字符', trigger: 'blur' }
         ]
       }
     }
@@ -184,36 +136,8 @@ export default {
         })
       }
     },
-    addMistakeType() {
-      if (!this.$store.getters.user.Id) {
-        this.$confirm('你这个操作，登录就能解决', '提示', {
-          confirmButtonText: '立即登录',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$router.push({
-            path: '/login'
-          })
-        }).catch(() => {})
-        return
-      }
-      this.$refs.addForm.validate(valid => {
-        if (valid) {
-          AddMistakeCate(this.$qs.stringify(this.toadd)).then(res => {
-            if (res.data.code === 0) {
-              this.$notify({
-                title: '提示',
-                message: '添加分类成功！',
-                type: 'success'
-              })
-            } else {
-              this.$message.warning('操作失败...')
-            }
-            this.showAdd = false
-            this.GetCategory()
-          }).catch(() => {})
-        }
-      })
+    addBack() {
+      this.GetCategory()
     },
     submit() {
       if (!this.$store.getters.user.Id) {
@@ -267,7 +191,6 @@ export default {
       } else {
         ShouTitle.txt.append('<span>' + text.substr(0, text.length - 1) + '</span>')
       }
-      // ShouTitle.txt.append('<span>' + text.substr(0, text.length - 1) + '</span>')
     },
     showResult2(text) {
       if (this.form.Analysis === '') {
@@ -275,8 +198,6 @@ export default {
       } else {
         ShouCorrect.txt.append('<span>' + text.substr(0, text.length - 1) + '</span>')
       }
-      // ShouCorrect.txt.append('<span>' + text.substr(0, text.length - 1) + '</span>')
-      // console.log(text.substr(0, text.length - 1))
     }
   },
   mounted() {

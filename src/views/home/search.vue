@@ -18,12 +18,8 @@
           <voiceBtn @record="showResult"></voiceBtn>
         </div>
       </div>
-      <!-- <el-select  v-model="type" placeholder="选择类型">
-        <el-option label="数学" value="type1"></el-option>
-        <el-option label="语文" value="type2"></el-option>
-        <el-option label="其他" value="type3"></el-option>
-      </el-select> -->
       <el-tabs v-model="activeName" class='is_stretch'>
+        <el-tab-pane name="left" disabled></el-tab-pane>
         <el-tab-pane name="ques">
           <div slot="label">题目</div>
             <div v-show="showLoading" class="loading-box">
@@ -46,34 +42,36 @@
               没有更多了...
             </div>
           </el-tab-pane>
+          <el-tab-pane name="center" disabled></el-tab-pane>
         <el-tab-pane name="user">
-          <div slot="label">用户</div>
-            <div v-show="showLoading" class="loading-box">
-              <i class="el-icon-loading"></i>
-              加载中...
-            </div>
-            <div v-show="!showLoading&&!users[0]" class="loading-box">
-              <i class="el-icon-search"></i>
-              空空如也...
-            </div>
-            <el-row :gutter="12">
-            <el-col  :xs="24" :sm="12" :md="8" :lg="8" :xl="8" v-for="(item,index) in users" :key="index">
-              <el-card class="friend-box" :body-style="{ padding: '0px' }"  shadow="hover">
-                <div class="people">
-                    <router-link  :to="'/user/others/'+item.Id">
-                      <div class="friend-body">
-                        <img src="#" :src="item.Avatar||'./static/img/avatar.jpg'">
-                        <div class="peo-right">
-                          <b>{{item.Name|| '匿名'}}</b>
-                          <p>{{item.Intro||'这个家伙很懒，什么都没留下'}}</p>
-                        </div>
+        <div slot="label">用户</div>
+          <div v-show="showLoading" class="loading-box">
+            <i class="el-icon-loading"></i>
+            加载中...
+          </div>
+          <div v-show="!showLoading&&!users[0]" class="loading-box">
+            <i class="el-icon-search"></i>
+            空空如也...
+          </div>
+          <el-row :gutter="12">
+          <el-col  :xs="24" :sm="12" :md="8" :lg="8" :xl="8" v-for="(item,index) in users" :key="index">
+            <el-card class="friend-box" :body-style="{ padding: '0px' }"  shadow="hover">
+              <div class="people">
+                  <router-link  :to="'/user/others/'+item.Id">
+                    <div class="friend-body">
+                      <img src="#" :src="item.Avatar||'./static/img/avatar.jpg'">
+                      <div class="peo-right">
+                        <b>{{item.Name|| '匿名'}}</b>
+                        <p>{{item.Intro||'这个家伙很懒，什么都没留下'}}</p>
                       </div>
-                    </router-link>
-                  </div>
+                    </div>
+                  </router-link>
+                </div>
               </el-card>
             </el-col>
           </el-row>
         </el-tab-pane>
+        <el-tab-pane name="right" disabled></el-tab-pane>
       </el-tabs>
     </div>
     <div v-if="ScrollTop>700" class="note_d-edit" onclick="document.querySelector('.app-main').scrollTop=0">
@@ -106,7 +104,6 @@ export default {
       homeTop: 0,
       voice: voice,
       ScrollTop: 0,
-      screenWidth: document.body.clientWidth,
       activeName: 'ques',
       users: [],
       questions: [],
@@ -174,8 +171,6 @@ export default {
             var replaceString = '<span style="background:#ff0;font-weight: bold;">' + value[i] + '</span>'
             // 开始替换
             item.Content = item.Content.replace(replaceReg, replaceString)
-            // console.log(item.Content)
-            // item.Content = item.Content.split(value[i]).join('<span style="background:#ff0;font-weight: bold;">' + value + '</span>')
           }
         }
       })
@@ -207,33 +202,28 @@ export default {
     },
     searchuser() {
       if (this.Sdata.Keys.trim() === '') {
+        this.users = []
         return
       }
       SearchUsers(this.$qs.stringify({ name: this.Sdata.Keys })).then(res => {
+        this.users = []
         if (res.data.data.Name) {
           this.users[0] = res.data.data
         } else {
           this.users = res.data.data
         }
-      }).catch(() => {})
+      }).catch((res) => {
+        console.log(res)
+      })
     },
     showResult(text) {
       this.Sdata.Keys = this.Sdata.Keys + text.substr(0, text.length - 1)
       if (text !== '') {
         this.SearchQuestion()
       }
-      // console.log(this.Sdata.keys)
-      // this.SearchQuestion()
     }
   },
   mounted() {
-    const that = this
-    window.onresize = () => {
-      return (() => {
-        window.screenWidth = document.body.clientWidth
-        that.screenWidth = window.screenWidth
-      })()
-    }
     document.querySelector('.app-main').addEventListener('scroll', this.onScroll)
   },
   created() {
@@ -248,13 +238,6 @@ export default {
 .big-box1200{
   position: relative;
 }
-.home-top{
-  display: flex;
-  max-width: 100%;
-  justify-content: space-between;
-  margin:0px auto 50px;
-  flex-direction:row-reverse;
-}
 
 @media (min-width: 769px){
   .big-box1200{
@@ -262,11 +245,5 @@ export default {
     padding-top: 5px;
   }
 }
-@media (max-width: 768px)
-{
-  .home-top {
-    margin: 0;
-    padding: 10px 5px 24px;
-  }
-}
+
 </style>

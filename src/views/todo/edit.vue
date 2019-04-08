@@ -1,11 +1,6 @@
 <template>
   <div class="app-container">
     <span class="header-title">添加笔记</span>
-      <!-- <div class="crumbs disNone">
-        <el-breadcrumb separator="/">
-            <el-breadcrumb-item><i class="el-icon-date"></i> 添加笔记</el-breadcrumb-item>
-        </el-breadcrumb>
-      </div> -->
     <div class="container big-box1200">
 
       <pictureOcr v-show="isOcr" ocrIcon="form_search" ocrMode="手写" @Oresult="Getresult"></pictureOcr>
@@ -18,15 +13,12 @@
       <div class="noteEdit-title">
       <h4 class="htitle">笔记正文</h4>
         <div ref="editor" class="divWangeditor" style="text-align:left"></div>
-        <!-- <br/>
-        <quill-editor ref="myTextEditor" v-model="note.Content" :options="editorOption"></quill-editor> -->
-        <!-- <br/> -->
         <div class="voice-button">
           <div class="voice-input-button-wrapper">
             <voiceBtn @record="showResult"></voiceBtn>
           </div>
         </div>
-        <el-button class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
+        <el-button size="large" class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
       </div>
       <el-dialog title="笔记备注" :visible.sync="dialogFormVisible">
         <el-form :model="note" :rules="rules" ref="Form">
@@ -42,7 +34,7 @@
                 :value="item.Id">
               </el-option>
             </el-select>
-            <el-button type="primary" icon="el-icon-plus" @click="showAdd=!showAdd" circle></el-button>
+            <el-button type="primary" icon="el-icon-plus" @click="$refs.addType.showAdd = true" circle></el-button>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -51,20 +43,8 @@
         </div>
       </el-dialog>
     </div>
-    <el-dialog title="添加笔记分类" :visible.sync="showAdd">
-      <el-form :model="toadd" :rules="addrules" ref="addForm" label-width="100px">
-        <el-form-item label="笔记分类名" prop="Name">
-          <el-input v-model="toadd.Name"></el-input>
-        </el-form-item>
-        <el-form-item label="分类说明" prop="Intro">
-          <el-input type="textarea" v-model="toadd.Intro"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="small" @click="showAdd = false">取 消</el-button>
-        <el-button size="small" type="primary" @click="addNoteType">确 定</el-button>
-      </div>
-    </el-dialog>
+
+    <addType ref="addType" MistakeOrNote="note" @addBack="addBack"></addType>
   </div>
 </template>
 
@@ -73,15 +53,16 @@
 var editor
 
 import { NoteCategory } from '@/api/toget'
-import { AddNote, AddNoteType, Imgurl } from '@/api/toPost'
+import { AddNote, Imgurl } from '@/api/toPost'
 import voiceBtn from '@/components/voice/index'
 import pictureOcr from '@/components/picture-ocr/index'
-
+import addType from '@/views/common/addType'
 export default {
   name: 'edit',
   components: {
     voiceBtn,
-    pictureOcr
+    pictureOcr,
+    addType
   },
   data: function() {
     return {
@@ -90,11 +71,6 @@ export default {
       showGIF: false,
       lines: '',
       result: '',
-      isHand: false,
-      showAdd: false,
-      btnRight: '-96px',
-      marginL: 0,
-      totalwidth: 1430,
       typelist: [],
       Content: '',
       note: {
@@ -106,20 +82,6 @@ export default {
       rules: {
         NoteCategoryId: [
           { required: true, message: '请选择题目类型', trigger: 'change' }
-        ]
-      },
-      toadd: {
-        UserId: this.$store.getters.user.Id,
-        Name: '',
-        Intro: ''
-      },
-      addrules: {
-        Name: [
-          { required: true, message: '请输入分类名', trigger: 'blur' },
-          { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
-        ],
-        Intro: [
-          { min: 0, max: 30, message: '长度在 0 到 30 个字符', trigger: 'blur' }
         ]
       }
     }
@@ -168,36 +130,8 @@ export default {
         }
       }).catch(() => {})
     },
-    addNoteType() {
-      if (!this.$store.getters.user.Id) {
-        this.$confirm('你这个操作，登录就能解决', '提示', {
-          confirmButtonText: '立即登录',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$router.push({
-            path: '/login'
-          })
-        }).catch(() => {})
-        return
-      }
-      this.$refs.addForm.validate(valid => {
-        if (valid) {
-          AddNoteType(this.$qs.stringify(this.toadd)).then(res => {
-            if (res.data.code === 0) {
-              this.$notify({
-                title: '提示',
-                message: '添加分类成功！',
-                type: 'success'
-              })
-            } else {
-              this.$message.warning('操作失败...')
-            }
-            this.showAdd = false
-            this.getCategory()
-          }).catch(() => {})
-        }
-      })
+    addBack() {
+      this.getCategory()
     },
     submit() {
       if (!this.$store.getters.user.Id) {
@@ -237,39 +171,6 @@ export default {
           }).catch(() => {})
         }
       })
-    },
-    toright() {
-      this.btnRight = this.btnRight === '0' ? '-96px' : '0'
-      var btnF = document.querySelector('.btngroup_first .el-icon-back')
-      btnF.style.transform = this.btnRight === '0' ? 'rotate(180deg)' : ''
-    },
-    scrollRight() {
-      this.scroll(-2)
-    },
-    scrollLeft() {
-      this.scroll(2)
-    },
-    scroll(nn) {
-      var toolbar = document.querySelector('.ql-toolbar')
-      var toobarWidth = toolbar.offsetWidth - 1430
-
-      var firstchild = document.querySelector('.ql-formats')
-      var ov = setInterval(() => {
-        // toolbar.scrollBy(nn, 0)
-        if (this.marginL <= 0 && this.marginL >= toobarWidth) {
-          this.marginL = this.marginL + nn
-          if (this.marginL > 0) {
-            this.marginL = 0
-          }
-          if (this.marginL < toobarWidth) {
-            this.marginL = toobarWidth
-          }
-        }
-        firstchild.style.marginLeft = this.marginL + 'px'
-      }, 2)
-      setTimeout(function() {
-        clearInterval(ov)
-      }, 500)
     },
     showResult(text) {
       if (this.note.Content === '') {

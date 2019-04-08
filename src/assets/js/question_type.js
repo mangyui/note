@@ -28,7 +28,4 @@ export const typeList = [{
 }, {
   value: '作文题',
   label: '作文题'
-}, {
-  value: '',
-  label: '什么题'
 }]

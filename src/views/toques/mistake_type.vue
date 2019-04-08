@@ -1,16 +1,10 @@
 <template>
   <div class="app-container">
     <span class="header-title">错题分类</span>
-    <!-- <div class="crumbs disNone">
-      <el-breadcrumb separator="/">
-          <el-breadcrumb-item><i class="el-icon-date"></i> 错题本</el-breadcrumb-item>
-          <el-breadcrumb-item>错题分类</el-breadcrumb-item>
-      </el-breadcrumb>
-    </div> -->
     <div class="big-box1200">
       <div class="list-gbtn">
         <div>
-          <el-button type="primary" icon="el-icon-plus" @click="showAdd=!showAdd" circle></el-button>
+          <el-button type="primary" icon="el-icon-plus" @click="$refs.addType.showAdd = true" circle></el-button>
         </div>
         <div>
           <el-button icon="el-icon-refresh" circle @click="getCategory"></el-button>
@@ -43,20 +37,8 @@
         </el-row>
       </div>
     </div>
-    <el-dialog title="添加错题分类" :visible.sync="showAdd">
-      <el-form :model="toadd" :rules="rules" ref="Form" label-width="100px">
-        <el-form-item label="错题分类名" prop="Name">
-          <el-input v-model="toadd.Name"></el-input>
-        </el-form-item>
-        <el-form-item label="分类说明" prop="Intro">
-          <el-input type="textarea" v-model="toadd.Intro"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="small" @click="showAdd = false">取 消</el-button>
-        <el-button size="small" type="primary" @click="addMistakeType">确 定</el-button>
-      </div>
-    </el-dialog>
+    <addType ref="addType" MistakeOrNote="Mistake" @addBack="addBack"></addType>
+
     <el-dialog title="修改错题分类" :visible.sync="showUpdate">
       <el-form :model="toupdate" :rules="rules" ref="updateForm" label-width="100px">
         <el-form-item label="错题分类名" prop="Name">
@@ -75,30 +57,26 @@
 </template>
 
 <script>
-
+import addType from '@/views/common/addType'
 import {
   mistakeCate,
-  AddMistakeCate,
   DeleteMistakeCate,
   UpdateMistakeCate
 } from '@/api/toPost'
 
 export default {
   name: 'mistake_type',
+  components: {
+    addType
+  },
   data() {
     return {
       homeTop: 0,
       showLoading: true,
       showDelete: false,
-      showAdd: false,
       showEdit: false,
       showUpdate: false,
       types: [],
-      toadd: {
-        UserId: this.$store.getters.user.Id,
-        Name: '',
-        Intro: ''
-      },
       toupdate: {
         UserId: this.$store.getters.user.Id,
         MistakeCateId: '',
@@ -119,10 +97,6 @@ export default {
   created() {
     this.getCategory()
   },
-  // activated() {
-  //   document.querySelector('.app-main').scrollTop = this.homeTop || 0
-  //   this.getCategory()
-  // },
   methods: {
     getCategory() {
       this.showLoading = true
@@ -135,24 +109,8 @@ export default {
         this.showLoading = false
       }).catch(() => {})
     },
-    addMistakeType() {
-      this.$refs.Form.validate(valid => {
-        if (valid) {
-          AddMistakeCate(this.$qs.stringify(this.toadd)).then(res => {
-            if (res.data.code === 0) {
-              this.$notify({
-                title: '提示',
-                message: '添加分类成功！',
-                type: 'success'
-              })
-            } else {
-              this.$message.warning('操作失败...')
-            }
-            this.showAdd = false
-            this.getCategory()
-          }).catch(() => {})
-        }
-      })
+    addBack() {
+      this.getCategory()
     },
     showEditBox(index) {
       this.toupdate.MistakeCateId = this.types[index].Id

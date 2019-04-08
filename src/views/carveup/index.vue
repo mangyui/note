@@ -1,86 +1,51 @@
 <template>
-  <div class="">
+  <div class="app-container">
     <span class="header-title">试卷切题</span>
-    <div class="container">
       <div class="inside-box">
-        <!-- <el-alert
-          class="top-warn"
-          title="图片文件过大会影响识别速度"
-          type="warning">
-        </el-alert> -->
-        <div class="crop-demo">
-          <label ref="select_frame"  class="crop-topimg" :style="{backgroundImage:'url(' + cropImg + ')', backgroundSize:'contain'}">
-            <img v-show="cropImg" preview :src="cropImg" class="up_img" >
-            <div v-if="!cropImg" class="up_inside">
-              <nx-svg-icon class-name='icon-camera' icon-class="cutup" />
-              <p>请选择图像上传方式，或将图像拖到此处</p>
-            </div>
-            <!-- <div class="tuoUp"></div> -->
-            <img v-if="showGIF" class="loading-gif" src="@/assets/images/home/loading2.gif" alt="Loading">
-          </label>
-          <div class="upbtn-group">
-            <el-button type="primary" @click="cameraTakePicture">拍照上传</el-button>
-            <div class="crop-demo-btn tiffany-btn">上传图片
-              <input class="crop-input" ref="referenceUpload" id='upimg' type="file" name="image" accept="image/*" multiple @change="toChoose" />
-            </div>
+        <pictureCut :showGIF="showGIF" cutIcon="cutup" @Cresult="Getresult"></pictureCut>
+        <br/>
+        <div class="list-gbtn">
+          <div></div>
+          <div>
+            <el-button icon="el-icon-plus" size="small" @click="adddialog=!adddialog">手动添加</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="dialogSearch=true" size="small">搜索题库</el-button>
           </div>
         </div>
-        <div>
-          <div v-if="showLoading" class="loading-box">
-            <i class="el-icon-loading"></i>
-            加载中...
+        <div class="container">
+          <div>
+            <div v-if="showLoading" class="loading-box">
+              <i class="el-icon-loading"></i>
+              加载中...
+            </div>
+            <el-card shadow="hover" class="cut_item" v-for="(item,index) in 4" :key="index" >
+              <b>{{index+1}}.</b>
+              <br/>
+              <el-button class="cut_item-detele" type="text" icon="el-icon-close" size="large" @click="Detele(index)"></el-button>
+              <img v-show="Quesimgs[index]" preview='1' :src="Quesimgs[index]" alt="加载中" :title="'第'+ (index+1) +'题'">
+              <div class="cut_item_content" v-html="item.words">
+                <!-- 2.甲、乙两物体均做直线运动,甲物体速度随时间变化的图象如图甲所示,乙物体位置随
+                时间变化的图象如图乙所示,则这两个物体的运动情况是。
+                <p>A.甲在04s内运动方向改变,通过的路程为12m</p>
+                <p>B.甲在04s内运动方向不变,通过的位移大小为6m</p>
+                <p>C.乙在0-4s内运动方向改变,通过的路程为12m</p>
+                <p>D.乙在04s内运动方向不变,通过的位移大小为6m</p> -->
+                </div>
+                <div style="text-align: right;">
+                  <!-- <el-button type="primary" icon="el-icon-plus" size="small" @click="">加入测试集</el-button> -->
+                  <el-button  class="yellow-btn" icon="el-icon-edit" size="small" @click="adddialog=true">修改</el-button>
+                </div>
+            </el-card>
           </div>
-          <el-card shadow="hover" class="cut_item" v-for="(item,index) in Locations" :key="index" >
-            <b>{{index+1}}.</b>
-            <br/>
-            <el-button class="cut_item-detele" type="text" icon="el-icon-close" size="large" @click="Detele(index)"></el-button>
-            <img v-show="Quesimgs[index]" preview='1' :src="Quesimgs[index]" alt="加载中" :title="'第'+ (index+1) +'题'">
-            <div class="cut_item_content" v-html="item.words">
-              <!-- 2.甲、乙两物体均做直线运动,甲物体速度随时间变化的图象如图甲所示,乙物体位置随
-              时间变化的图象如图乙所示,则这两个物体的运动情况是。
-              <p>A.甲在04s内运动方向改变,通过的路程为12m</p>
-              <p>B.甲在04s内运动方向不变,通过的位移大小为6m</p>
-              <p>C.乙在0-4s内运动方向改变,通过的路程为12m</p>
-              <p>D.乙在04s内运动方向不变,通过的位移大小为6m</p> -->
-              </div>
-              <div style="text-align: right;">
-                <!-- <el-button type="primary" icon="el-icon-plus" size="small" @click="">加入测试集</el-button> -->
-                <el-button  class="yellow-btn" icon="el-icon-edit" size="small" @click="adddialog=true">修改</el-button>
-              </div>
-          </el-card>
         </div>
         <div class="cut-footer">
-          <el-button type="primary" size="medium" @click="adddialog=!adddialog">添加题目</el-button>
-          <el-button type="danger" size="medium" @click="">生成测试</el-button>
+          <el-button type="primary" size="medium" @click="">生成测试</el-button>
         </div>
-        <!-- <div class="ocr-edit" v-show="adddialog">
-          <h4>题目(不含答案)</h4>
-          <div ref="ShouTitle" class="divWangeditor" style="text-align:left"></div>
-          <h4>解答(可选)</h4>
-          <div ref="ShouCorrect" class="divWangeditor" style="text-align:left"></div>
-          <br/>
-          <el-button class="editor-btn pull-right" type="primary" @click="dialogFormVisible = true">提交</el-button>
-        </div> -->
-      </div>
     </div>
-    <el-dialog class="crop-pic" title="裁剪图片" :visible.sync="dialogVisible" :before-close="cancelCrop" width="75%">
-      <vue-cropper class="dgCropper" ref='cropper' :auto-crop-area="0.98" :src="imgSrc" :ready="cropImage" :zoom="cropImage" :cropmove="cropImage" :style="'width:100%;  height: '+ 0.7*documentWidth + 'px'"></vue-cropper>
-      <el-alert
-        title="请旋转正常角度"
-        type="warning"
-        show-icon>
-      </el-alert>
-      <span slot="footer" class="dialog-footer">
-        <el-button class="to-left" size="medium" @click="toRotate" type="primary" icon="el-icon-refresh"></el-button>
-        <el-button size="medium" @click="cancelCrop">取 消</el-button>
-        <el-button type="primary"  size="medium" @click="toCrop">确 定</el-button>
-      </span>
-    </el-dialog>
     <!-- Form -->
-    <el-dialog title="题目备注" :visible.sync="dialogFormVisible">
+    <el-dialog title="题目备注" :visible.sync="dialogFormVisible" >
       <el-form :model="form" :rules="rules" ref="Form">
-        <el-form-item label="关键字(以逗号分隔)">
-          <el-input v-model="form.Keywords"></el-input>
+        <el-form-item label="题目关键字">
+          <el-input v-model="form.Keywords" placeholder="(以逗号分隔)"></el-input>
         </el-form-item>
         <el-form-item label="题目分类" prop="CategoryId">
           <el-select v-model="form.CategoryId" placeholder="请选择题目分类">
@@ -95,7 +60,7 @@
           </el-select>
           <!-- <el-button type="primary" icon="el-icon-plus" @click="showAdd=!showAdd" circle></el-button> -->
         </el-form-item>
-        <el-form-item label="* 题目类型">
+        <el-form-item label="题目类型" prop="Type">
           <el-select v-model="form.Type" placeholder="请选择题目分类">
             <el-option
               v-for="item in typelist"
@@ -112,7 +77,7 @@
         <el-button type="primary" @click="submit">确 定</el-button>
       </div>
     </el-dialog>
-    <el-dialog title="添加题目" :visible.sync="adddialog" @opened="openAdd" width="80%">
+    <el-dialog title="编辑题目" :visible.sync="adddialog" @opened="openAdd" width="80%" v-loading="loading">
       <div class="ocr-edit">
         <h4 style="margin-top:0">题目(不含答案)</h4>
         <div ref="ShouTitle" class="divWangeditor" style="text-align:left"></div>
@@ -121,21 +86,25 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="adddialog = false">取 消</el-button>
-        <el-button size="small" type="primary" @click="dialogFormVisible = true">添 加</el-button>
+        <el-button size="small" type="primary" @click="dialogFormVisible = true">提 交</el-button>
       </span>
     </el-dialog>
-
+    <el-dialog class="search-dialog" title="搜索题目" :visible.sync="dialogSearch" width="85%" height="85%">
+      <searchQues></searchQues>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 var ShouTitle, ShouCorrect
 
+import pictureCut from '@/components/picture-cut/index'
 import nxSvgIcon from '@/components/nx-svg-icon/index'
 import quexBox from '@/components/my-box/quex-box'
 import VueCropper from 'vue-cropperjs'
 import { typeList } from '@/assets/js/question_type.js'
-import { dataURLtoBlob, blobToFile, dataURLtoFile } from '@/utils/index.js'
+import { dataURLtoBlob, blobToFile } from '@/utils/index.js'
+import searchQues from './searchQues'
 import {
   questionCategory
 } from '@/api/toget'
@@ -151,23 +120,21 @@ export default {
   components: {
     VueCropper,
     quexBox,
-    nxSvgIcon
+    nxSvgIcon,
+    pictureCut,
+    searchQues
     // slider,
     // slideritem
   },
   data: function() {
     return {
-      documentWidth: document.body.clientHeight,
+      activeName: 'cutup',
+      dialogSearch: false,
+      loading: false,
       openNum: false,
       showGIF: false,
       showLoading: false,
-      showBtn: false,
-      lines: '',
-      result: '',
-      isHand: false,
       cropImg: '',
-      imgSrc: '',
-      dialogVisible: false,
       adddialog: false,
       dialogFormVisible: false,
       showAdd: false,
@@ -183,6 +150,9 @@ export default {
       },
       rules: {
         CategoryId: [
+          { required: true, message: '请选择题目分类', trigger: 'change' }
+        ],
+        Type: [
           { required: true, message: '请选择题目类型', trigger: 'change' }
         ]
       },
@@ -248,60 +218,9 @@ export default {
         }
       }
     },
-    cameraTakePicture() {
-      if (navigator.camera) {
-        navigator.camera.getPicture(this.onSuccess, this.onFail, {
-          quality: 50,
-          destinationType: Camera.DestinationType.DATA_URL,//eslint-disable-line
-          encodingType: Camera.EncodingType.JPEG,//eslint-disable-line
-          sourceType: Camera.PictureSourceType.Camera//eslint-disable-line
-        })
-      } else {
-        this.$notify({
-          title: '提示',
-          message: '网页端请选择上传图片的方式！',
-          type: 'info'
-        })
-      }
-    },
-    onSuccess(imageURI) {
-      var file = dataURLtoFile('data:image/jpeg;base64,' + imageURI, 'camera.jpeg')
-      this.setImage(file)
-    },
-    onFail(mess) {
-      console.log('未选择图片')
-    },
-    toChoose(e) {
-      const file = e.target.files[0]
-      this.setImage(file)
-    },
-    setImage(file) {
-      if (!file || !file.type.includes('image/')) {
-        return
-      }
-      const reader = new FileReader()
-      reader.onload = event => {
-        this.dialogVisible = true
-        this.imgSrc = event.target.result
-        this.$refs.cropper && this.$refs.cropper.replace(event.target.result)
-      }
-      reader.readAsDataURL(file)
-      this.$refs.referenceUpload.value = null
-    },
-    cropImage() {
-      // this.cropImg = this.$refs.cropper.getCroppedCanvas().toDataURL('image/jpeg', 0.7)
-    },
-    cancelCrop() {
-      this.dialogVisible = false
-      this.cropImg = ''
-    },
-    toCrop() {
-      this.cropImg = this.$refs.cropper.getCroppedCanvas().toDataURL('image/jpeg', 0.7)
-      this.dialogVisible = false
-      this.cutQuestion()
-    },
-    toRotate() {
-      this.$refs.cropper.rotate(45)
+    Getresult(value) {
+      this.cropImage = value
+      // this.cutQuestion()
     },
     Detele(index) {
       this.$confirm('确定删除该题？', '提示', {
@@ -375,6 +294,7 @@ export default {
         return
       }
       this.openNum = true
+      this.loading = true
       // 富文本配置
       var That = this
       // var Imgurl = 'http://192.168.1.105/'
@@ -407,42 +327,17 @@ export default {
         uploadImgHooks: {
           customInsert: function(insertImg, result, editor) {
             var url = result.data.data.data
-            // console.log(result.data.data.data)
             insertImg(url)
           }
         }
       }
       ShouTitle.create()
       ShouCorrect.create()
+
+      this.loading = false
     }
   },
   mounted() {
-    // this.openAdd()
-
-    this.$refs.select_frame.ondragleave = (e) => {
-      // 阻止离开时的浏览器默认行为
-      e.preventDefault()
-      this.$refs.select_frame.style.backgroundColor = '#fff'
-      this.$refs.select_frame.style.border = '0.11em dashed #d9d9d9'
-    }
-    this.$refs.select_frame.ondrop = (e) => {
-      e.preventDefault()
-      const data = e.dataTransfer.files[0]
-      if (data.length < 1) {
-        return
-      }
-      this.setImage(data)
-      this.$refs.select_frame.style.backgroundColor = '#fff'
-      this.$refs.select_frame.style.border = '0.11em dashed #d9d9d9'
-    }
-    this.$refs.select_frame.ondragenter = (e) => {
-      e.preventDefault()
-      this.$refs.select_frame.style.backgroundColor = '#edf8f7'
-      this.$refs.select_frame.style.border = '0.11em dashed #52bab5'
-    }
-    this.$refs.select_frame.ondragover = (e) => {
-      e.preventDefault()
-    }
   },
   created() {
     this.GetCategory()
@@ -454,15 +349,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
-    @import '../../styles/ocr.scss';
 
 .slider-ques{
   font-size: unset;
   text-align: left;
   color: unset;
-}
-.container{
-  border: 0;
 }
 .sq-body{
   position: relative;

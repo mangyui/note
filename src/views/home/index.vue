@@ -38,7 +38,7 @@
             <div class="home_item">
               <router-link to="/class/index">
                 <nx-svg-icon class-name='more_icon' style="color:#8371f3" icon-class="peoples" />
-                <p>我的班级</p>
+                <p>我的班课</p>
               </router-link>
             </div>
             <div class="home_item">

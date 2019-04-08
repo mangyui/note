@@ -3,6 +3,7 @@
     <span class="header-title">题友</span>
     <div class="big-box1200">
       <el-tabs v-model="activeName" class='is_stretch' >
+        <el-tab-pane name="left" disabled></el-tab-pane>
         <el-tab-pane name="followee">
           <div slot="label">我的关注</div>
             <div class="">
@@ -17,6 +18,7 @@
               <customer-box :option="Followees"></customer-box>
             </div>
         </el-tab-pane>
+        <el-tab-pane name="center" disabled></el-tab-pane>
         <el-tab-pane name="fans">
           <div slot="label">我的粉丝</div>
           <div class="">
@@ -31,6 +33,7 @@
             <customer-box :option="Fans"></customer-box>
           </div>
         </el-tab-pane>
+        <el-tab-pane name="right" disabled></el-tab-pane>
       </el-tabs>
     </div>
   </div>

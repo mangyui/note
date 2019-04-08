@@ -44,7 +44,7 @@
             <div ref="ShouCorrect" class="divWangeditor" style="text-align:left"></div>
             <!-- <quill-editor ref="AnalysisEditor" v-model="form.Analysis" :options="editorOption" ></quill-editor> -->
             <br/>
-            <el-button class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
+            <el-button size="large" class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
           </div>
         </div>
       </div>
@@ -61,7 +61,7 @@
               :value="item.Id">
             </el-option>
           </el-select>
-          <el-button type="primary" icon="el-icon-plus" @click="showAdd=!showAdd" circle></el-button>
+          <el-button type="primary" icon="el-icon-plus" @click="$refs.addType.showAdd = true" circle></el-button>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -69,20 +69,8 @@
         <el-button size="small" type="primary" @click="submit">确 定</el-button>
       </div>
     </el-dialog>
-    <el-dialog title="添加错题分类" :visible.sync="showAdd">
-      <el-form :model="toadd" :rules="addrules" ref="addForm" label-width="100px">
-        <el-form-item label="错题分类名" prop="Name">
-          <el-input v-model="toadd.Name"></el-input>
-        </el-form-item>
-        <el-form-item label="分类说明" prop="Intro">
-          <el-input type="textarea" v-model="toadd.Intro"></el-input>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button size="small" @click="showAdd = false">取 消</el-button>
-        <el-button size="small" type="primary" @click="addMistakeType">确 定</el-button>
-      </div>
-    </el-dialog>
+
+    <addType ref="addType" MistakeOrNote="Mistake" @addBack="addBack"></addType>
   </div>
 </template>
 
@@ -95,13 +83,13 @@ import nxSvgIcon from '@/components/nx-svg-icon/index'
 import quexBox from '@/components/my-box/quex-box'
 import { slider, slideritem } from 'vue-concise-slider'
 import pictureOcr from '@/components/picture-ocr/index'
+import addType from '@/views/common/addType'
 
 import {
   Imgurl,
   addMistake,
   ocrQues,
-  mistakeCate,
-  AddMistakeCate
+  mistakeCate
 } from '@/api/toPost'
 
 export default {
@@ -111,7 +99,8 @@ export default {
     nxSvgIcon,
     slider,
     slideritem,
-    pictureOcr
+    pictureOcr,
+    addType
   },
   data: function() {
     return {
@@ -127,7 +116,6 @@ export default {
         thresholdTime: '500'
       },
       dialogFormVisible: false,
-      showAdd: false,
       questions: [],
       typelist: [],
       form: {
@@ -146,20 +134,6 @@ export default {
         Correct: '',
         Analysis: '',
         currentPage: ''
-      },
-      toadd: {
-        UserId: this.$store.getters.user.Id,
-        Name: '',
-        Intro: ''
-      },
-      addrules: {
-        Name: [
-          { required: true, message: '请输入分类名', trigger: 'blur' },
-          { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
-        ],
-        Intro: [
-          { min: 0, max: 30, message: '长度在 0 到 30 个字符', trigger: 'blur' }
-        ]
       }
     }
   },
@@ -265,38 +239,9 @@ export default {
         })
       })
     },
-    addMistakeType() {
-      if (!this.$store.getters.user.Id) {
-        this.$confirm('你这个操作，登录就能解决', '提示', {
-          confirmButtonText: '立即登录',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.$router.push({
-            path: '/login'
-          })
-        }).catch(() => {})
-        return
-      }
-      this.$refs.addForm.validate(valid => {
-        if (valid) {
-          AddMistakeCate(this.$qs.stringify(this.toadd)).then(res => {
-            if (res.data.code === 0) {
-              this.$notify({
-                title: '提示',
-                message: '添加分类成功！',
-                type: 'success'
-              })
-            } else {
-              this.$message.warning('操作失败...')
-            }
-            this.showAdd = false
-            this.GetCategory()
-          }).catch(() => {})
-        }
-      })
+    addBack() {
+      this.GetCategory()
     },
-    // 获取题目分类
     GetCategory() {
       // 未登录 不请求
       if (!this.$store.getters.user.Id) {
