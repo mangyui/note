@@ -1,13 +1,6 @@
 <template>
   <div class="user">
     <div class="user_top" :style="{backgroundImage:'url(./static/img/main/user_bg' + bgindex+ '.svg)'}">
-      <!-- <div class="bg-blur"></div> -->
-      <!-- <router-link :to="'/user/fans/'+user.Id">
-        <el-button class="toAttention"
-          type="danger"
-          round >题友
-        </el-button>
-      </router-link> -->
       <div class="toOther">
         <div class="tiyou">
           <router-link to="/tonote/noteList">
@@ -23,14 +16,6 @@
           </router-link>
         </div>
       </div>
-      <!-- <div class="top_item">
-        <p style="height:80px">
-          <router-link to="/tonote/noteList"></router-link>
-        </p>
-        <p>
-          <router-link to="/toques/quesList"></router-link>
-        </p>
-      </div> -->
     </div>
     <div class="user_center">
       <!-- <div class="div-logout toShow"><nx-svg-icon class-name='more_icon' icon-class="logout" /></div> -->
@@ -46,75 +31,17 @@
         <p class="user_money">金币：<span>{{user.Coin||0}}</span> <el-button size="mini" round @click="chongzhiBox = true">充值</el-button></p>
       </div>
     </div>
-    <div v-if="!isUpdate" class="contariner-wraper UserInfo">
-      <div class="center-section-wrap">
-        <div class="datum-item-box">
-          <div class="datum-title-box">
-            基本信息
-          </div>
-          <div class="table-wrap">
-            <table class="datum-table">
-              <tr>
-                <th>用户号</th>
-                <td>{{user.Name}}</td>
-              </tr>
-              <tr>
-                <th>性别</th>
-                <td>{{user.Sex}}</td>
-              </tr>
-              <tr>
-                <th>地址</th>
-                <td>
-                  {{user.Address}}
-                </td>
-              </tr>
-              <tr>
-                <th>简介</th>
-                <td class="brief-introduction">
-                  <p>{{user.Intro}}</p>
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-        <div class="datum-item-box">
-          <div class="datum-title-box">
-            教育背景
-          </div>
-          <div class="table-wrap">
-            <table class="datum-table">
-              <tr>
-                <th>在读院校</th>
-                <td>{{School}}</td>
-              </tr>
-               <tr>
-                <th>年级</th>
-                <td>{{Class}}</td>
-              </tr>
-            </table>
-          </div>
-        </div>
-        <div class="datum-item-box">
-          <div class="datum-title-box">
-            联系方式
-          </div>
-          <div class="table-wrap">
-            <table class="datum-table">
-              <tr>
-                <th>手机号码</th>
-                <td>{{user.Phone}}</td>
-              </tr>
-            </table>
-          </div>
-        </div>
-        <div class="save-me" style="text-align: right">
-          <el-button size="small" v-if="!isUpdate" @click="isChange">刷新资料</el-button>
-          <el-button size="small" type="primary" v-if="!isUpdate" @click="isUpdate=!isUpdate">修改资料</el-button>
+    <div class="big-box900" v-show="!isUpdate">
+
+      <baseInfo :user="user" :mClass="Class" :School="School"></baseInfo>
+
+      <div class="save-me" style="text-align: right">
+        <el-button size="small" v-if="!isUpdate" @click="isChange">刷新资料</el-button>
+        <el-button size="small" type="primary" v-if="!isUpdate" @click="isUpdate=!isUpdate">修改资料</el-button>
       </div>
       <div class="div-logout toShow" @click="logout"><el-button type="danger">退出登录</el-button></div>
-      </div>
     </div>
-    <div v-if="isUpdate" class="contariner-wraper">
+    <div v-show="isUpdate" class="contariner-wraper Updateinfo">
       <div class="center-section-wrap">
         <div class="datum-item-box">
           <div class="datum-title-box">
@@ -122,10 +49,6 @@
           </div>
           <div class="table-wrap">
             <table class="datum-table">
-              <!-- <tr>
-                <th>用户名</th>
-                <td><el-input v-model="form.Name" placeholder="请设置您的用户名"></el-input></td>
-              </tr> -->
               <tr>
                 <th>性别</th>
                 <td>
@@ -184,25 +107,11 @@
                       :value="item.value">
                     </el-option>
                 </el-select>
-      <!-- <el-input v-model="form.Class" placeholder="请设置您的年级"></el-input> -->
                 </td>
               </tr>
             </table>
           </div>
         </div>
-        <!-- <div class="datum-item-box">
-          <div class="datum-title-box">
-            联系方式
-          </div>
-          <div class="table-wrap">
-            <table class="datum-table">
-              <tr>
-                <th>联系方式</th>
-                <td><el-input v-model="form.Phone" placeholder="请设置您的联系方式"></el-input></td>
-              </tr>
-            </table>
-          </div>
-        </div> -->
         <el-alert
           title="修改了信息，别忘了保存哦！"
           type="warning">
@@ -219,7 +128,7 @@
       :visible.sync="chongzhiBox"
       width="40%"
       center>
-      <div class="jinbi">金币数：<nx-count-up class="num" :start="0" :end="parseInt(user.Coin)"/></div>
+      <div class="jinbi">金币数：<my-count-up class="num" :start="0" :end="parseInt(user.Coin)"/></div>
       <div class="jinbi">
         <el-select v-model="addJinbi" placeholder="请选择">
           <el-option
@@ -247,11 +156,12 @@
 </template>
 
 <script>
-import nxCountUp from '@/components/nx-count-up/index.vue'
+import myCountUp from '@/components/my-count-up/index.vue'
 import nxSvgIcon from '@/components/nx-svg-icon/index'
 // import { areajson } from '@/assets/js/city.js'
 import { classList } from '@/assets/js/class.js'
 import VueCropper from 'vue-cropperjs'
+import baseInfo from './baseInfo'
 import {
   getSchoolList
 } from '@/api/toget'
@@ -266,8 +176,9 @@ export default {
   name: 'user',
   components: {
     VueCropper,
-    nxCountUp,
-    nxSvgIcon
+    myCountUp,
+    nxSvgIcon,
+    baseInfo
   },
   data() {
     return {
@@ -480,12 +391,14 @@ export default {
 
 <style scoped lang='scss'>
  @import '../../styles/consumer.scss';
- .UserInfo{
+ .big-box900{
+   max-width: 900px;
+   margin: 0 auto;
+   margin-bottom: 20px;
+ }
+ .Updateinfo{
    .datum-table td{
-      padding: 10px 0;
-   }
-   .datum-table th{
-     padding: 10px 30px 10px 0px;
+      padding: 7px 0;
    }
  }
 .user_top {
@@ -614,12 +527,12 @@ export default {
   }
 }
 
-@media (min-width: 1600px)
-{
-  .bg-blur{
-    filter: blur(8px);
-  }
-}
+// @media (min-width: 1600px)
+// {
+//   .bg-blur{
+//     filter: blur(8px);
+//   }
+// }
 @media (max-width: 768px)
 {
   // .user_top{

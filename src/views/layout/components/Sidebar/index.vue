@@ -27,7 +27,7 @@
         <p>{{user.Id?'登出':'登录'}}</p>
       </div>
       <div>
-        <nx-lang-select class="" style="height:27px"></nx-lang-select>
+        <my-lang-select class="" style="height:27px"></my-lang-select>
         <p>语言</p>
       </div>
       <div v-if="isTeacher">
@@ -39,7 +39,7 @@
         <p>消息</p>
       </div>
       <div v-if="!user.Id">
-        <nx-full-screen class="" style="height:27px"></nx-full-screen>
+        <my-full-screen class="" style="height:27px"></my-full-screen>
         <p>全屏</p>
       </div>
     </div>
@@ -52,8 +52,8 @@ import { mapGetters } from 'vuex'
 import SidebarItem from './SidebarItem'
 import logo from './logo'
 // import store from '@/store'
-import nxFullScreen from '@/components/nx-full-screen/index'
-import nxLangSelect from '@/components/nx-lang-select/index'
+import myFullScreen from '@/components/my-full-screen/index'
+import myLangSelect from '@/components/my-lang-select/index'
 import nxSvgIcon from '@/components/nx-svg-icon/index'
 import actorSelect from '@/components/comps/actor-select'
 
@@ -61,8 +61,8 @@ export default {
   components: {
     SidebarItem,
     logo,
-    nxLangSelect,
-    nxFullScreen,
+    myLangSelect,
+    myFullScreen,
     nxSvgIcon,
     actorSelect
   },

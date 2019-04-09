@@ -8,6 +8,14 @@
       </el-breadcrumb>
     </div> -->
     <div class="big-box1200">
+      <div class="list-gbtn">
+        <div>我的收藏
+        </div>
+        <div>
+          <el-button icon="el-icon-refresh" circle @click="getCollects"></el-button>
+          <el-button type="danger" icon="el-icon-delete" circle @click="showDelete=!showDelete"></el-button>
+        </div>
+      </div>
       <div class="container">
         <div v-show="showLoading" class="loading-box">
           <i class="el-icon-loading"></i>
@@ -20,7 +28,7 @@
         <div class="ques-list">
           <div class="ques-list_item" v-for="(item,index) in collects" :key="index">
             <div class="ques_box">
-              <span @click="toCollect(index)" >
+              <span v-show="showDelete" @click="toCollect(index)" >
                 <nx-svg-icon
                   class-name='international-icon icon-collect'
                   style="color: #F56C6C"
@@ -74,16 +82,10 @@ export default {
       homeTop: 0,
       ScrollTop: 0,
       showLoading: true,
+      showDelete: false,
       showMore: false,
       NoneMore: false,
       collects: [],
-      // type: '',
-      // typelist: [
-      //   {
-      //     Id: 0,
-      //     Name: '所有'
-      //   }
-      // ],
       tolist: {
         UserId: this.$store.getters.user.Id,
         Number: 3,
@@ -188,6 +190,6 @@ export default {
 
 <style scoped>
 .ques-list .ques-list_item .ques_box{
-  padding-top: 45px;
+  padding-top: 24px;
 }
 </style>

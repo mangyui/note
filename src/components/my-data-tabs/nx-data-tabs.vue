@@ -8,7 +8,7 @@
             <span>{{item.subtitle}}</span>
           </div>
           <div class="item-body">
-            <h2><nx-count-up :start="0" :end="item.count"/></h2>
+            <h2><my-count-up :start="0" :end="item.count"/></h2>
           </div>
           <div class="item-footer">
             <span>{{item.allcount}}</span>
@@ -22,12 +22,12 @@
 </template>
 
 <script>
-import nxCountUp from '@/components/nx-count-up/index.vue'
+import myCountUp from '@/components/my-count-up/index.vue'
 export default {
   components: {
-    nxCountUp
+    myCountUp
   },
-  name: 'nx-data-tabs',
+  name: 'my-data-tabs',
   data() {
     return {
       span: this.option.span || 6,

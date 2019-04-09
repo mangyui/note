@@ -24,7 +24,7 @@
           <router-link  to='/todo/addMistake'>
             <el-button type="primary" icon="el-icon-plus" circle></el-button>
           </router-link>
-          <el-button type="danger" icon="el-icon-delete" circle @click="showDelete=!showDelete"></el-button>
+          <el-button type="danger" icon="el-icon-delete" circle @click="$refs.misList.showDelete=!$refs.misList.showDelete"></el-button>
         </div>
       </div>
       <div class="container">
@@ -36,25 +36,9 @@
           <i class="el-icon-search"></i>
           空空如也...
         </div>
-        <div class="ques-list">
-          <div class="ques-list_item" v-for="(item,index) in questions" :key="index">
-            <div class="ques_box">
-              <i v-show="showDelete" class="el-icon-close icon-delete" @click="toDetele(item.Id)"></i>
-              <router-link :to="'/home/mistake/'+item.Id">
-                <div class="ques_body tipbox">
-                  <b>{{index+1}}.</b><div v-html="item.QuestionContent||item.Question.Content"></div>
-                </div>
-              </router-link>
-              <el-button class="downMore" @click="clickfun($event)" type="primary" icon="el-icon-caret-bottom" size="mini" ></el-button>
-              <div class="ques_footer">
-                <nx-svg-icon class-name='international-icon' icon-class="zan" /><span class="ques_footer_num">{{item.LikeNumber}}</span>
-                <nx-svg-icon class-name='international-icon' icon-class="collect" /><span class="ques_footer_num">{{item.CollectNumber}}</span>
-                <el-tag v-if="item.QuestionContent" type="info">个人</el-tag>
-                <el-tag v-if="!item.QuestionContent">官方</el-tag>
-              </div>
-            </div>
-          </div>
-        </div>
+
+        <misList ref="misList" :questions="questions"></misList>
+
         <div v-show="showMore" class="loading-box">
           <i class="el-icon-loading"></i>
           加载更多中...
@@ -74,16 +58,19 @@
 
 <script>
 import nxSvgIcon from '@/components/nx-svg-icon/index'
+import misList from '@/views/common/misList'
 import {
   QuesList,
-  DeleteMistake,
   SearchMistake,
   mistakeCate
 } from '@/api/toPost'
 
 export default {
   name: 'quesList',
-  components: { nxSvgIcon },
+  components: {
+    nxSvgIcon,
+    misList
+  },
   data() {
     return {
       homeTop: 0,
@@ -103,7 +90,7 @@ export default {
       tolist: {
         UserId: this.$store.getters.user.Id,
         MistakeCateId: this.$route.params.cateId || 0,
-        Number: 3,
+        Number: 10,
         Page: 1
       },
       search: {
@@ -142,10 +129,10 @@ export default {
     document.querySelector('.app-main').addEventListener('scroll', this.onScroll)
   },
   methods: {
-    refresh() {
-      this.getCategory()
-      this.getQues()
-    },
+    // refresh() {
+    //   this.getCategory()
+    //   this.getQues()
+    // },
     getCategory() {
       mistakeCate(this.$qs.stringify({ UserId: this.$store.getters.user.Id })).then(res => {
         this.typelist = this.typelist.concat(res.data.data)
@@ -162,27 +149,6 @@ export default {
         this.showLoading = false
       }).catch(() => {})
     },
-    toDetele(index) {
-      this.$confirm('此操作将永久删除该错题, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        DeleteMistake(this.$qs.stringify({ Id: index, UserId: this.$store.getters.user.Id })).then(res => {
-          if (res.data.code === 0) {
-            this.$notify({
-              title: '提示',
-              message: '删除成功！',
-              type: 'info'
-            })
-          } else {
-            this.$message.warning('操作失败...')
-          }
-          this.toSearch()
-        }).catch(() => {})
-        //
-      }).catch(() => {})
-    },
     toSearch() {
       if (this.search.keys.trim() === '') {
         this.getQues()
@@ -193,16 +159,6 @@ export default {
         this.questions = res.data.data
         this.showLoading = false
       }).catch(() => {})
-    },
-    clickfun(e) {
-      var p = e.currentTarget.previousElementSibling.firstElementChild
-      if (p.style.maxHeight === '1000px') {
-        p.style.maxHeight = '200px'
-        e.currentTarget.firstElementChild.style.transform = ''
-      } else {
-        p.style.maxHeight = '1000px'
-        e.currentTarget.firstElementChild.style.transform = 'rotate(180deg)'
-      }
     },
     onScroll() {
       var innerHeight = document.querySelector('.app-container').clientHeight

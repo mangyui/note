@@ -36,16 +36,17 @@
               <div class="ques_footer">
                 <nx-svg-icon class-name='international-icon' icon-class="zan" /><span class="ques_footer_num">{{item.LikeNumber}}</span>
                 <nx-svg-icon class-name='international-icon' icon-class="collect" /><span class="ques_footer_num">{{item.CollectNumber}}</span>
-                <el-checkbox class="addQuestion" size="small" v-model="isChecked" label="添加" border></el-checkbox>
+                 <el-button class="addQuestion" type="danger" size="mini" @click="toAdd(item)">添加</el-button>
+                <!-- <el-checkbox class="addQuestion" size="small" v-model="isChecked" label="添加" border></el-checkbox> -->
               </div>
             </div>
           </div>
         </div>
-
         <div v-show="showMore" class="loading-box">
           <i class="el-icon-loading"></i>
           加载更多中...
         </div>
+        <el-button v-show="questions[0]&&!NoneMore" class="load-more" @click="onScroll" type="info" plain>加载更多</el-button>
         <div v-show="!showMore && NoneMore" class="loading-box">
           <i class="el-icon-search"></i>
           没有更多了...
@@ -101,6 +102,9 @@ export default {
     next()
   },
   methods: {
+    toAdd(value) {
+      this.$emit('Sadd', value)
+    },
     SearchQuestion() {
       // if (this.Sdata.Keys.trim() === '') {
       //   return
@@ -209,5 +213,8 @@ export default {
 .addQuestion{
   float: right;
   margin-top: -7px;
+}
+.load-more{
+  width: 100%;
 }
 </style>

@@ -81,7 +81,7 @@
 <script>
 import nxSvgIcon from '@/components/nx-svg-icon/index'
 export default {
-  name: 'nx-message',
+  name: 'message',
   components: {
     nxSvgIcon
   },

@@ -14,7 +14,7 @@
 <script>
 import nxSvgIcon from '@/components/nx-svg-icon/index'
 export default {
-  name: 'nx-lang-select',
+  name: 'lang-select',
   components: { nxSvgIcon },
   computed: {
     language() {

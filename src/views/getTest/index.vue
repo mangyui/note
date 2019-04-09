@@ -1,51 +1,46 @@
 <template>
   <div class="app-container">
     <span class="header-title">生成试题</span>
-    <!-- <div class="crumbs disNone">
-      <el-breadcrumb separator="/">
-          <el-breadcrumb-item><i class="el-icon-date"></i> 生成试题</el-breadcrumb-item>
-      </el-breadcrumb>
-    </div> -->
     <div class="big-box1200">
-      <!--工具条-->
-      <div class="list-gbtn">
+      <div v-show="!isOnline">
+        <div class="list-gbtn">
           <el-button type="primary" plain  @click="dialogFormVisible=!dialogFormVisible" size="medium">生成试题</el-button>
-        <!-- <div class="gbtn-box"> -->
-          <el-checkbox v-model="showAnalysis" label="答案" border size="medium"></el-checkbox>
-        <!-- </div> -->
-      </div>
-      <el-alert
-        class="toShow"
-        title="目前手机端暂不支持下载word,请移步pc端下载"
-        type="warning">
-      </el-alert>
-      <div class="container" id="Test">
-        <div v-if="showLoading" class="loading-box">
-          <i class="el-icon-loading"></i>
-          加载中...
-        </div>
-        <!-- <img :src="'http://127.0.0.1:9528/static/img/avatar.jpg'" alt=""> -->
-        <!-- <img src="http://p0.so.qhimgs1.com/sdr/400__/t014c2f774eb0ffbd3a.jpg" alt=""> -->
-        <div class="test-box" v-for="(item,index) in Tests" :key="index">
-          <br>
-          <div class="test_title">
-            <span v-if="isDelete">
-              <el-button type="text" icon="el-icon-close" circle @click="todelete(index)"></el-button>
-            </span>
-            <!-- <span v-if="isXuhao">{{index+1}}.</span> -->
-            <div class="test_content" v-html="item.Content"></div>
+          <div>
+            <el-button v-show="Tests[0]" type="primary"  @click="toOnline" size="medium">在线测试</el-button>
+            <el-checkbox v-model="showAnalysis" label="答案" border size="medium"></el-checkbox>
           </div>
-          <br/>
-          <div class="tipbox test_Correct" style="color:#f95353" v-if="showAnalysis" v-html="item.Analysis"></div>
+        </div>
+        <el-alert
+          class="toShow"
+          title="目前手机端暂不支持下载word,请移步pc端下载"
+          type="warning">
+        </el-alert>
+        <div class="container" id="Test">
+          <div v-if="showLoading" class="loading-box">
+            <i class="el-icon-loading"></i>
+            加载中...
+          </div>
+          <div class="test-box" v-for="(item,index) in Tests" :key="index">
+            <br>
+            <div class="test_title">
+              <span v-if="isDelete">
+                <el-button type="text" icon="el-icon-close" circle @click="todelete(index)"></el-button>
+              </span>
+              <!-- <span v-if="isXuhao">{{index+1}}.</span> -->
+              <div class="test_content" v-html="item.Content"></div>
+            </div>
+            <br/>
+            <div class="tipbox test_Correct" style="color:#f95353" v-if="showAnalysis" v-html="item.Analysis"></div>
+          </div>
         </div>
       </div>
-      <br/>
+      <div v-show="isOnline">
+        <el-button type="primary" plain  @click="isOnline=false" size="medium">返回生成试题</el-button>
+        <testOnline ref="testOnline" :Tests="Tests"></testOnline>
+      </div>
     </div>
     <el-dialog title="生成试题" :visible.sync="dialogFormVisible" center>
       <el-form :model="getForm" ref="form">
-        <!-- <el-form-item label="关键字">
-          <el-input v-model="form.Keywords"></el-input>
-        </el-form-item> -->
         <el-form-item label="试题分类">
           <el-select size="medium" v-model="getForm.CategoryId" placeholder="选择分类" @change="">
             <el-option
@@ -84,7 +79,7 @@
         <el-button size="small" type="primary" @click="getTest">确定</el-button>
       </div>
     </el-dialog>
-    <div  v-if="Tests[0]" class="note_d-edit">
+    <div  v-if="Tests[0]&& !isOnline" class="note_d-edit">
       <el-dropdown trigger="click">
         <el-button type="primary" icon="el-icon-edit" circle></el-button>
         <el-dropdown-menu style="overflow: hidden;" slot="dropdown">
@@ -104,21 +99,25 @@
 </template>
 
 <script>
+import testOnline from './test_online'
 import saveAs from '@/assets/js/fileexport.js'
 window.saveAs = saveAs
 import '@/assets/js/jquery.wordexport.js'
 import {
   questionCategory
 } from '@/api/toget'
-
 import {
   GetTest
 } from '@/api/toPost'
 
 export default {
   name: 'getTest',
+  components: {
+    testOnline
+  },
   data() {
     return {
+      isOnline: false,
       dialogFormVisible: false,
       showLoading: false,
       showAnalysis: false,
@@ -165,9 +164,12 @@ export default {
     }
   },
   methods: {
+    toOnline() {
+      this.$refs.testOnline.addIsAnalysis()
+      this.isOnline = true
+    },
     // 获取题目分类
     GetCategory() {
-      // 未登录 不请求
       if (!this.$store.getters.user.Id) {
         return
       }
@@ -186,10 +188,7 @@ export default {
         var index = (index2 > index1) && (index2 - index1 < 4) ? index2 : index1
         // console.log(index)
         item.Content = item.Content.substring(0, index1) + i + '.' + item.Content.substring(index++)
-        // console.log(item.Content.substring(0, index))
       })
-
-      // this.isXuhao = true
     },
     getTest() {
       this.showLoading = true
@@ -197,6 +196,7 @@ export default {
         this.Tests = res.data.data
         this.showLoading = false
         this.addOrdinal()
+        this.$refs.testOnline.addIsAnalysis()
       }).catch((res) => {
         console.log(res)
       })
@@ -225,13 +225,6 @@ export default {
       theBlob.lastModifiedDate = new Date()
       theBlob.name = fileName
       return theBlob
-    },
-    ToMobile() {
-      window.open('https://coding.net/api/share/download/925b6a78-ea70-489d-826f-aa394fb0ea1d', '_system')
-    },
-    ToMo() {
-      var blob = $('#Test').wordExport('test')
-      window.open(URL.createObjectURL(blob))
     },
     deleteAll() {
       this.Tests = []

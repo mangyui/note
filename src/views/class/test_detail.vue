@@ -21,7 +21,7 @@
             </router-link>
           </div>
           <div>
-            <el-button type="primary"  @click="ToWord" size="small">下载word</el-button>
+            <el-button v-show="Tests[0]" type="primary"  @click="ToWord" size="small">下载word</el-button>
             <el-checkbox v-model="showAnalysis" label="答案" border size="small"></el-checkbox>
           </div>
         <!-- </div> -->
@@ -49,22 +49,6 @@
       </div>
       <br/>
     </div>
-    <!-- <div  v-if="Tests[0]" class="note_d-edit">
-      <el-dropdown trigger="click">
-        <el-button type="primary" icon="el-icon-edit" circle></el-button>
-        <el-dropdown-menu slot="dropdown">
-          <div @click="deleteAll">
-            <el-dropdown-item icon="el-icon-edit">全部清空</el-dropdown-item>
-          </div>
-          <div @click="isDelete=!isDelete">
-            <el-dropdown-item icon="el-icon-delete" divided>删除单个</el-dropdown-item>
-          </div>
-          <div @click="ToWord">
-            <el-dropdown-item icon="el-icon-delete" divided>生成word</el-dropdown-item>
-          </div>
-        </el-dropdown-menu>
-      </el-dropdown>
-    </div> -->
   </div>
 </template>
 

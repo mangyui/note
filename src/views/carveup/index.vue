@@ -2,42 +2,43 @@
   <div class="app-container">
     <span class="header-title">试卷切题</span>
       <div class="inside-box">
-        <pictureCut :showGIF="showGIF" cutIcon="cutup" @Cresult="Getresult"></pictureCut>
+        <pictureCut cutIcon="cutup" @Cresult="Getresult" @CImage="GetImage" @Cquestion="GetQuestion"></pictureCut>
         <br/>
         <div class="list-gbtn">
           <div></div>
           <div>
-            <el-button icon="el-icon-plus" size="small" @click="adddialog=!adddialog">手动添加</el-button>
+            <el-button icon="el-icon-plus" size="small" @click="Add">手动添加</el-button>
             <el-button type="primary" icon="el-icon-search" @click="dialogSearch=true" size="small">搜索题库</el-button>
           </div>
         </div>
         <div class="container">
           <div>
-            <div v-if="showLoading" class="loading-box">
+            <div v-show="showLoading" class="loading-box">
               <i class="el-icon-loading"></i>
               加载中...
             </div>
-            <el-card shadow="hover" class="cut_item" v-for="(item,index) in 4" :key="index" >
+            <div v-show="!showLoading&&!Locations[0]" class="loading-box">
+              - 空空如也 -
+            </div>
+            <el-card shadow="hover" class="cut_item" v-for="(item,index) in Locations" :key="index">
               <b>{{index+1}}.</b>
               <br/>
+              <!--触发改变-->
+              <span v-show="item.left"></span>
               <el-button class="cut_item-detele" type="text" icon="el-icon-close" size="large" @click="Detele(index)"></el-button>
-              <img v-show="Quesimgs[index]" preview='1' :src="Quesimgs[index]" alt="加载中" :title="'第'+ (index+1) +'题'">
-              <div class="cut_item_content" v-html="item.words">
-                <!-- 2.甲、乙两物体均做直线运动,甲物体速度随时间变化的图象如图甲所示,乙物体位置随
-                时间变化的图象如图乙所示,则这两个物体的运动情况是。
-                <p>A.甲在04s内运动方向改变,通过的路程为12m</p>
-                <p>B.甲在04s内运动方向不变,通过的位移大小为6m</p>
-                <p>C.乙在0-4s内运动方向改变,通过的路程为12m</p>
-                <p>D.乙在04s内运动方向不变,通过的位移大小为6m</p> -->
-                </div>
-                <div style="text-align: right;">
-                  <!-- <el-button type="primary" icon="el-icon-plus" size="small" @click="">加入测试集</el-button> -->
-                  <el-button  class="yellow-btn" icon="el-icon-edit" size="small" @click="adddialog=true">修改</el-button>
-                </div>
+              <img v-show="item.Image" preview='1' :src="item.Image" alt="加载中" :title="'第'+ (index+1) +'题'">
+              <el-main v-if="!item.words.Id" v-loading="true">
+                <div class="cut_item_content" v-html="item.words"></div>
+              </el-main>
+              <div v-show="item.words.Id" class="cut_item_content" v-html="item.words.Content"></div>
+              <div style="text-align: right;">
+                <!-- <el-button type="primary" icon="el-icon-plus" size="small" @click="">加入测试集</el-button> -->
+                <el-button v-show="item.words.Id"  class="yellow-btn" icon="el-icon-edit" size="small" @click="Edit(index)">修改</el-button>
+              </div>
             </el-card>
           </div>
         </div>
-        <div class="cut-footer">
+        <div v-show="Locations[0]" class="cut-footer">
           <el-button type="primary" size="medium" @click="">生成测试</el-button>
         </div>
     </div>
@@ -90,7 +91,7 @@
       </span>
     </el-dialog>
     <el-dialog class="search-dialog" title="搜索题目" :visible.sync="dialogSearch" width="85%" height="85%">
-      <searchQues></searchQues>
+      <searchQues @Sadd="SearchAdd"></searchQues>
     </el-dialog>
   </div>
 </template>
@@ -103,7 +104,6 @@ import nxSvgIcon from '@/components/nx-svg-icon/index'
 import quexBox from '@/components/my-box/quex-box'
 import VueCropper from 'vue-cropperjs'
 import { typeList } from '@/assets/js/question_type.js'
-import { dataURLtoBlob, blobToFile } from '@/utils/index.js'
 import searchQues from './searchQues'
 import {
   questionCategory
@@ -111,8 +111,7 @@ import {
 
 import {
   Imgurl,
-  upQuestion,
-  CutQuestion
+  upQuestion
 } from '@/api/toPost'
 
 export default {
@@ -132,7 +131,6 @@ export default {
       dialogSearch: false,
       loading: false,
       openNum: false,
-      showGIF: false,
       showLoading: false,
       cropImg: '',
       adddialog: false,
@@ -157,52 +155,17 @@ export default {
         ]
       },
       typelist: typeList,
-      resultImg: './static/img/mock/test.png',
-      Locations: [
-      //   {
-      //   location: {
-      //     width: 182,
-      //     top: 46,
-      //     left: 40,
-      //     height: 47
-      //   }
-      // }, {
-      //   location: {
-      //     width: 1714,
-      //     top: 157,
-      //     left: 42,
-      //     height: 38
-      //   }
-      // }, {
-      //   location: {
-      //     width: 1719,
-      //     top: 200,
-      //     left: 42,
-      //     height: 35
-      //   }
-      // }, {
-      //   location: {
-      //     width: 581,
-      //     top: 241,
-      //     left: 41,
-      //     height: 38
-      //   }
-      // }
-      ],
-      Quesimgs: [],
-      defaultImg: require('@/assets/images/home/loading2.gif')
+      Locations: [],
+      LocaLength: 0
     }
   },
   methods: {
     toCutup() {
-      // this.Quesimgs = new Array(this.Locations.length)
-      for (var i = 0; i < this.Locations.length; i++) {
-        var imgs = new Image()
-        imgs.setAttribute('src', this.cropImg)
-        imgs.setAttribute('index', i)
-        var That = this
-        imgs.onload = function() {
-          var j = this.getAttribute('index')
+      var imgs = new Image()
+      imgs.setAttribute('src', this.cropImg)
+      var That = this
+      imgs.onload = function() {
+        for (var j = That.LocaLength; j < That.Locations.length; j++) {
           var w = That.Locations[j].width
           var h = That.Locations[j].height
           var sx = That.Locations[j].left
@@ -213,14 +176,42 @@ export default {
           var context = canvas.getContext('2d')
           context.drawImage(this, sx, sy, w, h, 0, 0, w, h)
           // $('body').append(canvas)
-          That.Quesimgs[parseInt(j)] = canvas.toDataURL('image/png')
-          // console.log(That.Quesimgs)
+          That.Locations[parseInt(j)].Image = canvas.toDataURL('image/png')
         }
+        // console.log(this.LocaLength, That.Locations)
+        // 主动触发数据的改变
+        That.Locations[That.LocaLength].left += 1
       }
     },
-    Getresult(value) {
-      this.cropImage = value
-      // this.cutQuestion()
+    SearchAdd(value) {
+      var question = {}
+      question.words = value
+      this.Locations = this.Locations.concat(question)
+    },
+    Getresult(data) {
+      this.LocaLength = this.Locations.length
+      this.Locations = this.Locations.concat(data)
+      if (this.Locations) {
+        this.toCutup()
+      }
+    },
+    GetImage(value) {
+      this.cropImg = value
+    },
+    GetQuestion(questions) {
+      for (var i = 0; i < questions.length; i++) {
+        this.Locations[this.LocaLength + i].words = questions[i][0]
+      }
+    },
+    Add() {
+      this.form.Content = ''
+      this.form.Analysis = ''
+      this.adddialog = true
+    },
+    Edit(index) {
+      this.form.Content = this.Locations[index].words.Content
+      this.form.Analysis = this.Locations[index].words.Analysis
+      this.adddialog = true
     },
     Detele(index) {
       this.$confirm('确定删除该题？', '提示', {
@@ -228,7 +219,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-
+        this.Locations.splice(index, 1)
       }).catch(() => {})
     },
     submit() {
@@ -264,33 +255,10 @@ export default {
         console.log('获取题目分类数据失败！')
       })
     },
-    cutQuestion() {
-      this.showLoading = true
-      var blob = dataURLtoBlob(this.cropImg)
-      var file = blobToFile(blob, 'cutpicture')
-      var data = new FormData()
-      data.append('file', file, 'cutpicture.png')
-      CutQuestion(data).then(res => {
-        if (res.data.code === 0) {
-          this.Locations = res.data.data
-          if (res.data.data[0]) {
-            this.toCutup()
-          } else {
-            this.$notify({
-              title: '提示',
-              message: '未识别到相应题目！',
-              type: 'info'
-            })
-          }
-        }
-        this.showLoading = false
-      }).catch((error) => {
-        console.log(error)
-        this.showLoading = false
-      })
-    },
     openAdd() {
       if (this.openNum) {
+        ShouTitle.txt.html(this.form.Content)
+        ShouCorrect.txt.html(this.form.Analysis)
         return
       }
       this.openNum = true
@@ -333,7 +301,8 @@ export default {
       }
       ShouTitle.create()
       ShouCorrect.create()
-
+      ShouTitle.txt.html(this.form.Content)
+      ShouCorrect.txt.html(this.form.Analysis)
       this.loading = false
     }
   },

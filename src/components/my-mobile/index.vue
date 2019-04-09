@@ -12,7 +12,7 @@
 import nxSvgIcon from '@/components/nx-svg-icon/index'
 
 export default {
-  name: 'nx-mobile',
+  name: 'mobile',
   components: { nxSvgIcon },
   data() {
     return {

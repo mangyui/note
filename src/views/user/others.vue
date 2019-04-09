@@ -25,69 +25,9 @@
         <el-tab-pane name="left" disabled></el-tab-pane>
         <el-tab-pane name="info">
           <div slot="label">基本资料</div>
-          <div class="contariner-wraper">
-            <div class="center-section-wrap">
-              <div class="datum-item-box">
-                <div class="datum-title-box">
-                  基本信息
-                </div>
-                <div class="table-wrap">
-                  <table class="datum-table">
-                    <tr>
-                      <th>用户号</th>
-                      <td>{{user.Name}}</td>
-                    </tr>
-                    <tr>
-                      <th>性别</th>
-                      <td>{{user.Sex || '未知'}}</td>
-                    </tr>
-                    <tr>
-                      <th>地址</th>
-                      <td>
-                        {{user.Address}}
-                      </td>
-                    </tr>
-                    <tr>
-                      <th>简介</th>
-                      <td class="brief-introduction">
-                        <p>{{user.Intro}}</p>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-              </div>
-              <div class="datum-item-box">
-                <div class="datum-title-box">
-                  教育背景
-                </div>
-                <div class="table-wrap">
-                  <table class="datum-table">
-                    <tr>
-                      <th>在读院校</th>
-                      <td>{{School}}</td>
-                    </tr>
-                    <tr>
-                      <th>年级</th>
-                      <td>{{Class}}</td>
-                    </tr>
-                  </table>
-                </div>
-              </div>
-              <div class="datum-item-box">
-                <div class="datum-title-box">
-                  联系方式
-                </div>
-                <div class="table-wrap">
-                  <table class="datum-table">
-                    <tr>
-                      <th>手机号码</th>
-                      <td>{{user.Phone}}</td>
-                    </tr>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
+
+          <baseInfo :user="user" :mClass="Class" :School="School"></baseInfo>
+
         </el-tab-pane>
         <el-tab-pane name="center" disabled></el-tab-pane>
         <el-tab-pane label="TA的错题" name="ques">
@@ -95,28 +35,13 @@
             <i class="el-icon-loading"></i>
             加载中...
           </div>
-          <div class="ques-list">
-            <div class="ques-list_item" v-for="(item,index) in questions" :key="index">
-              <div class="ques_box">
-                <router-link :to="'/home/mistake/'+item.Id">
-                  <div class="ques_body tipbox">
-                    <b>{{index+1}}.</b><div v-html="item.QuestionContent||item.Question.Content"></div>
-                  </div>
-                </router-link>
-                <el-button class="downMore" @click="clickfun($event)" type="primary" icon="el-icon-caret-bottom" size="mini" ></el-button>
-                <div class="ques_footer">
-                  <nx-svg-icon class-name='international-icon' icon-class="zan" /><span class="ques_footer_num">{{item.LikeNumber}}</span>
-                  <nx-svg-icon class-name='international-icon' icon-class="collect" /><span class="ques_footer_num">{{item.CollectNumber}}</span>
-                  <el-tag v-if="item.QuestionContent" type="info">个人</el-tag>
-                  <el-tag v-if="!item.QuestionContent">官方</el-tag>
-                </div>
-              </div>
-            </div>
-          </div>
           <div v-show="!questions[0]" class="loading-box">
             <i class="el-icon-search"></i>
             空空如也...
           </div>
+
+          <misList :questions="questions"></misList>
+
           <div v-show="showMore" class="loading-box">
             <i class="el-icon-loading"></i>
             加载更多中...
@@ -134,10 +59,8 @@
 
 <script>
 import nxSvgIcon from '@/components/nx-svg-icon/index'
-// import {
-//   getNoteList
-// } from '@/api/notes'
-
+import misList from '@/views/common/misList'
+import baseInfo from './baseInfo'
 import {
   P_toFollowee,
   GetCustomer,
@@ -150,7 +73,11 @@ import {
 
 export default {
   name: 'others',
-  components: { nxSvgIcon },
+  components: {
+    nxSvgIcon,
+    baseInfo,
+    misList
+  },
   data() {
     return {
       Loadingtop: true,
@@ -160,7 +87,7 @@ export default {
       showMore: false,
       NoneMore: false,
       id: '',
-      user: '',
+      user: {},
       questions: [],
       Attention: false,
       activeName: 'info',
@@ -171,7 +98,7 @@ export default {
       tolist: {
         UserId: 0,
         MistakeCateId: 0,
-        Number: 3,
+        Number: 10,
         Page: 1
       }
     }

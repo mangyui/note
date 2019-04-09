@@ -12,7 +12,7 @@
 <script>
 import { generateTitle } from '@/utils/i18n'
 export default {
-  name: 'nxBreadcrumb',
+  name: 'Breadcrumb',
   created() {
     this.getBreadcrumb()
   },

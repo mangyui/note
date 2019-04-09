@@ -1,14 +1,9 @@
 <template>
   <div class="app-container">
-    <span class="header-title">关于vNote</span>
-    <!-- <div class="crumbs">
-      <el-breadcrumb separator="/">
-          <el-breadcrumb-item><i class="el-icon-date"></i> 关于vNote</el-breadcrumb-item>
-      </el-breadcrumb>
-    </div> -->
+    <span class="header-title">关于{{website.title}}</span>
     <div class="about-top">
       <img preview src="../../assets/images/home/logo.png" width="100px" height="100px" alt="logo" style="vertical-align: middle;" />
-      <b>vNote</b>
+      <b>{{website.title}}</b>
       <i>V {{version}}</i>
     </div>
     <div>
@@ -18,14 +13,7 @@
       <el-collapse>
         <el-collapse-item title="功能介绍" name="2">
           <ul>
-            <li>vNote 响应式布局，PC端和移动端都支持。</li>
-            <li>在这里你可以记录和管理你的笔记错题。</li>
-            <li>笔记整理</li>
-            <li>错题整理。</li>
-            <li>语音识别。</li>
-            <li>拍照搜题。</li>
-            <li>智能推荐。</li>
-            <li>下载试题。</li>
+            <li v-for="item in website.info.list">&nbsp;{{item}}</li>
           </ul>
         </el-collapse-item>
       </el-collapse>
@@ -42,6 +30,7 @@
 <script>
 // import { getVersion } from '@/api/version'
 // import { getHello } from '@/api/test'
+import { mapGetters } from 'vuex'
 export default {
   name: 'about',
   data() {
@@ -49,8 +38,11 @@ export default {
       version: '1.0.7',
       isup: false,
       text: '已是最新版本',
-      upUrl: 'https://dn-coding-net-production-file.codehub.cn/e415d970-4725-11e9-8fcf-a1ca3c5c1ac9.vnd.android.package-archive?attname=vNote_1.0.6.apk&e=1552659982&token=goE9CtaiT5YaIP6ZQ1nAafd_C1Z_H2gVP8AwuC-5:Xe6-aiKxTGH9Z5TNnazoCjh46og='
+      upUrl: ''
     }
+  },
+  computed: {
+    ...mapGetters(['website'])
   },
   methods: {
     toUpdate() {

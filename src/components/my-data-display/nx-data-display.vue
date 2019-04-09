@@ -1,9 +1,9 @@
 <template>
-  <div class="nx-data-display">
+  <div class="my-data-display">
     <el-row :span="24">
       <el-col v-for="(item,index) in data" :key="index" :span="span">
         <div class="item" :style="{color:color}">
-          <h5 class="count"><nx-count-up :start="0" :end="item.count"/></h5>
+          <h5 class="count"><my-count-up :start="0" :end="item.count"/></h5>
           <span class="splitLine" />
           <p class="title">{{item.title}}</p>
         </div>
@@ -14,11 +14,11 @@
 </template>
 
 <script>
-import nxCountUp from '@/components/nx-count-up/index.vue'
+import myCountUp from '@/components/my-count-up/index.vue'
 export default {
-  name: 'nx-data-display',
+  name: 'my-data-display',
   components: {
-    nxCountUp
+    myCountUp
   },
   data() {
     return {

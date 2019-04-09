@@ -5,7 +5,7 @@
 <script>
 import CountUp from 'countup.js'
 export default {
-  name: 'nx-count-up',
+  name: 'count-up',
   props: {
     start: {
       type: Number,

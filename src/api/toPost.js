@@ -422,3 +422,15 @@ export function CutQuestion(datas) {
     data: datas
   })
 }
+
+// 题目数组查找
+export function ToSearchs(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Question.Searchs',
+    method: 'post',
+    data: datas
+  })
+}

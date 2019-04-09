@@ -67,12 +67,12 @@ export default {
   methods: {
     getTiyou() {
       this.showLoading = true
-      GetFans(this.$qs.stringify({ UserId: this.id })).then(res => {
-        this.Fans = res.data.data
-        this.showLoading = false
-      }).catch(() => {})
       GetFollowee(this.$qs.stringify({ UserId: this.id })).then(res => {
         this.Followees = res.data.data
+        this.showLoading = false
+      }).catch(() => {})
+      GetFans(this.$qs.stringify({ UserId: this.id })).then(res => {
+        this.Fans = res.data.data
         this.showLoading = false
       }).catch(() => {})
     },

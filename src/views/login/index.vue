@@ -245,6 +245,7 @@ export default {
   }
   .login-border{
     width: 95%;
+    max-width: 450px;
     padding: 0px 15px 10px;
     position: absolute;
     top: 10px;

@@ -3,7 +3,6 @@ import store from './store'
 // import NProgress from 'nprogress' // Progress 进度条
 // import 'nprogress/nprogress.css'// Progress 进度条样式
 import { Notification } from 'element-ui'
-// import { getToken } from '@/utils/auth' // 验权
 
 const whiteList = ['/login',
   '/',
@@ -20,9 +19,6 @@ const whiteList = ['/login',
 ] // 不重定向白名单
 router.beforeEach((to, from, next) => {
   // NProgress.start()
-
-  // console.log(store.getters.user)
-  // console.log(store.getters.addRouters[0])
   if (!store.getters.addRouters[0] && to.path !== '/login') {
     var roles = ['']
     if (store.getters.user.roles) {
@@ -61,7 +57,6 @@ router.beforeEach((to, from, next) => {
   }
   // NProgress.done()
   // next() !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  // next()
 })
 
 router.afterEach((to, from, next) => {

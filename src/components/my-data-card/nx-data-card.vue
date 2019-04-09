@@ -16,7 +16,7 @@
 
 <script>
 export default {
-  name: 'nx-data-card',
+  name: 'data-card',
   data() {
     return {
       span: this.option.span || 6,

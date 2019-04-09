@@ -1,7 +1,7 @@
 <template>
   <el-menu :id="isUsercenter==true&&ScrollTop<120?'user_head':''" class="navbar" mode="horizontal">
-    <nx-hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></nx-hamburger>
-    <nx-breadcrumb class="breadcrumb-container"></nx-breadcrumb>
+    <my-hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></my-hamburger>
+    <my-breadcrumb class="breadcrumb-container"></my-breadcrumb>
     <span v-if="isBack" class="goback toShow" @click="goBack">
       <i class="el-icon-arrow-left"></i>
     </span>
@@ -12,10 +12,10 @@
       <el-button class="top-btn_search" round icon="el-icon-search" size="small" style=" margin-left:10px;border:0; position: relative;top: -3px;">搜索</el-button>
     </router-link>
     <div class="right-menu disNone">
-      <actor-select v-if="isTeacher" class="nx-help right-menu-item disNone" />
+      <actor-select v-if="isTeacher" class="my-help right-menu-item disNone" />
 
-      <nx-message v-if="user.Id" class="nx-help right-menu-item disNone" />
-      <nx-mobile class="nx-help right-menu-item disNone"></nx-mobile>
+      <my-message v-if="user.Id" class="my-help right-menu-item disNone" />
+      <my-mobile class="my-help right-menu-item disNone"></my-mobile>
       <el-dropdown class="avatar-container right-menu-item" trigger="click" size="small">
         <div class="avatar-wrapper">
         <!-- <img class="user-avatar" :src="user.avatar"> -->
@@ -33,10 +33,10 @@
             </el-dropdown-item>
           </router-link>
           <el-dropdown-item divided>
-            <nx-full-screen class="screenfull right-menu-item"></nx-full-screen>
+            <my-full-screen class="screenfull right-menu-item"></my-full-screen>
           </el-dropdown-item>
           <el-dropdown-item>
-            <nx-lang-select class="international right-menu-item"></nx-lang-select>
+            <my-lang-select class="international right-menu-item"></my-lang-select>
           </el-dropdown-item>
           <span @click="logout">
             <el-dropdown-item v-if="user.Name" divided>
@@ -52,23 +52,23 @@
 <script>
 import { mapGetters } from 'vuex'
 
-import nxBreadcrumb from '@/components/nx-breadcrumb'
-import nxHamburger from '@/components/nx-hamburger'
-import nxMessage from '@/components/nx-message/index'
-import nxFullScreen from '@/components/nx-full-screen/index'
-import nxLangSelect from '@/components/nx-lang-select/index'
-import nxMobile from '@/components/nx-mobile'
+import myBreadcrumb from '@/components/my-breadcrumb'
+import myHamburger from '@/components/my-hamburger'
+import myMessage from '@/components/my-message/index'
+import myFullScreen from '@/components/my-full-screen/index'
+import myLangSelect from '@/components/my-lang-select/index'
+import myMobile from '@/components/my-mobile'
 import actorSelect from '@/components/comps/actor-select'
 
 export default {
   name: 'navBar',
   components: {
-    nxBreadcrumb,
-    nxHamburger,
-    nxMessage,
-    nxLangSelect,
-    nxFullScreen,
-    nxMobile,
+    myBreadcrumb,
+    myHamburger,
+    myMessage,
+    myLangSelect,
+    myFullScreen,
+    myMobile,
     actorSelect
   },
   data() {
@@ -171,7 +171,7 @@ export default {
   .breadcrumb-container {
     float: left;
   }
-  .nx-help {
+  .my-help {
     display: inline-block;
     vertical-align: top;
   }

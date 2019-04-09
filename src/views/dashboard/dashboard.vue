@@ -2,41 +2,31 @@
   <div class="app-container">
     <div class="item">
       <h4>数据展示</h4>
-      <nx-data-display :option="option"></nx-data-display>
+      <my-data-display :option="option"></my-data-display>
     </div>
     <div class="item">
       <h4>栏目展示</h4>
-      <nx-data-tabs :option="easyDataOption"></nx-data-tabs>
+      <my-data-tabs :option="easyDataOption"></my-data-tabs>
     </div>
     <div class="item">
       <h4>笔记展示</h4>
-      <nx-data-card :option="easyDataOption0"></nx-data-card>
+      <my-data-card :option="easyDataOption0"></my-data-card>
     </div>
-    <!-- <div class="item">
-      <h4>带数字的展示</h4>
-      <nx-data-icons :option="easyDataOption1"></nx-data-icons>
-    </div> -->
-    <!-- <div class="item">
-      <h4>简易展示</h4>
-      <nx-data-icons :option="easyDataOption2"></nx-data-icons>
-    </div> -->
   </div>
 </template>
 
 <script>
 
-import nxDataDisplay from '@/components/nx-data-display/nx-data-display'
-import nxDataCard from '@/components/nx-data-card/nx-data-card'
-import nxDataTabs from '@/components/nx-data-tabs/nx-data-tabs'
-import nxDataIcons from '@/components/nx-data-icons/nx-data-icons'
+import myDataDisplay from '@/components/my-data-display/my-data-display'
+import myDataCard from '@/components/my-data-card/my-data-card'
+import myDataTabs from '@/components/my-data-tabs/my-data-tabs'
 
 export default {
   name: 'dashboard',
   components: {
-    nxDataDisplay,
-    nxDataCard,
-    nxDataTabs,
-    nxDataIcons
+    myDataDisplay,
+    myDataCard,
+    myDataTabs
   },
   data() {
     return {

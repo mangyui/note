@@ -34,6 +34,12 @@
 </template>
 
 <script>
+import { dataURLtoBlob, blobToFile } from '@/utils/index.js'
+import {
+  CutQuestion,
+  ToSearchs
+} from '@/api/toPost'
+
 import VueCropper from 'vue-cropperjs'
 import { dataURLtoFile } from '@/utils/index.js'
 import nxSvgIcon from '@/components/nx-svg-icon/index'
@@ -44,11 +50,7 @@ export default {
     nxSvgIcon
   },
   props: {
-    cutIcon: String,
-    showGIF: {
-      type: Boolean,
-      default: false
-    }
+    cutIcon: String
   },
   data() {
     return {
@@ -57,7 +59,9 @@ export default {
       result: '',
       cropImg: '',
       imgSrc: '',
-      dialogVisible: false
+      locs: [],
+      dialogVisible: false,
+      showGIF: false
     }
   },
   methods: {
@@ -111,10 +115,50 @@ export default {
     toCrop() {
       this.cropImg = this.$refs.cropper.getCroppedCanvas().toDataURL('image/jpeg', 0.7)
       this.dialogVisible = false
-      this.$emit('Cresult', this.cropImg)
+      this.$emit('CImage', this.cropImg)
+      this.cutQuestion()
     },
     toRotate() {
-      this.$refs.cropper.rotate(45)
+      this.$refs.cropper.rotate(5)
+    },
+    cutQuestion() {
+      this.showGIF = true
+      var blob = dataURLtoBlob(this.cropImg)
+      var file = blobToFile(blob, 'cutpicture')
+      var data = new FormData()
+      data.append('file', file, 'cutpicture.png')
+      CutQuestion(data).then(res => {
+        if (res.data.code === 0 && res.data.data[0]) {
+          this.locs = res.data.data
+          this.getSearchs()
+          this.$emit('Cresult', res.data.data)
+        } else {
+          this.$notify({
+            title: '提示',
+            message: '未识别到相应题目！',
+            type: 'info'
+          })
+        }
+        this.showGIF = false
+      }).catch((error) => {
+        console.log(error)
+        this.showGIF = false
+      })
+    },
+    getSearchs() {
+      var words = []
+      this.locs.forEach(item => {
+        words.push(item.words)
+      })
+      var data = {
+        Texts: words
+      }
+      ToSearchs(this.$qs.stringify(data)).then(res => {
+        this.$emit('Cquestion', res.data.data)
+        // console.log(res.data)
+      }).catch(() => {
+        console.log('获取数据失败！')
+      })
     }
   },
   mounted() {
