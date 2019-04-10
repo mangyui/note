@@ -659,22 +659,19 @@ code {
 .crop-demo-btn {
   display: inline-block;
   position: relative;
-  width: 100px;
-  height: 36px;
-  line-height: 36px;
-  padding: 0 20px;
-  margin-left: 30px;
+  line-height: 1;
+  padding: 10px 20px;
   background-color: #409eff;
   color: #fff;
   font-size: 14px;
   border-radius: 4px;
   box-sizing: border-box;
-  margin: 10px auto 0;
   cursor: pointer;
+  border: 1px solid #409eff;
 }
 .crop-input {
   position: absolute;
-  width: 100px;
+  width: 100%;
   height: 36px;
   left: 0;
   top: 0;
@@ -684,6 +681,7 @@ code {
 }
 .upbtn-group{
   text-align: center;
+  margin-top: 10px;
 }
 // 系统管理
 .de-more{
@@ -786,8 +784,8 @@ code {
         height: 200px;
         background: #fff;
         position: absolute;
-        left: -50px;
-        top: -80px;
+        left: -100px;
+        top: -160px;
         transform: rotate(30deg);
         animation-name: down;
         animation-duration: 4000ms;
@@ -795,16 +793,23 @@ code {
         animation-iteration-count:infinite;
         filter: blur(12px);
       }
+      .icon-wp{
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+
+      }
     }
   }
   @keyframes down {
       0% {
-        left: -50px;
-        top: -80px;
+        left: -100px;
+        top: -1600px;
       }
       40%{
-        left: -50px;
-        top: -80px;
+        left: -100px;
+        top: -160px;
       }
       80%{
         left: 200px;

@@ -57,7 +57,6 @@
 
 
 <script>
-import nxSvgIcon from '@/components/nx-svg-icon/index'
 import misList from '@/views/common/misList'
 import {
   QuesList,
@@ -68,7 +67,6 @@ import {
 export default {
   name: 'quesList',
   components: {
-    nxSvgIcon,
     misList
   },
   data() {

@@ -58,7 +58,6 @@
 // wangeditor 富文本
 var ShouTitle, ShouCorrect
 
-import nxSvgIcon from '@/components/nx-svg-icon/index'
 import quexBox from '@/components/my-box/quex-box'
 import voiceBtn from '@/components/voice/index'
 import pictureOcr from '@/components/picture-ocr/index'
@@ -73,7 +72,6 @@ export default {
   name: 'addMistake',
   components: {
     quexBox,
-    nxSvgIcon,
     voiceBtn,
     pictureOcr,
     addType

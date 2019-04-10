@@ -2,7 +2,6 @@ import Vue from 'vue'
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-// import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 import '../static/css/iconfont/1.0.0/index.css' /* icofont*/
 
 // css
@@ -29,14 +28,6 @@ Vue.use(preview, option)
 import '@/icons' // icon
 
 import '@/permission' // permission control
-
-// import * as filters from './filters' // global filters ************
-// // register global utility filters.
-// Object.keys(filters).forEach(key => {
-//   Vue.filter(key, filters[key])
-// })
-
-// Vue.use(ElementUI, { locale })
 
 Vue.use(ElementUI, {
   size: 'medium', // set element-ui default size

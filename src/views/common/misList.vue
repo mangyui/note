@@ -10,8 +10,8 @@
         </router-link>
         <el-button class="downMore" @click="clickfun($event)" type="primary" icon="el-icon-caret-bottom" size="mini" ></el-button>
         <div class="ques_footer">
-          <nx-svg-icon class-name='international-icon' icon-class="zan" /><span class="ques_footer_num">{{item.LikeNumber}}</span>
-          <nx-svg-icon class-name='international-icon' icon-class="collect" /><span class="ques_footer_num">{{item.CollectNumber}}</span>
+          <svg-icon class-name='international-icon' icon-class="zan" /><span class="ques_footer_num">{{item.LikeNumber}}</span>
+          <svg-icon class-name='international-icon' icon-class="collect" /><span class="ques_footer_num">{{item.CollectNumber}}</span>
           <el-tag v-if="item.QuestionContent" type="info">个人</el-tag>
           <el-tag v-if="!item.QuestionContent">官方</el-tag>
         </div>
@@ -24,11 +24,9 @@
 import {
   DeleteMistake
 } from '@/api/toPost'
-import nxSvgIcon from '@/components/nx-svg-icon/index'
 export default {
   name: 'misList',
   components: {
-    nxSvgIcon
   },
   props: {
     questions: Array

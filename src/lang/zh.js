@@ -24,7 +24,7 @@ export default {
     ToQues: '错题本',
     Test: '试题测试',
     getTest: '生成试题',
-    carveup: '试卷切题',
+    carveup: '添加测试',
     test_todo: '测试',
     Class: '我的班课',
     class_detail: '班级测试',

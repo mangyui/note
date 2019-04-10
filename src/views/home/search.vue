@@ -82,7 +82,6 @@
 
 
 <script>
-import nxSvgIcon from '@/components/nx-svg-icon/index'
 import {
   SearchQues,
   SearchUsers
@@ -95,7 +94,6 @@ import { voice } from '@/utils/private.js'
 export default {
   name: 'search',
   components: {
-    nxSvgIcon,
     quexBox,
     voiceBtn
   },

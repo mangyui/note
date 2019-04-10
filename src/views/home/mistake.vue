@@ -57,10 +57,10 @@
         </div>
         <div class="toNum">
           <div @click="dianZan">
-            <nx-svg-icon class-name='qu-icon' icon-class="zan" :style="isLike==true?'color: #409EFF;border-color: #409EFF':''" /><span>{{question.LikeNumber}}</span>
+            <svg-icon class-name='qu-icon' icon-class="zan" :style="isLike==true?'color: #409EFF;border-color: #409EFF':''" /><span>{{question.LikeNumber}}</span>
           </div>
           <div @click="toCollect">
-            <nx-svg-icon class-name='qu-icon' icon-class="collect" :style="isCollect==true?'color: #409EFF;border-color: #409EFF':''"/><span>{{question.CollectNumber}}</span>
+            <svg-icon class-name='qu-icon' icon-class="collect" :style="isCollect==true?'color: #409EFF;border-color: #409EFF':''"/><span>{{question.CollectNumber}}</span>
           </div>
         </div>
         <div class="sys-section" v-if="haveGuanfang">
@@ -81,8 +81,6 @@
 // wangeditor 富文本
 var editor
 
-import nxSvgIcon from '@/components/nx-svg-icon/index'
-
 import {
   MistakeDetails
 } from '@/api/toget'
@@ -96,7 +94,6 @@ import {
 export default {
   name: 'mistake',
   components: {
-    nxSvgIcon
   },
   data() {
     return {

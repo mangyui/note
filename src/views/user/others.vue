@@ -58,7 +58,6 @@
 </template>
 
 <script>
-import nxSvgIcon from '@/components/nx-svg-icon/index'
 import misList from '@/views/common/misList'
 import baseInfo from './baseInfo'
 import {
@@ -74,7 +73,6 @@ import {
 export default {
   name: 'others',
   components: {
-    nxSvgIcon,
     baseInfo,
     misList
   },

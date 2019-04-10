@@ -1,7 +1,7 @@
 <template>
-  <el-dropdown class='international' @command="handleSetRole">
+  <el-dropdown class='international' @command="handleSetRole" trigger="click">
     <div >
-      <nx-svg-icon class-name='naver-icon' icon-class="actor" />
+      <svg-icon class-name='naver-icon' icon-class="actor" />
       <span class="naver-text disNone">身份</span>
     </div>
     <el-dropdown-menu class="actor-down" slot="dropdown">
@@ -13,10 +13,8 @@
 </template>
 
 <script>
-import nxSvgIcon from '@/components/nx-svg-icon/index'
 export default {
   name: 'actor-select',
-  components: { nxSvgIcon },
   data() {
     return {
       isAdmin: this.$store.getters.user.Name === 'ming'

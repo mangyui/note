@@ -29,7 +29,7 @@
           <div class="ques-list_item" v-for="(item,index) in collects" :key="index">
             <div class="ques_box">
               <span v-show="showDelete" @click="toCollect(index)" >
-                <nx-svg-icon
+                <svg-icon
                   class-name='international-icon icon-collect'
                   style="color: #F56C6C"
                   icon-class="collect" />
@@ -41,8 +41,8 @@
               </router-link>
               <el-button class="downMore" @click="clickfun($event)" type="primary" icon="el-icon-caret-bottom" size="mini" ></el-button>
               <div class="ques_footer">
-                <nx-svg-icon class-name='international-icon' icon-class="zan" /><span class="ques_footer_num">{{item.Question.LikeNumber}}</span>
-                <nx-svg-icon class-name='international-icon' icon-class="collect" /><span class="ques_footer_num">{{item.Question.CollectNumber}}</span>
+                <svg-icon class-name='international-icon' icon-class="zan" /><span class="ques_footer_num">{{item.Question.LikeNumber}}</span>
+                <svg-icon class-name='international-icon' icon-class="collect" /><span class="ques_footer_num">{{item.Question.CollectNumber}}</span>
                 <el-tag v-if="item.QuestionId==0" type="info">个人</el-tag>
                 <el-tag v-if="item.QuestionId!=0 && item.MistakeId==0">官方</el-tag>
                 <!-- <el-tag v-if="item.MistakeId!=0" type="warning">题友</el-tag> -->
@@ -68,7 +68,6 @@
 
 
 <script>
-import nxSvgIcon from '@/components/nx-svg-icon/index'
 import {
   CollectList,
   P_toCollect
@@ -76,7 +75,7 @@ import {
 
 export default {
   name: 'collect',
-  components: { nxSvgIcon },
+  components: { },
   data() {
     return {
       homeTop: 0,

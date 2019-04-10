@@ -79,19 +79,19 @@ export default {
     transition:all .28s;
   }
   .tags-view-container{
-    top: 50px;
+    top: 43px;
   }
   .app-main{
-    height: calc(100% - 100px);
-    margin-top: 100px;
+    height: calc(100% - 86px);
+    margin-top: 86px;
     overflow: auto;
     transition: .28s;
     position: relative;
   }
   @media (max-width: 768px){
   .app-main{
-    margin-top: 50px;
-    height: calc(100% - 50px);
+    margin-top: 43px;
+    height: calc(100% - 43px);
   }
 }
 </style>

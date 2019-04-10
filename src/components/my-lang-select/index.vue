@@ -1,7 +1,7 @@
 <template>
-  <el-dropdown class='international' @command="handleSetLanguage">
+  <el-dropdown class='international' @command="handleSetLanguage" trigger="click">
     <div>
-      <nx-svg-icon class-name='naver-icon' icon-class="language" />
+      <svg-icon class-name='naver-icon' icon-class="language" />
       <span class="naver-text disNone" style="">语言</span>
     </div>
     <el-dropdown-menu slot="dropdown">
@@ -12,10 +12,8 @@
 </template>
 
 <script>
-import nxSvgIcon from '@/components/nx-svg-icon/index'
 export default {
   name: 'lang-select',
-  components: { nxSvgIcon },
   computed: {
     language() {
       return this.$store.getters.language

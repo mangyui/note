@@ -31,12 +31,10 @@
 
 
 <script>
-import nxSvgIcon from '@/components/nx-svg-icon/index'
 
 export default {
   name: 'merchant',
   components: {
-    nxSvgIcon,
     activeName: '1号商家'
   },
   data() {

@@ -9,9 +9,8 @@
         </router-link>
         <el-button class="downMore" @click="clickfun($event)" type="primary" icon="el-icon-caret-bottom" size="mini" ></el-button>
         <div class="ques_footer">
-          <nx-svg-icon class-name='international-icon' icon-class="zan" /><span class="ques_footer_num">{{item.LikeNumber}}</span>
-          <nx-svg-icon class-name='international-icon' icon-class="collect" /><span class="ques_footer_num">{{item.CollectNumber}}</span>
-          <!-- <nx-svg-icon class-name='international-icon' icon-class="comment" /><span  class="ques_footer_num">{{66}}</span> -->
+          <svg-icon class-name='international-icon' icon-class="zan" /><span class="ques_footer_num">{{item.LikeNumber}}</span>
+          <svg-icon class-name='international-icon' icon-class="collect" /><span class="ques_footer_num">{{item.CollectNumber}}</span>
           <el-tag>{{item.Type||'题目'}}</el-tag>
         </div>
       </div>
@@ -20,10 +19,8 @@
 </template>
 
 <script>
-import nxSvgIcon from '@/components/nx-svg-icon/index'
 export default {
   name: 'quex-box',
-  components: { nxSvgIcon },
   data() {
     return {
 

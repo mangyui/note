@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-button class="btn-text can-hover" type="text" @click="dialogVisible = true">
-      <nx-svg-icon class-name='naver-icon' icon-class="bell" />
+      <svg-icon class-name='naver-icon' icon-class="bell" />
       <el-badge is-dot class="item"  style="margin-top: -3px;">
         <span class="naver-text disNone">通知</span>
       </el-badge>
@@ -79,12 +79,8 @@
 </template>
 
 <script>
-import nxSvgIcon from '@/components/nx-svg-icon/index'
 export default {
   name: 'message',
-  components: {
-    nxSvgIcon
-  },
   data() {
     return {
       dialogVisible: false,

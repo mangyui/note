@@ -1,19 +1,16 @@
 <template>
   <div>
     <el-button class="btn-text can-hover" type="text" @click="handleClick">
-      <nx-svg-icon class-name='naver-icon' icon-class="mobile" />
+      <svg-icon class-name='naver-icon' icon-class="mobile" />
       <span class="naver-text" style="">手机端</span>
     </el-button>
   </div>
 </template>
 
 <script>
-// import { getVersion } from '@/api/version'
-import nxSvgIcon from '@/components/nx-svg-icon/index'
 
 export default {
   name: 'mobile',
-  components: { nxSvgIcon },
   data() {
     return {
       url: 'https://coding.net/api/share/download/e332e8a5-78c6-43a7-8396-73986989aff7'

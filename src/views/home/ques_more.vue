@@ -46,7 +46,6 @@
 </template>
 
 <script>
-import nxSvgIcon from '@/components/nx-svg-icon/index'
 import quexBox from '@/components/my-box/quex-box'
 import {
   QuesDetails
@@ -59,7 +58,6 @@ import {
 export default {
   name: 'ques_more',
   components: {
-    nxSvgIcon,
     quexBox
   },
   data() {

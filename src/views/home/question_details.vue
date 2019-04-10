@@ -24,14 +24,14 @@
         </div>
         <div class="toNum">
             <div @click="dianZan">
-              <nx-svg-icon class-name='qu-icon' icon-class="zan" :style="isLike==true?'color: #409EFF;border-color: #409EFF':''" /><span>{{question.LikeNumber}}</span>
+              <svg-icon class-name='qu-icon' icon-class="zan" :style="isLike==true?'color: #409EFF;border-color: #409EFF':''" /><span>{{question.LikeNumber}}</span>
             </div>
             <div @click="toCollect">
-              <nx-svg-icon class-name='qu-icon' icon-class="collect" :style="isCollect==true?'color: #409EFF;border-color: #409EFF':''"/><span>{{question.CollectNumber}}</span>
+              <svg-icon class-name='qu-icon' icon-class="collect" :style="isCollect==true?'color: #409EFF;border-color: #409EFF':''"/><span>{{question.CollectNumber}}</span>
             </div>
             <div @click="haveBug">
               <!-- <el-tooltip class="item" effect="dark" content="解答有错误？" placement="top-end"> -->
-               <nx-svg-icon class-name='qu-icon' icon-class="bug" />
+               <svg-icon class-name='qu-icon' icon-class="bug" />
               <!-- </el-tooltip> -->
                <span></span>
             </div>
@@ -57,8 +57,8 @@
             </router-link>
             <div class="sys_footer">
               <span>
-                <nx-svg-icon class-name='sys_footer_icon' icon-class="zan" /><span class="ques_footer_num">{{item.LikeNumber}}</span>
-                <nx-svg-icon class-name='sys_footer_icon' icon-class="collect" /><span class="ques_footer_num">{{item.CollectNumber}}</span>
+                <svg-icon class-name='sys_footer_icon' icon-class="zan" /><span class="ques_footer_num">{{item.LikeNumber}}</span>
+                <svg-icon class-name='sys_footer_icon' icon-class="collect" /><span class="ques_footer_num">{{item.CollectNumber}}</span>
               </span>
             </div>
           </div>
@@ -123,8 +123,6 @@
 // 编辑器
 var HaveCorrect
 
-import nxSvgIcon from '@/components/nx-svg-icon/index'
-
 import {
   QuesDetails
 } from '@/api/toget'
@@ -141,7 +139,7 @@ import {
 
 export default {
   name: 'question_details',
-  components: { nxSvgIcon },
+  components: { },
   data() {
     return {
       showLoading: true,

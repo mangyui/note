@@ -2,14 +2,14 @@
   <el-form class="login-form" status-icon :rules="loginRules" ref="loginForm" :model="loginForm" label-width="0">
     <el-form-item prop="username">
       <div class="svgIcon">
-        <nx-svg-icon class-name='international-icon' icon-class="me" />
+        <svg-icon class-name='international-icon' icon-class="me" />
       </div>
       <el-input size="small" @keyup.enter.native="handleLogin" v-model="loginForm.username" auto-complete="off" placeholder="用户号/手机号">
       </el-input>
     </el-form-item>
     <el-form-item prop="password">
       <div class="svgIcon">
-        <nx-svg-icon class-name='international-icon' icon-class="lock" />
+        <svg-icon class-name='international-icon' icon-class="lock" />
       </div>
       <el-input size="small" @keyup.enter.native="handleLogin" :type="passwordType" v-model="loginForm.password" auto-complete="off" placeholder="密码">
         <i class="el-icon-view el-input__icon" slot="suffix" @click="showPassword"></i>
@@ -27,14 +27,13 @@
 </template>
 
 <script>
-import nxSvgIcon from '@/components/nx-svg-icon/index'
 import {
   getVCode
 } from '@/api/toget'
 
 export default {
   name: 'userlogin',
-  components: { nxSvgIcon },
+  components: { },
   data() {
     const validateCode = (rule, value, callback) => {
       if (this.Vcode.code && value.toLowerCase() !== this.Vcode.code.toLowerCase()) {

@@ -120,22 +120,22 @@ export default {
 .tags-view-container {
   .tags-view-wrapper {
     background: #fff;
-    height: 50px;
-    line-height: 50px;
+    height: 43px;
+    line-height: 43px;
     border-bottom: 1px solid #d8dce5;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
     .tags-view-item {
     display: inline-block;
     position: relative;
-    height: 31px;
-    line-height: 29px;
-    padding: 0 10px;
+    height: 28px;
+    line-height: 26px;
+    padding: 0 8px;
     margin-right: 10px;
     border: 1px solid rgba(82,186,181,.2);
     // border-radius: 3px;
     background-color: rgba(82,186,181,.1);
     text-decoration: none;
-    font-size: 14px;
+    font-size: 12px;
     color: #52bab5;
       &:first-of-type {
         margin-left: 15px;

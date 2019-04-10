@@ -10,12 +10,9 @@ const getters = {
   permission_routers: state => state.permission.routers,
   addRouters: state => state.permission.addRouters,
   website: state => state.common.website,
-  // isLock: state => state.user.isLock,
-  // lockPasswd: state => state.user.lockPasswd,
   isFullScren: state => state.common.isFullScren,
   visitedViews: state => state.tagsView.visitedViews,
   cachedViews: state => state.tagsView.cachedViews
-  // browserHeaderTitle: state => state.user.browserHeaderTitle
 
 }
 export default getters

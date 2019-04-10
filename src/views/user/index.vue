@@ -4,21 +4,21 @@
       <div class="toOther">
         <div class="tiyou">
           <router-link to="/tonote/noteList">
-            <nx-svg-icon class-name='tiyou_icon' icon-class="note" />
+            <svg-icon class-name='tiyou_icon' icon-class="note" />
             <p>笔记</p>
           </router-link>
         </div>
         <div></div>
         <div class="tiyou">
           <router-link to="/user/fans/">
-            <nx-svg-icon class-name='tiyou_icon' icon-class="peoples" />
+            <svg-icon class-name='tiyou_icon' icon-class="peoples" />
             <p>题友</p>
           </router-link>
         </div>
       </div>
     </div>
     <div class="user_center">
-      <!-- <div class="div-logout toShow"><nx-svg-icon class-name='more_icon' icon-class="logout" /></div> -->
+      <!-- <div class="div-logout toShow"><svg-icon class-name='more_icon' icon-class="logout" /></div> -->
       <div class="avatar">
         <img preview :src="cropImg" />
         <label v-show="isUpdate" for="Choose_Avatar">更换头像</label>
@@ -157,7 +157,6 @@
 
 <script>
 import myCountUp from '@/components/my-count-up/index.vue'
-import nxSvgIcon from '@/components/nx-svg-icon/index'
 // import { areajson } from '@/assets/js/city.js'
 import { classList } from '@/assets/js/class.js'
 import VueCropper from 'vue-cropperjs'
@@ -177,7 +176,6 @@ export default {
   components: {
     VueCropper,
     myCountUp,
-    nxSvgIcon,
     baseInfo
   },
   data() {

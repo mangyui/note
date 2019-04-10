@@ -74,7 +74,7 @@ export default {
   data() {
     return {
       user: this.$store.getters.user,
-      isTeacher: this.$store.getters.user.Occupation === 1 || this.$store.getters.user.Name === 'ming',
+      isTeacher: this.$store.getters.user.Occupation === '2' || this.$store.getters.user.Name === 'ming',
       isBack: false,
       isUsercenter: false,
       ScrollTop: 0,
@@ -159,12 +159,12 @@ export default {
   }
 }
 .navbar {
-  height: 50px;
-  line-height: 50px;
+  height: 43px;
+  line-height: 43px;
   border-radius: 0px !important;
   .hamburger-container {
-    line-height: 58px;
-    height: 50px;
+    line-height: 52px;
+    height: 43px;
     float: left;
     padding: 0 10px;
   }

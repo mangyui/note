@@ -34,8 +34,8 @@
               </router-link>
               <el-button class="downMore" @click="clickfun($event)" type="primary" icon="el-icon-caret-bottom" size="mini" ></el-button>
               <div class="ques_footer">
-                <nx-svg-icon class-name='international-icon' icon-class="zan" /><span class="ques_footer_num">{{item.LikeNumber}}</span>
-                <nx-svg-icon class-name='international-icon' icon-class="collect" /><span class="ques_footer_num">{{item.CollectNumber}}</span>
+                <svg-icon class-name='international-icon' icon-class="zan" /><span class="ques_footer_num">{{item.LikeNumber}}</span>
+                <svg-icon class-name='international-icon' icon-class="collect" /><span class="ques_footer_num">{{item.CollectNumber}}</span>
                  <el-button class="addQuestion" type="danger" size="mini" @click="toAdd(item)">添加</el-button>
                 <!-- <el-checkbox class="addQuestion" size="small" v-model="isChecked" label="添加" border></el-checkbox> -->
               </div>
@@ -57,7 +57,6 @@
 
 
 <script>
-import nxSvgIcon from '@/components/nx-svg-icon/index'
 import {
   SearchQues
 } from '@/api/toPost'
@@ -68,7 +67,6 @@ import { voice } from '@/utils/private.js'
 export default {
   name: 'searchQues',
   components: {
-    nxSvgIcon,
     voiceBtn
   },
   data() {
@@ -94,11 +92,9 @@ export default {
   },
   activated() {
     document.querySelector('.searchBox').scrollTop = this.homeTop || 0
-    console.log(this.homeTop)
   },
   beforeRouteLeave(to, from, next) {
     this.homeTop = document.querySelector('.searchBox').scrollTop || 0
-    console.log(this.homeTop)
     next()
   },
   methods: {
@@ -131,22 +127,22 @@ export default {
     },
     Gaoliang() {
       this.oldQuetions.pop()
-      var value = this.Sdata.Keys
-      this.oldQuetions.forEach(item => {
-        for (var i = 0; i < value.length; i++) {
-          var pattern = new RegExp('[\u4E00-\u9FA5]+')
-          if (pattern.test(value[i])) {
-            // 匹配关键字正则
-            var replaceReg = new RegExp(value[i], 'g')
-            // 高亮替换v-html值
-            var replaceString = '<span style="background:#ff0;font-weight: bold;">' + value[i] + '</span>'
-            // 开始替换
-            item.Content = item.Content.replace(replaceReg, replaceString)
-            // console.log(item.Content)
-            // item.Content = item.Content.split(value[i]).join('<span style="background:#ff0;font-weight: bold;">' + value + '</span>')
-          }
-        }
-      })
+      // var value = this.Sdata.Keys
+      // this.oldQuetions.forEach(item => {
+      //   for (var i = 0; i < value.length; i++) {
+      //     var pattern = new RegExp('[\u4E00-\u9FA5]+')
+      //     if (pattern.test(value[i])) {
+      //       // 匹配关键字正则
+      //       var replaceReg = new RegExp(value[i], 'g')
+      //       // 高亮替换v-html值
+      //       var replaceString = '<span style="background:#ff0;font-weight: bold;">' + value[i] + '</span>'
+      //       // 开始替换
+      //       item.Content = item.Content.replace(replaceReg, replaceString)
+      //       // console.log(item.Content)
+      //       // item.Content = item.Content.split(value[i]).join('<span style="background:#ff0;font-weight: bold;">' + value + '</span>')
+      //     }
+      //   }
+      // })
     },
     onScroll() {
       if (this.NoneMore || this.showMore) {

@@ -39,7 +39,7 @@
         <testOnline ref="testOnline" :Tests="Tests"></testOnline>
       </div>
     </div>
-    <el-dialog title="生成试题" :visible.sync="dialogFormVisible" center>
+    <el-dialog title="生成试题" :visible.sync="dialogFormVisible" center :append-to-body="true">
       <el-form :model="getForm" ref="form">
         <el-form-item label="试题分类">
           <el-select size="medium" v-model="getForm.CategoryId" placeholder="选择分类" @change="">

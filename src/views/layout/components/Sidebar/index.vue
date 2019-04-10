@@ -22,7 +22,7 @@
     <div class="systom-group toShow">
       <div @click="logout">
         <div style="height:27px">
-          <nx-svg-icon icon-class="logout"/>
+          <svg-icon icon-class="logout"/>
         </div>
         <p>{{user.Id?'登出':'登录'}}</p>
       </div>
@@ -35,7 +35,7 @@
         <p>身份</p>
       </div>
       <div v-if="user.Id" @click="toMess">
-        <nx-svg-icon style="height:27px" icon-class="bell" />
+        <svg-icon style="height:27px" icon-class="bell" />
         <p>消息</p>
       </div>
       <div v-if="!user.Id">
@@ -54,7 +54,6 @@ import logo from './logo'
 // import store from '@/store'
 import myFullScreen from '@/components/my-full-screen/index'
 import myLangSelect from '@/components/my-lang-select/index'
-import nxSvgIcon from '@/components/nx-svg-icon/index'
 import actorSelect from '@/components/comps/actor-select'
 
 export default {
@@ -63,14 +62,13 @@ export default {
     logo,
     myLangSelect,
     myFullScreen,
-    nxSvgIcon,
     actorSelect
   },
   data() {
     return {
       user: this.$store.getters.user,
       avatar: this.$store.getters.user.Avatar || './static/img/avatar.jpg',
-      isTeacher: this.$store.getters.user.Occupation === 1 || this.$store.getters.user.Name === 'ming'
+      isTeacher: this.$store.getters.user.Occupation === '2' || this.$store.getters.user.Name === 'ming'
     }
   },
   computed: {

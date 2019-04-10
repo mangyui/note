@@ -1,16 +1,14 @@
 <template>
   <div @click='click'>
-    <nx-svg-icon class-name='naver-icon' icon-class="fulls" />
+    <svg-icon class-name='naver-icon' icon-class="fulls" />
     <span class="naver-text disNone">全屏</span>
   </div>
 </template>
 
 <script>
 import screenfull from 'screenfull'
-import nxSvgIcon from '@/components/nx-svg-icon/index'
 export default {
   name: 'screenfull',
-  components: { nxSvgIcon },
   props: {
     width: {
       type: Number,

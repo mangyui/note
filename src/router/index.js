@@ -25,8 +25,8 @@ export const constantRouterMap = [
     redirect: '/home/index'
   },
   { path: '/login', component: () => import('@/views/login'), meta: { title: 'Login' }, name: 'login', hidden: true },
-  { path: '/404', component: () => import('@/views/errorPage/404'), hidden: true },
-  { path: '/401', component: () => import('@/views/errorPage/401'), hidden: true },
+  { path: '/404', component: () => import('@/views/errorPage/404'), meta: { title: 'page404' }, hidden: true },
+  // { path: '/401', component: () => import('@/views/errorPage/401'), hidden: true },
   // 主页
   {
     path: '/home',

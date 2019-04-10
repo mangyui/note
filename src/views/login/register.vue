@@ -2,21 +2,21 @@
   <el-form class="login-form" status-icon :rules="loginRules" ref="loginForm" :model="loginForm" label-width="0">
     <el-form-item prop="phone">
       <div class="svgIcon">
-        <nx-svg-icon class-name='international-icon' icon-class="mobile" />
+        <svg-icon class-name='international-icon' icon-class="mobile" />
       </div>
       <el-input size="small" @keyup.enter.native="handleRegister" v-model="loginForm.phone" auto-complete="off" placeholder="手机号码">
       </el-input>
     </el-form-item>
     <el-form-item prop="username">
       <div class="svgIcon">
-        <nx-svg-icon class-name='international-icon' icon-class="me" />
+        <svg-icon class-name='international-icon' icon-class="me" />
       </div>
       <el-input size="small" @focus="nameFocus"  @keyup.enter.native="handleRegister" v-model="loginForm.username" auto-complete="off" placeholder="填用户号">
       </el-input>
     </el-form-item>
     <el-form-item prop="password">
       <div class="svgIcon">
-        <nx-svg-icon class-name='international-icon' icon-class="lock" />
+        <svg-icon class-name='international-icon' icon-class="lock" />
       </div>
       <el-input size="small" @keyup.enter.native="handleRegister" :type="passwordType" v-model="loginForm.password" auto-complete="off" placeholder="请输入密码">
         <i class="el-icon-view el-input__icon" slot="suffix" @click="showPassword"></i>
@@ -24,7 +24,7 @@
     </el-form-item>
     <el-form-item prop="class">
       <div class="svgIcon">
-        <nx-svg-icon class-name='international-icon' icon-class="pointMap" />
+        <svg-icon class-name='international-icon' icon-class="pointMap" />
       </div>
       <!-- <el-cascader style="width: 100%;" v-model=""
         placeholder="请正确选择您的年级"
@@ -47,11 +47,10 @@
 </template>
 
 <script>
-import nxSvgIcon from '@/components/nx-svg-icon/index'
 import { classList } from '@/assets/js/class.js'
 export default {
   name: 'register',
-  components: { nxSvgIcon },
+  components: { },
   data() {
     const validatePhone = (rule, value, callback) => {
       if (!value) {

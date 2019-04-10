@@ -79,7 +79,6 @@
 // 编辑器
 var ShouTitle, ShouCorrect, HaveCorrect
 
-import nxSvgIcon from '@/components/nx-svg-icon/index'
 import quexBox from '@/components/my-box/quex-box'
 import { slider, slideritem } from 'vue-concise-slider'
 import pictureOcr from '@/components/picture-ocr/index'
@@ -96,7 +95,6 @@ export default {
   name: 'mocr',
   components: {
     quexBox,
-    nxSvgIcon,
     slider,
     slideritem,
     pictureOcr,

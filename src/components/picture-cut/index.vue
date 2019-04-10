@@ -4,7 +4,7 @@
       <label ref="select_frame"  class="crop-topimg" :style="{backgroundImage:'url(' + cropImg + ')', backgroundSize:'contain'}">
         <img v-show="cropImg" preview :src="cropImg" class="up_img" >
         <div v-if="!cropImg" class="up_inside">
-          <nx-svg-icon class-name='icon-camera' :icon-class="cutIcon" />
+          <svg-icon class-name='icon-camera' :icon-class="cutIcon" />
           <p>请选择图像上传方式{{documentWidth<768?"":"，或将图像拖到此处"}}</p>
         </div>
         <!-- <div class="tuoUp"></div> -->
@@ -42,12 +42,10 @@ import {
 
 import VueCropper from 'vue-cropperjs'
 import { dataURLtoFile } from '@/utils/index.js'
-import nxSvgIcon from '@/components/nx-svg-icon/index'
 export default {
   name: 'picture_ocr',
   components: {
-    VueCropper,
-    nxSvgIcon
+    VueCropper
   },
   props: {
     cutIcon: String

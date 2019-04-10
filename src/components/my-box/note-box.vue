@@ -19,10 +19,8 @@
 </template>
 
 <script>
-import nxSvgIcon from '@/components/nx-svg-icon/index'
 export default {
   name: 'quex-box',
-  components: { nxSvgIcon },
   data() {
     return {
 

@@ -5,7 +5,9 @@
         <pictureCut cutIcon="cutup" @Cresult="Getresult" @CImage="GetImage" @Cquestion="GetQuestion"></pictureCut>
         <br/>
         <div class="list-gbtn">
-          <div></div>
+          <div>
+            <el-button class="yellow-btn" icon="el-icon-rank" @click="isSuo=!isSuo" size="small">{{isSuo?'展开':'收缩'}}题目</el-button>
+          </div>
           <div>
             <el-button icon="el-icon-plus" size="small" @click="Add">手动添加</el-button>
             <el-button type="primary" icon="el-icon-search" @click="dialogSearch=true" size="small">搜索题库</el-button>
@@ -17,36 +19,36 @@
               <i class="el-icon-loading"></i>
               加载中...
             </div>
-            <div v-show="!showLoading&&!Locations[0]" class="loading-box">
+            <div v-show="!showLoading&&!questionList[0]" class="loading-box">
               - 空空如也 -
             </div>
-            <el-card shadow="hover" class="cut_item" v-for="(item,index) in Locations" :key="index">
+            <el-card shadow="hover" class="cut_item" v-for="(item,index) in questionList" :key="index">
               <b>{{index+1}}.</b>
               <br/>
               <!--触发改变-->
               <span v-show="item.left"></span>
+              <el-button v-show="item.question.Content" class="cut_item-detele cut_item-edit" type="text" icon="el-icon-edit" size="large" @click="Edit(index)"></el-button>
               <el-button class="cut_item-detele" type="text" icon="el-icon-close" size="large" @click="Detele(index)"></el-button>
-              <img v-show="item.Image" preview='1' :src="item.Image" alt="加载中" :title="'第'+ (index+1) +'题'">
-              <el-main v-if="!item.words.Id" v-loading="true">
+              <img v-show="item.Image&&!isSuo" preview='1' :src="item.Image" alt="加载中" :title="'第'+ (index+1) +'题'">
+              <el-main v-if="!item.question.Content" v-loading="true">
                 <div class="cut_item_content" v-html="item.words"></div>
               </el-main>
-              <div v-show="item.words.Id" class="cut_item_content" v-html="item.words.Content"></div>
-              <div style="text-align: right;">
-                <!-- <el-button type="primary" icon="el-icon-plus" size="small" @click="">加入测试集</el-button> -->
-                <el-button v-show="item.words.Id"  class="yellow-btn" icon="el-icon-edit" size="small" @click="Edit(index)">修改</el-button>
-              </div>
+              <div v-show="item.question.Content" class="cut_item_content" :style="isSuo?'max-height: 39px':''" v-html="item.question.Content"></div>
+              <!-- <div style="text-align: right;">
+                <el-button v-show="item.question.Id"  class="yellow-btn" icon="el-icon-edit" size="small" @click="Edit(index)">修改</el-button>
+              </div> -->
             </el-card>
           </div>
         </div>
-        <div v-show="Locations[0]" class="cut-footer">
-          <el-button type="primary" size="medium" @click="">生成测试</el-button>
+        <div v-show="questionList[0]" class="cut-footer">
+          <el-button type="primary" size="medium" @click="toTest">生成测试</el-button>
         </div>
     </div>
     <!-- Form -->
     <el-dialog title="题目备注" :visible.sync="dialogFormVisible" >
       <el-form :model="form" :rules="rules" ref="Form">
         <el-form-item label="题目关键字">
-          <el-input v-model="form.Keywords" placeholder="(以逗号分隔)"></el-input>
+          <el-input v-model="form.KeyWords" placeholder="(以逗号分隔)"></el-input>
         </el-form-item>
         <el-form-item label="题目分类" prop="CategoryId">
           <el-select v-model="form.CategoryId" placeholder="请选择题目分类">
@@ -100,7 +102,6 @@
 var ShouTitle, ShouCorrect
 
 import pictureCut from '@/components/picture-cut/index'
-import nxSvgIcon from '@/components/nx-svg-icon/index'
 import quexBox from '@/components/my-box/quex-box'
 import VueCropper from 'vue-cropperjs'
 import { typeList } from '@/assets/js/question_type.js'
@@ -119,7 +120,6 @@ export default {
   components: {
     VueCropper,
     quexBox,
-    nxSvgIcon,
     pictureCut,
     searchQues
     // slider,
@@ -129,6 +129,7 @@ export default {
     return {
       activeName: 'cutup',
       dialogSearch: false,
+      isSuo: false,
       loading: false,
       openNum: false,
       showLoading: false,
@@ -136,15 +137,18 @@ export default {
       adddialog: false,
       dialogFormVisible: false,
       showAdd: false,
-      questions: [],
+      questionList: [],
+      questionIds: [],
       Categorylist: [],
+      Updateindex: null,
       form: {
         Content: '',
         Text: '',
         Analysis: '',
-        Keywords: '',
+        KeyWords: '',
         CategoryId: '',
-        Type: ''
+        Type: '',
+        Repetition: 1
       },
       rules: {
         CategoryId: [
@@ -160,12 +164,15 @@ export default {
     }
   },
   methods: {
+    toTest() {
+      console.log(this.questionList)
+    },
     toCutup() {
       var imgs = new Image()
       imgs.setAttribute('src', this.cropImg)
       var That = this
       imgs.onload = function() {
-        for (var j = That.LocaLength; j < That.Locations.length; j++) {
+        for (var j = 0; j < That.Locations.length; j++) {
           var w = That.Locations[j].width
           var h = That.Locations[j].height
           var sx = That.Locations[j].left
@@ -177,20 +184,35 @@ export default {
           context.drawImage(this, sx, sy, w, h, 0, 0, w, h)
           // $('body').append(canvas)
           That.Locations[parseInt(j)].Image = canvas.toDataURL('image/png')
+          That.Locations[parseInt(j)].question = {}
         }
-        // console.log(this.LocaLength, That.Locations)
-        // 主动触发数据的改变
-        That.Locations[That.LocaLength].left += 1
+        That.questionList = That.questionList.concat(That.Locations)
       }
     },
     SearchAdd(value) {
-      var question = {}
-      question.words = value
-      this.Locations = this.Locations.concat(question)
+      var index = this.questionList.find((item) => {
+        return item.question.Id === value.Id
+      })
+      if (index) {
+        this.$notify({
+          title: '提示',
+          message: '该题已存在',
+          position: 'bottom-right'
+        })
+      } else {
+        var question = {}
+        question.question = value
+        this.questionList = this.questionList.concat(question)
+        this.$notify({
+          title: '提示',
+          message: '添加成功',
+          position: 'bottom-right'
+        })
+      }
     },
     Getresult(data) {
-      this.LocaLength = this.Locations.length
-      this.Locations = this.Locations.concat(data)
+      this.LocaLength = this.questionList.length
+      this.Locations = data
       if (this.Locations) {
         this.toCutup()
       }
@@ -200,18 +222,26 @@ export default {
     },
     GetQuestion(questions) {
       for (var i = 0; i < questions.length; i++) {
-        this.Locations[this.LocaLength + i].words = questions[i][0]
+        this.questionList[this.LocaLength + i].question = questions[i][0]
       }
+      // 主动触发数据的改变
+      this.questionList[this.LocaLength].left += 1
     },
     Add() {
       this.form.Content = ''
       this.form.Analysis = ''
+      this.form.Type = ''
+      this.form.CategoryId = ''
       this.adddialog = true
+      this.Updateindex = null
     },
     Edit(index) {
-      this.form.Content = this.Locations[index].words.Content
-      this.form.Analysis = this.Locations[index].words.Analysis
+      this.form.Content = this.questionList[index].question.Content
+      this.form.Analysis = this.questionList[index].question.Analysis
+      this.form.Type = this.questionList[index].question.Type
+      this.form.CategoryId = this.questionList[index].question.CategoryId
       this.adddialog = true
+      this.Updateindex = index
     },
     Detele(index) {
       this.$confirm('确定删除该题？', '提示', {
@@ -219,33 +249,54 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.Locations.splice(index, 1)
+        this.questionList.splice(index, 1)
       }).catch(() => {})
     },
     submit() {
       this.$refs.Form.validate(valid => {
         if (valid) {
-          // this.form.Text = this.$refs.titleEditor.quill.getText().trim()
-          var datas = {
-            'Content': this.form.Content,
-            'Text': ShouTitle.txt.text(),
-            'CategoryId': this.form.CategoryId,
-            'Analysis': this.form.Analysis,
-            'KeyWords': this.form.Keywords,
-            'Type': this.form.Type
-          }
+          this.upOradd()
+          this.dialogFormVisible = false
+          this.adddialog = false
+          var datas = this.form
+          datas.Text = ShouTitle.txt.text()
           upQuestion(this.$qs.stringify(datas)).then(res => {
-            this.dialogFormVisible = false
-            this.$notify({
-              title: '提示',
-              message: '添加成功！',
-              type: 'success'
-            })
+            if (this.Updateindex !== null) {
+              this.questionList[this.Updateindex].question.Id = res.data.data.Id
+            } else {
+              this.questionList[this.questionList.length - 1].question.Id = res.data.data.Id
+            }
           }).catch((msg) => {
-            this.$message.warning('响应错误！')
+            this.$message.warning(msg)
           })
         }
       })
+    },
+    upOradd() {
+      var question = {
+        Content: this.form.Content,
+        Analysis: this.form.Analysis,
+        Type: this.form.Type,
+        CategoryId: this.form.CategoryId
+      }
+      if (this.Updateindex !== null) {
+        this.questionList[this.Updateindex].question = question
+        this.$notify({
+          title: '提示',
+          message: '修改成功！',
+          type: 'success'
+        })
+      } else {
+        var ques = {
+          question: question
+        }
+        this.questionList = this.questionList.concat(ques)
+        this.$notify({
+          title: '提示',
+          message: '添加成功！',
+          type: 'success'
+        })
+      }
     },
     // 获取题目分类
     async GetCategory() {
@@ -342,22 +393,32 @@ export default {
   }
 }
 .cut_item{
-  margin-top: 20px;
+  margin-bottom: 20px;
   .cut_item_content{
     background: #eef1f6;
-    padding: 15px 16px;
+    padding: 7px 11px;
     line-height: 28px;
     font-size: 15px;
     margin-bottom: 5px;
+    overflow: hidden;
+    max-height: 500px;
+    transition: 0.28s;
   }
   .cut_item-detele{
     position: absolute;
     right: 5px;
     top: 5px;
     color: #F56C6C;
-    font-size: 19px;
-    font-weight: bold;
+    font-size: 21px;
     padding: 0;
+    i{
+      font-weight: bold;
+    }
+  }
+  .cut_item-edit{
+    right: 40px;
+    color: #409EFF;
+    font-size: 19px;
   }
 }
 .cut-footer{

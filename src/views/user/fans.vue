@@ -46,13 +46,11 @@ import {
   P_toFollowee
 } from '@/api/toPost'
 
-import nxSvgIcon from '@/components/nx-svg-icon/index'
 import customerBox from '@/components/my-box/customer-box'
 
 export default {
   name: 'fans',
   components: {
-    nxSvgIcon,
     customerBox
   },
   data() {

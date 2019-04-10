@@ -8,8 +8,10 @@
         <router-link to="/todo/addMistake">
           <div class="icon-wrap">
             <div class="light"></div>
-            <nx-svg-icon class-name='icon-camera' icon-class="add" />
-            <b>错题添加</b>
+            <div class="icon-wp">
+              <svg-icon class-name='icon-camera' icon-class="add" />
+              <b>错题添加</b>
+            </div>
           </div>
         </router-link>
       </div>
@@ -19,32 +21,32 @@
         <div class="home-top">
             <div class="home_item">
               <router-link to="/SQu/index">
-                <nx-svg-icon class-name='more_icon' style="color:#52bab5" icon-class="camera3" />
+                <svg-icon class-name='more_icon' style="color:#52bab5" icon-class="camera3" />
                 <p>拍照搜题</p>
               </router-link>
             </div>
             <div class="home_item disNone">
               <router-link to="/todo/addMistake">
-                <nx-svg-icon class-name='more_icon' style="color:#F56C6C" icon-class="add" />
+                <svg-icon class-name='more_icon' style="color:#F56C6C" icon-class="add" />
                 <p>添加错题</p>
               </router-link>
             </div>
             <div class="home_item">
               <router-link to="/todo/edit">
-                <nx-svg-icon class-name='more_icon' style="color:#409EFF" icon-class="form" />
+                <svg-icon class-name='more_icon' style="color:#409EFF" icon-class="form" />
                 <p>添加笔记</p>
               </router-link>
             </div>
             <div class="home_item">
               <router-link to="/class/index">
-                <nx-svg-icon class-name='more_icon' style="color:#8371f3" icon-class="peoples" />
+                <svg-icon class-name='more_icon' style="color:#8371f3" icon-class="peoples" />
                 <p>我的班课</p>
               </router-link>
             </div>
             <div class="home_item">
               <!-- <div @click="toQidai"> -->
               <router-link to="/getTest/index">
-                <nx-svg-icon class-name='more_icon' style="color:#fdb75b" icon-class="shijuan" />
+                <svg-icon class-name='more_icon' style="color:#fdb75b" icon-class="shijuan" />
                 <p>下载试题</p>
               </router-link>
             </div>
@@ -76,7 +78,6 @@
 
 
 <script>
-import nxSvgIcon from '@/components/nx-svg-icon/index'
 import {
   getRecommend
 } from '@/api/toget'
@@ -85,7 +86,6 @@ import noteBox from '@/components/my-box/note-box'
 export default {
   name: 'home',
   components: {
-    nxSvgIcon,
     quexBox,
     noteBox
   },

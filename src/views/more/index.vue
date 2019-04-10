@@ -6,7 +6,7 @@
       <el-col v-for="(item,index) in moreList" :key="index" :xs="12" :sm="8" :md="6" :lg="6" :xl="5">
         <div class="more_item">
           <router-link :to="item.route">
-            <nx-svg-icon class-name='more_icon' :style="{color:item.color}" :icon-class="item.icon" />
+            <svg-icon class-name='more_icon' :style="{color:item.color}" :icon-class="item.icon" />
             <p>{{item.title}}</p>
           </router-link>
         </div>
@@ -17,12 +17,10 @@
 
 
 <script>
-import nxSvgIcon from '@/components/nx-svg-icon/index'
 
 export default {
   name: 'more',
   components: {
-    nxSvgIcon
   },
   data() {
     return {
