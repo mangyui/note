@@ -1,8 +1,7 @@
 <template>
-  <div class="">
+  <div class="app-container">
     <span class="header-title">添加错题</span>
-    <div class="container">
-      <div class="inside-box">
+    <div class="container big-box1200">
 
         <pictureOcr v-show="isOcr" ocrIcon="add" @Oresult="Getresult"></pictureOcr>
         <el-button class="de-more" type="danger" size="small" @click="isOcr=!isOcr">{{isOcr?"关闭":"开启"}}文字识别</el-button>
@@ -25,7 +24,6 @@
             <el-button size="large" class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
           </div>
         </div>
-      </div>
     </div>
     <!-- Form -->
     <el-dialog title="错题备注" :visible.sync="dialogFormVisible">

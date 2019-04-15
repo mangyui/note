@@ -1,8 +1,7 @@
 <template>
-  <div class="">
+  <div class="app-container">
     <span class="header-title">拍照搜题</span>
-    <div class="container">
-      <div class="inside-box">
+    <div class="container big-box1200">
         <pictureOcr ocrIcon="form_search" ocrMode="acc" @Oresult="Getresult"></pictureOcr>
 
         <div v-show="showLoading" class="loading-box">
@@ -44,10 +43,9 @@
             <div ref="ShouCorrect" class="divWangeditor" style="text-align:left"></div>
             <!-- <quill-editor ref="AnalysisEditor" v-model="form.Analysis" :options="editorOption" ></quill-editor> -->
             <br/>
-            <el-button size="large" class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
+            <el-button class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
           </div>
         </div>
-      </div>
     </div>
     <!-- Form -->
     <el-dialog title="错题备注" :visible.sync="dialogFormVisible">
@@ -79,7 +77,6 @@
 // 编辑器
 var ShouTitle, ShouCorrect, HaveCorrect
 
-import quexBox from '@/components/my-box/quex-box'
 import { slider, slideritem } from 'vue-concise-slider'
 import pictureOcr from '@/components/picture-ocr/index'
 import addType from '@/views/common/addType'
@@ -94,7 +91,6 @@ import {
 export default {
   name: 'mocr',
   components: {
-    quexBox,
     slider,
     slideritem,
     pictureOcr,
@@ -338,6 +334,9 @@ export default {
 }
 .ocr-edit{
   margin-top: 20px;
+}
+.ques-list{
+  margin-bottom: 0
 }
 .ques_body{
   line-height: 28px;

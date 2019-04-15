@@ -9,7 +9,7 @@ Vue.use(Router)
 import Layout from '../views/layout/Layout'
 
 // 搜索不用懒加载
-import Csearch from '@/views/home/search'
+// import Csearch from '@/views/home/search'
 
 export const constantRouterMap = [
   // {
@@ -43,8 +43,8 @@ export const constantRouterMap = [
         path: 'search',
         name: 'search',
         hidden: true,
-        component: Csearch,
-        // component: () => import('@/views/home/search'),
+        // component: Csearch,
+        component: () => import('@/views/home/search'),
         meta: { title: 'Search' }
       },
       {

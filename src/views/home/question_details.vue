@@ -78,7 +78,7 @@
             </div>
             <div ref="HaveCorrect" class="divWangeditor" style="text-align:left"></div>
             <br/>
-            <el-button size="medium" type="primary" @click="dialogFormVisible = true">提交</el-button>
+            <el-button class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
            </div>
         </div>
       </div>

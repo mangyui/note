@@ -21,18 +21,15 @@
     </el-menu>
     <div class="systom-group toShow">
       <div @click="logout">
-        <div style="height:27px">
-          <svg-icon icon-class="logout"/>
-        </div>
+        <svg-icon style="height:27px" icon-class="logout"/>
         <p>{{user.Id?'登出':'登录'}}</p>
       </div>
       <div>
         <my-lang-select class="" style="height:27px"></my-lang-select>
-        <p>语言</p>
+        <!-- <p>语言</p> -->
       </div>
       <div v-if="isTeacher">
         <actor-select style="height:27px" />
-        <p>身份</p>
       </div>
       <div v-if="user.Id" @click="toMess">
         <svg-icon style="height:27px" icon-class="bell" />

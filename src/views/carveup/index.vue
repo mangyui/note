@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <span class="header-title">试卷切题</span>
-      <div class="inside-box">
+      <div class="big-box1200">
         <pictureCut cutIcon="cutup" @Cresult="Getresult" @CImage="GetImage" @Cquestion="GetQuestion"></pictureCut>
         <br/>
         <div class="list-gbtn">

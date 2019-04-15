@@ -18,7 +18,7 @@
             <voiceBtn @record="showResult"></voiceBtn>
           </div>
         </div>
-        <el-button size="large" class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
+        <el-button class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
       </div>
       <el-dialog title="笔记备注" :visible.sync="dialogFormVisible">
         <el-form :model="note" :rules="rules" ref="Form">

@@ -319,7 +319,7 @@ code {
   }
 }
 .ques-list{
-  margin-bottom: 20px;
+  // margin-bottom: 10px;
   .ques-list_item{
     margin-bottom: 15px;
     width: 100%;
@@ -481,14 +481,11 @@ code {
   }
 }
 
-.big-box1200,.inside-box{
+.big-box1200{
   width: 1200px;
   margin: 0 auto;
   max-width: 100%;
   position: relative;
-}
-.inside-box {
-  padding: 0 5px;
 }
 
 .Hpipei{

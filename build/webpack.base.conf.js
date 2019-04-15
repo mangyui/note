@@ -31,6 +31,7 @@ module.exports = {
   //   'axios': 'axios',
   //   'echarts': 'echarts',
   //   'element-ui': 'ELEMENT',
+  //   'jquery': "jQuery"
   // },
   output: {
     path: config.build.assetsRoot,

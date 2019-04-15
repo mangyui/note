@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'nx-svg-icon',
+  name: 'svg-icon',
   props: {
     iconClass: {
       type: String,

@@ -3,10 +3,10 @@
     <br>
     <div class="list-gbtn" v-show="Tests[1]">
       <div>
-        <el-button v-show="crrindex!=0" type="primary" icon="el-icon-caret-left" size="small" @click="toPrev">上一题</el-button>
+        <el-button v-show="crrindex!=0" type="primary" icon="el-icon-caret-left" size="small" @click="toPrev" round>上一题</el-button>
       </div>
       <div>
-        <el-button v-show="crrindex!=Tests.length-1" type="primary" size="small" @click="toNext">下一题<i class="el-icon-caret-right el-icon--right"></i></el-button>
+        <el-button v-show="crrindex!=Tests.length-1" type="primary" size="small" @click="toNext" round>下一题<i class="el-icon-caret-right el-icon--right"></i></el-button>
       </div>
     </div>
     <div class="container">

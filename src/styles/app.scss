@@ -65,8 +65,10 @@
     border-bottom: 0;
   }
   .mobile_bbtn{
-    width: 100%;
-    margin-top: 15px;
+    width: 80%;
+    margin: 25px auto 0px;
+    display: block;
+    padding: 13px 20px;
   }
   ul{
     -webkit-padding-start: 10px;
@@ -125,10 +127,10 @@
     padding: 0px 20px 10px;
   }
   .app-container{
-    padding: 10px 6px 20px;
+    padding: 10px 6px 5px;
   }
   .container{
-    padding: 5px 0 10px;
+    padding: 0px 0 10px;
     border: 0;
   }
   .el-message{
@@ -180,7 +182,6 @@
   // }
   .systom-group{
     display: flex;
-    align-items: center;
     justify-content: space-around;
     text-align: center;
     color: #fff;
@@ -189,6 +190,9 @@
     width: 100%;
     background-color: #2e323f;
     padding: 8px 0 5px;
+    .el-dropdown-selfdefine{
+      font-size: 0;
+    }
     svg{
       width: 17px!important;
       height: 17px!important;
@@ -211,8 +215,10 @@
       height: 86%;
     }
   }
-  // .naver-text{
-  //   display: none;
-  // }
 
+  .sym-text{
+    display: block;
+    color: #fff;
+    font-size: 10px;
+  }
 }

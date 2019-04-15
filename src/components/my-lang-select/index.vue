@@ -2,7 +2,7 @@
   <el-dropdown class='international' @command="handleSetLanguage" trigger="click">
     <div>
       <svg-icon class-name='naver-icon' icon-class="language" />
-      <span class="naver-text disNone" style="">语言</span>
+      <span class="naver-text sym-text" style="">语言</span>
     </div>
     <el-dropdown-menu slot="dropdown">
       <el-dropdown-item command="zh" :disabled="language==='zh'">中文</el-dropdown-item>

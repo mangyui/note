@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import Axios from 'axios'
 import VueCropper from 'vue-cropperjs'
 import { ocr } from '@/utils/private.js'
 import { dataURLtoFile } from '@/utils/index.js'
@@ -130,7 +131,7 @@ export default {
       var ocr_data = {
         'image': this.cropImg.replace(/data:image\/.*;base64,/, '')
       }
-      this.$axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+      Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
       var url = ocr.baseurl
       if (this.ocrMode === 'acc') {
         url = ocr.accurate
@@ -139,7 +140,7 @@ export default {
       } else {
         url = ocr.baseurl
       }
-      this.$axios.post(url, this.$qs.stringify(ocr_data))
+      Axios.post(url, this.$qs.stringify(ocr_data))
         .then(res => {
           this.result = res.data.words_result
           this.lines = res.data.words_result_num

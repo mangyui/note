@@ -1,7 +1,7 @@
 import Vue from 'vue'
 
 import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+// import 'element-ui/lib/theme-chalk/index.css'
 import '../static/css/iconfont/1.0.0/index.css' /* icofont*/
 
 // css
@@ -43,10 +43,6 @@ Vue.config.productionTip = false
 // 全局引入wangedit
 import E from 'wangeditor'
 Vue.prototype.$E = E
-
-// 将axios绑定
-import Axios from 'axios'
-Vue.prototype.$axios = Axios
 
 // 将qs绑定
 import qs from 'qs'

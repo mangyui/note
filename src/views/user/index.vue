@@ -35,11 +35,11 @@
 
       <baseInfo :user="user" :mClass="Class" :School="School"></baseInfo>
 
-      <div class="save-me" style="text-align: right">
+      <div class="save-me" style="text-align: center">
         <el-button size="small" v-if="!isUpdate" @click="isChange">刷新资料</el-button>
         <el-button size="small" type="primary" v-if="!isUpdate" @click="isUpdate=!isUpdate">修改资料</el-button>
       </div>
-      <div class="div-logout toShow" @click="logout"><el-button type="danger">退出登录</el-button></div>
+      <div class="div-logout toShow" @click="logout"><el-button class="mobile_bbtn" type="danger">退出登录</el-button></div>
     </div>
     <div v-show="isUpdate" class="contariner-wraper Updateinfo">
       <div class="center-section-wrap">

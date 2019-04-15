@@ -2,7 +2,7 @@
   <el-dropdown class='international' @command="handleSetRole" trigger="click">
     <div >
       <svg-icon class-name='naver-icon' icon-class="actor" />
-      <span class="naver-text disNone">身份</span>
+      <span class="naver-text sym-text">身份</span>
     </div>
     <el-dropdown-menu class="actor-down" slot="dropdown">
       <el-dropdown-item v-if="isAdmin" command="admin" :disabled="roles==['admin']">管理员</el-dropdown-item>
