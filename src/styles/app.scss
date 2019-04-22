@@ -47,11 +47,23 @@
 
   .home-container {
     .home-box{
-      background: linear-gradient(to bottom, $menuBg, #ffffff);
+      background:  $menuBg;
+      .home-top{
+          border: none;
+          box-shadow: none;
+          background: transparent;
+          .home_item {
+            .more_icon{
+              color: #fff!important;
+            }
+            p{
+            color: #fff;
+            font-size: 13px;
+            }
+        }
+      }
     }
-    .home_item p{
-      font-size: 12px;
-    }
+
   }
   .scroll-container{
     display: none!important;

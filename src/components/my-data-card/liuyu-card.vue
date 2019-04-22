@@ -1,15 +1,12 @@
 <template>
   <div class="data-card">
     <el-row :span="24">
-      <el-col :span="span" :xs="24" :sm="12" :md="8" :lg="6" v-for="(item,index) in data" :key="index">
-        <div class="item" :style="{backgroundColor:item.color}">
+      <el-col :span="8" v-for="(item,index) in data" :key="index">
+        <div class="item">
           <img :src="item.src" class="item-img" />
           <div class="item-text" :style="{color:colorText,backgroundColor:bgText}">
-            <h2>{{item.name}}</h2>
+            <h3>{{item.name}}</h3>
             <p>{{item.text}}</p>
-            <div>
-               <span style="color:red;font-size:20px;font-weight: 600;float:right;margin-top:20px;margin-right:10px;">￥：{{item.price}}</span>
-            </div>
           </div>
         </div>
       </el-col>
@@ -19,7 +16,7 @@
 
 <script>
 export default {
-  name: 'data-card',
+  name: 'liuyu-card',
   data() {
     return {
       span: this.option.span || 6,
@@ -44,7 +41,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
- .item{
-   background: #52bab5;
- }
+
 </style>

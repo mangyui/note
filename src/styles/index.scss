@@ -789,6 +789,7 @@ code {
         animation-timing-function: ease-in-out;
         animation-iteration-count:infinite;
         filter: blur(12px);
+        z-index: 11;
       }
       .icon-wp{
         position: absolute;

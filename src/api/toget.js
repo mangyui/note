@@ -34,7 +34,7 @@ export function getRecommend(uid) {
   })
 }
 
-// 错题分类
+// 问题分类
 export function questionCategory() {
   return request({
     url: '/?service=App.QCategory.Getcates',
@@ -82,3 +82,53 @@ export function GetNoteCount(data) {
   })
 }
 
+// 通过教师id查找测试列表
+export function GetAllByTeacher(Tid) {
+  return request({
+    url: '/?service=App.Test.GetAllByTeacher',
+    method: 'get',
+    params: {
+      Tid: Tid
+    }
+  })
+}
+// 通过教师id和班级id查找测试列表
+export function GetTestByTidAndUid(TeacherId, UserrelationId) {
+  return request({
+    url: '/?service=App.Test.GetByTidRid',
+    method: 'get',
+    params: {
+      TeacherId,
+      UserrelationId
+    }
+  })
+}
+// 通过班级列表
+export function GetClassList() {
+  return request({
+    url: '/?service=App.Userelation.GetList',
+    method: 'get',
+    params: {}
+  })
+}
+
+// 通过班级列表
+export function GetListByTid(Tid) {
+  return request({
+    url: '/?service=App.Userelation.GetListTid',
+    method: 'get',
+    params: {
+      Tid: Tid
+    }
+  })
+}
+// 获取测试详情
+export function GetTestDetail(Id) {
+  return request({
+    url: '/?service=App.Test.GetTestDetail',
+    method: 'get',
+    params: {
+      Id
+    }
+  })
+}

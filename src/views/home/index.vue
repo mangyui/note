@@ -4,7 +4,7 @@
       <router-link to="/home/search" class="disNone">
         <el-button class="top-btn_search" round icon="el-icon-search" :size="screenWidth>770?'':'small'" :style="screenWidth>770?'':'border:0'">搜索</el-button>
       </router-link>
-      <div class="top-camera toShow">
+      <!-- <div class="top-camera toShow">
         <router-link to="/todo/addMistake">
           <div class="icon-wrap">
             <div class="light"></div>
@@ -14,20 +14,20 @@
             </div>
           </div>
         </router-link>
-      </div>
+      </div> -->
       <div class="home-box">
         <!-- <div class="bg_updown"><img :src="bg1"/></div>
         <div class="bg_updown"><img :src="bg2"/></div> -->
         <div class="home-top">
             <div class="home_item">
               <router-link to="/SQu/index">
-                <svg-icon class-name='more_icon' style="color:#52bab5" icon-class="camera3" />
+                <svg-icon class-name='more_icon' style="color:#F56C6C" icon-class="camera3" />
                 <p>拍照搜题</p>
               </router-link>
             </div>
             <div class="home_item disNone">
               <router-link to="/todo/addMistake">
-                <svg-icon class-name='more_icon' style="color:#F56C6C" icon-class="add" />
+                <svg-icon class-name='more_icon' style="color:#52bab5" icon-class="add" />
                 <p>添加错题</p>
               </router-link>
             </div>

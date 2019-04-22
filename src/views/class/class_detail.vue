@@ -38,7 +38,7 @@ export default {
   data() {
     return {
       showLoading: false,
-      classId: 11,
+      classId: this.$route.params.id,
       activeName: 'tests'
     }
   },
