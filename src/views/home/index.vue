@@ -1,16 +1,32 @@
 <template>
   <div class="home-container">
     <div class="big-box1200">
-      <router-link to="/home/search" class="disNone">
-        <el-button class="top-btn_search" round icon="el-icon-search" :size="screenWidth>770?'':'small'" :style="screenWidth>770?'':'border:0'">搜索</el-button>
+      <router-link
+        to="/home/search"
+        class="disNone"
+      >
+        <el-button
+          class="top-btn_search"
+          round
+          icon="el-icon-search"
+          :size="screenWidth>770?'':'small'"
+          :style="screenWidth>770?'':'border:0'"
+        >搜索</el-button>
       </router-link>
       <div class="top-camera toShow">
-        <router-link to="/todo/addMistake">
+        <!-- <router-link to="/todo/addMistake"> -->
+        <router-link to="/SQu/index">
           <div class="icon-wrap">
             <div class="light"></div>
             <div class="icon-wp">
-              <svg-icon class-name='icon-camera' icon-class="add" />
-              <b>错题添加</b>
+              <!-- <svg-icon class-name='icon-camera' icon-class="add" />
+              <b>错题添加</b> -->
+              <svg-icon
+                class-name='icon-camera'
+                style="color:rgba(84, 93, 206,0.9)"
+                icon-class="camera3"
+              />
+              <p>拍照搜题</p>
             </div>
           </div>
         </router-link>
@@ -19,37 +35,70 @@
         <!-- <div class="bg_updown"><img :src="bg1"/></div>
         <div class="bg_updown"><img :src="bg2"/></div> -->
         <div class="home-top">
-            <div class="home_item">
-              <router-link to="/SQu/index">
-                <svg-icon class-name='more_icon' style="color:#52bab5" icon-class="camera3" />
-                <p>拍照搜题</p>
-              </router-link>
-            </div>
-            <div class="home_item disNone">
-              <router-link to="/todo/addMistake">
-                <svg-icon class-name='more_icon' style="color:#F56C6C" icon-class="add" />
-                <p>添加错题</p>
-              </router-link>
-            </div>
-            <div class="home_item">
-              <router-link to="/todo/edit">
-                <svg-icon class-name='more_icon' style="color:#409EFF" icon-class="form" />
-                <p>添加笔记</p>
-              </router-link>
-            </div>
-            <div class="home_item">
-              <router-link to="/class/index">
-                <svg-icon class-name='more_icon' style="color:#8371f3" icon-class="peoples" />
-                <p>我的班课</p>
-              </router-link>
-            </div>
-            <div class="home_item">
-              <!-- <div @click="toQidai"> -->
-              <router-link to="/getTest/index">
-                <svg-icon class-name='more_icon' style="color:#fdb75b" icon-class="shijuan" />
-                <p>下载试题</p>
-              </router-link>
-            </div>
+          <div class="home_item">
+            <!-- <router-link to="/SQu/index"> -->
+            <router-link to="/todo/addMistake">
+              <!-- <svg-icon class-name='more_icon' style="color:rgba(84, 93, 206,0.9)" icon-class="camera3" />
+                <p>拍照搜题</p> -->
+              <svg-icon
+                class-name='more_icon'
+                style="color:rgba(84, 93, 206,0.9)"
+                icon-class="add"
+              />
+              <p>添加错题</p>
+            </router-link>
+          </div>
+          <div class="home_item disNone">
+            <router-link to="/SQu/index">
+              <svg-icon
+                class-name='more_icon'
+                style="color:#F56C6C"
+                icon-class="camera3"
+              />
+              <p>拍照搜题</p>
+            </router-link>
+          </div>
+          <div v-if="user.roles.toString()==['teacher']" class="home_item">
+            <router-link to="/carveup/index">
+              <svg-icon
+                class-name='more_icon'
+                style="color:#409EFF"
+                icon-class="form"
+              />
+              <p>添加测试</p>
+            </router-link>
+          </div>
+          <div v-if="user.roles.toString()!=['teacher']" class="home_item">
+            <router-link to="/todo/edit">
+              <svg-icon
+                class-name='more_icon'
+                style="color:#409EFF"
+                icon-class="form"
+              />
+              <p>添加笔记</p>
+            </router-link>
+          </div>
+          <div class="home_item">
+            <router-link to="/class/index">
+              <svg-icon
+                class-name='more_icon'
+                style="color:#52bab5"
+                icon-class="peoples"
+              />
+              <p>我的班课</p>
+            </router-link>
+          </div>
+          <div class="home_item">
+            <!-- <div @click="toQidai"> -->
+            <router-link to="/getTest/index">
+              <svg-icon
+                class-name='more_icon'
+                style="color:#fdb75b"
+                icon-class="shijuan"
+              />
+              <p>测试题目</p>
+            </router-link>
+          </div>
           <!-- <div class="top-search">
             <el-input placeholder="搜索题目"></el-input>
             <el-button type="primary" icon="el-icon-search" v-on:click=""></el-button>
@@ -57,17 +106,29 @@
         </div>
       </div>
       <div>
-        <div v-show="!showLoading && !questions[0]" class="loading-box">
+        <div
+          v-show="!showLoading && !questions[0]"
+          class="loading-box"
+        >
           <i class="el-icon-search"></i>
           空空如也...
         </div>
         <!-- <h4 class="home-h4" v-if="myques[0]">最近错题</h4>
         <myquex-box :option="myques"></myquex-box> -->
-        <h4 class="home-h4" v-if="notes[0]"><i class="el-icon-star-off"></i> 最近笔记 <i class="el-icon-star-off"></i></h4>
+        <h4
+          class="home-h4"
+          v-if="notes[0]"
+        ><i class="el-icon-star-off"></i> 最近笔记 <i class="el-icon-star-off"></i></h4>
         <note-box :option="notes"></note-box>
-        <h4 class="home-h4" v-show="questions[0]"><i class="el-icon-star-off"></i> 推荐题目 <i class="el-icon-star-off"></i></h4>
+        <h4
+          class="home-h4"
+          v-show="questions[0]"
+        ><i class="el-icon-star-off"></i> 推荐题目 <i class="el-icon-star-off"></i></h4>
         <quex-box :option="questions"></quex-box>
-        <div v-show="showLoading" class="loading-box">
+        <div
+          v-show="showLoading"
+          class="loading-box"
+        >
           <i class="el-icon-loading"></i>
           加载中...
         </div>
@@ -91,6 +152,7 @@ export default {
   },
   data() {
     return {
+      user: this.$store.getters.user,
       homeTop: 0,
       screenWidth: document.body.clientWidth,
       questions: [],

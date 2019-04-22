@@ -13,7 +13,7 @@
       :show-timeout="200"
       :default-active="$route.path"
       :collapse="isCollapse"
-      background-color="#52bab5"
+      background-color="#565fcf"
       text-color="white"
       active-text-color="#fff"
     >
@@ -103,7 +103,7 @@ export default {
 
 <style scoped>
 #app .el-scrollbar{
-  background: #52bab5;
+  background: #565fcf;
 }
 #app .el-menu{
   height: auto;
@@ -112,7 +112,7 @@ export default {
 .user_center {
   text-align: center;
   padding: 5px 5px 10px;
-  background: #52bab5;
+  background: rgba(84, 93, 206,0.9);
   min-width: 180px;
   margin-top: -1px
 }

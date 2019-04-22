@@ -2,7 +2,7 @@
 export default {
   // 导航栏
   navbar: {
-    title: 'vNote',
+    title: 'CQ',
     languageSwitch: '语言切换',
     theme: '主题'
   },

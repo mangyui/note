@@ -43,19 +43,20 @@
 <script>
 
 import {
-  GetTest
+  GetTestDetail
 } from '@/api/toPost'
 
 export default {
   name: 'test_todo',
   data() {
     return {
-      test_id: '',
+      test_id: this.$route.params.id,
       crrindex: 0,
       showLoading: false,
       Tests: [],
       IsAnalysis: null,
       getForm: {
+        Id: this.$route.params.id,
         UserId: this.$store.getters.user.Id,
         CategoryId: '10',
         Date: '30',
@@ -76,10 +77,10 @@ export default {
     addIsAnalysis() {
       this.IsAnalysis = new Array(this.Tests.length).fill(false)
     },
-    getTest() {
+    getTestDetail() {
       this.showLoading = true
-      GetTest(this.$qs.stringify(this.getForm)).then(res => {
-        this.Tests = res.data.data
+      GetTestDetail(this.$qs.stringify(this.getForm)).then(res => {
+        this.Tests = res.data.data.Questions
         this.addIsAnalysis()
         this.showLoading = false
       }).catch((res) => {
@@ -89,7 +90,7 @@ export default {
     }
   },
   created() {
-    this.getTest()
+    this.getTestDetail()
   }
 }
 </script>

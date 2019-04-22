@@ -189,7 +189,7 @@ export default {
       height: 50px;
       vertical-align: top;
       &:hover .screenfull-svg{
-        fill: #52bab5;
+        fill: rgba(84, 93, 206,0.9);
       }
     }
     .international {
@@ -202,7 +202,7 @@ export default {
       height: 50px;
       margin-right: 16px;
       &:hover{
-        color: #52bab5;
+        color: rgba(84, 93, 206,0.9);
       }
       .avatar-wrapper {
         cursor: pointer;

@@ -58,7 +58,7 @@ export default {
   height: 50px;
   line-height: 50px;
   // background: #207773;
-  background: #52bab5;
+  background: rgba(84, 93, 206,0.9);
   color: #fdfdfd;
   text-align: center;
   font-size: 20px;

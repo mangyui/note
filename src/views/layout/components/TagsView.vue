@@ -131,24 +131,23 @@ export default {
     line-height: 26px;
     padding: 0 8px;
     margin-right: 10px;
-    border: 1px solid rgba(82,186,181,.2);
-    // border-radius: 3px;
-    background-color: rgba(82,186,181,.1);
+    border: 1px solid rgba(84, 93, 206, 0.4);
+    background-color: rgba(84, 93, 206, 0.1);
     text-decoration: none;
     font-size: 12px;
-    color: #52bab5;
+    color: rgba(84, 93, 206,0.9);
       &:first-of-type {
         margin-left: 15px;
       }
       &.active {
-        background-color: #52bab5;
+        background-color: rgba(84, 93, 206,0.9);
         color: #fff;
-        border-color: #52bab5;
+        border-color: rgba(84, 93, 206,0.9);
           .el-icon-close
           {
               &:hover {
                 background-color: #ceebea;
-                color: #52bab5;
+                color: rgba(84, 93, 206,0.9);
             }
           }
       }
@@ -199,7 +198,7 @@ export default {
         display: inline-block;
       }
       &:hover {
-        background-color: #52bab5;
+        background-color: rgba(84, 93, 206,0.9);
         color: #fff;
       }
     }

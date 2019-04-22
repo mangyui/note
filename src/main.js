@@ -5,7 +5,7 @@ import ElementUI from 'element-ui'
 import '../static/css/iconfont/1.0.0/index.css' /* icofont*/
 
 // css
-import 'normalize.css/normalize.css'// A modern alternative to CSS resets
+import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 import '@/styles/index.scss' // global css
 
 // import './mock' // simulation data
@@ -22,7 +22,9 @@ import i18n from './lang'
 import preview from 'vue-photo-preview'
 import 'vue-photo-preview/dist/skin.css'
 
-import { option } from '@/utils/preview.js'
+import {
+  option
+} from '@/utils/preview.js'
 Vue.use(preview, option)
 
 import '@/icons' // icon

@@ -175,7 +175,7 @@ export default {
     this.$refs.select_frame.ondragenter = (e) => {
       e.preventDefault()
       this.$refs.select_frame.style.backgroundColor = '#edf8f7'
-      this.$refs.select_frame.style.border = '0.11em dashed #52bab5'
+      this.$refs.select_frame.style.border = '0.11em dashed rgba(84, 93, 206,0.9)'
     }
     this.$refs.select_frame.ondragover = (e) => {
       e.preventDefault()
@@ -216,7 +216,7 @@ export default {
    .icon-camera{
      margin-bottom: 0;
      font-size: 80px;
-     fill: #52bab5;
+     fill: rgba(84, 93, 206,0.9);
    }
  }
  .up_img{

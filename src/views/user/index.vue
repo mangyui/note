@@ -460,7 +460,7 @@ export default {
   display: block;
   height: 100%;
   width: 100%;
-  left: 120px;
+  left: 0;
   top: 0;
   background-color: rgba(0, 0, 0, 0.4);
   cursor: pointer;
@@ -470,9 +470,9 @@ export default {
   border-radius: 50%;
   transition: 0.28s;
 }
-.avatar:hover label{
-  left: 0;
-}
+// .avatar:hover label{
+//   left: 0;
+// }
 .user_address {
   font-size: 12px;
   color: #ccc;
@@ -488,7 +488,7 @@ export default {
   color: #666;
   margin: 10px 0;
   span {
-    color: #52bab5;
+    color: rgba(84, 93, 206,0.9);
   }
 }
 .save-me{
@@ -501,7 +501,7 @@ export default {
   margin-bottom: 20px;
   .num{
     font-size: 28px;
-    color: #52bab5;
+    color: rgba(84, 93, 206,0.9);
   }
 }
 .toOther{

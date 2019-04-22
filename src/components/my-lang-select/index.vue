@@ -43,7 +43,7 @@ export default {
 }
 @media (min-width: 769px) {
   .el-dropdown:hover{
-    color: #52bab5;
+    color: rgba(84, 93, 206,0.9);
   }
 }
 </style>

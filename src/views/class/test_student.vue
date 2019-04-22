@@ -40,7 +40,7 @@
                   </router-link>
                   <b>{{user.Name}}</b>
                 </div>
-                <span style="color: #52bab5">已完成</span>
+                <span style="color: rgba(84, 93, 206,0.9)">已完成</span>
               </div>
             </template>
             <i class="header-icon el-icon-document"></i><b> 完成情况：</b>

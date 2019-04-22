@@ -120,15 +120,15 @@ export default {
 .login-title {
   margin: 0 0 20px;
   text-align: center;
-  color: #52bab5;
+  color: rgba(84, 93, 206,0.9);
   letter-spacing: 1px;
   font-size: 18px;
 }
 .login-submit {
   margin-top: 10px;
   width: 100%;
-  background-color: #52bab5;
-  border-color: #52bab5;
+  background-color: rgba(84, 93, 206,0.9);
+  border-color: rgba(84, 93, 206,0.9);
 }
 .login-submit:focus, .login-submit:hover{
   background-color: #52dad3;
@@ -143,7 +143,7 @@ export default {
 
     .svgIcon{
       color: #fff;
-      background: #52bab5;
+      background: rgba(84, 93, 206,0.9);
       height: 40px;
       width: 50px;
       text-align: center;
@@ -207,10 +207,10 @@ export default {
 
 .el-tabs__item:hover,.el-tabs__item.is-active
 {
-  color: #52bab5;
+  color: rgba(84, 93, 206,0.9);
 }
 .el-tabs__active-bar{
-  background-color:#52bab5;
+  background-color:rgba(84, 93, 206,0.9);
 }
 /*登录*/
 .login-form{

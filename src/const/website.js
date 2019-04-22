@@ -1,11 +1,11 @@
 export default {
-  title: 'vNote',
-  logo: 'N',
+  title: 'CQ',
+  logo: 'C',
   author: '',
   info: {
-    title: 'vNote',
+    title: 'CQ',
     list: [
-      'vNote 响应式布局，PC端和移动端都支持。',
+      'CQ 响应式布局，PC端和移动端都支持。',
       '在这里你可以记录和管理你的笔记错题。',
       '笔记整理。',
       '错题整理。',

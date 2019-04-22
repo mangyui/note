@@ -37,7 +37,7 @@ export default {
           title: '数据统计',
           icon: 'heatmapChart',
           route: '/more/charts',
-          color: '#52bab5'
+          color: 'rgba(84, 93, 206,0.9)'
         },
         {
           id: 3,

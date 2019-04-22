@@ -41,7 +41,7 @@ export default {
 .el-button{
   font-size: 18px;
   &:hover{
-    color: #52bab5;
+    color: rgba(84, 93, 206,0.9);
   }
 }
 </style>
