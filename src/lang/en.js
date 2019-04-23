@@ -27,6 +27,7 @@ export default {
     class_detail: 'class_detail',
     getTest: 'getTest',
     carveup: 'carveup',
+    addQues: 'addQues',
     test_todo: 'test_todo',
     testList: 'testList',
     test_detail: 'test_detail',

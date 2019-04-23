@@ -196,7 +196,13 @@ export const asyncRouterMap = [
         path: 'index',
         name: 'carveup',
         component: () => import('@/views/carveup/index'),
-        meta: { title: 'carveup', icon: 'cutup', roles: ['teacher', 'student'] }
+        meta: { title: 'carveup', roles: ['teacher'] }
+      },
+      {
+        path: 'addQues',
+        name: 'addQues',
+        component: () => import('@/views/carveup/addQues'),
+        meta: { title: 'addQues', roles: ['teacher'] }
       }
     ]
   },
@@ -373,21 +379,21 @@ export const asyncRouterMap = [
     ]
   },
   // 第三方网站
-  {
-    path: '/other',
-    component: Layout,
-    redirect: '/more/index',
-    hidden: true,
-    meta: { title: 'Other', icon: 'baidumap' },
-    children: [
-      {
-        path: 'open/:id',
-        name: 'open',
-        component: () => import('@/views/other/open'),
-        meta: { title: 'Open' }
-      }
-    ]
-  },
+  // {
+  //   path: '/other',
+  //   component: Layout,
+  //   redirect: '/more/index',
+  //   hidden: true,
+  //   meta: { title: 'Other', icon: 'baidumap' },
+  //   children: [
+  //     {
+  //       path: 'open/:id',
+  //       name: 'open',
+  //       component: () => import('@/views/other/open'),
+  //       meta: { title: 'Open' }
+  //     }
+  //   ]
+  // },
   // 报表
   // {
   //   path: '/dashboard',

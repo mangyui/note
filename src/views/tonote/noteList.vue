@@ -11,7 +11,7 @@
       <!--工具条-->
       <div class="top-search">
         <el-input
-          placeholder="请输入内容"
+          placeholder="搜索笔记"
           @keyup.enter.native="toSearch"
           v-model="search.keys">
           <i slot="prefix" class="el-input__icon el-icon-search"></i>

@@ -9,148 +9,38 @@
         <el-tab-pane name="first">
           <span slot="label">
             <el-badge
-              :value="unlength"
+              :value="this.unread.length"
               class="item"
             > 未读消息</el-badge>
           </span>
-          <el-table
-            :data="unread"
-            :show-header="false"
-            style="width: 100%"
-            empty-text="暂无消息"
-          >
-            <el-table-column>
-              <template slot-scope="scope">
-                <span
-                  class="message-title"
-                  @click="popMessage(scope.row)"
-                >{{scope.row.Title}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="Ctime"
-              width="180"
-            ></el-table-column>
-            <el-table-column
-              fixed="right"
-              width="95"
-            >
-              <template slot-scope="scope">
-                <el-button
-                  size="mini"
-                  @click="handleRead(scope)"
-                >
-                  标为已读</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-          <!-- <div class="handle-row">
-            <el-button
-              size="small"
-              type="primary"
-              @click="allToDu"
-            >全部标为已读</el-button>
-          </div> -->
+          <div>
+            <div v-show="!unread[0]" class="loading-box">
+              暂无消息
+            </div>
+            <div class="mess-item" v-for="(item,index) in unread" :key="index">
+              <div class="mess-item-content"  @click="popMessage(item)"><p>{{item.Title}}</p><span>{{item.Ctime}}</span></div>
+              <el-button size="mini" @click="handleRead(scope)">标为已读</el-button>
+            </div>
+          </div>
         </el-tab-pane>
         <el-tab-pane name="second">
           <span slot="label">
             <el-badge
-              :value="relength"
+              :value="this.read.length"
               class="item"
+              type="primary"
             > 已读消息</el-badge>
           </span>
-          <template v-if="message === 'second'">
-            <el-table
-              :data="read"
-              :show-header="false"
-              style="width: 100%"
-              empty-text="暂无消息"
-            >
-              <el-table-column>
-                <template slot-scope="scope">
-                  <span
-                    class="message-title"
-                    @click="popMessage(scope.row)"
-                  >{{scope.row.Title}}</span>
-                </template>
-              </el-table-column>
-              <el-table-column
-                prop="Ctime"
-                width="180"
-              ></el-table-column>
-              <el-table-column
-                fixed="right"
-                width="170"
-              >
-                <template slot-scope="scope">
-                  <el-button
-                    size="mini"
-                    @click="handleRestoreUnRead(scope)"
-                  >
-                    标记未读</el-button>
-                  <!-- <el-button
-                    size="mini"
-                    type="danger"
-                    @click="handleDel(scope.$index)"
-                  >
-                    删除</el-button> -->
-                </template>
-              </el-table-column>
-            </el-table>
-            <!-- <div class="handle-row">
-              <el-button
-                size="small"
-                type="danger"
-                @click="allToRecycle"
-              >删除全部</el-button>
-            </div> -->
-          </template>
-        </el-tab-pane>
-        <!-- <el-tab-pane name="third">
-          <span slot="label">
-            <el-badge
-              :value="recycle.length"
-              class="item"
-            > 回收站</el-badge>
-          </span>
-          <template v-if="message === 'third'">
-            <el-table
-              :data="recycle"
-              :show-header="false"
-              style="width: 100%"
-              empty-text="暂无消息"
-            >
-              <el-table-column>
-                <template slot-scope="scope">
-                  <span class="message-title">{{scope.row.Title}}</span>
-                </template>
-              </el-table-column>
-              <el-table-column
-                prop="Ctime"
-                width="180"
-              ></el-table-column>
-              <el-table-column
-                fixed="right"
-                width="70"
-              >
-                <template slot-scope="scope">
-                  <el-button
-                    size="mini"
-                    @click="handleRestore(scope.$index)"
-                  >
-                    还原</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-            <div class="handle-row">
-              <el-button
-                size="small"
-                type="danger"
-                @click="alltoDelete"
-              >清空回收站</el-button>
+          <div>
+            <div v-show="!read[0]" class="loading-box">
+              暂无消息
             </div>
-          </template>
-        </el-tab-pane> -->
+            <div class="mess-item" v-for="(item,index) in read" :key="index">
+              <div class="mess-item-content"  @click="popMessage(item)"><p>{{item.Title}}</p><span>{{item.Ctime}}</span></div>
+              <!-- <el-button size="mini" @click="handleRead(scope)">标为已读</el-button> -->
+            </div>
+          </div>
+        </el-tab-pane>
       </el-tabs>
       <el-dialog
         :title="msg.Title"
@@ -158,9 +48,7 @@
         width="30%"
         center
       >
-
         <span>{{msg.Content}}</span>
-
         <span
           slot="footer"
           class="dialog-footer"
@@ -272,7 +160,7 @@ export default {
         this.msg.Link = '/class/test_todo/' + tid
       }
       this.centerDialogVisible = true
-      console.log(this.msg)
+      // console.log(this.msg)
     },
     changelength() {
       this.relength = this.read.length
@@ -305,5 +193,29 @@ export default {
 }
 .message-title:hover {
   cursor: pointer;
+}
+.mess-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+.mess-item{
+  color: #606266;
+  padding: 5px 5px;
+  border-bottom: 1px solid #efefef;
+  &:hover{
+    background-color: rgb(236, 245, 255);
+  }
+}
+.mess-item-content{
+  flex-grow: 1;
+  padding: 10px 10px 10px 5px;
+  cursor: pointer;
+  span{
+    font-size: 12px;
+    margin-top: 8px;
+    display: inline-block;
+    color: #999;
+  }
 }
 </style>

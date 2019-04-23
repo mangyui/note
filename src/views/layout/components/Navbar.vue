@@ -124,8 +124,8 @@ export default {
       }
     },
     onScroll() {
-      var scrollTop = document.querySelector('.app-main').scrollTop
-      this.ScrollTop = scrollTop
+      // var scrollTop = document.querySelector('.app-main').scrollTop
+      // this.ScrollTop = scrollTop
       // console.log(this.ScrollTop)
     }
   },
@@ -136,7 +136,7 @@ export default {
     this.fetchDate()
   },
   mounted() {
-    document.querySelector('.app-main').addEventListener('scroll', this.onScroll)
+    // document.querySelector('.app-main').addEventListener('scroll', this.onScroll)
     // console.log(this.user)
   }
 }

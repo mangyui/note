@@ -31,10 +31,10 @@
             <h4 class="htitle">添加解答</h4>
             <div ref="HaveCorrect" class="divWangeditor" style="text-align:left"></div>
             <br/>
-            <el-button class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
+            <el-button class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">添加到错题本</el-button>
           </div>
           <div v-show="showShou" class="ocr-edit">
-            <h3 class="Hpipei">手动添加</h3>
+            <h3 class="Hpipei">没有找到</h3>
             <h4 class="htitle">错题题目(不含答案)</h4>
             <div ref="ShouTitle" class="divWangeditor" style="text-align:left"></div>
             <!-- <quill-editor ref="titleEditor" v-model="form.Content" :options="editorOption" ></quill-editor> -->
@@ -43,7 +43,7 @@
             <div ref="ShouCorrect" class="divWangeditor" style="text-align:left"></div>
             <!-- <quill-editor ref="AnalysisEditor" v-model="form.Analysis" :options="editorOption" ></quill-editor> -->
             <br/>
-            <el-button class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
+            <el-button class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">添加到错题本</el-button>
           </div>
         </div>
     </div>
@@ -182,6 +182,14 @@ export default {
         }).catch(() => {})
         return
       }
+      if (this.form.Content.trim().length === 0) {
+        this.$notify({
+          title: '提示',
+          message: '题目不能为空！',
+          type: 'warning'
+        })
+        return
+      }
       this.$refs.Form.validate(valid => {
         if (valid) {
           let datas
@@ -269,7 +277,6 @@ export default {
       uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
       uploadFileName: 'file', // 后端使用这个字段获取图片信息
       uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
-      showLinkImg: false,
       uploadImgHooks: {
         customInsert: function(insertImg, result, ShouTitle) {
           var url = result.data.data.data
@@ -285,7 +292,6 @@ export default {
       uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
       uploadFileName: 'file', // 后端使用这个字段获取图片信息
       uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
-      showLinkImg: false,
       uploadImgHooks: {
         customInsert: function(insertImg, result, editor) {
           var url = result.data.data.data
@@ -301,7 +307,6 @@ export default {
       uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
       uploadFileName: 'file', // 后端使用这个字段获取图片信息
       uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
-      showLinkImg: false,
       uploadImgHooks: {
         customInsert: function(insertImg, result, editor) {
           var url = result.data.data.data

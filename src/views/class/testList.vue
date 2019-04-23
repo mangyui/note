@@ -39,12 +39,12 @@
                 :to="'/class/test_detail/'+item.Id"
               >
                 <div>
-                  <h4 v-html="item.Title"></h4>
+                  <h4 style="font-size:18px;" v-html="item.Title"></h4>
                   <!-- <p>备注</p> -->
                   <h5>共 <span style="color: #F56C6C"> {{item.QCount}}</span> 道测试题目</h5>
                 </div>
                 <div>
-                  <p class="test_state"><span class="test_time">{{item.Ctime}}</span><span class="test_time">限制时间：<span style="color: #F56C6C">{{item.LimiteTime/60}}</span> 分钟</span>
+                  <p class="test_state"><span class="test_time">{{item.Ctime}}</span><span class="test_time">限制时间：<span style="color: #F56C6C">{{item.LimiteTime}}</span> 分钟</span>
                     <el-tag
                       size="small"
                       v-if="item.Status=='0'"
@@ -71,38 +71,6 @@
         </el-timeline>
       </div>
     </div>
-    <!-- <el-dialog title="测试编辑" :visible.sync="dialogFormVisible">
-      <el-form :model="form">
-        <el-form-item label="测试名称">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="开始时间">
-           <el-date-picker
-            v-model="form.startdate"
-            type="datetime"
-            placeholder="选择日期时间">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="截止时间">
-           <el-date-picker
-            v-model="form.enddate"
-            type="datetime"
-            placeholder="选择日期时间">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="测试状态">
-          <el-select v-model="form.region" placeholder="请选择测试状态">
-            <el-option label="测试" value="start"></el-option>
-            <el-option label="暂停" value="pause"></el-option>
-            <el-option label="结束" value="end"></el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-      </div>
-    </el-dialog> -->
     <el-dialog
       title="测试编辑"
       :visible.sync="dialogFormVisible"
@@ -293,7 +261,7 @@ export default {
               this.GetAllTestByTeacherId[i].QCount = this.getQuestionCount(this.GetAllTestByTeacherId[i])
               this.GetAllTestByTeacherId[i].Ctime = this.getLocalTime(this.GetAllTestByTeacherId[i].Ctime)
             }
-            console.log(res.data.data)
+            // console.log(res.data.data)
           } else {
             this.$message.error(res.data.msg)
           }

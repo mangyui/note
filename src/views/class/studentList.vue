@@ -2,16 +2,8 @@
   <div class="app-container test_student">
     <!-- <span class="header-title">学生列表</span> -->
     <div class="big-box1200">
-      <!-- <div class="top-search">
-        <el-input
-          placeholder="查询学生"
-          @keyup.enter.native=""
-          v-model="search.keys">
-          <i slot="prefix" class="el-input__icon el-icon-search"></i>
-        </el-input>
-      </div> -->
       <div class="list-gbtn">
-        <div>共 <b style="color: #F56C6C">24</b> 名学生</div>
+        <div>共 <b style="color: #F56C6C">{{students.length}}</b> 名学生</div>
         <div v-if="user.roles.toString()!=['student']">
           <el-button type="primary" icon="el-icon-plus" size="small" @click="addStudent">添加学生</el-button>
           <el-button type="danger" icon="el-icon-delete" @click="showDelete=!showDelete" size="small">移除学生</el-button>
@@ -22,15 +14,15 @@
           <h4>三月小测试</h4>
         </div> -->
         <el-collapse v-loading="loading" v-model="activeNames">
-          <el-collapse-item v-for="(item,index) in 24" :key="index">
+          <el-collapse-item v-for="(item,index) in students" :key="index">
             <template slot="title">
               <div class="student_box ques_header">
                 <div class="student_box_left">
                   <el-button class="btn-detele" v-show="showDelete" type="text" icon="el-icon-close" circle></el-button>
-                  <router-link :to="'/user/other/'+1">
-                    <img :src="user.Avatar || './static/img/avatar.jpg'">
+                  <router-link :to="'/user/other/'+item.Id">
+                    <img :src="item.Avatar || './static/img/avatar.jpg'">
                   </router-link>
-                  <b>{{user.Name}}</b>
+                  <b>{{item.Name}}</b>
                 </div>
                 <span></span>
               </div>
@@ -64,6 +56,7 @@
 
 <script>
 
+import { ClassStudents } from '@/api/toPost'
 export default {
   name: 'studentList',
   data() {
@@ -84,11 +77,14 @@ export default {
     classId: [String, Number]
   },
   methods: {
-    getNotes() {
-      // getNoteList().then(res => {
-      //   this.questions = res.data
-      // }).catch(() => {})
-      // this.loading = false
+    getStudents() {
+      ClassStudents(this.$qs.stringify({ Id: this.classId })).then(res => {
+        this.students = res.data.data
+        this.loading = false
+      }).catch((error) => {
+        this.loading = false
+        console.log(error)
+      })
     },
     addStudent() {
       this.$prompt('请输入学生的用户号', '查找学生', {
@@ -100,6 +96,7 @@ export default {
     }
   },
   created() {
+    this.getStudents()
   }
 }
 </script>

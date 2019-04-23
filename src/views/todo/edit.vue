@@ -193,7 +193,6 @@ export default {
       uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
       uploadFileName: 'file', // 后端使用这个字段获取图片信息
       uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
-      showLinkImg: false,
       uploadImgHooks: {
         customInsert: function(insertImg, result, editor) {
           var url = result.data.data.data

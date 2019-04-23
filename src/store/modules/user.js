@@ -54,6 +54,11 @@ const user = {
       state.roles = roles
       localStorage.setItem('user', JSON.stringify(state))
     },
+    // 金币变动
+    SET_COIN: (state, money) => {
+      state.Coin = money
+      localStorage.setItem('user', JSON.stringify(state))
+    },
     // 登出
     OUT_USER(state) {
       localStorage.removeItem('user')
@@ -109,6 +114,13 @@ const user = {
       return new Promise((resolve, reject) => {
         // console.log(userAvatar)
         commit('SET_USER', data)
+      })
+    },
+    // 金币变动
+    RechargeMoney({ commit }, coin) {
+      return new Promise((resolve, reject) => {
+        // console.log(userAvatar)
+        commit('SET_COIN', coin)
       })
     },
     // 修改资料

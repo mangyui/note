@@ -4,7 +4,7 @@
     <div class="big-box1200">
       <div class="top-search">
         <el-input
-          placeholder="请输入内容"
+          placeholder="搜索"
           @keyup.enter.native="SearchQuestion"
           v-model="Sdata.Keys">
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
