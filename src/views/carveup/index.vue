@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <span class="header-title">试卷切题</span>
+    <span class="header-title">添加测试</span>
       <div class="big-box1200">
         <!-- <pictureCut cutIcon="cutup" @Cresult="Getresult" @CImage="GetImage" @Cquestion="GetQuestion"></pictureCut>
         <br/> -->
@@ -434,7 +434,6 @@ export default {
         uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
         uploadFileName: 'file', // 后端使用这个字段获取图片信息
         uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
-        showLinkImg: false,
         uploadImgHooks: {
           customInsert: function(insertImg, result, editor) {
             var url = result.data.data.data
@@ -450,7 +449,6 @@ export default {
         uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
         uploadFileName: 'file', // 后端使用这个字段获取图片信息
         uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
-        showLinkImg: false,
         uploadImgHooks: {
           customInsert: function(insertImg, result, editor) {
             var url = result.data.data.data

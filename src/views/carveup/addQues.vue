@@ -1,20 +1,20 @@
 <template>
   <div class="app-container">
-    <span class="header-title">添加错题</span>
+    <span class="header-title">添加题目</span>
     <div class="container big-box1200">
 
         <pictureOcr v-show="isOcr" ocrIcon="add" @Oresult="Getresult"></pictureOcr>
         <el-button class="de-more" type="danger" size="small" @click="isOcr=!isOcr">{{isOcr?"关闭":"开启"}}文字识别</el-button>
         <div class="sq-body">
           <div class="ocr-edit">
-            <h4 class="htitle">错题题目(不含答案)</h4>
+            <h4 class="htitle">题目(不含答案)</h4>
             <div ref="ShouTitle" class="divWangeditor" style="text-align:left"></div>
             <div class="voice-button">
               <div class="voice-input-button-wrapper">
                 <voiceBtn @record="showResult1"></voiceBtn>
               </div>
             </div>
-            <h4 class="htitle">错题解答(可选)</h4>
+            <h4 class="htitle">题目解答</h4>
             <div ref="ShouCorrect" class="divWangeditor" style="text-align:left"></div>
             <div class="voice-button">
               <div class="voice-input-button-wrapper">
@@ -26,27 +26,41 @@
         </div>
     </div>
     <!-- Form -->
-    <el-dialog title="错题备注" :visible.sync="dialogFormVisible">
+    <el-dialog title="题目备注" :visible.sync="dialogFormVisible" >
       <el-form :model="form" :rules="rules" ref="Form">
-        <el-form-item label="题目分类" prop="CategoryId" label-width="100px">
+        <el-form-item label="题目关键字">
+          <el-input v-model="form.KeyWords" placeholder="(以逗号分隔)"></el-input>
+        </el-form-item>
+        <el-form-item label="题目分类" prop="CategoryId">
           <el-select v-model="form.CategoryId" placeholder="请选择题目分类">
             <el-option
-              v-for="item in typelist"
+              v-for="item in Categorylist"
               :key="item.Id"
-              :label="item.Name"
+              :label="item.Subject"
               :value="item.Id">
+              <span style="float: left">{{ item.Subject }}</span>
+              <span style="float: right; color: #8492a6; font-size: 13px">{{ item.Class }}</span>
             </el-option>
           </el-select>
-          <el-button type="primary" icon="el-icon-plus" @click="$refs.addType.showAdd = true" circle></el-button>
+          <!-- <el-button type="primary" icon="el-icon-plus" @click="showAdd=!showAdd" circle></el-button> -->
+        </el-form-item>
+        <el-form-item label="题目类型" prop="Type">
+          <el-select v-model="form.Type" placeholder="请选择题目分类">
+            <el-option
+              v-for="item in typelist"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+          <!-- <el-button type="primary" icon="el-icon-plus" @click="showAdd=!showAdd" circle></el-button> -->
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button size="small" @click="dialogFormVisible = false">取 消</el-button>
-        <el-button size="small" type="primary" @click="submit">确 定</el-button>
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submit">确 定</el-button>
       </div>
     </el-dialog>
-
-    <addType ref="addType" MistakeOrNote="Mistake" @addBack="addBack"></addType>
 
   </div>
 </template>
@@ -59,40 +73,44 @@ var ShouTitle, ShouCorrect
 import quexBox from '@/components/my-box/quex-box'
 import voiceBtn from '@/components/voice/index'
 import pictureOcr from '@/components/picture-ocr/index'
-import addType from '@/views/common/addType'
+import { typeList } from '@/assets/js/question_type.js'
+import {
+  questionCategory
+} from '@/api/toget'
 import {
   Imgurl,
-  addMistake,
-  mistakeCate
+  upQuestion
 } from '@/api/toPost'
 
 export default {
-  name: 'addMistake',
+  name: 'addQues',
   components: {
     quexBox,
     voiceBtn,
-    pictureOcr,
-    addType
+    pictureOcr
   },
   data: function() {
     return {
       isOcr: true,
-      showBtn: false,
       lines: '',
       result: '',
-      isHand: false,
       dialogFormVisible: false,
-      questions: [],
-      typelist: [],
+      typelist: typeList,
+      Categorylist: [],
       form: {
         Content: '',
         Text: '',
         Analysis: '',
-        Keywords: '',
-        CategoryId: ''
+        KeyWords: '',
+        CategoryId: '',
+        Type: '',
+        Repetition: 1
       },
       rules: {
         CategoryId: [
+          { required: true, message: '请选择题目分类', trigger: 'change' }
+        ],
+        Type: [
           { required: true, message: '请选择题目类型', trigger: 'change' }
         ]
       }
@@ -115,15 +133,11 @@ export default {
           this.form.Content = this.form.Content + item.words + '<br />'
           this.form.Text = this.form.Text + item.words
         })
-        // ShouTitle.txt.append('<p>' + this.form.Content + '</p>')
-        // ShouTitle.txt.html(this.form.Content)
         this.$notify({
           title: '提示',
           message: '已提取图中文字',
           type: 'info'
         })
-        // // 这里获取相关题目
-        // this.getQues()
       } else {
         this.$notify({
           title: '提示',
@@ -132,51 +146,38 @@ export default {
         })
       }
     },
-    addBack() {
-      this.GetCategory()
-    },
     submit() {
-      if (!this.$store.getters.user.Id) {
-        this.$confirm('你还没有登录，不能进行该操作！前往登录', '提示', {
-          confirmButtonText: '立即登录',
-          cancelButtonText: '取消',
+      if (this.form.Content.trim().length === 0) {
+        this.$notify({
+          title: '提示',
+          message: '题目不能为空！',
           type: 'warning'
-        }).then(() => {
-          this.$router.push({
-            path: '/login'
-          })
-        }).catch(() => {})
+        })
         return
       }
       this.$refs.Form.validate(valid => {
         if (valid) {
-          // this.form.Text = this.$refs.titleEditor.quill.getText().trim()
-          var datas = {
-            'UserId': this.$store.getters.user.Id,
-            'QuestionContent': this.form.Content,
-            'MistakeCateId': this.form.CategoryId,
-            'Correct': this.form.Analysis
-          }
-          addMistake(this.$qs.stringify(datas)).then(res => {
+          var datas = this.form
+          datas.Text = ShouTitle.txt.text()
+          upQuestion(this.$qs.stringify(datas)).then(res => {
             this.dialogFormVisible = false
-            this.$message.success('提交成功！')
-            this.$router.push({
-              path: '/toques/quesList/'
-            })
+            if (res.data.code === 0) {
+              this.$notify({
+                title: '提示',
+                message: '添加题目成功！',
+                type: 'success'
+              })
+            }
           }).catch((msg) => {
-            this.$message.warning('响应错误！')
+            this.$message.warning(msg)
           })
         }
       })
     },
     // 获取题目分类
-    GetCategory() {
-      // 未登录 不请求
-      if (!this.$store.getters.user.Id) {
-        return
-      }
-      mistakeCate(this.$qs.stringify({ UserId: this.$store.getters.user.Id })).then(res => {
-        this.typelist = res.data.data
+    async GetCategory() {
+      questionCategory(this.$qs.stringify()).then(res => {
+        this.Categorylist = res.data.data
       }).catch(() => {
         console.log('获取题目分类数据失败！')
       })
@@ -231,13 +232,26 @@ export default {
         }
       }
     }
+    ShouCorrect.customConfig.menus = [
+      'undo', // 撤销
+      'redo', // 重复
+      'bold', // 粗体
+      'underline', // 下划线
+      'foreColor', // 文字颜色
+      'backColor', // 背景颜色
+      'link', // 插入链接
+      'list', // 列表
+      'justify', // 对齐方式
+      'quote', // 引用
+      'table', // 表格
+      'symbols',
+      'image', // 插入图片
+      'video' // 插入视频
+    ]
     ShouTitle.create()
     ShouCorrect.create()
   },
   created() {
-    this.GetCategory()
-  },
-  activated() {
     this.GetCategory()
   }
 }
@@ -267,4 +281,5 @@ export default {
 .ocr-content{
   white-space:initial!important;
 }
+
 </style>

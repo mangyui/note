@@ -25,15 +25,46 @@
                 <p>拍照搜题</p>
               </router-link>
             </div>
-            <div class="home_item disNone">
+            <div v-if="user.roles&&user.roles.toString()==['teacher']" class="home_item">
+              <router-link to="/carveup/addQues">
+                <svg-icon
+                  class-name='more_icon'
+                  style="color:rgba(84, 93, 206,0.9)"
+                  icon-class="add"
+                />
+                <p>添加题目</p>
+              </router-link>
+            </div>
+            <div v-if="!user.roles||(user.roles&&user.roles.toString()!=['teacher'])" class="home_item">
+              <!-- <router-link to="/SQu/index"> -->
               <router-link to="/todo/addMistake">
-                <svg-icon class-name='more_icon' style="color:#52bab5" icon-class="add" />
+                <!-- <svg-icon class-name='more_icon' style="color:rgba(84, 93, 206,0.9)" icon-class="camera3" />
+                  <p>拍照搜题</p> -->
+                <svg-icon
+                  class-name='more_icon'
+                  style="color:rgba(84, 93, 206,0.9)"
+                  icon-class="add"
+                />
                 <p>添加错题</p>
               </router-link>
             </div>
-            <div class="home_item">
+            <div v-if="user.roles&&user.roles.toString()==['teacher']" class="home_item">
+              <router-link to="/carveup/index">
+                <svg-icon
+                  class-name='more_icon'
+                  style="color:#409EFF"
+                  icon-class="form"
+                />
+                <p>添加测试</p>
+              </router-link>
+            </div>
+            <div v-if="!user.roles||(user.roles&&user.roles.toString()!=['teacher'])" class="home_item">
               <router-link to="/todo/edit">
-                <svg-icon class-name='more_icon' style="color:#409EFF" icon-class="form" />
+                <svg-icon
+                  class-name='more_icon'
+                  style="color:#409EFF"
+                  icon-class="form"
+                />
                 <p>添加笔记</p>
               </router-link>
             </div>
@@ -91,6 +122,7 @@ export default {
   },
   data() {
     return {
+      user: this.$store.getters.user,
       homeTop: 0,
       screenWidth: document.body.clientWidth,
       questions: [],

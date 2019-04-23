@@ -62,7 +62,7 @@ router.beforeEach((to, from, next) => {
 router.afterEach((to, from, next) => {
   var ele = document.querySelector('.app-main')
   $('body>ul').remove()
-  $('body>div').not('#app,.pswp').remove()
+  $('body>div').not('#app,.pswp,.el-message').remove()
   if (ele) {
     setTimeout(() => {
       ele.scrollTop = '0px'

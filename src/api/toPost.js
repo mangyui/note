@@ -515,3 +515,39 @@ export function UpdateRead(datas) {
     data: datas
   })
 }
+
+export function RechargeMoney(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Recharge.RechargeMoney',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 学生get班级
+export function GetStudentClass(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Userelation.GetListUid',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 班级get学生列表
+export function ClassStudents(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Userelation.GetUsersById',
+    method: 'post',
+    data: datas
+  })
+}
+

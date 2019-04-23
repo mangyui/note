@@ -15,19 +15,18 @@
         <div>
           <el-button type="primary" icon="el-icon-plus" size="small" @click="">加入班级</el-button>
         </div>
-        <div>
+        <!-- <div>
           <el-button type="danger" icon="el-icon-delete" size="small" @click="showDelete=!showDelete">退出班级</el-button>
-        </div>
+        </div> -->
       </div>
       <div class="container">
         <div v-if="showLoading" class="loading-box">
           <i class="el-icon-loading"></i>
           加载中...
         </div>
-        <!-- <div v-if="!types[0] && !showLoading" class="loading-box">
-          <i class="el-icon-search"></i>
-          空空如也...
-        </div> -->
+        <div v-if="!ClassList[0] && !showLoading" class="loading-box">
+          - 你没有班课 -
+        </div>
         <el-row :gutter="15">
           <el-col  :xs="24" :sm="12" :md="12" :lg="12" :xl="12" v-for="(item,index) in ClassList" :key="index">
             <el-card>
@@ -38,9 +37,10 @@
                   <b class="type_title">.</b>
                   <div @click="ToList(item.Id)">
                     <div class="tipbox type_content">
-                      <h3 style="margin:15px 10px 18px 10px;font-size:25px;" v-html="item.Intor">
+                      <h3 style="font-size:18px;" v-html="item.Intor">
                       </h3>
-                      <p class="class_type" style="font-size:16px;margin:5px 10px 15px 20px;">
+                      <p class="class_type" >
+                        <span>{{item.Ctime}} • </span>
                           <span v-for="(cateitem,index) in Categorylist" :key="index">
                             <span v-if="item.Cid===cateitem.Id" v-html="cateitem.Class+cateitem.Subject"></span>
                         </span>
@@ -114,13 +114,6 @@
 
 <script>
 
-// import {
-//   mistakeCate,
-//   AddMistakeCate,
-//   DeleteMistakeCate,
-//   UpdateMistakeCate
-// } from '@/api/toPost'
-
 import {
   questionCategory,
   GetListByTid
@@ -128,7 +121,8 @@ import {
 
 import {
   addClass,
-  updateClass
+  updateClass,
+  GetStudentClass
 } from '@/api/toPost'
 
 export default {
@@ -183,16 +177,29 @@ export default {
     },
     getClass() {
       this.showLoading = true
-      GetListByTid(this.$store.getters.user.Id).then(res => {
-        if (res.data.code === 0) {
-          this.ClassList = res.data.data
-        } else {
-          this.$message.warning('获取班课失败...')
-        }
-        this.showLoading = false
-      }).catch((res) => {
-        console.log(res)
-      })
+      if (this.user.roles.toString() === ['teacher']) {
+        GetListByTid(this.$store.getters.user.Id).then(res => {
+          if (res.data.code === 0) {
+            this.ClassList = res.data.data
+          } else {
+            this.$message.warning('获取班课失败...')
+          }
+          this.showLoading = false
+        }).catch((res) => {
+          console.log(res)
+        })
+      } else {
+        GetStudentClass(this.$qs.stringify({ Uid: this.$store.getters.user.Id })).then(res => {
+          if (res.data.code === 0) {
+            this.ClassList = res.data.data
+          } else {
+            this.$message.warning('获取班课失败...')
+          }
+          this.showLoading = false
+        }).catch((res) => {
+          console.log(res)
+        })
+      }
     },
     haveChange() {
       this.getClass()
@@ -277,7 +284,7 @@ export default {
       }).catch(() => {})
     },
     ToList(Id) {
-      console.log(Id)
+      // console.log(Id)
       this.$router.push({
         path: '/class/class_detail/' + Id
       })
@@ -316,6 +323,7 @@ export default {
 }
 .class_type{
   color: #666;
+  margin: 0 0 10px;
 }
 .class_content{
   .class_desc{
