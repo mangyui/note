@@ -2,14 +2,12 @@
   <div class="app-container">
     <span class="header-title">消息</span>
     <div class="container big-box1200">
-      <el-tabs
-        v-model="message"
-        :stretch="true"
-      >
+      <el-tabs v-model="message" :stretch="true" >
+        <el-tab-pane name="left" disabled></el-tab-pane>
         <el-tab-pane name="first">
           <span slot="label">
             <el-badge
-              :value="this.unread.length"
+              :value="unlength"
               class="item"
             > 未读消息</el-badge>
           </span>
@@ -19,14 +17,15 @@
             </div>
             <div class="mess-item" v-for="(item,index) in unread" :key="index">
               <div class="mess-item-content"  @click="popMessage(item)"><p>{{item.Title}}</p><span>{{item.Ctime}}</span></div>
-              <el-button size="mini" @click="handleRead(scope)">标为已读</el-button>
+              <el-button size="mini" @click="handleRead(item)">标为已读</el-button>
             </div>
           </div>
         </el-tab-pane>
+        <el-tab-pane name="center" disabled></el-tab-pane>
         <el-tab-pane name="second">
           <span slot="label">
             <el-badge
-              :value="this.read.length"
+              :value="relength"
               class="item"
               type="primary"
             > 已读消息</el-badge>
@@ -37,10 +36,11 @@
             </div>
             <div class="mess-item" v-for="(item,index) in read" :key="index">
               <div class="mess-item-content"  @click="popMessage(item)"><p>{{item.Title}}</p><span>{{item.Ctime}}</span></div>
-              <!-- <el-button size="mini" @click="handleRead(scope)">标为已读</el-button> -->
+              <!-- <el-button size="mini" @click="handleRead(item)">标为已读</el-button> -->
             </div>
           </div>
         </el-tab-pane>
+        <el-tab-pane name="right" disabled></el-tab-pane>
       </el-tabs>
       <el-dialog
         :title="msg.Title"
@@ -104,7 +104,7 @@ export default {
       })
     },
     handleRead(index) {
-      const Id = index.row.Id
+      const Id = index.Id
       UpdateRead(this.$qs.stringify({ 'UserId': this.$store.getters.user.Id, 'Id': Id })).then(res => {
         // console.log(res)
       }).catch(() => {
@@ -122,7 +122,7 @@ export default {
       this.changelength()
     },
     handleRestoreUnRead(index) {
-      const Id = index.row.Id
+      const Id = index.Id
       UpdateRead(this.$qs.stringify({ 'UserId': this.$store.getters.user.Id, 'Id': Id, 'ToReaded': false })).then(res => {
         // console.log(res)
       }).catch(() => {

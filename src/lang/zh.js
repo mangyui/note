@@ -22,7 +22,7 @@ export default {
     Followee: '关注',
     More: '更多',
     ToQues: '错题本',
-    Test: '试题测试',
+    Test: '题目测试',
     getTest: '生成试题',
     carveup: '添加测试',
     addQues: '添加题目',

@@ -29,7 +29,7 @@
               <router-link to="/carveup/addQues">
                 <svg-icon
                   class-name='more_icon'
-                  style="color:rgba(84, 93, 206,0.9)"
+                  style="color:#52bab5"
                   icon-class="add"
                 />
                 <p>添加题目</p>
@@ -42,7 +42,7 @@
                   <p>拍照搜题</p> -->
                 <svg-icon
                   class-name='more_icon'
-                  style="color:rgba(84, 93, 206,0.9)"
+                  style="color:#52bab5"
                   icon-class="add"
                 />
                 <p>添加错题</p>
@@ -68,9 +68,9 @@
                 <p>添加笔记</p>
               </router-link>
             </div>
-            <div class="home_item">
+            <div class="home_item disNone">
               <router-link to="/class/index">
-                <svg-icon class-name='more_icon' style="color:#8371f3" icon-class="peoples" />
+                <svg-icon class-name='more_icon' style="color:rgba(84, 93, 206,0.9)" icon-class="peoples" />
                 <p>我的班课</p>
               </router-link>
             </div>
@@ -92,16 +92,15 @@
           <i class="el-icon-search"></i>
           空空如也...
         </div>
-        <!-- <h4 class="home-h4" v-if="myques[0]">最近错题</h4>
-        <myquex-box :option="myques"></myquex-box> -->
-        <h4 class="home-h4" v-if="notes[0]"><i class="el-icon-star-off"></i> 最近笔记 <i class="el-icon-star-off"></i></h4>
-        <note-box :option="notes"></note-box>
-        <h4 class="home-h4" v-show="questions[0]"><i class="el-icon-star-off"></i> 推荐题目 <i class="el-icon-star-off"></i></h4>
-        <quex-box :option="questions"></quex-box>
         <div v-show="showLoading" class="loading-box">
           <i class="el-icon-loading"></i>
           加载中...
         </div>
+        <empty v-if="!notes[0]&&!questions[0]"></empty>
+        <h4 class="home-h4" v-if="notes[0]"><i class="el-icon-star-off"></i> 最近笔记 <i class="el-icon-star-off"></i></h4>
+        <note-box :option="notes"></note-box>
+        <h4 class="home-h4" v-show="questions[0]"><i class="el-icon-star-off"></i> 推荐题目 <i class="el-icon-star-off"></i></h4>
+        <quex-box :option="questions"></quex-box>
       </div>
     </div>
   </div>
@@ -114,11 +113,13 @@ import {
 } from '@/api/toget'
 import quexBox from '@/components/my-box/quex-box'
 import noteBox from '@/components/my-box/note-box'
+import empty from '@/components/my-box/empty'
 export default {
   name: 'home',
   components: {
     quexBox,
-    noteBox
+    noteBox,
+    empty
   },
   data() {
     return {

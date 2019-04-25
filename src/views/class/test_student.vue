@@ -10,21 +10,6 @@
       </el-breadcrumb>
     </div>
     <div class="big-box1200">
-      <!-- <div class="top-search">
-        <el-input
-          placeholder="查询学生"
-          @keyup.enter.native=""
-          v-model="search.keys">
-          <i slot="prefix" class="el-input__icon el-icon-search"></i>
-        </el-input>
-      </div> -->
-      <!-- <div class="list-gbtn">
-        <div></div>
-        <div>
-          <el-button type="primary" icon="el-icon-plus" size="small">添加学生</el-button>
-          <el-button type="danger" icon="el-icon-delete" @click="showDelete=!showDelete" size="small">移除学生</el-button>
-        </div>
-      </div> -->
       <div class="container">
         <div style="text-align: center;">
           <h4>三月小测试</h4>

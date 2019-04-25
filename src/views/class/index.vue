@@ -37,7 +37,7 @@
                   <b class="type_title">.</b>
                   <div @click="ToList(item.Id)">
                     <div class="tipbox type_content">
-                      <h3 style="font-size:18px;" v-html="item.Intor">
+                      <h3 style="font-size:17px;" v-html="item.Intor">
                       </h3>
                       <p class="class_type" >
                         <span>{{item.Ctime}} • </span>
@@ -115,13 +115,14 @@
 <script>
 
 import {
-  questionCategory,
-  GetListByTid
+  // GetListByTid,
+  questionCategory
 } from '@/api/toget'
 
 import {
   addClass,
   updateClass,
+  GetListByTid,
   GetStudentClass
 } from '@/api/toPost'
 
@@ -177,8 +178,15 @@ export default {
     },
     getClass() {
       this.showLoading = true
-      if (this.user.roles.toString() === ['teacher']) {
-        GetListByTid(this.$store.getters.user.Id).then(res => {
+      var data
+      // eslint-disable-next-line
+      if (this.user.Occupation == 2) {
+        data = {
+          Tid: this.$store.getters.user.Id,
+          Page: 1,
+          Number: 99
+        }
+        GetListByTid(this.$qs.stringify(data)).then(res => {
           if (res.data.code === 0) {
             this.ClassList = res.data.data
           } else {
@@ -187,9 +195,15 @@ export default {
           this.showLoading = false
         }).catch((res) => {
           console.log(res)
+          this.showLoading = false
         })
       } else {
-        GetStudentClass(this.$qs.stringify({ Uid: this.$store.getters.user.Id })).then(res => {
+        data = {
+          Uid: this.$store.getters.user.Id,
+          Page: 1,
+          Number: 99
+        }
+        GetStudentClass(this.$qs.stringify(data)).then(res => {
           if (res.data.code === 0) {
             this.ClassList = res.data.data
           } else {
@@ -198,6 +212,7 @@ export default {
           this.showLoading = false
         }).catch((res) => {
           console.log(res)
+          this.showLoading = false
         })
       }
     },

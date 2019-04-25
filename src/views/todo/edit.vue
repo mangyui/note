@@ -3,7 +3,7 @@
     <span class="header-title">添加笔记</span>
     <div class="container big-box1200">
 
-      <pictureOcr v-show="isOcr" ocrIcon="form_search" ocrMode="手写" @Oresult="Getresult"></pictureOcr>
+      <pictureOcr v-show="isOcr" ocrIcon="form_search" ocrMode="shouxie" @Oresult="Getresult"></pictureOcr>
       <el-button class="de-more" type="danger" size="small" @click="isOcr=!isOcr">{{isOcr?"关闭":"开启"}}文字识别</el-button>
 
       <div class="noteEdit-title">

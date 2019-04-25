@@ -39,16 +39,16 @@
       width="30%">
       <div class="student_box ques_header">
         <div class="student_box_left">
-          <router-link :to="'/user/other/'+1">
-            <img :src="user.Avatar || './static/img/avatar.jpg'">
+          <router-link :to="'/user/other/'+searchStudent.Id">
+            <img :src="searchStudent.Avatar || './static/img/avatar.jpg'">
           </router-link>
-          <b>{{user.Name}}</b>
+          <b>{{searchStudent.Name}}</b>
         </div>
         <span></span>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogVisible = false">取 消</el-button>
-        <el-button size="small" type="primary" @click="dialogVisible = false">添加该学生</el-button>
+        <el-button size="small" type="primary" @click="ToaddStudent">添加该学生</el-button>
       </span>
     </el-dialog>
   </div>
@@ -56,7 +56,11 @@
 
 <script>
 
-import { ClassStudents } from '@/api/toPost'
+import {
+  ClassStudents,
+  ClassAddStudent,
+  SearchUsers
+} from '@/api/toPost'
 export default {
   name: 'studentList',
   data() {
@@ -68,9 +72,7 @@ export default {
       addstudent: '',
       loading: false,
       showDelete: false,
-      search: {
-        keys: ''
-      }
+      searchStudent: ''
     }
   },
   props: {
@@ -91,7 +93,45 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(({ value }) => {
-        this.dialogVisible = true
+        if (value.trim() === '') {
+          this.users = []
+          return
+        }
+        SearchUsers(this.$qs.stringify({ name: value })).then(res => {
+          this.searchStudent = null
+          if (res.data.data.Name) {
+            this.searchStudent = res.data.data
+            this.dialogVisible = true
+          } else {
+            this.$notify({
+              title: '提示',
+              message: '没有找到该学生，请确认用户号',
+              type: 'info'
+            })
+          }
+        }).catch((res) => {
+          console.log(res)
+          this.$message.warning('系统错误...')
+        })
+      })
+    },
+    ToaddStudent() {
+      var data = {
+        Id: this.classId,
+        Sid: this.searchStudent.Id
+      }
+      ClassAddStudent(this.$qs.stringify(data)).then(res => {
+        if (res.data.code === 0) {
+          this.$notify({
+            message: '已添加该学生',
+            type: 'info'
+          })
+          this.getStudents()
+          this.dialogVisible = false
+        }
+      }).catch((res) => {
+        console.log(res)
+        this.$message.warning('系统错误...')
       })
     }
   },

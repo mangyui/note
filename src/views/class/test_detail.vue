@@ -4,7 +4,7 @@
     <div class="crumbs disNone">
       <el-breadcrumb separator="/">
           <el-breadcrumb-item :to="{ path: '/class/index' }"><i class="el-icon-date"></i> 我的班级</el-breadcrumb-item>
-          <el-breadcrumb-item :to="{ path: '/class/class_detail/' + ClassId }"> 初二物理班</el-breadcrumb-item>
+          <el-breadcrumb-item :to="{ path: '/class/class_detail/' + ClassId }"> 班级详情</el-breadcrumb-item>
           <el-breadcrumb-item>测试详情</el-breadcrumb-item>
       </el-breadcrumb>
     </div>

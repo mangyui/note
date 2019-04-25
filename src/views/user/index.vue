@@ -479,7 +479,7 @@ export default {
   display: block;
   height: 100%;
   width: 100%;
-  left: 120px;
+  left: 0;
   top: 0;
   background-color: rgba(0, 0, 0, 0.4);
   cursor: pointer;
@@ -489,9 +489,9 @@ export default {
   border-radius: 50%;
   transition: 0.28s;
 }
-.avatar:hover label{
-  left: 0;
-}
+// .avatar:hover label{
+//   left: 0;
+// }
 .user_address {
   font-size: 12px;
   color: #ccc;

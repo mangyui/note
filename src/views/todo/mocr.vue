@@ -9,7 +9,7 @@
           加载中...
         </div>
         <div class="sq-body">
-          <el-button class="sq-change" size="small" v-if="showBtn" @click="showShou=(showShou==false?true:false)">{{showShou==false?"手动添加":"返回搜题"}}</el-button>
+          <el-button class="sq-change" size="small" v-if="showBtn" @click="showShou=(showShou==false?true:false)">{{showShou==false?"没有找到":"返回搜题"}}</el-button>
           <div v-show="!showShou && questions[0]"  class="ques-list">
             <h3 class="Hpipei">猜你要找:</h3>
             <slider v-if="" ref="slider" :options="sliderOptions" @slide='slide' @tap='onTap' @init='onInit'>
@@ -31,7 +31,7 @@
             <h4 class="htitle">添加解答</h4>
             <div ref="HaveCorrect" class="divWangeditor" style="text-align:left"></div>
             <br/>
-            <el-button class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
+            <el-button class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">添加到错题本</el-button>
           </div>
           <div v-show="showShou" class="ocr-edit">
             <h3 class="Hpipei">手动添加</h3>
@@ -43,7 +43,7 @@
             <div ref="ShouCorrect" class="divWangeditor" style="text-align:left"></div>
             <!-- <quill-editor ref="AnalysisEditor" v-model="form.Analysis" :options="editorOption" ></quill-editor> -->
             <br/>
-            <el-button class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
+            <el-button class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">添加到错题本</el-button>
           </div>
         </div>
     </div>

@@ -21,7 +21,7 @@
                 <voiceBtn @record="showResult2"></voiceBtn>
               </div>
             </div>
-            <el-button size="large" class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
+            <el-button size="large" class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">添加到错题本</el-button>
           </div>
         </div>
     </div>
@@ -146,6 +146,13 @@ export default {
             path: '/login'
           })
         }).catch(() => {})
+        return
+      }
+      if (this.form.Content.trim().length === 0) {
+        this.$notify({
+          message: '题目不能为空！',
+          type: 'warning'
+        })
         return
       }
       this.$refs.Form.validate(valid => {

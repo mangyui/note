@@ -10,11 +10,7 @@
             <el-checkbox v-model="showAnalysis" label="答案" border size="medium"></el-checkbox>
           </div>
         </div>
-        <el-alert
-          class="toShow"
-          title="目前手机端暂不支持下载word,请移步pc端下载"
-          type="warning">
-        </el-alert>
+        <el-alert v-show="Tests[0]" class="toShow" title="目前手机端暂不支持下载word,请移步pc端下载" type="warning"></el-alert>
         <div class="container" id="Test">
           <div v-if="showLoading" class="loading-box">
             <i class="el-icon-loading"></i>
