@@ -528,6 +528,18 @@ export function RechargeMoney(datas) {
   })
 }
 
+// 教师班级列表
+export function GetListByTid(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Userelation.GetListTid',
+    method: 'post',
+    data: datas
+  })
+}
+
 // 学生get班级
 export function GetStudentClass(datas) {
   return request({
@@ -547,6 +559,18 @@ export function ClassStudents(datas) {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
     url: '/?service=App.Userelation.GetUsersById',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 班级添加学生
+export function ClassAddStudent(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Userelation.AddSid',
     method: 'post',
     data: datas
   })

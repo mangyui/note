@@ -25,9 +25,9 @@
         show-icon>
       </el-alert>
       <span slot="footer" class="dialog-footer">
-        <el-button class="to-left" size="medium" @click="toRotate" type="primary" icon="el-icon-refresh"></el-button>
-        <el-button size="medium" @click="cancelCrop">取 消</el-button>
-        <el-button type="primary"  size="medium" @click="toCrop">确 定</el-button>
+        <el-button class="to-left" size="small" @click="toRotate" type="primary" icon="el-icon-refresh"></el-button>
+        <el-button size="small" @click="cancelCrop">取 消</el-button>
+        <el-button type="primary"  size="small" @click="toCrop">确 定</el-button>
       </span>
     </el-dialog>
   </div>

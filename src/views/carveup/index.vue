@@ -392,7 +392,6 @@ export default {
         }
         this.questionList = this.questionList.concat(ques)
         this.$notify({
-          title: '提示',
           message: '添加成功！',
           type: 'success'
         })

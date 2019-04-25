@@ -35,7 +35,8 @@ const user = {
     // 登录/更新
     SET_USER: (state, user) => {
       Object.assign(state, user)
-      if (user.Occupation === 2) {
+      // eslint-disable-next-line
+      if (user.Occupation == 2) {
         state.roles = ['teacher']
       } else if (user.Name === 'ming') {
         state.roles = ['admin']

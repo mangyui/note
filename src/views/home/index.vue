@@ -113,6 +113,11 @@
           <i class="el-icon-search"></i>
           空空如也...
         </div>
+        <div v-show="showLoading" class="loading-box">
+          <i class="el-icon-loading"></i>
+          加载中...
+        </div>
+        <empty v-if="!notes[0]&&!questions[0]"></empty>
         <h4
           class="home-h4"
           v-if="notes[0]"
@@ -123,13 +128,6 @@
           v-show="questions[0]"
         ><i class="el-icon-star-off"></i> 推荐题目 <i class="el-icon-star-off"></i></h4>
         <quex-box :option="questions"></quex-box>
-        <div
-          v-show="showLoading"
-          class="loading-box"
-        >
-          <i class="el-icon-loading"></i>
-          加载中...
-        </div>
       </div>
     </div>
   </div>
@@ -142,11 +140,13 @@ import {
 } from '@/api/toget'
 import quexBox from '@/components/my-box/quex-box'
 import noteBox from '@/components/my-box/note-box'
+import empty from '@/components/my-box/empty'
 export default {
   name: 'home',
   components: {
     quexBox,
-    noteBox
+    noteBox,
+    empty
   },
   data() {
     return {

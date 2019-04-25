@@ -19,7 +19,7 @@
             </div>
             <div class="mess-item" v-for="(item,index) in unread" :key="index">
               <div class="mess-item-content"  @click="popMessage(item)"><p>{{item.Title}}</p><span>{{item.Ctime}}</span></div>
-              <el-button size="mini" @click="handleRead(scope)">标为已读</el-button>
+              <el-button size="mini" @click="handleRead(item)">标为已读</el-button>
             </div>
           </div>
         </el-tab-pane>
@@ -37,7 +37,7 @@
             </div>
             <div class="mess-item" v-for="(item,index) in read" :key="index">
               <div class="mess-item-content"  @click="popMessage(item)"><p>{{item.Title}}</p><span>{{item.Ctime}}</span></div>
-              <!-- <el-button size="mini" @click="handleRead(scope)">标为已读</el-button> -->
+              <!-- <el-button size="mini" @click="handleRead(item)">标为已读</el-button> -->
             </div>
           </div>
         </el-tab-pane>
@@ -104,7 +104,7 @@ export default {
       })
     },
     handleRead(index) {
-      const Id = index.row.Id
+      const Id = index.Id
       UpdateRead(this.$qs.stringify({ 'UserId': this.$store.getters.user.Id, 'Id': Id })).then(res => {
         // console.log(res)
       }).catch(() => {
@@ -122,7 +122,7 @@ export default {
       this.changelength()
     },
     handleRestoreUnRead(index) {
-      const Id = index.row.Id
+      const Id = index.Id
       UpdateRead(this.$qs.stringify({ 'UserId': this.$store.getters.user.Id, 'Id': Id, 'ToReaded': false })).then(res => {
         // console.log(res)
       }).catch(() => {

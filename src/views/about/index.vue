@@ -35,7 +35,7 @@ export default {
   name: 'about',
   data() {
     return {
-      version: '1.0.7',
+      version: '1.0.9',
       isup: false,
       text: '已是最新版本',
       upUrl: ''
@@ -69,7 +69,7 @@ export default {
         }).catch(() => {
         })
       } else {
-        this.$alert('当前已是最新版本', '提醒', {
+        this.$alert('当前已是最新版本', '更新', {
           confirmButtonText: '知道了'
         })
       }

@@ -2,14 +2,6 @@
   <div class="app-container test_list">
     <!-- <span class="header-title">学生测试</span> -->
     <div class="big-box1200">
-      <!-- <div class="top-search">
-        <el-input
-          placeholder="请输入内容"
-          @keyup.enter.native=""
-          v-model="search.keys">
-          <i slot="prefix" class="el-input__icon el-icon-search"></i>
-        </el-input>
-      </div> -->
       <div class="list-gbtn">
         <p class="list_p">在测<span>{{this.GetAllTestByTeacherId.length}}</span> 结束<span>0</span></p>
         <div v-if="user.roles.toString()!=['student']">
@@ -22,6 +14,13 @@
         </div>
       </div>
       <div class="block">
+        <div v-show="!showLoading && !GetAllTestByTeacherId[0]" class="loading-box">
+          - 暂无测试 -
+        </div>
+        <div v-show="showLoading" class="loading-box">
+          <i class="el-icon-loading"></i>
+          加载中...
+        </div>
         <el-timeline>
           <el-timeline-item
             v-for="(item, index) in GetAllTestByTeacherId"
@@ -39,9 +38,9 @@
                 :to="'/class/test_detail/'+item.Id"
               >
                 <div>
-                  <h4 style="font-size:18px;" v-html="item.Title"></h4>
+                  <h4 style="font-size:16px;" v-html="item.Title"></h4>
                   <!-- <p>备注</p> -->
-                  <h5>共 <span style="color: #F56C6C"> {{item.QCount}}</span> 道测试题目</h5>
+                  <h5 style="margin: 32px 0">共 <span style="color: #F56C6C"> {{item.QCount}}</span> 道测试题目</h5>
                 </div>
                 <div>
                   <p class="test_state"><span class="test_time">{{item.Ctime}}</span><span class="test_time">限制时间：<span style="color: #F56C6C">{{item.LimiteTime}}</span> 分钟</span>
@@ -153,11 +152,7 @@ export default {
     }
     return {
       user: this.$store.getters.user,
-      search: {
-        keys: '',
-        UserId: this.$store.getters.user.Id
-      },
-      page: 1,
+      showLoading: false,
       Uid: 0,
       total: null,
       GetAllTestByTeacherId: [],
@@ -254,6 +249,7 @@ export default {
     },
     Init() {
       if (this.$store.getters.user.Id) {
+        this.showLoading = true
         GetTestByTidAndUid(this.$store.getters.user.Id, this.classId).then(res => {
           if (res.data.code === 0) {
             this.GetAllTestByTeacherId = res.data.data
@@ -261,12 +257,14 @@ export default {
               this.GetAllTestByTeacherId[i].QCount = this.getQuestionCount(this.GetAllTestByTeacherId[i])
               this.GetAllTestByTeacherId[i].Ctime = this.getLocalTime(this.GetAllTestByTeacherId[i].Ctime)
             }
-            // console.log(res.data.data)
+            this.showLoading = false
           } else {
-            this.$message.error(res.data.msg)
+            this.showLoading = false
+            // this.$message.error(res.data.msg)
           }
-        }).catch(() => {
-          this.$message.error('获取数据失败')
+        }).catch((error) => {
+          console.log(error)
+          this.$message.error('系统错误...')
         })
       } else {
         console.log('未登录')
@@ -318,7 +316,7 @@ export default {
       text-align: right;
       .test_time {
         display: block;
-        margin-bottom: 2px;
+        margin: 5px 0;
       }
     }
   }
