@@ -2,16 +2,8 @@
   <div class="app-container test_student">
     <!-- <span class="header-title">学生列表</span> -->
     <div class="big-box1200">
-      <!-- <div class="top-search">
-        <el-input
-          placeholder="查询学生"
-          @keyup.enter.native=""
-          v-model="search.keys">
-          <i slot="prefix" class="el-input__icon el-icon-search"></i>
-        </el-input>
-      </div> -->
       <div class="list-gbtn">
-        <div>共 <b style="color: #F56C6C">24</b> 名学生</div>
+        <div>共 <b style="color: #F56C6C">{{students.length}}</b> 名学生</div>
         <div v-if="user.roles.toString()!=['student']">
           <el-button type="primary" icon="el-icon-plus" size="small" @click="addStudent">添加学生</el-button>
           <el-button type="danger" icon="el-icon-delete" @click="showDelete=!showDelete" size="small">移除学生</el-button>
@@ -22,15 +14,15 @@
           <h4>三月小测试</h4>
         </div> -->
         <el-collapse v-loading="loading" v-model="activeNames">
-          <el-collapse-item v-for="(item,index) in 24" :key="index">
+          <el-collapse-item v-for="(item,index) in students" :key="index">
             <template slot="title">
               <div class="student_box ques_header">
                 <div class="student_box_left">
                   <el-button class="btn-detele" v-show="showDelete" type="text" icon="el-icon-close" circle></el-button>
-                  <router-link :to="'/user/other/'+1">
-                    <img :src="user.Avatar || './static/img/avatar.jpg'">
+                  <router-link :to="'/user/other/'+item.Id">
+                    <img :src="item.Avatar || './static/img/avatar.jpg'">
                   </router-link>
-                  <b>{{user.Name}}</b>
+                  <b>{{item.Name}}</b>
                 </div>
                 <span></span>
               </div>
@@ -47,16 +39,16 @@
       width="30%">
       <div class="student_box ques_header">
         <div class="student_box_left">
-          <router-link :to="'/user/other/'+1">
-            <img :src="user.Avatar || './static/img/avatar.jpg'">
+          <router-link :to="'/user/other/'+searchStudent.Id">
+            <img :src="searchStudent.Avatar || './static/img/avatar.jpg'">
           </router-link>
-          <b>{{user.Name}}</b>
+          <b>{{searchStudent.Name}}</b>
         </div>
         <span></span>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogVisible = false">取 消</el-button>
-        <el-button size="small" type="primary" @click="dialogVisible = false">添加该学生</el-button>
+        <el-button size="small" type="primary" @click="ToaddStudent">添加该学生</el-button>
       </span>
     </el-dialog>
   </div>
@@ -64,6 +56,11 @@
 
 <script>
 
+import {
+  ClassStudents,
+  ClassAddStudent,
+  SearchUsers
+} from '@/api/toPost'
 export default {
   name: 'studentList',
   data() {
@@ -75,31 +72,71 @@ export default {
       addstudent: '',
       loading: false,
       showDelete: false,
-      search: {
-        keys: ''
-      }
+      searchStudent: ''
     }
   },
   props: {
     classId: [String, Number]
   },
   methods: {
-    getNotes() {
-      // getNoteList().then(res => {
-      //   this.questions = res.data
-      // }).catch(() => {})
-      // this.loading = false
+    getStudents() {
+      ClassStudents(this.$qs.stringify({ Id: this.classId })).then(res => {
+        this.students = res.data.data
+        this.loading = false
+      }).catch((error) => {
+        this.loading = false
+        console.log(error)
+      })
     },
     addStudent() {
       this.$prompt('请输入学生的用户号', '查找学生', {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
       }).then(({ value }) => {
-        this.dialogVisible = true
+        if (value.trim() === '') {
+          this.users = []
+          return
+        }
+        SearchUsers(this.$qs.stringify({ name: value })).then(res => {
+          this.searchStudent = null
+          if (res.data.data.Name) {
+            this.searchStudent = res.data.data
+            this.dialogVisible = true
+          } else {
+            this.$notify({
+              title: '提示',
+              message: '没有找到该学生，请确认用户号',
+              type: 'info'
+            })
+          }
+        }).catch((res) => {
+          console.log(res)
+          this.$message.warning('系统错误...')
+        })
+      })
+    },
+    ToaddStudent() {
+      var data = {
+        Id: this.classId,
+        Sid: this.searchStudent.Id
+      }
+      ClassAddStudent(this.$qs.stringify(data)).then(res => {
+        if (res.data.code === 0) {
+          this.$notify({
+            message: '已添加该学生',
+            type: 'info'
+          })
+          this.getStudents()
+          this.dialogVisible = false
+        }
+      }).catch((res) => {
+        console.log(res)
+        this.$message.warning('系统错误...')
       })
     }
   },
   created() {
+    this.getStudents()
   }
 }
 </script>

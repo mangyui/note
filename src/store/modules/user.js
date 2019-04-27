@@ -35,7 +35,8 @@ const user = {
     // 登录/更新
     SET_USER: (state, user) => {
       Object.assign(state, user)
-      if (user.Occupation === 2) {
+      // eslint-disable-next-line
+      if (user.Occupation == 2) {
         state.roles = ['teacher']
       } else if (user.Name === 'ming') {
         state.roles = ['admin']
@@ -52,6 +53,11 @@ const user = {
     // 修改角色
     SET_ROSE: (state, roles) => {
       state.roles = roles
+      localStorage.setItem('user', JSON.stringify(state))
+    },
+    // 金币变动
+    SET_COIN: (state, money) => {
+      state.Coin = money
       localStorage.setItem('user', JSON.stringify(state))
     },
     // 登出
@@ -109,6 +115,13 @@ const user = {
       return new Promise((resolve, reject) => {
         // console.log(userAvatar)
         commit('SET_USER', data)
+      })
+    },
+    // 金币变动
+    RechargeMoney({ commit }, coin) {
+      return new Promise((resolve, reject) => {
+        // console.log(userAvatar)
+        commit('SET_COIN', coin)
       })
     },
     // 修改资料

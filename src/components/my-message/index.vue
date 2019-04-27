@@ -3,10 +3,10 @@
     <el-button class="btn-text can-hover" type="text" @click="dialogVisible = true">
       <svg-icon class-name='naver-icon' icon-class="bell" />
       <el-badge is-dot class="item"  style="margin-top: -3px;">
-        <span class="naver-text disNone">通知</span>
+        <span class="naver-text disNone" @click="toMore()">通知</span>
       </el-badge>
     </el-button>
-    <el-dialog title="消息通知" width="800px" :visible.sync="dialogVisible" append-to-body>
+    <!-- <el-dialog title="消息通知" width="800px" :visible.sync="dialogVisible" append-to-body>
       <div class="container mess">
         <el-tabs v-model="message">
             <el-tab-pane name="first">
@@ -29,7 +29,7 @@
                   <el-button size="small" type="primary" @click="allToDu">全部标为已读</el-button>
                 </div>
             </el-tab-pane>
-            <!-- <el-tab-pane name="second">
+           <el-tab-pane name="second">
               <span slot="label"><el-badge :value="read.length" class="item"> 已读消息</el-badge></span>
                 <template v-if="message === 'second'">
                     <el-table :data="read" :show-header="false" style="width: 100%" empty-text="暂无消息">
@@ -50,8 +50,8 @@
                       <el-button size="small" type="danger">删除全部</el-button>
                     </div>
                 </template>
-            </el-tab-pane> -->
-            <!-- <el-tab-pane name="third">
+            </el-tab-pane> 
+           <el-tab-pane name="third">
               <span slot="label"><el-badge :value="recycle.length" class="item"> 回收站</el-badge></span>
                 <template v-if="message === 'third'">
                     <el-table :data="recycle" :show-header="false" style="width: 100%" empty-text="暂无消息">
@@ -71,10 +71,10 @@
                         <el-button size="small" type="danger">清空回收站</el-button>
                     </div>
                 </template>
-            </el-tab-pane> -->
+            </el-tab-pane>
         </el-tabs>
       </div>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 

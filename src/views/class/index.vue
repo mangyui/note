@@ -15,21 +15,20 @@
         <div>
           <el-button type="primary" icon="el-icon-plus" size="small" @click="">加入班级</el-button>
         </div>
-        <div>
+        <!-- <div>
           <el-button type="danger" icon="el-icon-delete" size="small" @click="showDelete=!showDelete">退出班级</el-button>
-        </div>
+        </div> -->
       </div>
       <div class="container">
         <div v-if="showLoading" class="loading-box">
           <i class="el-icon-loading"></i>
           加载中...
         </div>
-        <!-- <div v-if="!types[0] && !showLoading" class="loading-box">
-          <i class="el-icon-search"></i>
-          空空如也...
-        </div> -->
+        <div v-if="!ClassList[0] && !showLoading" class="loading-box">
+          - 你没有班课 -
+        </div>
         <el-row :gutter="15">
-          <el-col  :xs="24" :sm="12" :md="12" :lg="12" :xl="12" v-for="(item,index) in 3" :key="index">
+          <el-col  :xs="24" :sm="12" :md="12" :lg="12" :xl="12" v-for="(item,index) in ClassList" :key="index">
             <el-card>
               <i v-show="showEdit" class="el-icon-edit icon-update" @click="showEditBox(index)"></i>
               <i v-show="showDelete" class="el-icon-close icon-delete" @click="toDetele(item.Id)"></i>
@@ -38,14 +37,16 @@
                   <b class="type_title">.</b>
                   <div @click="ToList(item.Id)">
                     <div class="tipbox type_content">
-                      <h3 style="margin:5px 0 8px">
-                        初二物理班
+                      <h3 style="font-size:17px;" v-html="item.Intor">
                       </h3>
-                      <p class="class_type">
-                        2019/04/04 &nbsp;&nbsp;‧&nbsp;&nbsp; 初二 &nbsp;&nbsp;‧&nbsp;&nbsp; 物理
+                      <p class="class_type" >
+                        <span>{{item.Ctime}} • </span>
+                          <span v-for="(cateitem,index) in Categorylist" :key="index">
+                            <span v-if="item.Cid===cateitem.Id" v-html="cateitem.Class+cateitem.Subject"></span>
+                        </span>
                       </p>
                       <div class='class_content'>
-                        <p class="class_desc">备注</p>
+                        <!-- <p class="class_desc">备注</p> -->
                         <table>
                           <tr>
                             <td>测试数：<b>03</b></td>
@@ -64,8 +65,8 @@
     </div>
     <el-dialog title="开设班级" :visible.sync="showAdd">
       <el-form :model="toadd" :rules="rules" ref="Form" label-width="100px">
-        <el-form-item label="科目年级">
-          <el-select size="medium" v-model="toadd.CategoryId" placeholder="选择科目年级" @change="">
+        <el-form-item label="科目年级" prop="Cid">
+          <el-select size="medium" v-model="toadd.Cid" placeholder="选择科目年级" @change="">
             <el-option
               v-for="item in Categorylist"
               :key="item.Id"
@@ -76,11 +77,8 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="班级名" prop="Name">
-          <el-input v-model="toadd.Name"></el-input>
-        </el-form-item>
-        <el-form-item label="班级备注" prop="Intro">
-          <el-input type="textarea" v-model="toadd.Intro"></el-input>
+        <el-form-item label="班级名" prop="Intor">
+          <el-input v-model="toadd.Intor"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -90,8 +88,8 @@
     </el-dialog>
     <el-dialog title="修改班级" :visible.sync="showUpdate">
       <el-form :model="toupdate" :rules="rules" ref="updateForm" label-width="100px">
-        <el-form-item label="科目年级">
-          <el-select size="medium" v-model="toupdate.CategoryId" placeholder="选择科目年级" @change="">
+        <el-form-item label="科目年级" prop="Cid">
+          <el-select size="medium" v-model="toupdate.Cid" placeholder="选择科目年级" @change="">
             <el-option
               v-for="item in Categorylist"
               :key="item.Id"
@@ -102,11 +100,8 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="班级名" prop="Name">
-          <el-input v-model="toupdate.Name"></el-input>
-        </el-form-item>
-        <el-form-item label="班级备注" prop="Intro">
-          <el-input type="textarea" v-model="toupdate.Intro"></el-input>
+        <el-form-item label="班级名" prop="Intor">
+          <el-input v-model="toupdate.Intor"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -119,16 +114,17 @@
 
 <script>
 
-// import {
-//   mistakeCate,
-//   AddMistakeCate,
-//   DeleteMistakeCate,
-//   UpdateMistakeCate
-// } from '@/api/toPost'
-
 import {
+  // GetListByTid,
   questionCategory
 } from '@/api/toget'
+
+import {
+  addClass,
+  updateClass,
+  GetListByTid,
+  GetStudentClass
+} from '@/api/toPost'
 
 export default {
   name: 'mistake_type',
@@ -141,27 +137,25 @@ export default {
       showEdit: false,
       showUpdate: false,
       Categorylist: [],
+      ClassList: [],
       types: [],
       toadd: {
-        UserId: this.$store.getters.user.Id,
-        Name: '',
-        CategoryId: '10',
-        Intro: ''
+        Tid: this.$store.getters.user.Id,
+        Cid: '',
+        Intor: ''
       },
       toupdate: {
-        UserId: this.$store.getters.user.Id,
-        MistakeCateId: '',
-        CategoryId: '10',
-        Name: '',
-        Intro: ''
+        Tid: this.$store.getters.user.Id,
+        Id: '',
+        Cid: '',
+        Intor: ''
       },
       rules: {
-        Name: [
-          { required: true, message: '请输入班级名', trigger: 'blur' },
-          { min: 1, max: 10, message: '长度在 1 到 10 个字符', trigger: 'blur' }
+        Cid: [
+          { required: true, message: '请选择科目年级', trigger: 'blur' }
         ],
-        Intro: [
-          { min: 0, max: 30, message: '长度在 0 到 30 个字符', trigger: 'blur' }
+        Intor: [
+          { required: true, message: '请输入班级名', trigger: 'blur' }
         ]
       }
     }
@@ -183,59 +177,103 @@ export default {
       })
     },
     getClass() {
-      // this.showLoading = true
-      // mistakeCate(qs.stringify({ UserId: this.$store.getters.user.Id })).then(res => {
-      //   if (res.data.code === 0) {
-      //     this.types = res.data.data
-      //   } else {
-      //     this.$message.warning('获取科目失败...')
-      //   }
-      //   this.showLoading = false
-      // }).catch((res) => {
-      //   console.log(res)
-      // })
+      this.showLoading = true
+      var data
+      // eslint-disable-next-line
+      if (this.user.Occupation == 2) {
+        data = {
+          Tid: this.$store.getters.user.Id,
+          Page: 1,
+          Number: 99
+        }
+        GetListByTid(this.$qs.stringify(data)).then(res => {
+          if (res.data.code === 0) {
+            this.ClassList = res.data.data
+          } else {
+            this.$message.warning('获取班课失败...')
+          }
+          this.showLoading = false
+        }).catch((res) => {
+          console.log(res)
+          this.showLoading = false
+        })
+      } else {
+        data = {
+          Uid: this.$store.getters.user.Id,
+          Page: 1,
+          Number: 99
+        }
+        GetStudentClass(this.$qs.stringify(data)).then(res => {
+          if (res.data.code === 0) {
+            this.ClassList = res.data.data
+          } else {
+            this.$message.warning('获取班课失败...')
+          }
+          this.showLoading = false
+        }).catch((res) => {
+          console.log(res)
+          this.showLoading = false
+        })
+      }
+    },
+    haveChange() {
+      this.getClass()
+      this.GetCategory()
     },
     addMistakeType() {
       this.$refs.Form.validate(valid => {
         if (valid) {
-          // AddMistakeCate(qs.stringify(this.toadd)).then(res => {
-          //   if (res.data.code === 0) {
-          //     this.$notify({
-          //       title: '提示',
-          //       message: '开始班级成功！',
-          //       type: 'success'
-          //     })
-          //   } else {
-          //     this.$message.warning('操作失败...')
-          //   }
-          //   this.showAdd = false
-          //   this.getCategory()
-          // }).catch(() => {})
+          addClass(this.$qs.stringify(this.toadd)).then(res => {
+            if (res.data.code === 0) {
+              this.$notify({
+                title: '提示',
+                message: '开始班级成功！',
+                type: 'success'
+              })
+              this.toadd = {
+                Tid: this.$store.getters.user.Id,
+                Cid: '',
+                Intor: ''
+              }
+              this.haveChange()
+            } else {
+              this.$message.warning('操作失败...')
+            }
+            this.showAdd = false
+            this.getCategory()
+          }).catch(() => {})
         }
       })
     },
     showEditBox(index) {
-      this.toupdate.MistakeCateId = this.types[index].Id
-      this.toupdate.Name = this.types[index].Name
-      this.toupdate.Intro = this.types[index].Intro
+      this.toupdate.Cid = this.ClassList[index].Cid
+      this.toupdate.Id = this.ClassList[index].Id
+      this.toupdate.Intor = this.ClassList[index].Intor
       this.showUpdate = true
     },
     updateMistakeCate() {
       this.$refs.updateForm.validate(valid => {
         if (valid) {
-          // UpdateMistakeCate(qs.stringify(this.toupdate)).then(res => {
-          //   if (res.data.code === 0) {
-          //     this.$notify({
-          //       title: '提示',
-          //       message: '修改班级信息成功！',
-          //       type: 'success'
-          //     })
-          //   } else {
-          //     this.$message.warning('操作失败...')
-          //   }
-          //   this.showUpdate = false
-          //   this.getCategory()
-          // }).catch(() => {})
+          updateClass(this.$qs.stringify(this.toupdate)).then(res => {
+            if (res.data.code === 0) {
+              this.$notify({
+                title: '提示',
+                message: '修改班级信息成功！',
+                type: 'success'
+              })
+              this.toupdate = {
+                Tid: this.$store.getters.user.Id,
+                Cid: '',
+                Id: '',
+                Intor: ''
+              }
+              this.haveChange()
+            } else {
+              this.$message.warning('操作失败...')
+            }
+            this.showUpdate = false
+            this.getCategory()
+          }).catch(() => {})
         }
       })
     },
@@ -261,6 +299,7 @@ export default {
       }).catch(() => {})
     },
     ToList(Id) {
+      // console.log(Id)
       this.$router.push({
         path: '/class/class_detail/' + Id
       })
@@ -299,6 +338,7 @@ export default {
 }
 .class_type{
   color: #666;
+  margin: 0 0 10px;
 }
 .class_content{
   .class_desc{

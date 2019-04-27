@@ -3,6 +3,8 @@
 
 const path = require('path')
 
+const MAPI = require('../.private.js')
+
 module.exports = {
   dev: {
 
@@ -10,18 +12,11 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api': {         //名字自取，可以不同，但要跟后面得接口名一致http://192.168.1.104 http://1975386453.38haotyhn.duihuanche.com
-        target: "http://1975386453.38haotyhn.duihuanche.com",
+      '/api': {
+        target: MAPI.api.baseurl,
         changeOrigin: true,
         pathRewrite: {
           '^/api': ''
-        }
-      },
-      '/api2': {         //名字自取，可以不同，但要跟后面得接口名一致
-        target: "http://192.168.1.108:8080",
-        changeOrigin: true,
-        pathRewrite: {
-          '^/api2': ''
         }
       },
     },

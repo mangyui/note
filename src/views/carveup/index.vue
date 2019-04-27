@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
-    <span class="header-title">试卷切题</span>
+    <span class="header-title">添加测试</span>
       <div class="big-box1200">
-        <pictureCut cutIcon="cutup" @Cresult="Getresult" @CImage="GetImage" @Cquestion="GetQuestion"></pictureCut>
-        <br/>
+        <!-- <pictureCut cutIcon="cutup" @Cresult="Getresult" @CImage="GetImage" @Cquestion="GetQuestion"></pictureCut>
+        <br/> -->
         <div class="list-gbtn">
           <div>
             <el-button class="yellow-btn" icon="el-icon-rank" @click="isSuo=!isSuo" size="small">{{isSuo?'展开':'收缩'}}题目</el-button>
@@ -95,24 +95,56 @@
     <el-dialog class="search-dialog" title="搜索题目" :visible.sync="dialogSearch" width="85%" height="85%">
       <searchQues @Sadd="SearchAdd"></searchQues>
     </el-dialog>
+     <el-dialog title="测试编辑添加" :visible.sync="TestdialogFormVisible" >
+      <el-form :model="Testform" :rules="TesteditFormRules">
+        <el-form-item label="测试名称" prop="Title">
+          <el-input v-model="Testform.Title" placeholder="输入测试名称" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="测试时长" prop="LimiteTime">
+            <el-input v-model="Testform.LimiteTime" placeholder="输入该测试多少分钟内完成" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="班级" prop="UserrelationId">
+          <el-select v-model="Testform.UserrelationId" placeholder="请选择班级">
+            <el-option
+              v-for="item in ClassListByTid"
+              :key="item.Id"
+              :label="item.Intor"
+              :value="item.Id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="测试状态" prop="Status">
+          <el-select v-model="Testform.Status" placeholder="请选择测试状态">
+            <el-option label="现在开始测试" value="0"></el-option>
+            <el-option label="稍后开始测试" value="1"></el-option>
+            <!-- <el-option label="结束" value="end"></el-option> -->
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="TestdialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="undateTest()">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 var ShouTitle, ShouCorrect
 
-import pictureCut from '@/components/picture-cut/index'
 import quexBox from '@/components/my-box/quex-box'
 import VueCropper from 'vue-cropperjs'
 import { typeList } from '@/assets/js/question_type.js'
 import searchQues from './searchQues'
 import {
-  questionCategory
+  questionCategory,
+  GetListByTid
 } from '@/api/toget'
 
 import {
   Imgurl,
-  upQuestion
+  upQuestion,
+  addTest
 } from '@/api/toPost'
 
 export default {
@@ -120,12 +152,23 @@ export default {
   components: {
     VueCropper,
     quexBox,
-    pictureCut,
     searchQues
     // slider,
     // slideritem
   },
   data: function() {
+    const validateLimiteTime = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('测试时间不能为空'))
+      } else {
+        const reg = new RegExp('^[0-9]*[1-9][0-9]*$')
+        if (reg.test(value)) {
+          callback()
+        } else {
+          return callback(new Error('测试时间只能为大于0的正整数'))
+        }
+      }
+    }
     return {
       activeName: 'cutup',
       dialogSearch: false,
@@ -140,7 +183,17 @@ export default {
       questionList: [],
       questionIds: [],
       Categorylist: [],
+      ClassListByTid: [],
       Updateindex: null,
+      TestdialogFormVisible: false,
+      Testform: {
+        Title: '',
+        TeacherId: this.$store.getters.user.Id,
+        LimiteTime: '',
+        Status: '0',
+        UserrelationId: '',
+        Content: ''
+      },
       form: {
         Content: '',
         Text: '',
@@ -149,6 +202,17 @@ export default {
         CategoryId: '',
         Type: '',
         Repetition: 1
+      },
+      TesteditFormRules: {
+        Title: [
+          { required: true, message: '测试名称不能为空', trigger: 'blur' }
+        ],
+        LimiteTime: [
+          { validator: validateLimiteTime, trigger: 'blur' }
+        ],
+        Status: [
+          { required: true, message: '测试状态不能为空', trigger: 'blur' }
+        ]
       },
       rules: {
         CategoryId: [
@@ -164,8 +228,41 @@ export default {
     }
   },
   methods: {
+    undateTest() {
+      addTest(this.$qs.stringify(this.Testform)).then(res => {
+        if (parseInt(res.data.code) === 0) {
+          this.$message({
+            type: 'success',
+            message: '添加成功!'
+          })
+          console.log(this.questionList)
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.data.msg
+          })
+        }
+      }).catch(() => {
+        this.$message({
+          type: 'error',
+          message: '添加失败!'
+        })
+      })
+      this.TestdialogFormVisible = false
+    },
     toTest() {
-      console.log(this.questionList)
+      this.TestdialogFormVisible = true
+      var str = ''
+      var cnt = 0
+      this.questionList.forEach(element => {
+        if (cnt !== 0) {
+          str = str + ','
+        }
+        str = str + element.question.Id
+        cnt = cnt + 1
+      })
+      this.Testform.Content = str
+      console.log(this.Testform)
     },
     toCutup() {
       var imgs = new Image()
@@ -204,7 +301,6 @@ export default {
         question.question = value
         this.questionList = this.questionList.concat(question)
         this.$notify({
-          title: '提示',
           message: '添加成功',
           position: 'bottom-right'
         })
@@ -235,6 +331,7 @@ export default {
       this.adddialog = true
       this.Updateindex = null
     },
+    // 编辑
     Edit(index) {
       this.form.Content = this.questionList[index].question.Content
       this.form.Analysis = this.questionList[index].question.Analysis
@@ -298,6 +395,16 @@ export default {
         })
       }
     },
+    // 通过教师id获取创建的班级列表
+    GetClassListByTeacherId() {
+      if (this.$store.getters.user.Id) {
+        GetListByTid(this.$store.getters.user.Id).then(res => {
+          this.ClassListByTid = res.data.data
+        }).catch(() => {
+          console.log('获取班级分类数据失败！')
+        })
+      }
+    },
     // 获取题目分类
     async GetCategory() {
       questionCategory(this.$qs.stringify()).then(res => {
@@ -326,7 +433,6 @@ export default {
         uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
         uploadFileName: 'file', // 后端使用这个字段获取图片信息
         uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
-        showLinkImg: false,
         uploadImgHooks: {
           customInsert: function(insertImg, result, editor) {
             var url = result.data.data.data
@@ -342,7 +448,6 @@ export default {
         uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
         uploadFileName: 'file', // 后端使用这个字段获取图片信息
         uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
-        showLinkImg: false,
         uploadImgHooks: {
           customInsert: function(insertImg, result, editor) {
             var url = result.data.data.data
@@ -362,6 +467,7 @@ export default {
   created() {
     this.GetCategory()
     // this.toCutup()
+    this.GetClassListByTeacherId()
   },
   activated() {
   }

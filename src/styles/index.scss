@@ -358,13 +358,13 @@ code {
         }
        }
       .ques_footer{
-        padding: 12px 0px 5px;
+        padding: 7px 0px 0px;
         border-top: 1px solid #ebeef5;
         .el-tag{
-          height: 27px;
-          line-height: 27px;
+          height: 25px;
+          line-height: 25px;
           float: right;
-          margin-top: -5px;
+          margin-top: -3px;
         }
         .ques_footer_num{
           font-size: 13px;
@@ -399,7 +399,7 @@ code {
 }
 
 .ques-list .ques-list_item .ques_box{
-  padding-top: 24px;
+  padding-top: 12px;
   .ques_body{
     max-height: 200px;
     overflow: hidden;
@@ -408,7 +408,7 @@ code {
   .downMore{
     position: absolute;
     left: 50%;
-    bottom: 22px;
+    bottom: 13px;
     margin-left: -22px;
     border-radius: 0 0 3px 3px;
     padding: 3px 10px;
@@ -491,7 +491,7 @@ code {
 .Hpipei{
   border-bottom: 1px solid #5cc1c0;
   padding: 10px 0;
-  margin-bottom: 25px;
+  margin-bottom: 19px;
 }
 // 关注按钮
 .toAttention{
@@ -618,7 +618,7 @@ code {
 .home-h4{
   text-align: center;
   margin: 28px 0 16px;
-  font-size: 18px;
+  font-size: 17px;
 }
 
 // wangediter 的编辑器改写样式
@@ -741,7 +741,6 @@ code {
     display: flex;
     max-width: 100%;
     justify-content: space-around;;
-    margin: 0 10px 15px;
     padding: 10px 5px 24px;
   }
   .top-camera{
@@ -789,6 +788,7 @@ code {
         animation-timing-function: ease-in-out;
         animation-iteration-count:infinite;
         filter: blur(12px);
+        z-index: 11;
       }
       .icon-wp{
         position: absolute;
@@ -881,6 +881,7 @@ code {
     height: 93%;
   }
 }
+
 /*移动端*/
 // app.scss
 // 手机端

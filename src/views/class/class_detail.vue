@@ -4,7 +4,7 @@
     <div class="crumbs disNone">
       <el-breadcrumb separator="/">
           <el-breadcrumb-item :to="{ path: '/class/index' }"><i class="el-icon-date"></i> 我的班级</el-breadcrumb-item>
-          <el-breadcrumb-item> 初二物理班  </el-breadcrumb-item>
+          <el-breadcrumb-item> 班级详情  </el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <div class="big-box1200">
@@ -38,7 +38,7 @@ export default {
   data() {
     return {
       showLoading: false,
-      classId: 11,
+      classId: this.$route.params.id,
       activeName: 'tests'
     }
   },

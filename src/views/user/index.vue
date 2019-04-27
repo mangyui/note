@@ -28,7 +28,7 @@
         <h2 style="margin: 10px 0 5px;">{{user.Name}}</h2>
         <p class="user_address">{{Class==null?'':Class+' |'}}  {{user.Name=='ming'?'管理员':(user.Occupation==2?'教师':'学生')}}</p>
         <!-- <p class="user_mess">{{user.Intro}}</p> -->
-        <p class="user_money">金币：<span>{{user.Coin||0}}</span> <el-button size="mini" round @click="chongzhiBox = true">充值</el-button></p>
+        <p class="user_money">金币：<span>{{user.Coin||0}}.00</span> <el-button size="mini" round @click="chongzhiBox = true">充值</el-button></p>
       </div>
     </div>
     <div class="big-box900" v-show="!isUpdate">
@@ -138,6 +138,7 @@
             :value="item.value">
           </el-option>
         </el-select>
+        <p>比例为1：10</p>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button  size="small" @click="chongzhiBox = false">取 消</el-button>
@@ -166,6 +167,7 @@ import {
 } from '@/api/toget'
 import {
   GetCustomer,
+  RechargeMoney,
   ChangeUserAvatar
 } from '@/api/toPost'
 
@@ -212,6 +214,9 @@ export default {
         Address: this.$store.getters.user.Address
       },
       numList: [{
+        value: '1',
+        label: '1'
+      }, {
         value: '10',
         label: '10'
       }, {
@@ -356,10 +361,24 @@ export default {
     },
     chongZhi() {
       var data = {
-        coin: this.addJinbi,
+        money: this.addJinbi,
         userId: this.$store.getters.user.Id
       }
-      console.log(data)
+      RechargeMoney(this.$qs.stringify(data)).then(res => {
+        if (res.data.code === 0) {
+          this.$store.dispatch('RechargeMoney', res.data.data.NewCoin)
+          this.$notify({
+            title: '提示',
+            message: '充值成功！',
+            type: 'success'
+          })
+          this.chongzhiBox = false
+        } else {
+          this.$message.warning('网络错误...')
+        }
+      }).catch(() => {
+        this.$message.warning('系统错误...')
+      })
     },
     logout() {
       this.$store.dispatch('LogOut').then(() => {
@@ -460,7 +479,7 @@ export default {
   display: block;
   height: 100%;
   width: 100%;
-  left: 120px;
+  left: 0;
   top: 0;
   background-color: rgba(0, 0, 0, 0.4);
   cursor: pointer;
@@ -470,9 +489,9 @@ export default {
   border-radius: 50%;
   transition: 0.28s;
 }
-.avatar:hover label{
-  left: 0;
-}
+// .avatar:hover label{
+//   left: 0;
+// }
 .user_address {
   font-size: 12px;
   color: #ccc;

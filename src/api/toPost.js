@@ -1,6 +1,8 @@
 import request from '@/utils/request'
 
-export var Imgurl = 'http://1975386453.38haotyhn.duihuanche.com/'
+const MAPI = require('../../.private.js')
+
+export var Imgurl = MAPI.api.UpImage
 
 // api前缀 ,代理跨域拦截
 // 上传题库
@@ -387,6 +389,18 @@ export function GetTest(datas) {
   })
 }
 
+// 获取试题详情
+export function GetTestDetail(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Test.GetTestDetail',
+    method: 'post',
+    data: datas
+  })
+}
+
 // 修改头像
 export function ChangeUserAvatar(datas) {
   return request({
@@ -430,6 +444,134 @@ export function ToSearchs(datas) {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
     url: '/?service=App.Question.Searchs',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 添加一条测试
+export function addTest(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Test.Add',
+    method: 'post',
+    data: datas
+  })
+}
+// 修改一条测试
+export function updateTest(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Test.Update',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 添加一个班级
+export function addClass(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Userelation.Add',
+    method: 'post',
+    data: datas
+  })
+}
+// 修改一个班级
+export function updateClass(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Userelation.Update',
+    method: 'post',
+    data: datas
+  })
+}
+// 查找用户通知
+export function GetMessage(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Notice.GetByUserId',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 更改已读未读通知
+export function UpdateRead(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Notice.UpdateRead',
+    method: 'post',
+    data: datas
+  })
+}
+
+export function RechargeMoney(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Recharge.RechargeMoney',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 教师班级列表
+export function GetListByTid(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Userelation.GetListTid',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 学生get班级
+export function GetStudentClass(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Userelation.GetListUid',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 班级get学生列表
+export function ClassStudents(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Userelation.GetUsersById',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 班级添加学生
+export function ClassAddStudent(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Userelation.AddSid',
     method: 'post',
     data: datas
   })

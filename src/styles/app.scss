@@ -47,11 +47,26 @@
 
   .home-container {
     .home-box{
-      background: linear-gradient(to bottom, $menuBg, #ffffff);
+      background:  $menuBg;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
+      .home-top{
+          border: none;
+          box-shadow: none;
+          background: transparent;
+          padding: 10px 5px 21px;
+          .home_item {
+            .more_icon{
+              color: #fff!important;
+            }
+            p{
+              color: #fff;
+              font-size: 13px;
+              line-height: 2.3em;
+            }
+        }
+      }
     }
-    .home_item p{
-      font-size: 12px;
-    }
+
   }
   .scroll-container{
     display: none!important;
@@ -130,7 +145,7 @@
     padding: 10px 6px 5px;
   }
   .container{
-    padding: 0px 0 10px;
+    padding: 1px 0 10px;
     border: 0;
   }
   .el-message{

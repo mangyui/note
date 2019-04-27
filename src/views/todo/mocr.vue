@@ -9,7 +9,7 @@
           加载中...
         </div>
         <div class="sq-body">
-          <el-button class="sq-change" size="small" v-if="showBtn" @click="showShou=(showShou==false?true:false)">{{showShou==false?"手动添加":"返回搜题"}}</el-button>
+          <el-button class="sq-change" size="small" v-if="showBtn" @click="showShou=(showShou==false?true:false)">{{showShou==false?"没有找到":"返回搜题"}}</el-button>
           <div v-show="!showShou && questions[0]"  class="ques-list">
             <h3 class="Hpipei">猜你要找:</h3>
             <slider v-if="" ref="slider" :options="sliderOptions" @slide='slide' @tap='onTap' @init='onInit'>
@@ -31,7 +31,7 @@
             <h4 class="htitle">添加解答</h4>
             <div ref="HaveCorrect" class="divWangeditor" style="text-align:left"></div>
             <br/>
-            <el-button class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
+            <el-button class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">添加到错题本</el-button>
           </div>
           <div v-show="showShou" class="ocr-edit">
             <h3 class="Hpipei">手动添加</h3>
@@ -43,7 +43,7 @@
             <div ref="ShouCorrect" class="divWangeditor" style="text-align:left"></div>
             <!-- <quill-editor ref="AnalysisEditor" v-model="form.Analysis" :options="editorOption" ></quill-editor> -->
             <br/>
-            <el-button class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
+            <el-button class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">添加到错题本</el-button>
           </div>
         </div>
     </div>
@@ -269,7 +269,6 @@ export default {
       uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
       uploadFileName: 'file', // 后端使用这个字段获取图片信息
       uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
-      showLinkImg: false,
       uploadImgHooks: {
         customInsert: function(insertImg, result, ShouTitle) {
           var url = result.data.data.data
@@ -285,7 +284,6 @@ export default {
       uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
       uploadFileName: 'file', // 后端使用这个字段获取图片信息
       uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
-      showLinkImg: false,
       uploadImgHooks: {
         customInsert: function(insertImg, result, editor) {
           var url = result.data.data.data
@@ -301,7 +299,6 @@ export default {
       uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
       uploadFileName: 'file', // 后端使用这个字段获取图片信息
       uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
-      showLinkImg: false,
       uploadImgHooks: {
         customInsert: function(insertImg, result, editor) {
           var url = result.data.data.data

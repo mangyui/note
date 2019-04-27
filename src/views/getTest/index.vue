@@ -6,15 +6,11 @@
         <div class="list-gbtn">
           <el-button type="primary" plain  @click="dialogFormVisible=!dialogFormVisible" size="medium">生成试题</el-button>
           <div>
-            <el-button v-show="Tests[0]" type="primary"  @click="toOnline" size="medium">在线测试</el-button>
+            <el-button v-show="Tests[0]" type="primary"  @click="ToWord" size="medium">下载word</el-button>
             <el-checkbox v-model="showAnalysis" label="答案" border size="medium"></el-checkbox>
           </div>
         </div>
-        <el-alert
-          class="toShow"
-          title="目前手机端暂不支持下载word,请移步pc端下载"
-          type="warning">
-        </el-alert>
+        <el-alert v-show="Tests[0]" class="toShow" title="目前手机端暂不支持下载word,请移步pc端下载" type="warning"></el-alert>
         <div class="container" id="Test">
           <div v-if="showLoading" class="loading-box">
             <i class="el-icon-loading"></i>
@@ -89,8 +85,8 @@
           <div @click="isDelete=!isDelete">
             <el-dropdown-item icon="el-icon-close" divided>删除单个</el-dropdown-item>
           </div>
-          <div @click="ToWord">
-            <el-dropdown-item icon="el-icon-download" divided>生成word</el-dropdown-item>
+          <div @click="toOnline">
+            <el-dropdown-item icon="el-icon-document" divided>在线测试</el-dropdown-item>
           </div>
         </el-dropdown-menu>
       </el-dropdown>
