@@ -50,4 +50,7 @@ export default {
         opacity: 0.5;
       }
     }
+    .el-card{
+      border-color: #f5f5f5
+    }
 </style>

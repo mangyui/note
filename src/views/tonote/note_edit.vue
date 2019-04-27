@@ -106,7 +106,7 @@ export default {
           if (this.Content === '') {
             editor.txt.html('<span>' + item.words + '</span>')
           } else {
-            editor.txt.append('<span>' + item.words + '</span>')
+            editor.txt.append('<p>' + item.words + '</p>')
           }
           this.Content = this.Content + item.words + '<br />'
         })

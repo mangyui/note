@@ -87,6 +87,29 @@
           </div> -->
         </div>
       </div>
+      <div class="home-top home-top-bai toShow">
+        <div class="home_item">
+          <router-link to="/class/index">
+            <svg-icon class-name='more_icon' style="color:rgba(84, 93, 206,0.9)" icon-class="peoples" />
+            <p>我的班课</p>
+          </router-link>
+        </div>
+        <div class="home_item">
+          <router-link to="/toques/quesList">
+            <svg-icon class-name='more_icon' style="color:#F56C6C" icon-class="cuoti" />
+            <p>错题本</p>
+          </router-link>
+        </div>
+        <div class="home_item">
+          <router-link to="/tonote/noteList">
+            <svg-icon class-name='more_icon' style="color:#409EFF" icon-class="note" />
+            <p>笔记本</p>
+          </router-link>
+        </div>
+        <div class="home_item">
+
+        </div>
+      </div>
       <div>
         <div v-show="!showLoading && !questions[0]" class="loading-box">
           <i class="el-icon-search"></i>
@@ -208,3 +231,12 @@ export default {
 </script>
 
 
+<style lang="scss" scoped>
+.home-top-bai{
+  box-shadow: none;
+  border: none;
+  .home_item p{
+    line-height: 2.3em;
+  }
+}
+</style>

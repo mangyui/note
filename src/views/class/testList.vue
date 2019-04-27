@@ -31,7 +31,7 @@
             <el-card
               class="test-card"
               shadow="hover"
-              :style="{backgroundColor: '#ecf5ff'}"
+              :style="{ border:'none', backgroundColor: item.Status=='0'?'#ecf5ff':'rgb(255, 242, 242)'}"
             >
               <router-link
                 class="test_box"

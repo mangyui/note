@@ -108,9 +108,9 @@ export default {
       if (this.lines > 0) {
         this.result.forEach(item => {
           if (this.form.Content === '') {
-            ShouTitle.txt.html('<span>' + item.words + '</span>')
+            ShouTitle.txt.html('<p>' + item.words + '</p>')
           } else {
-            ShouTitle.txt.append('<span>' + item.words + '</span>')
+            ShouTitle.txt.append('<p>' + item.words + '</p>')
           }
           this.form.Content = this.form.Content + item.words + '<br />'
           this.form.Text = this.form.Text + item.words
@@ -192,7 +192,7 @@ export default {
       if (this.form.Content === '') {
         ShouTitle.txt.html('<span>' + text.substr(0, text.length - 1) + '</span>')
       } else {
-        ShouTitle.txt.append('<span>' + text.substr(0, text.length - 1) + '</span>')
+        ShouTitle.txt.append('<p>' + text.substr(0, text.length - 1) + '</p>')
       }
     },
     showResult2(text) {

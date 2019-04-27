@@ -1,6 +1,8 @@
 import request from '@/utils/request'
 
-export var Imgurl = 'http://1975386453.38haotyhn.duihuanche.com/'
+const MAPI = require('../../.private.js')
+
+export var Imgurl = MAPI.api.UpImage
 
 // api前缀 ,代理跨域拦截
 // 上传题库
