@@ -32,22 +32,25 @@ export default {
 
 <style lang="scss" scoped>
     @import '../../styles/note_box.scss';
-    .big-box{
+  .big-box{
+    opacity: 0.5;
+    animation-name: Bop;
+    animation-duration: 1500ms;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count:infinite;
+  }
+  @keyframes Bop {
+    0%{
       opacity: 0.5;
-      animation-name: Bop;
-      animation-duration: 1500ms;
-      animation-timing-function: ease-in-out;
-      animation-iteration-count:infinite;
     }
-    @keyframes Bop {
-      0%{
-        opacity: 0.5;
-      }
-      50%{
-        opacity: 1;
-      }
-      100%{
-        opacity: 0.5;
-      }
+    50%{
+      opacity: 1;
     }
+    100%{
+      opacity: 0.5;
+    }
+  }
+  .el-card{
+    border-color: #f5f5f5
+  }
 </style>

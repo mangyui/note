@@ -110,7 +110,7 @@ export default {
           if (this.form.Content === '') {
             ShouTitle.txt.html('<span>' + item.words + '</span>')
           } else {
-            ShouTitle.txt.append('<span>' + item.words + '</span>')
+            ShouTitle.txt.append('<p>' + item.words + '</p>')
           }
           this.form.Content = this.form.Content + item.words + '<br />'
           this.form.Text = this.form.Text + item.words

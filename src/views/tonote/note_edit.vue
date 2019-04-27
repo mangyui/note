@@ -180,7 +180,7 @@ export default {
       if (this.note.Content === '') {
         editor.txt.html('<span>' + text.substr(0, text.length - 1) + '</span>')
       } else {
-        editor.txt.append('<span>' + text.substr(0, text.length - 1) + '</span>')
+        editor.txt.append('<p>' + text.substr(0, text.length - 1) + '</p>')
       }
     }
   },

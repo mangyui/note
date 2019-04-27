@@ -357,15 +357,15 @@ code {
           border-radius: 0 0 10px 0;
         }
        }
-      .ques_footer{
-        padding: 12px 0px 5px;
-        border-top: 1px solid #ebeef5;
-        .el-tag{
-          height: 27px;
-          line-height: 27px;
-          float: right;
-          margin-top: -5px;
-        }
+       .ques_footer{
+          padding: 7px 0px 0px;
+          border-top: 1px solid #ebeef5;
+          .el-tag{
+            height: 25px;
+            line-height: 25px;
+            float: right;
+            margin-top: -3px;
+          }
         .ques_footer_num{
           font-size: 13px;
           margin: 0px 20px 0 3px;
@@ -399,7 +399,7 @@ code {
 }
 
 .ques-list .ques-list_item .ques_box{
-  padding-top: 24px;
+  padding-top: 12px;
   .ques_body{
     max-height: 200px;
     overflow: hidden;
@@ -408,7 +408,7 @@ code {
   .downMore{
     position: absolute;
     left: 50%;
-    bottom: 22px;
+    bottom: 13px;
     margin-left: -22px;
     border-radius: 0 0 3px 3px;
     padding: 3px 10px;
@@ -618,7 +618,7 @@ code {
 .home-h4{
   text-align: center;
   margin: 28px 0 16px;
-  font-size: 18px;
+  font-size: 17px;
 }
 
 // wangediter 的编辑器改写样式

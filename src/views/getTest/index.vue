@@ -6,7 +6,7 @@
         <div class="list-gbtn">
           <el-button type="primary" plain  @click="dialogFormVisible=!dialogFormVisible" size="medium">生成试题</el-button>
           <div>
-            <el-button v-show="Tests[0]" type="primary"  @click="toOnline" size="medium">在线测试</el-button>
+            <el-button v-show="Tests[0]" type="primary"  @click="ToWord" size="medium">下载word</el-button>
             <el-checkbox v-model="showAnalysis" label="答案" border size="medium"></el-checkbox>
           </div>
         </div>
@@ -85,8 +85,8 @@
           <div @click="isDelete=!isDelete">
             <el-dropdown-item icon="el-icon-close" divided>删除单个</el-dropdown-item>
           </div>
-          <div @click="ToWord">
-            <el-dropdown-item icon="el-icon-download" divided>生成word</el-dropdown-item>
+          <div @click="toOnline">
+            <el-dropdown-item icon="el-icon-document" divided>在线测试</el-dropdown-item>
           </div>
         </el-dropdown-menu>
       </el-dropdown>

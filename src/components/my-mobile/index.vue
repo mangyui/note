@@ -13,7 +13,7 @@ export default {
   name: 'mobile',
   data() {
     return {
-      url: 'https://coding.net/api/share/download/e332e8a5-78c6-43a7-8396-73986989aff7'
+      url: ''
     }
   },
   methods: {
