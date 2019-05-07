@@ -11,7 +11,7 @@
       <!--工具条-->
       <div class="top-search">
         <el-input
-          placeholder="搜索笔记"
+          placeholder="请输入内容"
           @keyup.enter.native="toSearch"
           v-model="search.keys">
           <i slot="prefix" class="el-input__icon el-icon-search"></i>
@@ -35,6 +35,13 @@
         </div>
       </div>
       <div class="container">
+        <div class="tag-box">
+          <span v-for="(item,index) in keyList" :key="index"
+            :class="'note_tag '+ (KeyIds.indexOf(item.Id)>-1?'note_tag-active':'')"
+            @click="clickKey(item.Id)">
+            {{item.Word}}
+          </span>
+        </div>
         <div v-show="showLoading" class="loading-box">
           <i class="el-icon-loading"></i>
           加载中...
@@ -82,7 +89,9 @@
 import {
   NoteList,
   DeteleNote,
-  SearchNote
+  SearchNote,
+  GetKeysByUser,
+  NotesByKeyIds
 } from '@/api/toPost'
 
 import { NoteCategory } from '@/api/toget'
@@ -108,6 +117,8 @@ export default {
         keys: '',
         UserId: this.$store.getters.user.Id
       },
+      KeyIds: [],
+      keyList: [],
       typelist: [
         {
           Id: 0,
@@ -132,6 +143,7 @@ export default {
   created() {
     this.getCategory()
     this.getNotes()
+    this.getKeys()
   },
   activated() {
     document.querySelector('.app-main').scrollTop = this.homeTop || 0
@@ -150,10 +162,46 @@ export default {
       this.getCategory()
       this.getQues()
     },
+    clickKey(keyid) {
+      var index = this.KeyIds.indexOf(keyid)
+      if (index > -1) {
+        this.KeyIds.splice(index, 1)
+      } else {
+        this.KeyIds.push(keyid)
+      }
+      this.getNotesByKeyIds()
+    },
+    getNotesByKeyIds() {
+      var keyIdStr = ''
+      for (var i = 0; i < this.KeyIds.length; i++) {
+        keyIdStr += this.KeyIds[i]
+      }
+      var data = {
+        UserId: this.$store.getters.user.Id,
+        NoteCategoryId: this.tolist.NoteCategoryId,
+        KeyIds: keyIdStr
+      }
+      NotesByKeyIds(this.$qs.stringify(data)).then(res => {
+        if (res.data.code === 0) {
+          this.notes = res.data.data
+        } else {
+          this.$message.warning('获取笔记失败...')
+        }
+      }).catch(() => {})
+    },
     getCategory() {
       NoteCategory(this.$store.getters.user.Id).then(res => {
         if (res.data.code === 0) {
           this.typelist = this.typelist.concat(res.data.data)
+        } else {
+          this.$message.warning('获取笔记分类失败...')
+        }
+      }).catch(() => {})
+    },
+    getKeys() {
+      GetKeysByUser(this.$qs.stringify({ UserId: this.$store.getters.user.Id })).then(res => {
+        if (res.data.code === 0) {
+          this.keyList = res.data.data
         } else {
           this.$message.warning('获取笔记分类失败...')
         }

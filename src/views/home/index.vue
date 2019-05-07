@@ -157,7 +157,7 @@ export default {
       notes: [],
       myques: [],
       type: '',
-      showLoading: true
+      showLoading: false
     }
   },
   activated() {
@@ -181,18 +181,27 @@ export default {
     // },
     async getNotes() {
       if (this.$store.getters.user.Id) {
-        getRecommend(this.$store.getters.user.Id).then(res => {
-          this.questions = res.data.data.Questions
-          this.notes = res.data.data.Notes
+        this.showLoading = true
+        if (this.$store.getters.recommend.time) {
+          this.questions = this.$store.getters.recommend.Questions
+          this.notes = this.$store.getters.recommend.Notes
           this.showLoading = false
-        }).catch(() => {
-          console.log('获取数据失败！')
-          this.showLoading = false
-        })
+        } else {
+          getRecommend(this.$store.getters.user.Id).then(res => {
+            this.questions = res.data.data.Questions
+            this.notes = res.data.data.Notes
+            this.$store.dispatch('setRecommend', res.data.data)
+            this.showLoading = false
+          }).catch(() => {
+            console.log('获取数据失败！')
+            this.showLoading = false
+          })
+        }
+        // console.log(this.$store.getters.recommend)
       } else {
+        this.showLoading = true
         getRecommend().then(res => {
           this.questions = res.data.data
-          // this.notes = res.data.data.Notes
           this.showLoading = false
         }).catch(() => {
           console.log('获取数据失败！')
@@ -216,12 +225,9 @@ export default {
     // }
   },
   mounted() {
-    // window.addEventListener('scroll', this.handleScroll, true)
-    const that = this
     window.onresize = () => {
       return (() => {
-        window.screenWidth = document.body.clientWidth
-        that.screenWidth = window.screenWidth
+        this.screenWidth = document.body.clientWidth
       })()
     }
   },

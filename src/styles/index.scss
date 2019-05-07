@@ -882,6 +882,39 @@ code {
     height: 93%;
   }
 }
+.tag-box{
+  padding: 10px 0 25px;
+  .note_tag{
+    background-color: rgba(245,108,108,.1);
+    border:1px solid;
+    border-color: rgba(245,108,108,.2);
+    color: #f56c6c;
+    padding: 6px 15px;
+    transition: 0.28s;
+    height: 30px;
+    border-radius: 2px;
+    cursor: pointer;
+    margin-right: 12px;
+    position: relative;
+    &.note_tag-active{
+      background-color: #f56c6c;
+      border-color: #f56c6c;
+      color: #fff;
+      &::after{
+        content: '';
+        display: inline-block;
+        position: absolute;
+        right: 50%;
+        bottom: -15px;
+        transform: translateX(8px);
+        border: solid;
+        border-width: 8px;
+        border-color: #f56c6c transparent transparent transparent;
+      }
+    }
+  }
+}
+
 /*移动端*/
 // app.scss
 // 手机端

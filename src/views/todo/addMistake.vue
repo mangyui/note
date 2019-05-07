@@ -55,13 +55,12 @@
 
 // wangeditor 富文本
 var ShouTitle, ShouCorrect
-
+import { MistakeImg } from '@/api/upload'
 import quexBox from '@/components/my-box/quex-box'
 import voiceBtn from '@/components/voice/index'
 import pictureOcr from '@/components/picture-ocr/index'
 import addType from '@/views/common/addType'
 import {
-  Imgurl,
   addMistake,
   mistakeCate
 } from '@/api/toPost'
@@ -213,7 +212,7 @@ export default {
       onchange: function(html) {
         That.form.Content = html
       },
-      uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
+      uploadImgServer: MistakeImg, // 上传图片到服务器
       uploadFileName: 'file', // 后端使用这个字段获取图片信息
       uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
       uploadImgHooks: {
@@ -228,7 +227,7 @@ export default {
       onchange: function(html) {
         That.form.Analysis = html
       },
-      uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
+      uploadImgServer: MistakeImg, // 上传图片到服务器
       uploadFileName: 'file', // 后端使用这个字段获取图片信息
       uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
       uploadImgHooks: {

@@ -340,7 +340,7 @@ export default {
         } else {
           this.$notify({
             title: '提示',
-            message: '修改图片失败',
+            message: '修改头像失败',
             type: 'info'
           })
           this.cropImg = this.avatar

@@ -131,7 +131,7 @@
 
 <script>
 var ShouTitle, ShouCorrect
-
+import { QuestionImg } from '@/api/upload'
 import pictureCut from '@/components/picture-cut/index'
 import quexBox from '@/components/my-box/quex-box'
 import VueCropper from 'vue-cropperjs'
@@ -143,7 +143,6 @@ import {
 } from '@/api/toget'
 
 import {
-  Imgurl,
   upQuestion,
   addTest
 } from '@/api/toPost'
@@ -425,14 +424,13 @@ export default {
       this.loading = true
       // 富文本配置
       var That = this
-      // var Imgurl = 'http://192.168.1.105/'
       ShouTitle = new this.$E(this.$refs.ShouTitle)
       ShouCorrect = new this.$E(this.$refs.ShouCorrect)
       ShouTitle.customConfig = {
         onchange: function(html) {
           That.form.Content = html
         },
-        uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
+        uploadImgServer: QuestionImg, // 上传图片到服务器
         uploadFileName: 'file', // 后端使用这个字段获取图片信息
         uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
         uploadImgHooks: {
@@ -447,7 +445,7 @@ export default {
         onchange: function(html) {
           That.form.Analysis = html
         },
-        uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
+        uploadImgServer: QuestionImg, // 上传图片到服务器
         uploadFileName: 'file', // 后端使用这个字段获取图片信息
         uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
         uploadImgHooks: {

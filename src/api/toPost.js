@@ -1,9 +1,5 @@
 import request from '@/utils/request'
 
-const MAPI = require('../../.private.js')
-
-export var Imgurl = MAPI.api.UpImage
-
 // api前缀 ,代理跨域拦截
 // 上传题库
 export function upQuestion(datas) {
@@ -518,7 +514,6 @@ export function UpdateRead(datas) {
   })
 }
 
-// 充值金钱
 export function RechargeMoney(datas) {
   return request({
     headers: {
@@ -573,6 +568,30 @@ export function ClassAddStudent(datas) {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
     },
     url: '/?service=App.Userelation.AddSid',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 获取用户或者分类笔记所有关键字信息
+export function GetKeysByUser(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Note.GetKeysByUser',
+    method: 'post',
+    data: datas
+  })
+}
+
+// 根据关键字搜索用户笔记
+export function NotesByKeyIds(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Note.NotesByKeyIds',
     method: 'post',
     data: datas
   })
