@@ -12,7 +12,7 @@ const getters = {
   website: state => state.common.website,
   isFullScren: state => state.common.isFullScren,
   visitedViews: state => state.tagsView.visitedViews,
-  cachedViews: state => state.tagsView.cachedViews
-
+  cachedViews: state => state.tagsView.cachedViews,
+  recommend: state => state.recommend
 }
 export default getters

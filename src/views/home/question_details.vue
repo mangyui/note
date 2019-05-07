@@ -21,6 +21,11 @@
             <i class="el-icon-success"></i> <strong>官方解答</strong>
           </div>
           <div class="sys-article" v-html="question.Analysis"></div>
+          <div>
+            <video id="my-video" :width="screenWidth>1200?'1200px':screenWidth-12" :height="screenWidth>1200?'380px':screenWidth*0.5" style="background: #000;" class="video-js" controls preload="auto" data-setup="{}">
+              <source src="http://www.w3school.com.cn/i/movie.ogg" type="video/ogg" >
+            </video>
+          </div>
         </div>
         <div class="toNum">
             <div @click="dianZan">
@@ -120,15 +125,16 @@
 </template>
 
 <script>
+import Video from 'video.js'
+import 'video.js/dist/video-js.css'
 // 编辑器
 var HaveCorrect
-
+import { MistakeImg } from '@/api/upload'
 import {
   QuesDetails
 } from '@/api/toget'
 
 import {
-  Imgurl,
   P_dianZan,
   P_toCollect,
   QFriendCorrect,
@@ -142,6 +148,7 @@ export default {
   components: { },
   data() {
     return {
+      screenWidth: document.body.clientWidth,
       showLoading: true,
       showAdd: false,
       dialogVisible: false,
@@ -423,7 +430,7 @@ export default {
       onchange: function(html) {
         That.haveF.Correct = html
       },
-      uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
+      uploadImgServer: MistakeImg, // 上传图片到服务器
       uploadFileName: 'file', // 后端使用这个字段获取图片信息
       uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
       uploadImgHooks: {
@@ -435,6 +442,12 @@ export default {
       }
     }
     HaveCorrect.create()
+
+    Video('my-video', {}, function onPlayerReady() {
+      this.on('click', function() {
+        console.log('点击!')
+      })
+    })
   },
   created() {
     this.fetchDate()

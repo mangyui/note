@@ -80,15 +80,14 @@
 
 // wangeditor 富文本
 var editor
-
+import { MistakeImg } from '@/api/upload'
 import {
   MistakeDetails
 } from '@/api/toget'
 import {
   P_dianZan,
   P_toCollect,
-  UpdateMistake,
-  Imgurl
+  UpdateMistake
 } from '@/api/toPost'
 
 export default {
@@ -299,13 +298,12 @@ export default {
   },
   mounted() {
     var That = this
-    // var Imgurl = 'http://192.168.1.105/'
     editor = new this.$E(this.$refs.editor)
     editor.customConfig = {
       onchange: function(html) {
         That.content = html
       },
-      uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
+      uploadImgServer: MistakeImg, // 上传图片到服务器
       uploadFileName: 'file', // 后端使用这个字段获取图片信息
       uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
       uploadImgHooks: {
