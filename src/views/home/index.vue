@@ -94,13 +94,13 @@
           </div>
           <div class="home_item">
             <!-- <div @click="toQidai"> -->
-            <router-link to="/getTest/index">
+            <router-link to="/merchant/index">
               <svg-icon
                 class-name='more_icon'
                 style="color:#fdb75b"
-                icon-class="shijuan"
+                icon-class="shoppingCard"
               />
-              <p>测试题目</p>
+              <p>商城</p>
             </router-link>
           </div>
         </div>

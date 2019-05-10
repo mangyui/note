@@ -38,9 +38,7 @@ Vue.use(ElementUI, {
 
 Vue.config.productionTip = false
 
-// 全局引入voice组件
-// import VoiceInputButton from 'voice-input-button'
-// Vue.use(VoiceInputButton)
+// 全局引入Video组件
 
 // 全局引入wangedit
 import E from 'wangeditor'

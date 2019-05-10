@@ -145,6 +145,7 @@ export default {
               type: 'info'
             })
           }
+          this.getCollects()
         }).catch(() => {
           this.$message.warning('操作失败...')
         })

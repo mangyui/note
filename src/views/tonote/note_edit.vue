@@ -21,7 +21,6 @@
       <div class="noteEdit-title">
       <h4 class="htitle">笔记正文</h4>
         <div ref="editor" class="divWangeditor" style="text-align:left"></div>
-        <!-- <quill-editor ref="myTextEditor" v-model="note.Content" :options="editorOption"></quill-editor> -->
         <br/>
         <div class="voice-button">
           <div class="voice-input-button-wrapper">

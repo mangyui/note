@@ -21,6 +21,9 @@
                 <voiceBtn @record="showResult2"></voiceBtn>
               </div>
             </div>
+            <h4 class="htitle">视频解答(可选)</h4>
+            <uploadVideo @getVideoUrl="GetVideoUrl" @changeCost="ChangeCost"></uploadVideo>
+            <br/>
             <el-button size="large" class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
           </div>
         </div>
@@ -60,6 +63,7 @@ import quexBox from '@/components/my-box/quex-box'
 import voiceBtn from '@/components/voice/index'
 import pictureOcr from '@/components/picture-ocr/index'
 import addType from '@/views/common/addType'
+import uploadVideo from '@/components/my-box/upload'
 import {
   addMistake,
   mistakeCate
@@ -71,7 +75,8 @@ export default {
     quexBox,
     voiceBtn,
     pictureOcr,
-    addType
+    addType,
+    uploadVideo
   },
   data: function() {
     return {
@@ -88,7 +93,9 @@ export default {
         Text: '',
         Analysis: '',
         Keywords: '',
-        CategoryId: ''
+        CategoryId: '',
+        AnswerVideo: 0,
+        VideoCost: 0
       },
       rules: {
         CategoryId: [
@@ -98,6 +105,14 @@ export default {
     }
   },
   methods: {
+    GetVideoUrl(videoUrl) {
+      this.form.AnswerVideo = videoUrl || 0
+      // console.log('suucc', videoUrl)
+    },
+    ChangeCost(costNum) {
+      this.form.VideoCost = costNum || 0
+      // console.log(costNum, this.form.VideoCost)
+    },
     Getresult(value) {
       this.lines = value.lines
       this.result = value.result
@@ -157,12 +172,13 @@ export default {
       }
       this.$refs.Form.validate(valid => {
         if (valid) {
-          // this.form.Text = this.$refs.titleEditor.quill.getText().trim()
           var datas = {
             'UserId': this.$store.getters.user.Id,
             'QuestionContent': this.form.Content,
             'MistakeCateId': this.form.CategoryId,
-            'Correct': this.form.Analysis
+            'Correct': this.form.Analysis,
+            'AnswerVideo': this.form.AnswerVideo,
+            'VideoCost': this.form.VideoCost
           }
           addMistake(this.$qs.stringify(datas)).then(res => {
             this.dialogFormVisible = false
@@ -225,6 +241,7 @@ export default {
     }
     ShouCorrect.customConfig = {
       onchange: function(html) {
+        console.log('')
         That.form.Analysis = html
       },
       uploadImgServer: MistakeImg, // 上传图片到服务器

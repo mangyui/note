@@ -22,7 +22,7 @@
               </div>
             </div>
             <h4 class="htitle">视频解答(可选)</h4>
-            <uploadVideo></uploadVideo>
+            <uploadVideo @getVideoUrl="GetVideoUrl" @changeCost="ChangeCost"></uploadVideo>
             <br/>
             <el-button size="large" class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
           </div>
@@ -108,7 +108,9 @@ export default {
         KeyWords: '',
         CategoryId: '',
         Type: '',
-        Repetition: 1
+        Repetition: 1,
+        AnswerVideo: 0,
+        VideoCost: 0
       },
       rules: {
         CategoryId: [
@@ -121,6 +123,14 @@ export default {
     }
   },
   methods: {
+    GetVideoUrl(videoUrl) {
+      this.form.AnswerVideo = videoUrl || 0
+      // console.log('suucc', videoUrl)
+    },
+    ChangeCost(costNum) {
+      this.form.VideoCost = costNum || 0
+      // console.log(costNum, this.form.VideoCost)
+    },
     Getresult(value) {
       this.lines = value.lines
       this.result = value.result
