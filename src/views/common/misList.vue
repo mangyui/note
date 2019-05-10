@@ -53,7 +53,7 @@ export default {
           } else {
             this.$message.warning('操作失败...')
           }
-          this.toSearch()
+          this.$emit('deteleBack')
         }).catch(() => {})
         //
       }).catch(() => {})

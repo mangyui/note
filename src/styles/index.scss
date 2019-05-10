@@ -172,13 +172,6 @@ code {
   color: white !important;
 }
 
-/*editor富文本编辑*/
-
-.quill-editor:not(.bubble) .ql-container .ql-editor {
-  min-height: 10rem;
-  padding-bottom: 1rem;
-}
-
 /*tab消息*/
 
 .mess .el-table__body-wrapper{
@@ -882,7 +875,10 @@ code {
   }
 }
 .tag-box{
-  padding: 10px 0 25px;
+  margin: 10px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   .note_tag{
     background-color: rgba(245,108,108,.1);
     border:1px solid;
@@ -893,8 +889,8 @@ code {
     height: 30px;
     border-radius: 2px;
     cursor: pointer;
-    margin-right: 12px;
     position: relative;
+    margin: 0 8px 12px;
     &.note_tag-active{
       background-color: #f56c6c;
       border-color: #f56c6c;
@@ -914,6 +910,9 @@ code {
   }
 }
 
+.dplayer{
+  height: 100%;
+}
 /*移动端*/
 // app.scss
 // 手机端

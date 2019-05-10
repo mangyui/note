@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <span class="header-title">题目详情</span>
-    <div v-if="showLoading" class="loading-box">
+    <div v-show="showLoading" class="loading-box">
       <i class="el-icon-loading"></i>
       加载中...
     </div>
@@ -21,11 +21,15 @@
             <i class="el-icon-success"></i> <strong>官方解答</strong>
           </div>
           <div class="sys-article" v-html="question.Analysis"></div>
-          <div>
-            <video id="my-video" :width="screenWidth>1200?'1200px':screenWidth-12" :height="screenWidth>1200?'380px':screenWidth*0.5" style="background: #000;" class="video-js" controls preload="auto" data-setup="{}">
-              <source src="http://www.w3school.com.cn/i/movie.ogg" type="video/ogg" >
-            </video>
+          <div v-show="question.AnswerVideo!=0" :style="{height: screenWidth>1200?'380px':screenWidth*0.5+'px'}">
+            <dPlayer ref="player" @play="play" :options="options"></dPlayer>
           </div>
+          <!-- <div v-if="question.AnswerVideo!=0">
+            <video :id="'my-video'+id" controlsList="nodownload"  :width="screenWidth" :height="screenWidth>1200?'380px':screenWidth*0.5" style="background: #000;" class="video-js" controls preload="auto" >
+              <source v-if="question.AnswerVideo" :src="question.AnswerVideo" type="video/mp4">
+              当前设备不支持该播放器
+            </video>
+          </div> -->
         </div>
         <div class="toNum">
             <div @click="dianZan">
@@ -125,8 +129,8 @@
 </template>
 
 <script>
-import Video from 'video.js'
-import 'video.js/dist/video-js.css'
+import dPlayer from 'vue-dplayer'
+import 'vue-dplayer/dist/vue-dplayer.css'
 // 编辑器
 var HaveCorrect
 import { MistakeImg } from '@/api/upload'
@@ -140,14 +144,27 @@ import {
   QFriendCorrect,
   addMistake,
   mistakeCate,
-  AddMistakeCate
+  AddMistakeCate,
+  UpdateCoin
 } from '@/api/toPost'
 
 export default {
   name: 'question_details',
-  components: { },
+  components: {
+    dPlayer
+  },
   data() {
     return {
+      player: null,
+      options: {
+        video: {
+          url: ''
+        },
+        autoplay: false
+      },
+      AnswerVideo: 0,
+      VideoCost: 0,
+      isPay: false,
       screenWidth: document.body.clientWidth,
       showLoading: true,
       showAdd: false,
@@ -193,8 +210,54 @@ export default {
     }
   },
   methods: {
-    handleChange(val) {
-      console.log(val)
+    play() {
+      if (this.isPay || this.question.AnswerVideo === '0') {
+        return
+      }
+      if (!this.$store.getters.user.Id) {
+        this.$confirm('你还没有登录，不能进行该操作！前往登录', '提示', {
+          confirmButtonText: '立即登录',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$router.push({
+            path: '/login'
+          })
+        }).catch(() => {})
+        return
+      }
+      this.AnswerVideo = this.question.AnswerVideo || 0
+      this.VideoCost = this.question.VideoCost || 0
+      this.$confirm('你需付费金币数：' + this.question.VideoCost, '付费观看', {
+        confirmButtonText: '立即支付',
+        cancelButtonText: '取消',
+        type: 'info'
+      }).then(() => {
+        var data = {
+          coin: '-' + this.VideoCost,
+          userId: this.$store.getters.user.Id
+        }
+        UpdateCoin(this.$qs.stringify(data)).then(res => {
+          if (res.data.data === -1) {
+            this.$notify({
+              title: '付费失败',
+              message: '余额不足，前往个人中心充值',
+              type: 'error'
+            })
+          } else {
+            this.isPay = true
+            this.$store.dispatch('RechargeMoney', res.data.data)
+            this.player.switchVideo({
+              url: this.question.AnswerVideo
+            })
+            this.$notify({
+              title: '付费成功',
+              type: 'success'
+            })
+          }
+        }).catch(() => {})
+      }).catch(() => {})
+      this.player.pause()
     },
     dianZan() {
       if (!this.$store.getters.user.Id) {
@@ -315,6 +378,7 @@ export default {
           close.click()
         }
         this.question = res.data.data
+
         this.isLike = res.data.data.Like || false
         this.isCollect = res.data.data.Collection || false
         this.showLoading = false
@@ -348,6 +412,14 @@ export default {
             path: '/login'
           })
         }).catch(() => {})
+        return
+      }
+      if (this.haveF.Correct.trim().length === 0) {
+        this.$notify({
+          title: '提示',
+          message: '不能为空！',
+          type: 'warning'
+        })
         return
       }
       this.$refs.Form.validate(valid => {
@@ -443,11 +515,7 @@ export default {
     }
     HaveCorrect.create()
 
-    Video('my-video', {}, function onPlayerReady() {
-      this.on('click', function() {
-        console.log('点击!')
-      })
-    })
+    this.player = this.$refs.player.dp
   },
   created() {
     this.fetchDate()

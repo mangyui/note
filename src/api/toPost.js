@@ -596,3 +596,15 @@ export function NotesByKeyIds(datas) {
     data: datas
   })
 }
+
+// 金币变动
+export function UpdateCoin(datas) {
+  return request({
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    url: '/?service=App.Recharge.UpdateCoin',
+    method: 'post',
+    data: datas
+  })
+}

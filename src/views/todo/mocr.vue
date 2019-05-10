@@ -3,7 +3,6 @@
     <span class="header-title">拍照搜题</span>
     <div class="container big-box1200">
         <pictureOcr ocrIcon="form_search" ocrMode="acc" @Oresult="Getresult"></pictureOcr>
-
         <div v-show="showLoading" class="loading-box">
           <i class="el-icon-loading"></i>
           加载中...
@@ -31,17 +30,18 @@
             <h4 class="htitle">添加解答</h4>
             <div ref="HaveCorrect" class="divWangeditor" style="text-align:left"></div>
             <br/>
+            <h4 class="htitle">视频解答(可选)</h4>
+            <uploadVideo @getVideoUrl="GetVideoUrl" @changeCost="ChangeCost"></uploadVideo>
+            <br/>
             <el-button class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">添加到错题本</el-button>
           </div>
           <div v-show="showShou" class="ocr-edit">
             <h3 class="Hpipei">手动添加</h3>
             <h4 class="htitle">错题题目(不含答案)</h4>
             <div ref="ShouTitle" class="divWangeditor" style="text-align:left"></div>
-            <!-- <quill-editor ref="titleEditor" v-model="form.Content" :options="editorOption" ></quill-editor> -->
             <br/>
             <h4 class="htitle">错题解答(可选)</h4>
             <div ref="ShouCorrect" class="divWangeditor" style="text-align:left"></div>
-            <!-- <quill-editor ref="AnalysisEditor" v-model="form.Analysis" :options="editorOption" ></quill-editor> -->
             <br/>
             <el-button class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">添加到错题本</el-button>
           </div>
@@ -80,7 +80,7 @@ import { MistakeImg } from '@/api/upload'
 import { slider, slideritem } from 'vue-concise-slider'
 import pictureOcr from '@/components/picture-ocr/index'
 import addType from '@/views/common/addType'
-
+import uploadVideo from '@/components/my-box/upload'
 import {
   addMistake,
   ocrQues,
@@ -93,7 +93,8 @@ export default {
     slider,
     slideritem,
     pictureOcr,
-    addType
+    addType,
+    uploadVideo
   },
   data: function() {
     return {
@@ -116,7 +117,9 @@ export default {
         Text: '',
         Analysis: '',
         Keywords: '',
-        CategoryId: ''
+        CategoryId: '',
+        AnswerVideo: 0,
+        VideoCost: 0
       },
       rules: {
         CategoryId: [
@@ -139,6 +142,14 @@ export default {
   //   })
   // },
   methods: {
+    GetVideoUrl(videoUrl) {
+      this.form.AnswerVideo = videoUrl || 0
+      // console.log('suucc', videoUrl)
+    },
+    ChangeCost(costNum) {
+      this.form.VideoCost = costNum || 0
+      // console.log(costNum, this.form.VideoCost)
+    },
     Getresult(value) {
       this.lines = value.lines
       this.result = value.result
@@ -181,11 +192,18 @@ export default {
         }).catch(() => {})
         return
       }
+      if (this.form.Content.trim().length === 0) {
+        this.$notify({
+          title: '提示',
+          message: '题目不能为空！',
+          type: 'warning'
+        })
+        return
+      }
       this.$refs.Form.validate(valid => {
         if (valid) {
           let datas
           if (this.showShou) {
-            // this.form.Text = this.$refs.titleEditor.quill.getText().trim()
             datas = {
               'UserId': this.$store.getters.user.Id,
               'QuestionContent': this.form.Content,
@@ -197,7 +215,9 @@ export default {
               'UserId': this.$store.getters.user.Id,
               'QuestionId': this.questions[this.haveF.currentPage].Id,
               'MistakeCateId': this.form.CategoryId,
-              'Correct': this.haveF.Correct
+              'Correct': this.haveF.Correct,
+              'AnswerVideo': this.form.AnswerVideo,
+              'VideoCost': this.form.VideoCost
             }
           }
           addMistake(this.$qs.stringify(datas)).then(res => {

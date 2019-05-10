@@ -76,9 +76,9 @@
             </div>
             <div class="home_item">
               <!-- <div @click="toQidai"> -->
-              <router-link to="/getTest/index">
-                <svg-icon class-name='more_icon' style="color:#fdb75b" icon-class="shijuan" />
-                <p>下载试题</p>
+              <router-link to="/merchant/index">
+                <svg-icon class-name='more_icon' style="color:#fdb75b" icon-class="shoppingCard"/>
+                <p>商城</p>
               </router-link>
             </div>
           <!-- <div class="top-search">
