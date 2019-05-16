@@ -46,7 +46,7 @@
           <i class="el-icon-loading"></i>
           加载中...
         </div>
-        <div v-show="!notes[0] && !showLoading" class="loading-box">
+        <div v-show="!notes[0] && !showLoading && !NoneMore" class="loading-box">
           <i class="el-icon-search"></i>
           空空如也...
         </div>
@@ -110,7 +110,7 @@ export default {
       tolist: {
         UserId: this.$store.getters.user.Id,
         NoteCategoryId: this.$route.params.cateId || 0,
-        Number: 3,
+        Number: 20,
         Page: 1
       },
       search: {
@@ -174,6 +174,9 @@ export default {
     getNotesByKeyIds() {
       var keyIdStr = ''
       for (var i = 0; i < this.KeyIds.length; i++) {
+        if (i !== 0) {
+          keyIdStr += ','
+        }
         keyIdStr += this.KeyIds[i]
       }
       var data = {
