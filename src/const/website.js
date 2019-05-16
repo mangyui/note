@@ -1,12 +1,12 @@
 export default {
-  title: 'CQ',
-  logo: 'C',
+  title: 'AIQ',
+  logo: 'A',
   author: '',
   info: {
-    title: 'CQ',
+    title: 'AIQ',
     team: 'why not',
     list: [
-      'CQ 响应式布局，支持多端设备。',
+      'AIO 响应式布局，支持多端设备。',
       '在这里你可以记录和管理你的笔记错题。',
       '笔记整理。',
       '错题整理。',

@@ -21,6 +21,9 @@
       </div> -->
     </div>
     <div id="content" class="big-box1200">
+      <div>
+        <radarChart :customerName="user.Name"></radarChart>
+      </div>
       <el-tabs v-model="activeName" :stretch="true" @tab-click="handleClick">
         <el-tab-pane name="left" disabled></el-tab-pane>
         <el-tab-pane name="info">
@@ -58,6 +61,7 @@
 </template>
 
 <script>
+import radarChart from '@/components/comps/radarChart.vue'
 import misList from '@/views/common/misList'
 import baseInfo from './baseInfo'
 import {
@@ -74,7 +78,8 @@ export default {
   name: 'others',
   components: {
     baseInfo,
-    misList
+    misList,
+    radarChart
   },
   data() {
     return {

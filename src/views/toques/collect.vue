@@ -87,7 +87,7 @@ export default {
       collects: [],
       tolist: {
         UserId: this.$store.getters.user.Id,
-        Number: 3,
+        Number: 10,
         Page: 1
       },
       search: {

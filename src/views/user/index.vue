@@ -31,6 +31,9 @@
         <p class="user_money">金币：<span>{{user.Coin||0}}.00</span> <el-button size="mini" round @click="chongzhiBox = true">充值</el-button></p>
       </div>
     </div>
+    <div>
+      <radarChart :customerName="user.Name"></radarChart>
+    </div>
     <div class="big-box900" v-show="!isUpdate">
 
       <baseInfo :user="user" :mClass="Class" :School="School"></baseInfo>
@@ -158,6 +161,7 @@
 
 <script>
 import myCountUp from '@/components/my-count-up/index.vue'
+import radarChart from '@/components/comps/radarChart.vue'
 // import { areajson } from '@/assets/js/city.js'
 import { classList } from '@/assets/js/class.js'
 import VueCropper from 'vue-cropperjs'
@@ -178,7 +182,8 @@ export default {
   components: {
     VueCropper,
     myCountUp,
-    baseInfo
+    baseInfo,
+    radarChart
   },
   data() {
     return {
