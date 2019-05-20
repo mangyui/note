@@ -21,7 +21,6 @@
       <div class="noteEdit-title">
       <h4 class="htitle">笔记正文</h4>
         <div ref="editor" class="divWangeditor" style="text-align:left"></div>
-        <!-- <quill-editor ref="myTextEditor" v-model="note.Content" :options="editorOption"></quill-editor> -->
         <br/>
         <div class="voice-button">
           <div class="voice-input-button-wrapper">
@@ -59,12 +58,11 @@
 
 // wangeditor 富文本
 var editor
-
+import { NoteImg } from '@/api/upload'
 import { NoteCategory } from '@/api/toget'
 import {
   UpdateNote,
-  NoteDetails,
-  Imgurl
+  NoteDetails
 } from '@/api/toPost'
 import voiceBtn from '@/components/voice/index'
 import pictureOcr from '@/components/picture-ocr/index'
@@ -195,7 +193,7 @@ export default {
       onchange: function(html) {
         That.note.Content = html
       },
-      uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
+      uploadImgServer: NoteImg, // 上传图片到服务器
       uploadFileName: 'file', // 后端使用这个字段获取图片信息
       uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
       uploadImgHooks: {

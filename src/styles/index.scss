@@ -172,13 +172,6 @@ code {
   color: white !important;
 }
 
-/*editor富文本编辑*/
-
-.quill-editor:not(.bubble) .ql-container .ql-editor {
-  min-height: 10rem;
-  padding-bottom: 1rem;
-}
-
 /*tab消息*/
 
 .mess .el-table__body-wrapper{
@@ -881,7 +874,45 @@ code {
     height: 93%;
   }
 }
+.tag-box{
+  margin: 10px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  .note_tag{
+    background-color: rgba(245,108,108,.1);
+    border:1px solid;
+    border-color: rgba(245,108,108,.2);
+    color: #f56c6c;
+    padding: 6px 15px;
+    transition: 0.28s;
+    height: 30px;
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+    margin: 0 8px 12px;
+    &.note_tag-active{
+      background-color: #f56c6c;
+      border-color: #f56c6c;
+      color: #fff;
+      &::after{
+        content: '';
+        display: inline-block;
+        position: absolute;
+        right: 50%;
+        bottom: -15px;
+        transform: translateX(8px);
+        border: solid;
+        border-width: 8px;
+        border-color: #f56c6c transparent transparent transparent;
+      }
+    }
+  }
+}
 
+.dplayer{
+  height: 100%;
+}
 /*移动端*/
 // app.scss
 // 手机端

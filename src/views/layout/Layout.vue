@@ -21,8 +21,12 @@ export default {
     }
   },
   components: {
-    Navbar: () => import('./components/Navbar'),
+    // Navbar,
+    // Sidebar,
+    // AppMain,
+    // TagsView
     Sidebar: () => import('./components/Sidebar'),
+    Navbar: () => import('./components/Navbar'),
     AppMain: () => import('./components/AppMain'),
     TagsView: () => import('./components/TagsView')
   },

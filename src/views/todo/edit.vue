@@ -51,9 +51,9 @@
 <script>
 // wangeditor 富文本
 var editor
-
+import { NoteImg } from '@/api/upload'
 import { NoteCategory } from '@/api/toget'
-import { AddNote, Imgurl } from '@/api/toPost'
+import { AddNote } from '@/api/toPost'
 import voiceBtn from '@/components/voice/index'
 import pictureOcr from '@/components/picture-ocr/index'
 import addType from '@/views/common/addType'
@@ -190,7 +190,7 @@ export default {
         That.note.Content = html
         // console.log(That.note.Content)
       },
-      uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
+      uploadImgServer: NoteImg, // 上传图片到服务器
       uploadFileName: 'file', // 后端使用这个字段获取图片信息
       uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
       uploadImgHooks: {

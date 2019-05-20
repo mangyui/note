@@ -31,6 +31,9 @@
         <p class="user_money">金币：<span>{{user.Coin||0}}.00</span> <el-button size="mini" round @click="chongzhiBox = true">充值</el-button></p>
       </div>
     </div>
+    <div>
+      <radarChart :customerName="user.Name"></radarChart>
+    </div>
     <div class="big-box900" v-show="!isUpdate">
 
       <baseInfo :user="user" :mClass="Class" :School="School"></baseInfo>
@@ -158,6 +161,7 @@
 
 <script>
 import myCountUp from '@/components/my-count-up/index.vue'
+import radarChart from '@/components/comps/radarChart.vue'
 // import { areajson } from '@/assets/js/city.js'
 import { classList } from '@/assets/js/class.js'
 import VueCropper from 'vue-cropperjs'
@@ -178,7 +182,8 @@ export default {
   components: {
     VueCropper,
     myCountUp,
-    baseInfo
+    baseInfo,
+    radarChart
   },
   data() {
     return {
@@ -340,7 +345,7 @@ export default {
         } else {
           this.$notify({
             title: '提示',
-            message: '修改图片失败',
+            message: '修改头像失败',
             type: 'info'
           })
           this.cropImg = this.avatar
@@ -507,7 +512,7 @@ export default {
   color: #666;
   margin: 10px 0;
   span {
-    color: #52bab5;
+    color: rgba(84, 93, 206,0.9);
   }
 }
 .save-me{
@@ -520,7 +525,7 @@ export default {
   margin-bottom: 20px;
   .num{
     font-size: 28px;
-    color: #52bab5;
+    color: rgba(84, 93, 206,0.9);
   }
 }
 .toOther{

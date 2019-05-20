@@ -21,6 +21,9 @@
                 <voiceBtn @record="showResult2"></voiceBtn>
               </div>
             </div>
+            <h4 class="htitle">视频解答(可选)</h4>
+            <uploadVideo @getVideoUrl="GetVideoUrl" @changeCost="ChangeCost"></uploadVideo>
+            <br/>
             <el-button size="large" class="mobile_bbtn" type="primary" @click="dialogFormVisible = true">提交</el-button>
           </div>
         </div>
@@ -69,8 +72,9 @@
 
 // wangeditor 富文本
 var ShouTitle, ShouCorrect
-
+import { QuestionImg } from '@/api/upload'
 import quexBox from '@/components/my-box/quex-box'
+import uploadVideo from '@/components/my-box/upload'
 import voiceBtn from '@/components/voice/index'
 import pictureOcr from '@/components/picture-ocr/index'
 import { typeList } from '@/assets/js/question_type.js'
@@ -78,7 +82,6 @@ import {
   questionCategory
 } from '@/api/toget'
 import {
-  Imgurl,
   upQuestion
 } from '@/api/toPost'
 
@@ -87,6 +90,7 @@ export default {
   components: {
     quexBox,
     voiceBtn,
+    uploadVideo,
     pictureOcr
   },
   data: function() {
@@ -104,7 +108,9 @@ export default {
         KeyWords: '',
         CategoryId: '',
         Type: '',
-        Repetition: 1
+        Repetition: 1,
+        AnswerVideo: 0,
+        VideoCost: 0
       },
       rules: {
         CategoryId: [
@@ -117,6 +123,14 @@ export default {
     }
   },
   methods: {
+    GetVideoUrl(videoUrl) {
+      this.form.AnswerVideo = videoUrl || 0
+      // console.log('suucc', videoUrl)
+    },
+    ChangeCost(costNum) {
+      this.form.VideoCost = costNum || 0
+      // console.log(costNum, this.form.VideoCost)
+    },
     Getresult(value) {
       this.lines = value.lines
       this.result = value.result
@@ -206,7 +220,7 @@ export default {
       onchange: function(html) {
         That.form.Content = html
       },
-      uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
+      uploadImgServer: QuestionImg, // 上传图片到服务器
       uploadFileName: 'file', // 后端使用这个字段获取图片信息
       uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
       uploadImgHooks: {
@@ -221,7 +235,7 @@ export default {
       onchange: function(html) {
         That.form.Analysis = html
       },
-      uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
+      uploadImgServer: QuestionImg, // 上传图片到服务器
       uploadFileName: 'file', // 后端使用这个字段获取图片信息
       uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
       uploadImgHooks: {
@@ -232,22 +246,6 @@ export default {
         }
       }
     }
-    ShouCorrect.customConfig.menus = [
-      'undo', // 撤销
-      'redo', // 重复
-      'bold', // 粗体
-      'underline', // 下划线
-      'foreColor', // 文字颜色
-      'backColor', // 背景颜色
-      'link', // 插入链接
-      'list', // 列表
-      'justify', // 对齐方式
-      'quote', // 引用
-      'table', // 表格
-      'symbols',
-      'image', // 插入图片
-      'video' // 插入视频
-    ]
     ShouTitle.create()
     ShouCorrect.create()
   },

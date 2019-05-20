@@ -20,7 +20,7 @@
           </el-option>
         </el-select>
         <div>
-          <!-- <el-button icon="el-icon-refresh" circle @click="refresh"></el-button> -->
+          <el-button icon="el-icon-refresh" circle @click="refresh"></el-button>
           <router-link  to='/todo/addMistake'>
             <el-button type="primary" icon="el-icon-plus" circle></el-button>
           </router-link>
@@ -37,7 +37,7 @@
           空空如也...
         </div>
 
-        <misList ref="misList" :questions="questions"></misList>
+        <misList ref="misList" :questions="questions" @deteleBack="refresh"></misList>
 
         <div v-show="showMore" class="loading-box">
           <i class="el-icon-loading"></i>
@@ -127,10 +127,9 @@ export default {
     document.querySelector('.app-main').addEventListener('scroll', this.onScroll)
   },
   methods: {
-    // refresh() {
-    //   this.getCategory()
-    //   this.getQues()
-    // },
+    refresh() {
+      this.getQues()
+    },
     getCategory() {
       mistakeCate(this.$qs.stringify({ UserId: this.$store.getters.user.Id })).then(res => {
         this.typelist = this.typelist.concat(res.data.data)

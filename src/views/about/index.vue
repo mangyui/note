@@ -35,7 +35,7 @@ export default {
   name: 'about',
   data() {
     return {
-      version: '1.0.9',
+      version: '1.1.0',
       isup: false,
       text: '已是最新版本',
       upUrl: ''

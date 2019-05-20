@@ -87,7 +87,7 @@ export default {
       collects: [],
       tolist: {
         UserId: this.$store.getters.user.Id,
-        Number: 3,
+        Number: 10,
         Page: 1
       },
       search: {
@@ -145,6 +145,7 @@ export default {
               type: 'info'
             })
           }
+          this.getCollects()
         }).catch(() => {
           this.$message.warning('操作失败...')
         })

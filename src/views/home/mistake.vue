@@ -17,7 +17,7 @@
           <el-tag size="large">{{question.Type}}</el-tag>
         </div> -->
         <div class="sys-notes" v-html="question.Title"></div>
-        <div class="sys-section" v-if="isMe">
+        <div class="sys-section" v-show="isMe">
           <div class="title" style="border:0">
             <strong>我的解答</strong>
               <div class="ques_header">
@@ -33,7 +33,6 @@
           <div>
             <div v-show="isUpdae" ref="editor" class="divWangeditor" style=""></div>
           </div>
-          <!-- <quill-editor v-if="isUpdae" ref="myTextEditor" v-model="content" :options="editorOption"></quill-editor> -->
           <br/>
           <el-button v-if="!isUpdae" class="editor-btn" type="primary" size="small" @click="handleChange">修改解答</el-button>
           <el-button v-if="isUpdae" class="editor-btn" size="small" @click="isUpdae=false">返回</el-button>
@@ -54,6 +53,9 @@
             </div>
           </div>
           <div class="sys-article" v-html="question.Correct"></div>
+        </div>
+        <div v-show="question.AnswerVideo&&question.AnswerVideo!=0" :style="{height: screenWidth>1200?'380px':screenWidth*0.5+'px'}">
+          <dPlayer ref="player" @play="play" :options="options"></dPlayer>
         </div>
         <div class="toNum">
           <div @click="dianZan">
@@ -77,10 +79,11 @@
 </template>
 
 <script>
-
+import dPlayer from 'vue-dplayer'
+import 'vue-dplayer/dist/vue-dplayer.css'
 // wangeditor 富文本
 var editor
-
+import { MistakeImg } from '@/api/upload'
 import {
   MistakeDetails
 } from '@/api/toget'
@@ -88,15 +91,27 @@ import {
   P_dianZan,
   P_toCollect,
   UpdateMistake,
-  Imgurl
+  UpdateCoin
 } from '@/api/toPost'
 
 export default {
   name: 'mistake',
   components: {
+    dPlayer
   },
   data() {
     return {
+      player: null,
+      options: {
+        video: {
+          url: ''
+        },
+        autoplay: false
+      },
+      AnswerVideo: 0,
+      VideoCost: 0,
+      isPay: false,
+      screenWidth: document.body.clientWidth,
       showLoading: true,
       isUpdae: false,
       id: '',
@@ -111,13 +126,62 @@ export default {
         CollectNumber: ''
       },
       content: '',
-      isMe: true,
+      isMe: false,
       haveGuanfang: true,
       isLike: false,
       isCollect: false
     }
   },
   methods: {
+    play() {
+      if (this.isMe || this.isPay || this.question.AnswerVideo === '0') {
+        return
+      }
+      if (!this.$store.getters.user.Id) {
+        this.$confirm('你还没有登录，不能进行该操作！前往登录', '提示', {
+          confirmButtonText: '立即登录',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.$router.push({
+            path: '/login'
+          })
+        }).catch(() => {})
+        return
+      }
+      this.AnswerVideo = this.question.AnswerVideo || 0
+      this.VideoCost = this.question.VideoCost || 0
+      this.$confirm('你需付费金币数：' + this.question.VideoCost, '付费观看', {
+        confirmButtonText: '立即支付',
+        cancelButtonText: '取消',
+        type: 'info'
+      }).then(() => {
+        var data = {
+          coin: '-' + this.VideoCost,
+          userId: this.$store.getters.user.Id
+        }
+        UpdateCoin(this.$qs.stringify(data)).then(res => {
+          if (res.data.data === -1) {
+            this.$notify({
+              title: '付费失败',
+              message: '余额不足，前往个人中心充值',
+              type: 'error'
+            })
+          } else {
+            this.isPay = true
+            this.$store.dispatch('RechargeMoney', res.data.data)
+            this.player.switchVideo({
+              url: this.question.AnswerVideo
+            })
+            this.$notify({
+              title: '付费成功',
+              type: 'success'
+            })
+          }
+        }).catch(() => {})
+      }).catch(() => {})
+      this.player.pause()
+    },
     handleChange() {
       this.isUpdae = true
     },
@@ -234,6 +298,9 @@ export default {
           this.question.LikeNumber = res.data.data.LikeNumber
           this.question.CollectNumber = res.data.data.CollectNumber
         }
+        this.question.AnswerVideo = res.data.data.AnswerVideo
+        this.question.VideoCost = res.data.data.VideoCost
+
         this.user = res.data.data.User
         this.isLike = res.data.data.Like
         this.isCollect = res.data.data.Collection
@@ -242,6 +309,9 @@ export default {
           this.isMe = true
           this.content = this.question.Correct
           editor.txt.html(this.content)
+          this.player.switchVideo({
+            url: this.question.AnswerVideo
+          })
         } else {
           this.isMe = false
         }
@@ -299,13 +369,12 @@ export default {
   },
   mounted() {
     var That = this
-    // var Imgurl = 'http://192.168.1.105/'
     editor = new this.$E(this.$refs.editor)
     editor.customConfig = {
       onchange: function(html) {
         That.content = html
       },
-      uploadImgServer: Imgurl + '?service=App.Upload.Upload', // 上传图片到服务器
+      uploadImgServer: MistakeImg, // 上传图片到服务器
       uploadFileName: 'file', // 后端使用这个字段获取图片信息
       uploadImgMaxLength: 1, // 限制一次最多上传 1 张图片
       uploadImgHooks: {
@@ -317,6 +386,8 @@ export default {
       }
     }
     editor.create()
+
+    this.player = this.$refs.player.dp
   }
 }
 </script>

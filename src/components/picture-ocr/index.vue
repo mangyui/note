@@ -11,7 +11,7 @@
         <img v-if="showGIF" class="loading-gif" src="@/assets/images/home/loading2.gif" alt="Loading">
       </label>
       <div class="upbtn-group">
-        <!-- <el-button type="primary" @click="cameraTakePicture">拍照上传</el-button> -->
+        <el-button type="primary" @click="cameraTakePicture">拍照上传</el-button>
         <div class="crop-demo-btn tiffany-btn">上传图片
           <input class="crop-input" ref="referenceUpload" id='upimg' type="file" name="image" accept="image/*" multiple @change="toChoose" />
         </div>
