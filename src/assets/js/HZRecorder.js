@@ -178,14 +178,7 @@
               this.blobToDataURL(this.getBlob(), function (dataurl) {
                 speechUrl = dataurl;
                 var data = {
-                  // "format": "wav",//格式支持pcm（不压缩）、wav（不压缩，pcm编码）、amr（压缩格式）采样率
-                  // "rate": 16000,//前方有坑，请绕行：此处文档参数16000，达不到这种高保真音频，故 使用8000
-                  // "dev_pid": 1536,//普通话
-                  // "channel": 1,//固定写法（声道）
-                  // "token": "24.2f95d80a0f22054cf752601f25df4668.2592000.1557125347.282335-15542922", //获取到的token值
-                  // "cuid": "52-54-00-6B-DB-2F",//设备的唯一id
                   "audio": speechUrl.split(',')[1],//base64的音频文件
-                  // "len": leng//文件的大小，字节数
                 }
                 let curTime = (new Date().getTime() / 1000) | 0 + ''
                 xhr.open("POST", voice.serverurl + 'asr');

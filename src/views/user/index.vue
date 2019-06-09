@@ -161,7 +161,7 @@
 
 <script>
 import myCountUp from '@/components/my-count-up/index.vue'
-import radarChart from '@/components/comps/radarChart.vue'
+// import radarChart from '@/components/comps/radarChart.vue'
 // import { areajson } from '@/assets/js/city.js'
 import { classList } from '@/assets/js/class.js'
 import VueCropper from 'vue-cropperjs'
@@ -183,7 +183,7 @@ export default {
     VueCropper,
     myCountUp,
     baseInfo,
-    radarChart
+    radarChart: () => import('@/components/comps/radarChart.vue')
   },
   data() {
     return {
@@ -302,42 +302,9 @@ export default {
       var blob = dataURLtoBlob(this.cropImg)
       var file = blobToFile(blob, 'avatar')
       var data = new FormData()
-      // console.log(file)
       data.append('file', file, 'avatar.png')
       data.append('UserId', this.user.Id)
-      // alert(data)
-      // alert(this.dataURLtoFile(this.cropImg, 'avatar.png'))
-      // var xhr = new XMLHttpRequest()
-      // xhr.open('POST', uploadImgServer)
-      // // 设置超时
-      // xhr.timeout = 15000
-      // xhr.onreadystatechange = (res) => {
-      //   if (xhr.readyState === 4 && xhr.status === 200) {
-      //     console.log(xhr)
-      //     var respp = JSON.parse(xhr.responseText)
-      //     // console.log(respp.data.data.data)
-      //     if (respp.data.data.data && respp.data.ret !== 200) {
-      //       this.$store.dispatch('UpdateAvatar', respp.data.data.data[0])
-      //       // console.log(respp.data.data.data[0])
-      //       location.reload()
-      //     } else {
-      //       this.$notify({
-      //         title: '提示',
-      //         message: '修改头像失败',
-      //         type: 'info'
-      //       })
-      //       this.cropImg = this.avatar
-      //     }
-      //   } else {
-      //     this.$notify({
-      //       title: '提示',
-      //       message: '修改头像失败',
-      //       type: 'info'
-      //     })
-      //     this.cropImg = this.avatar
-      //   }
-      // }
-      // xhr.send(data)
+      // console.log(data)
       ChangeUserAvatar(data).then(res => {
         if (res.data.data.data[0]) {
           this.$store.dispatch('UpdateAvatar', res.data.data.data[0])

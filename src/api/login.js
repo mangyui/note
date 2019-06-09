@@ -2,9 +2,6 @@ import request from '@/utils/request'
 
 export function login(datas) {
   return request({
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-    },
     url: '/?service=App.User.Login',
     method: 'post',
     data: datas
@@ -14,9 +11,6 @@ export function login(datas) {
 // 注册
 export function register(datas) {
   return request({
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-    },
     url: '/?service=App.User.Add',
     method: 'post',
     data: datas
@@ -26,9 +20,6 @@ export function register(datas) {
 // 修改
 export function UpdateUser(datas) {
   return request({
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-    },
     url: '?service=App.User.Update',
     method: 'post',
     data: datas

@@ -5,9 +5,7 @@
         <el-button
           class="top-btn_search"
           round
-          icon="el-icon-search"
-          :size="screenWidth>770?'':'small'"
-          :style="screenWidth>770?'':'border:0'">搜索</el-button>
+          icon="el-icon-search">搜索</el-button>
       </router-link>
       <div class="top-camera toShow">
         <!-- <router-link to="/todo/addMistake"> -->
@@ -94,13 +92,13 @@
           </div>
           <div class="home_item">
             <!-- <div @click="toQidai"> -->
-            <router-link to="/merchant/index">
+            <router-link to="/getTest/index">
               <svg-icon
                 class-name='more_icon'
                 style="color:#fdb75b"
-                icon-class="shoppingCard"
+                icon-class="shijuan"
               />
-              <p>商城</p>
+              <p>下载试卷</p>
             </router-link>
           </div>
         </div>
@@ -152,7 +150,7 @@ export default {
     return {
       user: this.$store.getters.user,
       homeTop: 0,
-      screenWidth: document.body.clientWidth,
+      // screenWidth: document.body.clientWidth,
       questions: [],
       notes: [],
       myques: [],
@@ -225,11 +223,11 @@ export default {
     // }
   },
   mounted() {
-    window.onresize = () => {
-      return (() => {
-        this.screenWidth = document.body.clientWidth
-      })()
-    }
+    // window.addEventListener('resize', () => {
+    //   return (() => {
+    //     this.screenWidth = document.body.clientWidth
+    //   })()
+    // })
   },
   created() {
     this.getNotes()

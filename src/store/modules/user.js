@@ -72,16 +72,6 @@ const user = {
       state.Name = name
     }
   },
-  // computed: mapState({
-  //   Id: function(state) {
-  //     const localData = window.localStorage.getItem('user')
-  //     console.log(localData, state.Id)
-  //     if (state.Id === '' && localData) {
-  //       this.$store.commit('GET_USER')
-  //     }
-  //     return state.Id
-  //   }
-  // }),
   actions: {
     // 登录
     Login({ commit }, userInfo) {
@@ -190,7 +180,7 @@ const user = {
       })
     },
     // 登出
-    LogOut({ commit, state }) {
+    LogOut({ commit }) {
       return new Promise((resolve, reject) => {
         commit('OUT_USER')
       })

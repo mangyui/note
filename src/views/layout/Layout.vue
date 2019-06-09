@@ -11,7 +11,10 @@
 </template>
 
 <script>
-// import { Navbar, Sidebar, AppMain, TagsView } from './components'
+// import Navbar from './components/Navbar'
+// import Sidebar from './components/Sidebar'
+// import AppMain from './components/AppMain'
+// import TagsView from './components/TagsView'
 import ResizeMixin from './mixin/ResizeHandler'
 
 export default {
@@ -21,8 +24,12 @@ export default {
     }
   },
   components: {
-    Navbar: () => import('./components/Navbar'),
+    // Navbar,
+    // Sidebar,
+    // AppMain,
+    // TagsView
     Sidebar: () => import('./components/Sidebar'),
+    Navbar: () => import('./components/Navbar'),
     AppMain: () => import('./components/AppMain'),
     TagsView: () => import('./components/TagsView')
   },

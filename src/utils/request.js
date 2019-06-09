@@ -3,7 +3,7 @@ import { Message } from 'element-ui'
 // import store from '../store'
 // import { getToken } from '@/utils/auth'
 
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-fromurlencodeed'
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
 // 创建axios实例
 const service = axios.create({
   baseURL: process.env.BASE_API, // api的base_url
