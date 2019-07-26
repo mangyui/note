@@ -301,7 +301,7 @@ export function GetTestDetail(datas) {
 // 修改头像
 export function ChangeUserAvatar(datas) {
   return request({
-    url: '/?service=App.Upload.UploadUser',
+    url: '/?service=App.User.ChangeUserAvatar',
     method: 'post',
     data: datas
   })

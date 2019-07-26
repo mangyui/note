@@ -31,7 +31,7 @@
             <el-card
               class="test-card"
               shadow="hover"
-              :style="{ border:'none', backgroundColor: item.Status=='0'?'#ecf5ff':'rgb(255, 242, 242)'}"
+              :style="{ border:'none', backgroundColor: item.Status=='1'?'#ecf5ff':'rgb(255, 242, 242)'}"
             >
               <router-link
                 class="test_box"
@@ -46,7 +46,7 @@
                   <p class="test_state"><span class="test_time">{{item.Ctime}}</span><span class="test_time">限制时间：<span style="color: #F56C6C">{{item.LimiteTime}}</span> 分钟</span>
                     <el-tag
                       size="small"
-                      v-if="item.Status=='0'"
+                      v-if="item.Status=='1'"
                       type="success"
                     ><span>在测</span></el-tag>
                     <el-tag
@@ -108,11 +108,11 @@
           >
             <el-option
               label="现在开始测试"
-              value="0"
+              value="1"
             ></el-option>
             <el-option
               label="稍后开始测试"
-              value="1"
+              value="0"
             ></el-option>
             <!-- <el-option label="结束" value="end"></el-option> -->
           </el-select>

@@ -178,6 +178,7 @@ export default {
       } else {
         editor.txt.append('<span>' + text.substr(0, text.length - 1) + '</span>')
       }
+      editor.change && editor.change()
       // console.log(text.substr(0, text.length - 1))
     }
   },

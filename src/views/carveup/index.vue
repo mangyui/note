@@ -115,8 +115,8 @@
         </el-form-item>
         <el-form-item label="测试状态" prop="Status">
           <el-select v-model="Testform.Status" placeholder="请选择测试状态">
-            <el-option label="现在开始测试" value="0"></el-option>
-            <el-option label="稍后开始测试" value="1"></el-option>
+            <el-option label="现在开始测试" value="1"></el-option>
+            <el-option label="稍后开始测试" value="0"></el-option>
             <!-- <el-option label="结束" value="end"></el-option> -->
           </el-select>
         </el-form-item>

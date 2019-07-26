@@ -3,7 +3,6 @@ const recommend = {
   state: JSON.parse(sessionStorage.getItem('recommend')) || {},
 
   mutations: {
-    // 登录/更新
     SET_RECOM: (state, recommend) => {
       Object.assign(state, recommend)
       state.time = new Date(+new Date() + 8 * 3600 * 1000).toISOString().replace(/T/g, '').replace(/\.[\d]{3}Z/, '')

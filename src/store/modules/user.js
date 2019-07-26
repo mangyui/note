@@ -64,6 +64,7 @@ const user = {
     OUT_USER(state) {
       localStorage.removeItem('user')
       Object.keys(state).forEach(k => Vue.delete(state, k))
+      sessionStorage.removeItem('recommend')
     },
     SET_TOKEN: (state, token) => {
       state.token = token

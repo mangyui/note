@@ -180,6 +180,7 @@ export default {
       } else {
         editor.txt.append('<p>' + text.substr(0, text.length - 1) + '</p>')
       }
+      editor.change && editor.change()
     }
   },
   created() {

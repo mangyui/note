@@ -238,11 +238,19 @@ export default {
         this.showShou = false
         this.showBtn = true
         this.showLoading = false
-        this.$notify({
-          title: '提示',
-          message: '已搜索相关题目！',
-          type: 'success'
-        })
+        if (res.data.data[0].LevenShtein < 0.2) {
+          this.$notify({
+            title: '提示',
+            message: '您搜索的题目题库中还没有添加，不过为您匹配出与之最为相似的题目',
+            type: 'info'
+          })
+        } else {
+          this.$notify({
+            title: '提示',
+            message: '已搜索相关题目！',
+            type: 'success'
+          })
+        }
       }).catch(() => {
         this.showLoading = false
         this.$notify({

@@ -9,7 +9,7 @@
         <el-tab-pane name="first">
           <span slot="label">
             <el-badge
-              :value="this.unread.length"
+              is-dot
               class="item"
             > 未读消息</el-badge>
           </span>
@@ -25,11 +25,7 @@
         </el-tab-pane>
         <el-tab-pane name="second">
           <span slot="label">
-            <el-badge
-              :value="this.read.length"
-              class="item"
-              type="primary"
-            > 已读消息</el-badge>
+            已读消息
           </span>
           <div>
             <div v-show="!read[0]" class="loading-box">
@@ -91,14 +87,21 @@ export default {
       centerDialogVisible: false
     }
   },
+  beforeRouteEnter(to, from, next) {
+    // 这里的vm指的就是vue实例，可以用来当做this使用
+    next(vm => {
+      vm.GetMessage()
+    })
+  },
   methods: {
     GetMessage() {
       GetMessage(this.$qs.stringify({ 'UserId': this.$store.getters.user.Id })).then(res => {
         // console.log(res.data.data.Read)
         this.unread = res.data.data.UnRead
         this.read = res.data.data.Read
-
-        this.changelength()
+        setTimeout(() => {
+          this.changelength()
+        }, 1000)
       }).catch(() => {
         console.log('获取数据失败！')
       })

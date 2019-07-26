@@ -107,7 +107,6 @@ export default {
       this.cropImg = ''
     },
     toCrop() {
-      this.cropImg = this.$refs.cropper.getCroppedCanvas().toDataURL('image/jpeg', 0.7)
       this.dialogVisible = false
       this.torun()
     },
@@ -119,6 +118,7 @@ export default {
       this.$refs.cropper.rotate(45)
     },
     torun() {
+      this.cropImg = this.$refs.cropper.getCroppedCanvas().toDataURL('image/jpeg', 0.7)
       if (!this.cropImg) {
         this.$notify({
           title: '提示',

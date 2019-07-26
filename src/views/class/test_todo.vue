@@ -28,10 +28,10 @@
                 <span>{{index+1}}.</span>
                 <div class="test_content" v-html="item.Content"></div>
               </div>
-              <div v-show="IsAnalysis[0]!=null">
+              <!-- <div v-show="IsAnalysis[0]!=null">
                 <el-checkbox v-model="IsAnalysis[index]">查看答案</el-checkbox>
                 <div v-show="IsAnalysis[index]" class="tipbox test_Correct" v-html="item.Analysis"></div>
-              </div>
+              </div> -->
             </div>
           </el-carousel-item>
         </el-carousel>
